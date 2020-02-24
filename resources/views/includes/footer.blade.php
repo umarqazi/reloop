@@ -1,4 +1,4 @@
-<footer class="page-footer gradient-45deg-purple-deep-orange">
+<footer class="page-footer primary-bg-color">
     <div class="footer-copyright">
         <div class="container">
             <span>Copyright ©

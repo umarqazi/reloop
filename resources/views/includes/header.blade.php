@@ -1,7 +1,7 @@
-<header id="header" class="page-topbar">
+<header id="header" class="page-topbar mian-header-content">
     <!-- start header nav-->
     <div class="navbar-fixed">
-        <nav class="navbar-color gradient-45deg-purple-deep-orange gradient-shadow">
+        <nav class="navbar-color primary-bg-color">
             <div class="nav-wrapper">
                 <div class="header-search-wrapper hide-on-med-and-down sideNav-lock">
                     <i class="material-icons">search</i>
