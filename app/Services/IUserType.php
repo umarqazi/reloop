@@ -17,4 +17,5 @@ interface IUserType
     const HOUSE_HOLD  = 1;
     const ORGANIZATION = 2;
     const DRIVER = 3;
+    const SUPERVISOR = 4;
 }
