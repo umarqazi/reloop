@@ -24,18 +24,6 @@
 
     <div class="container">
         <div class="section">
-            <p class="caption">Forms are the standard way to receive user inputted data. The transitions and smoothness
-                of these elements are very important because of the inherent user interaction associated with forms.</p>
-            <div class="divider"></div>
-            <h4 class="header">Input fields</h4>
-            <p>Text fields allow user input. The border should light up simply and clearly indicating which field the
-                user is currently editing. You must have a <code class="language-markup">.input-field</code> div
-                wrapping your input and label. This helps our jQuery animate the label. This is only used in our Input
-                and Textarea form elements.</p>
-            <p>The validate class leverages HTML5 validation and will add a <code class="language-markup">valid</code>
-                and <code class="language-markup">invalid</code> class accordingly. If you don't want the Green and Red
-                validation states, just remove the <code class="language-markup">validate</code> class from your inputs.
-            </p>
             <br>
 {{--            <form class="row" method="POST" action="{{ route('user.store') }}">--}}
             {{ Form::open(['url' => route('user.store'), 'class' => 'row']) }}

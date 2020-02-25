@@ -23,12 +23,6 @@
             </div>
             <div id="table-datatables">
                 <div class="row">
-                    <div class="col s12">
-                        <p>DataTables has most features enabled by default, so all you need to do to use it with your
-                            own tables is to call the construction function.</p>
-                        <p>Searching, ordering, paging etc goodness will be immediately added to the table, as shown in
-                            this example.</p>
-                    </div>
                     <p>
                         <a class="btn waves-effect waves-light gradient-45deg-purple-deep-orange" href="{{ route('user.create') }}">Create</a>
                     </p>
