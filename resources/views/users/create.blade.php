@@ -37,45 +37,40 @@
                 validation states, just remove the <code class="language-markup">validate</code> class from your inputs.
             </p>
             <br>
-            <form class="row">
+{{--            <form class="row" method="POST" action="{{ route('user.store') }}">--}}
+            {{ Form::open(['url' => route('user.store'), 'class' => 'row']) }}
                 <div class="col s12">
                     <div class="input-field col s6">
-                        <input placeholder="Placeholder" id="first_name" type="text" class="validate">
+                        <input id="first_name" name="first_name" type="text" class="validate">
                         <label for="first_name">First Name</label>
                     </div>
                     <div class="input-field col s6">
-                        <input id="last_name" type="text">
+                        <input id="last_name" name="last_name" type="text" class="validate">
                         <label for="last_name">Last Name</label>
                     </div>
                 </div>
                 <div class="col s12">
                     <div class="input-field col s12">
-                        <input disabled value="I am not editable" id="disabled" type="text" class="validate">
-                        <label for="disabled">Disabled</label>
+                        <input disabled value="Application User" id="disabled" type="text" class="validate">
+                        <label for="disabled">User Type</label>
                     </div>
                 </div>
                 <div class="col s12">
-                    <div class="input-field col s12">
-                        <input id="password" type="password" class="validate">
+                    <div class="input-field col s6">
+                        <input id="email" name="email" type="email" class="validate">
+                        <label for="email" data-error="wrong" data-success="right">Email</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="password" name="password" type="password" class="validate">
                         <label for="password">Password</label>
                     </div>
                 </div>
                 <div class="col s12">
                     <div class="input-field col s12">
-                        <input id="email" type="email" class="validate">
-                        <label for="email" data-error="wrong" data-success="right">Email</label>
+                        <button type="submit" class="btn btn-primary">Create</button>
                     </div>
                 </div>
-                <div class="col s12">
-                    <div class="col s12">
-                        This is an inline input field:
-                        <div class="input-field inline">
-                            <input id="email" type="email" class="validate">
-                            <label for="email" data-error="wrong" data-success="right">Email</label>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            {{ Form::close() }}
         </div>
     </div>
 @endsection

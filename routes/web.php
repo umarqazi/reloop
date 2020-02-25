@@ -12,11 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+    return redirect(route('login'));
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('products', 'productController');
-Route::resource('users', 'userController');
+Route::get('/home', 'Admin\HomeController@index')->name('home');
+Route::resource('product', 'Admin\ProductController');
+Route::resource('user', 'Admin\UserController');

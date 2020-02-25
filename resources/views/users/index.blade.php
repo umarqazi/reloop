@@ -13,7 +13,7 @@
                         <div class="col s10 m6 l6">
                             <h5 class="breadcrumbs-title">Forms</h5>
                             <ol class="breadcrumbs">
-                                <li><a href="index.html">Dashboard</a>
+                                <li><a href="#">Dashboard</a>
                                 </li>
                                 <li class="active">Users</li>
                             </ol>
@@ -23,7 +23,14 @@
             </div>
             <div id="table-datatables">
                 <div class="row">
-                    <p><a class="btn waves-effect waves-light primary-btn-bgcolor" href="users/create">Create</a>
+                    <div class="col s12">
+                        <p>DataTables has most features enabled by default, so all you need to do to use it with your
+                            own tables is to call the construction function.</p>
+                        <p>Searching, ordering, paging etc goodness will be immediately added to the table, as shown in
+                            this example.</p>
+                    </div>
+                    <p>
+                        <a class="btn waves-effect waves-light gradient-45deg-purple-deep-orange" href="{{ route('user.create') }}">Create</a>
                     </p>
                     <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">

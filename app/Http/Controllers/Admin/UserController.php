@@ -1,11 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
-class userController extends Controller
+class UserController extends Controller
 {
+    private $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +44,7 @@ class userController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->userService->create($request->all());
     }
 
     /**

@@ -13,7 +13,7 @@
     <link rel="icon" href="assets/images/favicon/favicon-32x32.png" sizes="32x32">
     <link rel="apple-touch-icon-precomposed" href="assets/images/favicon/apple-touch-icon-152x152.png">
 
-    <title>Materialize - Material Design Admin Template</title>
+    <title>Reloop - Source Recycling</title>
 
     <!-- CSS -->
     <link href="/assets/css/themes/collapsible-menu/materialize.css" type="text/css" rel="stylesheet">

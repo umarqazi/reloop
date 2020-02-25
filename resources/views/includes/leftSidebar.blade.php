@@ -27,7 +27,7 @@
                     <div class="collapsible-body">
                         <ul>
                             <li>
-                                <a href="/users">
+                                <a href="{{ route('user.index') }}">
                                     <i class="material-icons">keyboard_arrow_right</i>
                                     <span>Users</span>
                                 </a>
@@ -46,14 +46,12 @@
                             </li>
                         </ul>
                     </div>
-                </li>
-                <li class="bold">
+                </li><li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Orders</span>
                     </a>
-                </li>
-                <li class="bold">
+                </li><li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Material Categories</span>
@@ -66,7 +64,7 @@
                     <div class="collapsible-body">
                         <ul>
                             <li>
-                                <a href="/products">
+                                <a href="{{ route('product.index') }}">
                                     <i class="material-icons">keyboard_arrow_right</i>
                                     <span>Products</span>
                                 </a>
