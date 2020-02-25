@@ -1,9 +1,9 @@
-<aside id="left-sidebar-nav" class="nav-expanded nav-lock nav-collapsible">
+<aside id="left-sidebar-nav" class="nav-expanded nav-lock nav-collapsible left-sidebar-content">
     <div class="brand-sidebar">
         <h1 class="logo-wrapper">
             <a href="index.html" class="brand-logo darken-1">
-                <img src="/assets/images/logo/materialize-logo.png" alt="materialize logo">
-                <span class="logo-text hide-on-med-and-down">Materialize</span>
+                <img src="/assets/images/logo/reloop.png" alt="re loop logo">
+{{--                <span class="logo-text hide-on-med-and-down">ReLoop</span>--}}
             </a>
             <a href="#" class="navbar-toggler">
                 <i class="material-icons">radio_button_checked</i>
@@ -29,7 +29,7 @@
                             <li>
                                 <a href="/users">
                                     <i class="material-icons">keyboard_arrow_right</i>
-                                    <span>Application Users</span>
+                                    <span>Users</span>
                                 </a>
                             </li>
                             <li>
@@ -46,22 +46,14 @@
                             </li>
                         </ul>
                     </div>
-                </li><li class="bold">
-                    <a class="collapsible-header  waves-effect waves-cyan">
-                        <i class="material-icons">time_to_leave</i>
-                        <span class="nav-text">Drivers</span>
-                    </a>
-                </li><li class="bold">
+                </li>
+                <li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Orders</span>
                     </a>
-                </li><li class="bold">
-                    <a class="collapsible-header  waves-effect waves-cyan">
-                        <i class="material-icons">supervisor_account</i>
-                        <span class="nav-text">Supervisors</span>
-                    </a>
-                </li><li class="bold">
+                </li>
+                <li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Material Categories</span>
@@ -76,13 +68,13 @@
                             <li>
                                 <a href="/products">
                                     <i class="material-icons">keyboard_arrow_right</i>
-                                    <span>All Products</span>
+                                    <span>Products</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="advance-ui-collapsibles.html">
                                     <i class="material-icons">keyboard_arrow_right</i>
-                                    <span>Create Product</span>
+                                    <span>Subscriptions</span>
                                 </a>
                             </li>
                         </ul>

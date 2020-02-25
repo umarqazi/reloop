@@ -11,7 +11,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col s10 m6 l6">
-                            <h5 class="breadcrumbs-title">Forms</h5>
+                            <h5 class="breadcrumbs-title">Products</h5>
                             <ol class="breadcrumbs">
                                 <li><a href="index.html">Dashboard</a>
                                 </li>
