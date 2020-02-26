@@ -17,7 +17,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'Admin\HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/activate-account/{id}/{token}', 'UserController@accountVerification');
+Route::get('/thankyou', 'PageController@thankyou')->name('thankyou');
 Route::resource('product', 'Admin\ProductController');
 Route::resource('user', 'Admin\UserController');
 Route::resource('supervisor', 'Admin\SupervisorController');

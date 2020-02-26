@@ -3,16 +3,7 @@
     <div class="navbar-fixed">
         <nav class="navbar-color primary-bg-color">
             <div class="nav-wrapper">
-                <div class="header-search-wrapper hide-on-med-and-down sideNav-lock">
-                    <i class="material-icons">search</i>
-                    <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize" />
-                </div>
                 <ul class="right hide-on-med-and-down">
-                    <li>
-                        <a href="javascript:void(0);" class="waves-effect waves-block waves-light translation-button" data-activates="translation-dropdown">
-                            <span class="flag-icon flag-icon-gb"></span>
-                        </a>
-                    </li>
                     <li>
                         <a href="javascript:void(0);" class="waves-effect waves-block waves-light toggle-fullscreen">
                             <i class="material-icons">settings_overscan</i>
@@ -31,11 +22,6 @@
                     <img src="/assets/images/avatar/avatar-7.png" alt="avatar">
                     <i></i>
                   </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-activates="chat-out" class="waves-effect waves-block waves-light chat-collapse">
-                            <i class="material-icons">format_indent_increase</i>
                         </a>
                     </li>
                 </ul>
@@ -92,6 +78,7 @@
                         <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">1 week ago</time>
                     </li>
                 </ul>
+
                 <!-- profile-dropdown -->
                 <ul id="profile-dropdown" class="dropdown-content">
                     <li>

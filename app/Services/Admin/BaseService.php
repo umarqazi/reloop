@@ -1,6 +1,4 @@
 <?php
-
-
 namespace App\Services\Admin;
 
 
@@ -40,6 +38,7 @@ class BaseService implements IService
 
     /**
      * @param int $id
+     * @return mixed
      */
     public function findById(int $id)
     {
@@ -49,6 +48,7 @@ class BaseService implements IService
     /**
      * @param int $id
      * @param array $data
+     * @return mixed
      */
     public function update(int $id, array $data)
     {
@@ -57,6 +57,7 @@ class BaseService implements IService
 
     /**
      * @param int $id
+     * @return mixed
      */
     public function destroy(int $id)
     {

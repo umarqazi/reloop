@@ -2,22 +2,15 @@
 
 
 namespace App\Forms\User;
+
+
 use App\Forms\BaseForm;
 
-/**
- * Class LoginForm
- *
- * @package   App\Forms\User
- * @author    Faisal Raza <faisal.raza@gems.techverx.com>
- * @copyright 2020 Techverx.com All rights reserved.
- * @since     Feb 25, 2020
- * @project   reloop
- */
-class LoginForm extends BaseForm
+class PasswordResetForm extends BaseForm
 {
 
     public $email;
-    public $password;
+    public $token;
     /**
      * @inheritDoc
      */
@@ -25,7 +18,7 @@ class LoginForm extends BaseForm
     {
         return [
             'email'     => $this->email,
-            'password'  => $this->password
+            'token'  => $this->token
         ];
     }
 
@@ -36,7 +29,7 @@ class LoginForm extends BaseForm
     {
         return [
             'email' => 'required|email',
-            'password' => 'required'
+            'token' => 'required'
         ];
     }
 }

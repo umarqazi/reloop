@@ -18,33 +18,12 @@
                                 <li class="active">Products</li>
                             </ol>
                         </div>
-                        <div class="col s2 m6 l6">
-                            <a class="btn dropdown-settings waves-effect waves-light breadcrumbs-btn right gradient-45deg-light-blue-cyan gradient-shadow" href="#!" data-activates="dropdown1">
-                                <i class="material-icons hide-on-med-and-up">settings</i>
-                                <span class="hide-on-small-onl">Settings</span>
-                                <i class="material-icons right">arrow_drop_down</i>
-                            </a>
-                            <ul id="dropdown1" class="dropdown-content">
-                                <li><a href="#!" class="grey-text text-darken-2">Access<span class="badge">1</span></a>
-                                </li>
-                                <li><a href="#!" class="grey-text text-darken-2">Profile<span class="new badge">2</span></a>
-                                </li>
-                                <li><a href="#!" class="grey-text text-darken-2">Notifications</a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
             <div id="table-datatables">
-                <h4 class="header">DataTables example</h4>
                 <div class="row">
-                    <div class="col s12">
-                        <p>DataTables has most features enabled by default, so all you need to do to use it with your
-                            own tables is to call the construction function.</p>
-                        <p>Searching, ordering, paging etc goodness will be immediately added to the table, as shown in
-                            this example.</p>
-                    </div>
+                    <a class="btn waves-effect waves-light primary-btn-bgcolor" href="products/create">Create</a>
                     <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
