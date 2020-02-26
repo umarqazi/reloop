@@ -4,9 +4,12 @@
 namespace App\Services;
 
 
-use App\Mail\Organization\OrganizationSignupEmail;
-use App\Mail\AdminNotifications\SignUpEmailNotification;
-use App\Mail\User\UserSignupEmail;
+use App\Mail\admin\OrganizationSignUpRequestNotification;
+use App\Mail\admin\PasswordResetNotification;
+use App\Mail\admin\SignUpNotification;
+use App\Mail\organization\OrganizationSignupEmail;
+use App\Mail\user\PasswordResetEmail;
+use App\Mail\user\SignupEmail;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -30,8 +33,8 @@ class EmailNotificationService
      */
     public function userSignUpEmail($data)
     {
-        Mail::to($this->getAdminEmail())->queue(new SignUpEmailNotification($data));
-        Mail::to($this->getUserEmail($data))->queue(new UserSignupEmail($data));
+        Mail::to($this->getAdminEmail())->queue(new SignUpNotification($data));
+        Mail::to($this->getUserEmail($data))->queue(new SignupEmail($data));
     }
 
     /**
@@ -43,8 +46,21 @@ class EmailNotificationService
      */
     public function organizationSignUpEmail($data)
     {
-        Mail::to($this->getAdminEmail())->queue(new SignUpEmailNotification($data));
+        Mail::to($this->getAdminEmail())->queue(new OrganizationSignUpRequestNotification($data));
         Mail::to($this->getUserEmail($data))->queue(new OrganizationSignupEmail($data));
+    }
+
+    /**
+     * Method: passwordReset
+     *
+     * @param $data
+     *
+     * @return void
+     */
+    public function passwordReset($data)
+    {
+        Mail::to($this->getAdminEmail())->queue(new PasswordResetNotification($data));
+        Mail::to($this->getUserEmail($data))->queue(new PasswordResetEmail($data));
     }
 
     /**

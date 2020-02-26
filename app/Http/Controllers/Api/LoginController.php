@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Forms\User\LoginForm;
+use App\Forms\User\PasswordResetForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\UserService;
@@ -45,7 +46,7 @@ class LoginController extends Controller
         $loginForm->loadFromArray($request->all());
         $authUser = $this->userService->authenticate($loginForm);
 
-        if($authUser){
+        if ($authUser){
 
             return ResponseHelper::jsonResponse(
                 Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
@@ -55,6 +56,26 @@ class LoginController extends Controller
         }
         return ResponseHelper::jsonResponse(
             Config::get('constants.USER_LOGIN_FAILED'),
+            IResponseHelperInterface::FAIL_RESPONSE
+        );
+    }
+
+    public function getPasswordResetToken(Request $request)
+    {
+        $resetForm = new PasswordResetForm();
+        $resetForm->loadFromArray($request->all());
+        $userEmail = $this->userService->getPasswordResetToken($resetForm);
+        if ($userEmail){
+
+            return ResponseHelper::jsonResponse(
+                Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                $userEmail
+            );
+        }
+
+        return ResponseHelper::jsonResponse(
+            Config::get('constants.FAIL_RESPONSE'),
             IResponseHelperInterface::FAIL_RESPONSE
         );
     }

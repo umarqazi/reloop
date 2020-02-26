@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Forms\IForm;
 use App\Forms\User\CreateForm;
 use App\Forms\User\LoginForm;
+use App\Forms\User\PasswordResetForm;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -118,6 +119,13 @@ class UserService extends BaseService
         return $getUser->update();
     }
 
+    /**
+     * Method: authenticate
+     *
+     * @param LoginForm $loginForm
+     *
+     * @return bool|\Illuminate\Contracts\Auth\Authenticatable|null
+     */
     public function authenticate(LoginForm $loginForm)
     {
         $loginForm->validate();
@@ -135,5 +143,27 @@ class UserService extends BaseService
             }
         }
         return false;
+    }
+
+    /**
+     * Method: getPasswordResetToken
+     *
+     * @param PasswordResetForm $resetForm
+     *
+     * @return bool
+     */
+    public function getPasswordResetToken(PasswordResetForm $resetForm)
+    {
+        $resetForm->fails();
+        $model = $this->model->where('email', $resetForm->email)->first();
+        if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD){
+
+            $this->emailNotificationService->passwordReset($resetForm);
+
+            return true;
+        } else {
+
+            return false;
+        }
     }
 }

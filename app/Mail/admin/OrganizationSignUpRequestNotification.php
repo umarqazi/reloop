@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Organization;
+namespace App\Mail\admin;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -8,15 +8,15 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 /**
- * Class OrganizationSignupEmail
+ * Class OrganizationSignUpRequestNotification
  *
- * @package   App\Mail\Organization
+ * @package   App\Mail\admin
  * @author    Faisal Raza <faisal.raza@gems.techverx.com>
  * @copyright 2020 Techverx.com All rights reserved.
- * @since     Feb 25, 2020
+ * @since     Feb 26, 2020
  * @project   reloop
  */
-class OrganizationSignupEmail extends Mailable
+class OrganizationSignUpRequestNotification extends Mailable
 {
     use Queueable, SerializesModels;
     private $data;
@@ -29,6 +29,7 @@ class OrganizationSignupEmail extends Mailable
     public function __construct($data)
     {
         $this->data = $data;
+        $this->subject('New Organization SignUp Request!');
     }
 
     /**
@@ -38,6 +39,6 @@ class OrganizationSignupEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('email.user.organization.signup', ['data' => $this->data]);
+        return $this->view('email.admin.signup_notification', ['data' => $this->data]);
     }
 }
