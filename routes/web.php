@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('login'));
 });
 
 Auth::routes();
@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/activate-account/{id}/{token}', 'UserController@accountVerification');
 Route::get('/thankyou', 'PageController@thankyou')->name('thankyou');
+Route::resource('product', 'Admin\ProductController');
+Route::resource('user', 'Admin\UserController');
