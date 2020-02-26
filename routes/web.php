@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'Admin\HomeController@index')->name('home');
 Route::resource('product', 'Admin\ProductController');
 Route::resource('user', 'Admin\UserController');
+Route::resource('supervisor', 'Admin\SupervisorController');
+Route::resource('driver', 'Admin\DriverController');

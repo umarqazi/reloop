@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Services\Admin;
 
-use App\Service\IService;
+
+use App\Services\Admin\IService;
 use Illuminate\Support\Collection;
 
 class BaseService implements IService
@@ -42,7 +43,7 @@ class BaseService implements IService
      */
     public function findById(int $id)
     {
-        // TODO: Implement findById() method.
+        return $this->repo->findById($id);
     }
 
     /**
@@ -51,7 +52,7 @@ class BaseService implements IService
      */
     public function update(int $id, array $data)
     {
-        // TODO: Implement update() method.
+        return $this->repo->update($id, $data);
     }
 
     /**
@@ -59,6 +60,6 @@ class BaseService implements IService
      */
     public function destroy(int $id)
     {
-        // TODO: Implement destroy() method.
+        return $this->repo->destroy($id);
     }
 }

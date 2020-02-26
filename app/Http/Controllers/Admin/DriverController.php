@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Services\IUserType;
-use App\Services\UserService;
+use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller
@@ -22,11 +25,12 @@ class DriverController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->getByType(IUserType::DRIVER)?? null;
+        $type = IUserType::DRIVER ?? null;
+        $users = $this->userService->getSelected($type) ?? null;
         if($users){
-            return view('users.index', compact('users'));
+            return view('users.index', compact('users', 'type'));
         }else{
-            return view('users.index', compact('users'));
+            return view('users.index', compact('users', 'type'));
         }
     }
 
@@ -37,7 +41,8 @@ class DriverController extends Controller
      */
     public function create()
     {
-        //
+        $type = IUserType::DRIVER;
+        return view('users.create', compact('type'));
     }
 
     /**
@@ -46,9 +51,20 @@ class DriverController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
+        $data = $request->except('_token');
+        if(!empty($data)){
+            $user = $this->userService->create($data);
+            if($user){
+                $user->assignRole('user');
+                return redirect()->back()->with('success','Driver Created Successfully');
+            } else {
+                return redirect()->back()->with('error','Error While Creating Driver');
+            }
+        }else{
+            return redirect()->back()->with('error','Error While Creating Driver');
+        }
     }
 
     /**
@@ -70,7 +86,13 @@ class DriverController extends Controller
      */
     public function edit($id)
     {
-        //
+        $type = IUserType::DRIVER;
+        $user = $this->userService->findById($id);
+        if($user){
+            return view('users.edit', compact('user', 'type'));
+        }else{
+            return view('users.edit')->with('empty', 'No Information Founded !');
+        }
     }
 
     /**
@@ -80,9 +102,19 @@ class DriverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $data = $request->except('_token', '_method', 'email');
+        if(!empty($data)){
+            $user = $this->userService->update($id, $data);
+            if($user){
+                return redirect()->back()->with('success','Driver Update Successfully');
+            } else {
+                return redirect()->back()->with('error','Error While Updating Diver');
+            }
+        }else{
+            return redirect()->back()->with('error','Error While Updating Driver');
+        }
     }
 
     /**
@@ -93,6 +125,11 @@ class DriverController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $request = $this->userService->destroy($id);
+        if($request){
+            return redirect()->back()->with('success','Driver Deleted Successfully');
+        } else {
+            return redirect()->back()->with('error','Error While Deleting The Driver');
+        }
     }
 }

@@ -4,7 +4,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\UserService;
+use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\UpdateRequest;
+use App\Services\IUserType;
+use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -23,7 +26,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users.index');
+        $type = IUserType::HOUSE_HOLD ?? null;
+        $users = $this->userService->getSelected($type) ?? null;
+        if($users){
+            return view('users.index', compact('users', 'type'));
+        }else{
+            return view('users.index', compact('users', 'type'));
+        }
     }
 
     /**
@@ -33,18 +42,28 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $type = IUserType::HOUSE_HOLD;
+        return view('users.create', compact('type'));
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $this->userService->create($request->all());
+        $data = $request->except('_token');
+        if(!empty($data)){
+            $user = $this->userService->create($data);
+            if($user){
+                $user->assignRole('user');
+                return redirect()->back()->with('success','User Created Successfully');
+            } else {
+                return redirect()->back()->with('error','Error While Creating User');
+            }
+        }else{
+            return redirect()->back()->with('error','Error While Creating User');
+        }
     }
 
     /**
@@ -66,7 +85,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $type = IUserType::HOUSE_HOLD;
+        $user = $this->userService->findById($id);
+        if($user){
+            return view('users.edit', compact('user', 'type'));
+        }else{
+            return view('users.edit')->with('empty', 'No Information Founded !');
+        }
     }
 
     /**
@@ -76,9 +101,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $data = $request->except('_token', '_method', 'email');
+        if(!empty($data)){
+            $user = $this->userService->update($id, $data);
+            if($user){
+                return redirect()->back()->with('success','User Update Successfully');
+            } else {
+                return redirect()->back()->with('error','Error While Updating User');
+            }
+        }else{
+            return redirect()->back()->with('error','Error While Updating User');
+        }
     }
 
     /**
@@ -89,6 +124,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $request = $this->userService->destroy($id);
+        if($request){
+            return redirect()->back()->with('success','User Deleted Successfully');
+        } else {
+            return redirect()->back()->with('error','Error While Deleting The User');
+        }
     }
 }
