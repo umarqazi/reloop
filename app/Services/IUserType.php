@@ -1,8 +1,10 @@
 <?php
+
+
 namespace App\Services;
 
 /**
- * Class BaseService
+ * Interface IUserType
  *
  * @package   App\Services
  * @author    Faisal Raza <faisal.raza@gems.techverx.com>
@@ -10,16 +12,10 @@ namespace App\Services;
  * @since     Feb 20, 2020
  * @project   reloop
  */
-abstract class BaseService implements IService
+interface IUserType
 {
-    /**
-     * BaseService constructor.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-
-
+    const HOUSE_HOLD  = 1;
+    const ORGANIZATION = 2;
+    const DRIVER = 3;
+    const SUPERVISOR = 4;
 }
