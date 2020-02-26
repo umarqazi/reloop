@@ -1,0 +1,46 @@
+/*================================================================================
+	Item Name: Materialize - Material Design Admin Template
+	Version: 4.0
+	Author: PIXINVENT
+	Author URL: https://themeforest.net/user/pixinvent/portfolio
+================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN CSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+/*-- bluish color background --*/
+.primary-bg-color{
+    background-color: #158DCC;
+}
+/*-- greenish color background --*/
+.secondary-bg-color{
+    background-color: #afcb36;
+}
+/*-- bluish button color background --*/
+.primary-btn-bgcolor{
+    background-color: #158DCC;
+}
+/*-- greenish button color background --*/
+.secondary-btn-bgcolor{
+    background-color: #afcb36;
+}
+
+
+/*-- Custom CSS --*/
+
+.left-sidebar-content .brand-sidebar {
+    background: #158DCC !important;
+}
+
+.left-sidebar-content .brand-sidebar .logo-wrapper a.brand-logo {
+    display: block;
+    width: 100%;
+    max-width: 100px;
+    margin: 0 auto;
+}
+.left-sidebar-content .brand-sidebar .logo-wrapper a.brand-logo img {
+    height: auto;
+    width: 100%;
+}
