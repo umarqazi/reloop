@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Repositories;
+namespace App\Repositories\Admin;
 
 
 use Illuminate\Support\Collection;
@@ -37,7 +37,8 @@ class BaseRepo implements IRepo
      */
     public function create(array $data)
     {
-        return $this->model->insert($data);
+        return $this->model->create($data);
+
     }
 
     /**

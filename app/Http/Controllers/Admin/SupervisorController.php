@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -10,7 +9,7 @@ use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class SupervisorController extends Controller
 {
     private $userService;
 
@@ -26,7 +25,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $type = IUserType::HOUSE_HOLD ?? null;
+        $type = IUserType::SUPERVISOR ?? null;
         $users = $this->userService->getSelected($type) ?? null;
         if($users){
             return view('users.index', compact('users', 'type'));
@@ -42,13 +41,15 @@ class UserController extends Controller
      */
     public function create()
     {
-        $type = IUserType::HOUSE_HOLD;
+        $type = IUserType::SUPERVISOR;
         return view('users.create', compact('type'));
     }
 
     /**
-     * @param CreateRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function store(CreateRequest $request)
     {
@@ -56,13 +57,13 @@ class UserController extends Controller
         if(!empty($data)){
             $user = $this->userService->create($data);
             if($user){
-                $user->assignRole('user');
-                return redirect()->back()->with('success','User Created Successfully');
+                $user->assignRole('supervisor');
+                return redirect()->back()->with('success','Supervisor Created Successfully');
             } else {
-                return redirect()->back()->with('error','Error While Creating User');
+                return redirect()->back()->with('error','Error While Creating Supervisor');
             }
         }else{
-            return redirect()->back()->with('error','Error While Creating User');
+            return redirect()->back()->with('error','Error While Creating Supervisor');
         }
     }
 
@@ -85,7 +86,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $type = IUserType::HOUSE_HOLD;
+        $type = IUserType::SUPERVISOR;
         $user = $this->userService->findById($id);
         if($user){
             return view('users.edit', compact('user', 'type'));
@@ -107,12 +108,12 @@ class UserController extends Controller
         if(!empty($data)){
             $user = $this->userService->update($id, $data);
             if($user){
-                return redirect()->back()->with('success','User Update Successfully');
+                return redirect()->back()->with('success','Supervisor Update Successfully');
             } else {
-                return redirect()->back()->with('error','Error While Updating User');
+                return redirect()->back()->with('error','Error While Updating Supervisor');
             }
         }else{
-            return redirect()->back()->with('error','Error While Updating User');
+            return redirect()->back()->with('error','Error While Updating Supervisor');
         }
     }
 
@@ -126,9 +127,9 @@ class UserController extends Controller
     {
         $request = $this->userService->destroy($id);
         if($request){
-            return redirect()->back()->with('success','User Deleted Successfully');
+            return redirect()->back()->with('success','Supervisor Deleted Successfully');
         } else {
-            return redirect()->back()->with('error','Error While Deleting The User');
+            return redirect()->back()->with('error','Error While Deleting The Supervisor');
         }
     }
 }

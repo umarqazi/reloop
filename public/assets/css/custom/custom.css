@@ -44,3 +44,14 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
     height: auto;
     width: 100%;
 }
+
+
+/* Custom Admin Panel*/
+ul#slide-out li ul.collapsible li:first-child a:after {
+    display: none;
+}
+
+ul#slide-out li ul.collapsible li:last-child a:after {
+    display: none;
+}
+/* Custom Admin Panel*/

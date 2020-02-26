@@ -14,7 +14,7 @@
         <li class="no-padding">
             <ul class="collapsible" data-collapsible="accordion">
                 <li class="bold">
-                    <a class="collapsible-header  waves-effect waves-cyan">
+                    <a class="collapsible-header  waves-effect waves-cyan" href="{{ route('home') }}">
                         <i class="material-icons">dashboard</i>
                         <span class="nav-text">Dashboard</span>
                     </a>
@@ -33,13 +33,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="advance-ui-collapsibles.html">
+                                <a href="{{ route('supervisor.index') }}">
                                     <i class="material-icons">keyboard_arrow_right</i>
                                     <span>Supervisors</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="advance-ui-collapsibles.html">
+                                <a href="{{ route('driver.index') }}">
                                     <i class="material-icons">keyboard_arrow_right</i>
                                     <span>Drivers</span>
                                 </a>

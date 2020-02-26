@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Services\Admin;
 
 use Illuminate\Support\Collection;
 
-interface IRepo
+interface IService
 {
-    public function getModel($model);
-
     public function all() : Collection;
 
     public function create(array $data);
@@ -17,4 +15,5 @@ interface IRepo
     public function findById(int $id);
 
     public function destroy(int $id);
+
 }
