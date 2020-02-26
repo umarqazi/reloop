@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Services\Admin;
 
 
-use App\Repositories\UserRepo;
+use App\Repositories\Admin\UserRepo;
 
 class UserService extends BaseService
 {

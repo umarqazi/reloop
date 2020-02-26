@@ -1,10 +1,8 @@
 <?php
 
 
-namespace App\Repositories;
+namespace App\Repositories\Admin;
 
-
-use App\Services\IUserType;
 use App\User;
 
 class UserRepo extends BaseRepo
