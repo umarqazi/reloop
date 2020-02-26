@@ -3,8 +3,6 @@
 
 namespace App\Services;
 
-
-use App\Repositories\UserRepo;
 use App\Service\IService;
 use Illuminate\Support\Collection;
 
@@ -32,6 +30,7 @@ class BaseService implements IService
 
     /**
      * @param array $data
+     * @return mixed
      */
     public function create(array $data)
     {
