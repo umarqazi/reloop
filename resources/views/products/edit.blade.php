@@ -2,6 +2,7 @@
 @section('content')
 
     <div id="breadcrumbs-wrapper">
+        <!-- Search for small screen -->
         <div class="header-search-wrapper grey lighten-2 hide-on-large-only">
             <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize">
         </div>
@@ -14,7 +15,7 @@
                         </li>
                         <li><a href="{{route('product.index')}}">Products</a>
                         </li>
-                        <li class="active">Create</li>
+                        <li class="active">Update</li>
                     </ol>
                 </div>
             </div>
@@ -24,13 +25,10 @@
     <div class="container">
         <div class="section">
             <br>
-            {{ Form::open(['url' => route('product.store'),
-                           'class' => 'row',
-                           'enctype' => 'multipart/form-data']) }}
-
+            {{ Form::open(['url' => route('product.update',$product->id),'method' => 'PUT', 'class' => 'row','enctype' => 'multipart/form-data']) }}
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="name" type="text" name="name" required>
+                    <input id="name" type="text" name="name" value="{{ $product->name }}" required>
                     <label for="name">Name</label>
                     @if ($errors->has('name'))
                         <span class="help-block">
@@ -39,7 +37,7 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
-                    <input id="price" type="number" max="99999" min="0" name="price" required>
+                    <input id="price" type="number" max="99999" min="0" name="price" value="{{ $product->price }}" required>
                     <label for="price">Price</label>
                     @if ($errors->has('price'))
                         <span class="help-block">
@@ -50,7 +48,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
-                    <textarea id="description" class="materialize-textarea" name="description" required></textarea>
+                    <textarea id="description" class="materialize-textarea" name="description" required>{{ $product->description }}</textarea>
                     <label for="description">Description</label>
                     @if ($errors->has('description'))
                         <span class="help-block">
@@ -61,41 +59,38 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    {{ Form::select('product_category', (['' => 'Choose Product Category'] + $categories), null, ['id' => 'product_category']) }}
+                    <select name="product_category" required>
+                        <option value="" disabled selected>Choose Product Category</option>
+                        <option value="3" {{ $product->category_id==3 ? 'selected': '' }}>Recycling Boxes</option>
+                        <option value="4" {{ $product->category_id==4 ? 'selected': '' }}>Environmental Products</option>
+                    </select>
                     <label>Product Category</label>
-                    @if ($errors->has('product_category'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('product_category') }}</strong>
-                    </span>
-                    @endif
                 </div>
                 <div class="input-field col s6">
                     <select name="product_status" required>
                         <option value="" disabled selected>Choose Product Status</option>
-                        <option value="0">In Active</option>
-                        <option value="1">Active</option>
+                        <option value="1" {{ $product->status==0 ? 'selected': '' }}>In Active</option>
+                        <option value="2" {{ $product->status==1 ? 'selected': '' }}>Active</option>
                     </select>
                     <label>Product Status</label>
-                    @if ($errors->has('product_status'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('product_status') }}</strong>
-                    </span>
-                    @endif
                 </div>
             </div>
             <div class="col s12">
-                <div class="input-field col s12">
-                    <input type="file" class="form-control-file" name="avatar" id="avatar">
-                    @if ($errors->has('avatar'))
-                        <br><span class="help-block">
+                <div class="col s6 box-image">
+                    <img src="{{url('storage/images/products/'.$product->avatar )}}">
+                </div>
+                <div class="input-field col s6 ">
+                    <input type="file" class="form-control-file" name="avatar" id="avatar" value="{{$product->avatar}}">
+                </div>
+                @if ($errors->has('avatar'))
+                    <span class="help-block">
                         <strong class="red-text">{{ $errors->first('avatar') }}</strong>
                     </span>
-                    @endif
-                </div>
+                @endif
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </div>
             {{ Form::close() }}
