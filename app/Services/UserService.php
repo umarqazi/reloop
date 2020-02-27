@@ -158,12 +158,10 @@ class UserService extends BaseService
         $model = $this->model->where('email', $resetForm->email)->first();
         if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD){
 
-            $this->emailNotificationService->passwordReset($resetForm);
+            $this->emailNotificationService->passwordReset($resetForm->toArray());
 
             return true;
-        } else {
-
-            return false;
         }
+        return false;
     }
 }

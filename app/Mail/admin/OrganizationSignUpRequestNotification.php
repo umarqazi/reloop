@@ -39,6 +39,6 @@ class OrganizationSignUpRequestNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('email.admin.signup_notification', ['data' => $this->data]);
+        return $this->view('email.admin.signup_request_notification', ['data' => $this->data]);
     }
 }

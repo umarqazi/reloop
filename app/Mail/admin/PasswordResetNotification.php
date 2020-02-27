@@ -38,6 +38,6 @@ class PasswordResetNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('email.user.password_reset', ['data' => $this->data]);
+        return $this->view('email.admin.password_reset_notification')->with('data' , $this->data);
     }
 }
