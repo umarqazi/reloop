@@ -13,7 +13,7 @@
                         <div class="col s10 m6 l6">
                             <h5 class="breadcrumbs-title">Products</h5>
                             <ol class="breadcrumbs">
-                                <li><a href="index.html">Dashboard</a>
+                                <li><a href="{{route('home')}}">Dashboard</a>
                                 </li>
                                 <li class="active">Products</li>
                             </ol>
@@ -23,22 +23,51 @@
             </div>
             <div id="table-datatables">
                 <div class="row">
-                    <a class="btn waves-effect waves-light primary-btn-bgcolor" href="products/create">Create</a>
                     <div class="col s12">
+                        <a class="btn waves-effect waves-light primary-btn-bgcolor"
+                           href="{{ route('product.create') }}">Create</a>
+                    </div>
+                        <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>Product Name</th>
-                                <th>Product Price</th>
+                                <th>Id</th>
+                                <th>Category</th>
+                                <th>name</th>
+                                <th>price</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Product Name</th>
-                                <th>Product Price</th>
+                                <th>Id</th>
+                                <th>Category</th>
+                                <th>name</th>
+                                <th>price</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                             </tfoot>
                             <tbody>
+                            @foreach($products as $product)
+                            <tr>
+                                <td>{{ $product->id }}</td>
+                                <td>{{ $product->category->name }}</td>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ $product->price }}</td>
+                                <td>{{ $product->description }}</td>
+                                <td>{{ $product->status == 0 ? 'In Active' : 'Active'}}</td>
+                                <td>
+                                    <a href="{{ route('product.edit', $product->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
+                                    {{ Form::open(['url' => route('product.destroy', $product->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
+                                    <button type="submit" class="btn btn-danger red"><i class="fa fa-trash "></i></button>
+                                    {{ Form::close() }}
+                                </td>
+                            </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

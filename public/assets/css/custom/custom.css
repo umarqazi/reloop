@@ -55,3 +55,26 @@ ul#slide-out li ul.collapsible li:last-child a:after {
     display: none;
 }
 /* Custom Admin Panel*/
+.dataTables_wrapper .waves-effect{
+    display: inline-block;
+    padding: 0 10px;
+}
+.dataTables_wrapper .waves-effect i{
+    font-size:16px;
+}
+.dataTables_wrapper .form-inline{
+    display: inline-block;
+}
+
+.dataTables_wrapper .btn.red{
+    padding: 0 11.5px;
+}
+.dataTables_wrapper .btn.red i{
+    font-size: 16px;
+}
+.box-image img{
+    max-width: 200px;
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+}

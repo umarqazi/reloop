@@ -9,11 +9,11 @@
         <div class="container">
             <div class="row">
                 <div class="col s10 m6 l6">
-                    <h5 class="breadcrumbs-title">Create Product</h5>
+                    <h5 class="breadcrumbs-title">Update Product</h5>
                     <ol class="breadcrumbs">
-                        <li><a href="index.html">Dashboard</a>
+                        <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
-                        <li><a href="#">Products</a>
+                        <li><a href="{{route('subscription.index')}}">Subscription</a>
                         </li>
                         <li class="active">Update</li>
                     </ol>
@@ -60,13 +60,11 @@
             <div class="col s12">
                 <div class="input-field col s6">
                     <select name="subscription_category" required>
-                        <option value="" disabled selected>Choose Product Category</option>
-                        <option value="1" {{ $subscription->category_id==1 ? 'selected': '' }}>Option 1</option>
-                        <option value="2" {{ $subscription->category_id==2 ? 'selected': '' }}>Option 2</option>
-                        <option value="3" {{ $subscription->category_id==3 ? 'selected': '' }}>Option 3</option>
-                        <option value="4" {{ $subscription->category_id==4 ? 'selected': '' }}>Option 4</option>
+                        <option value="" disabled selected>Choose Subscription Category</option>
+                        <option value="1" {{ $subscription->category_id==1 ? 'selected': '' }}>Monthly Subscription</option>
+                        <option value="2" {{ $subscription->category_id==2 ? 'selected': '' }}>One Time Service</option>
                     </select>
-                    <label>Product Category</label>
+                    <label>Subscription Category</label>
                 </div>
                 <div class="input-field col s6">
                     <select name="subscription_status" required>
@@ -74,7 +72,7 @@
                         <option value="1" {{ $subscription->status==0 ? 'selected': '' }}>In Active</option>
                         <option value="2" {{ $subscription->status==1 ? 'selected': '' }}>Active</option>
                     </select>
-                    <label>Product Status</label>
+                    <label>Subscription Status</label>
                 </div>
             </div>
             <div class="col s12">

@@ -5,7 +5,7 @@ namespace App\Repositories\Admin;
 
 
 use App\Product;
-use App\Repositories\BaseRepo;
+use App\Repositories\Admin\BaseRepo;
 
 class ProductRepo extends BaseRepo
 {

@@ -13,7 +13,7 @@
                         <div class="col s10 m6 l6">
                             <h5 class="breadcrumbs-title">Subscriptions</h5>
                             <ol class="breadcrumbs">
-                                <li><a href="index.html">Dashboard</a>
+                                <li><a href="{{route('home')}}">Dashboard</a>
                                 </li>
                                 <li class="active">Subscriptions</li>
                             </ol>

@@ -11,9 +11,9 @@
                 <div class="col s10 m6 l6">
                     <h5 class="breadcrumbs-title">Create Subscription</h5>
                     <ol class="breadcrumbs">
-                        <li><a href="index.html">Dashboard</a>
+                        <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
-                        <li><a href="#">Subscriptions</a>
+                        <li><a href="{{route('subscription.index')}}">Subscriptions</a>
                         </li>
                         <li class="active">Create</li>
                     </ol>
@@ -62,14 +62,8 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    <select name="subscription_category" required>
-                        <option value="" disabled selected>Choose Product Category</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                        <option value="4">Option 4</option>
-                    </select>
-                    <label>Product Category</label>
+                    {{ Form::select('subscription_category', (['' => 'Choose Subscription Category'] + $categories), null, ['id' => 'subscription_category']) }}
+                    <label>Subscription Category</label>
                     @if ($errors->has('subscription_category'))
                         <span class="help-block">
                         <strong class="red-text">{{ $errors->first('subscription_category') }}</strong>
@@ -78,11 +72,11 @@
                 </div>
                 <div class="input-field col s6">
                     <select name="subscription_status" required>
-                        <option value="" disabled selected>Choose Product Status</option>
+                        <option value="" disabled selected>Choose Subscription Status</option>
                         <option value="0">In Active</option>
                         <option value="1">Active</option>
                     </select>
-                    <label>Product Status</label>
+                    <label>Subscription Status</label>
                     @if ($errors->has('subscription_status'))
                         <span class="help-block">
                         <strong class="red-text">{{ $errors->first('subscription_status') }}</strong>
@@ -103,7 +97,7 @@
                 <div class="input-field col s6">
                     <input type="file" class="form-control-file" name="avatar" id="avatar">
                     @if ($errors->has('avatar'))
-                        <span class="help-block">
+                        <br><span class="help-block">
                         <strong class="red-text">{{ $errors->first('avatar') }}</strong>
                     </span>
                     @endif

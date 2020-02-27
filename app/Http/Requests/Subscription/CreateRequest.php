@@ -25,12 +25,12 @@ class CreateRequest extends FormRequest
     {
         return [
             'name'                   => 'required',
-            'price'                  => 'required|numeric|digits:5',
+            'price'                  => 'required',
             'description'            => 'required',
             'subscription_category'  => 'required',
             'subscription_status'    => 'required',
-            'request_allowed'        => 'required|digits:2',
-            'avatar'                 => 'required'
+            'request_allowed'        => 'required',
+            'avatar'                 => 'required|mimes:jpeg,jpg,png,gif'
         ];
     }
 

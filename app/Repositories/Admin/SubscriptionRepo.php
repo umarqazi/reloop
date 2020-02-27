@@ -4,7 +4,7 @@
 namespace App\Repositories\Admin;
 
 
-use App\Repositories\BaseRepo;
+use App\Repositories\Admin\BaseRepo;
 use App\Subscription;
 
 class SubscriptionRepo extends BaseRepo

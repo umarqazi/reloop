@@ -11,9 +11,9 @@
                 <div class="col s10 m6 l6">
                     <h5 class="breadcrumbs-title">Create Product</h5>
                     <ol class="breadcrumbs">
-                        <li><a href="index.html">Dashboard</a>
+                        <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
-                        <li><a href="#">Products</a>
+                        <li><a href="{{route('product.index')}}">Products</a>
                         </li>
                         <li class="active">Update</li>
                     </ol>
@@ -61,10 +61,8 @@
                 <div class="input-field col s6">
                     <select name="product_category" required>
                         <option value="" disabled selected>Choose Product Category</option>
-                        <option value="1" {{ $product->category_id==1 ? 'selected': '' }}>Option 1</option>
-                        <option value="2" {{ $product->category_id==2 ? 'selected': '' }}>Option 2</option>
-                        <option value="3" {{ $product->category_id==3 ? 'selected': '' }}>Option 3</option>
-                        <option value="4" {{ $product->category_id==4 ? 'selected': '' }}>Option 4</option>
+                        <option value="3" {{ $product->category_id==3 ? 'selected': '' }}>Recycling Boxes</option>
+                        <option value="4" {{ $product->category_id==4 ? 'selected': '' }}>Environmental Products</option>
                     </select>
                     <label>Product Category</label>
                 </div>
@@ -79,7 +77,7 @@
             </div>
             <div class="col s12">
                 <div class="col s6 box-image">
-                    <img src="{{url('images/products/'.$product->avatar )}}">
+                    <img src="{{url('storage/images/products/'.$product->avatar )}}">
                 </div>
                 <div class="input-field col s6 ">
                     <input type="file" class="form-control-file" name="avatar" id="avatar" value="{{$product->avatar}}">

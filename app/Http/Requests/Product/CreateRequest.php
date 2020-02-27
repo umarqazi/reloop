@@ -25,11 +25,11 @@ class CreateRequest extends FormRequest
     {
         return [
             'name'              => 'required',
-            'price'             => 'required|numeric|digits:5',
+            'price'             => 'required',
             'description'       => 'required',
             'product_category'  => 'required',
             'product_status'    => 'required',
-            'avatar'            => 'required'
+            'avatar'            => 'required|mimes:jpeg,jpg,png,gif'
         ];
     }
 

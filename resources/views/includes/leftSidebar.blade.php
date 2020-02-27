@@ -1,9 +1,8 @@
 <aside id="left-sidebar-nav" class="nav-expanded nav-lock nav-collapsible left-sidebar-content">
     <div class="brand-sidebar">
         <h1 class="logo-wrapper">
-            <a href="index.html" class="brand-logo darken-1">
+            <a href="{{route('home')}}" class="brand-logo darken-1">
                 <img src="/assets/images/logo/reloop.png" alt="re loop logo">
-{{--                <span class="logo-text hide-on-med-and-down">ReLoop</span>--}}
             </a>
             <a href="#" class="navbar-toggler">
                 <i class="material-icons">radio_button_checked</i>
@@ -70,7 +69,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="advance-ui-collapsibles.html">
+                                <a href="{{ route('subscription.index') }}">
                                     <i class="material-icons">keyboard_arrow_right</i>
                                     <span>Subscriptions</span>
                                 </a>

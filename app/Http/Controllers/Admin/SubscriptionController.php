@@ -5,16 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\CreateRequest;
 use App\Http\Requests\Subscription\UpdateRequest;
+use App\Repositories\Admin\CategoryRepo;
 use App\Services\Admin\SubscriptionSerivce;
+use App\Services\ICategoryType;
 use Illuminate\Support\Facades\File;
 
 class SubscriptionController extends Controller
 {
 
+    private $categoryRepository ;
     /**
      * ProductController constructor.
      */
-    public function __construct() {
+    public function __construct(CategoryRepo $categoryRepository) {
+        $this->categoryRepository =  $categoryRepository;
         $this->subscriptionService = new SubscriptionSerivce();
     }
 
@@ -36,7 +40,8 @@ class SubscriptionController extends Controller
      */
     public function create()
     {
-        return view('subscriptions.create');
+        $categories = $this->categoryRepository->getCategory(ICategoryType::SUBSCRIPTION)->pluck('name', 'id')->toArray();
+        return view('subscriptions.create', compact('categories'));
     }
 
     /**
@@ -47,23 +52,16 @@ class SubscriptionController extends Controller
      */
     public function store(CreateRequest $request)
     {
+        $subscription = $this->subscriptionService->create($request->all());
 
-        // Storing image
-        $input['avatar'] = time().'.'.$request->avatar->getClientOriginalExtension();
-        $request->avatar->move(public_path('storage/images/subscriptions'), $input['avatar']);
+        if($subscription){
+            return redirect()->route('subscription.index')->with('success','Subscription Created Successfully');
+        }
 
-        $productData = array(
-            'category_id'     => $request->subscription_category,
-            'name'            => $request->name ,
-            'price'           => $request->price ,
-            'description'     => $request->description ,
-            'request_allowed' => $request->request_allowed ,
-            'avatar'          => $input['avatar'] ,
-            'status'          => $request->subscription_status ,
-        );
+        else{
+            return redirect()->route('subscription.index')->with('error','Something went wrong');
+        }
 
-        $this->subscriptionService->create($productData);
-        return redirect()->route('subscription.index');
     }
 
     /**
@@ -98,28 +96,15 @@ class SubscriptionController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        $old_image = $this->subscriptionService->findById($id)->avatar ;
-        $input['avatar']  = $old_image ;
+        $subscription = $this->subscriptionService->update($id,$request->all());
 
-        if ($request->hasFile('avatar')) {
-            $input['avatar'] = time().'.'.$request->avatar->getClientOriginalExtension();
-            $request->avatar->move(public_path('storage/images/subscriptions'), $input['avatar']);
+        if($subscription){
 
-            $image_path = public_path('storage/images/subscriptions/').$old_image;
-            if(File::exists($image_path)) {
-                File::delete($image_path);
-            }
+            return redirect()->route('subscription.edit',['id'=> $id])->with('success','Subscription Updated Successfully');
         }
-        $productData = array(
-            'category_id'     => $request->subscription_category,
-            'name'            => $request->name ,
-            'price'           => $request->price ,
-            'description'     => $request->description ,
-            'avatar'          => $input['avatar'] ,
-            'request_allowed' => $request->request_allowed ,
-            'status'          => $request->subscription_status ,);
-        $this->subscriptionService->update($id,$productData);
-        return redirect()->route('subscription.index');
+        else{
+            return redirect()->back()->with('error','Something went wrong');
+        }
     }
 
     /**
@@ -131,12 +116,18 @@ class SubscriptionController extends Controller
     public function destroy($id)
     {
         $image = $this->subscriptionService->findById($id)->avatar ;
-        //Delete Image
-        $image_path = public_path('storage/images/subscriptions/').$image;
-        if(File::exists($image_path)) {
-            File::delete($image_path);
+        $product = $this->subscriptionService->destroy($id);
+        if($product){
+            //Delete Image
+            $image_path = public_path('storage/images/subscriptions/').$image;
+            if(File::exists($image_path)) {
+                File::delete($image_path);
+            }
+            return redirect()->route('subscription.index')->with('success','Subscription Deleted Successfully');
         }
-        $this->subscriptionService->destroy($id);
-        return redirect()->route('subscription.index');
+        else{
+            return redirect()->route('subscription.index')->with('error','Something went wrong');
+        }
+
     }
 }

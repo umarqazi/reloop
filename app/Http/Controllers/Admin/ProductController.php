@@ -3,10 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Product\CreateRequest;
+use App\Http\Requests\Product\UpdateRequest;
+use App\Repositories\Admin\CategoryRepo;
+use App\Services\Admin\ProductSerivce;
+use App\Services\ICategoryType;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
+
+    private $categoryRepository ;
+
+    /**
+     * ProductController constructor.
+     */
+    public function __construct(CategoryRepo $categoryRepository) {
+        $this->categoryRepository =  $categoryRepository;
+        $this->productSerivce = new ProductSerivce();
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +31,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products.index');
+        $products = $this->productSerivce->all() ;
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -24,7 +42,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = $this->categoryRepository->getCategory(ICategoryType::PRODUCT)->pluck('name', 'id')->toArray();
+        return view('products.create', compact('categories'));
     }
 
     /**
@@ -33,9 +52,16 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
+        $product = $this->productSerivce->create($request->all());
+
+        if($product){
+            return redirect()->route('product.index')->with('success','Product Created Successfully');
+        }
+        else{
+            return redirect()->route('product.index')->with('error','Something went wrong');
+        }
     }
 
     /**
@@ -57,7 +83,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = $this->productSerivce->findById($id);
+        return view('products.edit',compact('product'));
     }
 
     /**
@@ -67,9 +94,17 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $product = $this->productSerivce->update($id,$request->all());
+
+        if($product){
+            return redirect()->route('product.edit',['id'=> $id])->with('success','Product Updated Successfully');
+        }
+        else {
+            return redirect()->back()->with('error','Something went wrong');
+        }
+
     }
 
     /**
@@ -80,6 +115,20 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $image = $this->productSerivce->findById($id)->avatar ;
+
+        $product = $this->productSerivce->destroy($id);
+        if($product){
+            //Delete Image
+            $image_path = public_path('storage/images/products/').$image;
+            if(File::exists($image_path)) {
+                File::delete($image_path);
+            }
+            return redirect()->route('product.index')->with('success','Product Deleted Successfully');
+        }
+        else {
+            return redirect()->route('product.index')->with('error','Something went wrong');
+        }
+
     }
 }
