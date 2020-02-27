@@ -23,6 +23,7 @@ return[
     'INVALID_OPERATION'                     => 'Operation not valid!',
 
     'CHANGE_PASSWORD_SUCCESS'               => 'Password successfully updated',
+    'CHANGE_PASSWORD_SUCCESS_EMAIL'         => 'Change Password email sent',
     'CHANGE_PASSWORD_ERROR'                 => 'Error occurred while changing the password',
 
 
@@ -34,6 +35,7 @@ return[
     'REGISTRATION_UPDATE_SUCCESS'           => 'Registration updated successfully',
     'PRODUCT_DELETION_SUCCESS'              => 'Product deleted successfully',
     'PRODUCT_PUBLISHED_SUCCESS'             => 'Product published successfully',
+    'PRODUCT_CATEGORY_SUCCESS'              => 'Product category list shown as',
 
     'UN_AUTHORIZE_ERROR'                    => 'You are not authorized',
     'GENERAL_ERROR'                         => 'Something went wrong.Please try again later!',
