@@ -115,15 +115,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $image = $this->productSerivce->findById($id)->avatar ;
-
         $product = $this->productSerivce->destroy($id);
         if($product){
-            //Delete Image
-            $image_path = public_path('storage/images/products/').$image;
-            if(File::exists($image_path)) {
-                File::delete($image_path);
-            }
             return redirect()->route('product.index')->with('success','Product Deleted Successfully');
         }
         else {

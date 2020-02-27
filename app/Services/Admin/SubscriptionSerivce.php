@@ -88,4 +88,24 @@ class SubscriptionSerivce extends BaseService
             return false;
         }
     }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function destroy(int $id)
+    {
+        $image = $this->findById($id)->avatar ;
+        $product = parent::destroy($id);
+        if($product) {
+            $image_path = public_path('storage/images/subscriptions/') . $image;
+            if (File::exists($image_path)) {
+                File::delete($image_path);
+            }
+            return true ;
+        }
+        else{
+            return false;
+        }
+    }
 }

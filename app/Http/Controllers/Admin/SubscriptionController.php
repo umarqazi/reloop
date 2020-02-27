@@ -115,14 +115,8 @@ class SubscriptionController extends Controller
      */
     public function destroy($id)
     {
-        $image = $this->subscriptionService->findById($id)->avatar ;
         $product = $this->subscriptionService->destroy($id);
         if($product){
-            //Delete Image
-            $image_path = public_path('storage/images/subscriptions/').$image;
-            if(File::exists($image_path)) {
-                File::delete($image_path);
-            }
             return redirect()->route('subscription.index')->with('success','Subscription Deleted Successfully');
         }
         else{

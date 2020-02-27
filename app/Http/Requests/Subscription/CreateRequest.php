@@ -29,7 +29,7 @@ class CreateRequest extends FormRequest
             'description'            => 'required',
             'subscription_category'  => 'required',
             'subscription_status'    => 'required',
-            'request_allowed'        => 'required',
+            'request_allowed'        => 'required|numeric',
             'avatar'                 => 'required|mimes:jpeg,jpg,png,gif'
         ];
     }

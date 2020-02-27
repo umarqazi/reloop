@@ -84,4 +84,26 @@ class ProductSerivce extends BaseService
         }
     }
 
+    /**
+     * $param $id
+     */
+
+    public function destroy(int $id)
+    {
+
+        $image = $this->findById($id)->avatar ;
+        $product =  parent::destroy($id);
+
+        if($product){
+            $image_path = public_path('storage/images/products/').$image;
+            if(File::exists($image_path)) {
+                File::delete($image_path);
+            }
+          return true ;
+        }
+        else{
+          return false;
+        }
+    }
+
 }
