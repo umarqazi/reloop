@@ -1,17 +1,16 @@
-<div class="main-content">
-    <div style="background-color: #fff;">
-        <div style="text-align: center; padding: 50px 0 50px 0;">
-            <div class="email-wrapper"
-                 style="max-width: 500px; margin: 0 auto; border: 1px solid #dedede; border-radius: 35px;">
-                <h1 style="font-weight: 100; font-size: 28px; color: #fff; font-family: Google sans, trebuchet ms, sans-serif; background-color: #00aa9b; padding: 20px; margin-bottom: 0; margin-top: 0; text-align: left; border-radius: 33px 33px 0 0;">
-                    Signup Successfully</h1>
-                <p style="padding: 30px 10px; margin-left:10px; background-color: #fff; font-family: Google sans, trebuchet ms, sans-serif; margin-top: 0; text-align: left; border-radius: 0 0 33px 33px;">
-                    Hey User, <br><br>
-                    Welcome to Reloop.<br>
-                    You've requested for signup.<br>
-                    You request is under review.
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
+<body class="em_body" style="margin:0px; padding:0px;" bgcolor="#e1e1e1">
+    <table border="0" align="center" cellpadding="0" cellspacing="0" width="650" style="transform: translate(-50%, -50%);position: absolute;top: 50%;left: 50%;">
+        <tbody>
+        <tr>
+            <td style="background-color:#ffffff;padding:5px 10px;font-family:'poppins';font-size:14px;color:#333;line-height:25px;border: 1px solid transparent;" align="center">
+                <a href="#" style="padding: 40px 0 15px;display: block;"><img src="logo.png" style="margin:0px 15px;height:50px" align="center" class="CToWUd"></a>
+                <h1 style="text-align:center;padding:0px 20px;font-size: 28px;font-weight: 700;margin: 0;">Hi, {{ $data->email }}!</h1>
+                <p style="text-align:center;padding:5px 20px;max-width: 480px;font-weight: 500;color: #636363;font-size: 15px;margin: 20px 0;">Thanks for creating an account with us. Please wait admin will approve your account.</p>
+                <p style="text-align:center;padding:0 20px 20px;max-width: 400px;font-weight:700;color:#636363; margin: 0;">Stay in Touch.</p>
+                <a href="#" target="_blank" style="display: inline-block;background-color: #B2CE40;padding: 5px 7px; border-radius: 50%;color: white;margin-bottom: 60px;"><i class="fa fa-facebook"style="font-size: 16px;"></i></a>
+                <a href="#" target="_blank" style="display: inline-block;background-color: #B2CE40;padding: 5px 7px; border-radius: 50%;color: white;margin-bottom: 60px;"><i class="fa fa-twitter" style="font-size: 16px;"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
