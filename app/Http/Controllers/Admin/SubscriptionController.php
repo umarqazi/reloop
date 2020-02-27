@@ -3,26 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Product\CreateRequest;
-use App\Http\Requests\Product\UpdateRequest;
+use App\Http\Requests\Subscription\CreateRequest;
+use App\Http\Requests\Subscription\UpdateRequest;
 use App\Repositories\Admin\CategoryRepo;
-use App\Services\Admin\ProductSerivce;
+use App\Services\Admin\SubscriptionSerivce;
 use App\Services\ICategoryType;
 use Illuminate\Support\Facades\File;
 
-class ProductController extends Controller
+class SubscriptionController extends Controller
 {
 
     private $categoryRepository ;
-
     /**
      * ProductController constructor.
      */
     public function __construct(CategoryRepo $categoryRepository) {
         $this->categoryRepository =  $categoryRepository;
-        $this->productSerivce = new ProductSerivce();
+        $this->subscriptionService = new SubscriptionSerivce();
     }
-
 
     /**
      * Display a listing of the resource.
@@ -31,8 +29,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->productSerivce->all() ;
-        return view('products.index', compact('products'));
+        $subscriptions = $this->subscriptionService->all() ;
+        return view('subscriptions.index', compact('subscriptions'));
     }
 
     /**
@@ -42,8 +40,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = $this->categoryRepository->getCategory(ICategoryType::PRODUCT)->pluck('name', 'id')->toArray();
-        return view('products.create', compact('categories'));
+        $categories = $this->categoryRepository->getCategory(ICategoryType::SUBSCRIPTION)->pluck('name', 'id')->toArray();
+        return view('subscriptions.create', compact('categories'));
     }
 
     /**
@@ -54,14 +52,16 @@ class ProductController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $product = $this->productSerivce->create($request->all());
+        $subscription = $this->subscriptionService->create($request->all());
 
-        if($product){
-            return redirect()->route('product.index')->with('success','Product Created Successfully');
+        if($subscription){
+            return redirect()->route('subscription.index')->with('success','Subscription Created Successfully');
         }
+
         else{
-            return redirect()->route('product.index')->with('error','Something went wrong');
+            return redirect()->route('subscription.index')->with('error','Something went wrong');
         }
+
     }
 
     /**
@@ -83,8 +83,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = $this->productSerivce->findById($id);
-        return view('products.edit',compact('product'));
+        $subscription = $this->subscriptionService->findById($id);
+        return view('subscriptions.edit',compact('subscription'));
     }
 
     /**
@@ -96,15 +96,15 @@ class ProductController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        $product = $this->productSerivce->update($id,$request->all());
+        $subscription = $this->subscriptionService->update($id,$request->all());
 
-        if($product){
-            return redirect()->route('product.edit',['id'=> $id])->with('success','Product Updated Successfully');
+        if($subscription){
+
+            return redirect()->route('subscription.edit',['id'=> $id])->with('success','Subscription Updated Successfully');
         }
-        else {
+        else{
             return redirect()->back()->with('error','Something went wrong');
         }
-
     }
 
     /**
@@ -115,12 +115,12 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = $this->productSerivce->destroy($id);
+        $product = $this->subscriptionService->destroy($id);
         if($product){
-            return redirect()->route('product.index')->with('success','Product Deleted Successfully');
+            return redirect()->route('subscription.index')->with('success','Subscription Deleted Successfully');
         }
-        else {
-            return redirect()->route('product.index')->with('error','Something went wrong');
+        else{
+            return redirect()->route('subscription.index')->with('error','Something went wrong');
         }
 
     }

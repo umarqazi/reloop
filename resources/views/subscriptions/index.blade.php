@@ -11,11 +11,11 @@
                 <div class="container">
                     <div class="row">
                         <div class="col s10 m6 l6">
-                            <h5 class="breadcrumbs-title">Products</h5>
+                            <h5 class="breadcrumbs-title">Subscriptions</h5>
                             <ol class="breadcrumbs">
                                 <li><a href="{{route('home')}}">Dashboard</a>
                                 </li>
-                                <li class="active">Products</li>
+                                <li class="active">Subscriptions</li>
                             </ol>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col s12">
                         <a class="btn waves-effect waves-light primary-btn-bgcolor"
-                           href="{{ route('product.create') }}">Create</a>
+                           href="{{ route('subscription.create') }}">Create</a>
                     </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
@@ -36,6 +36,7 @@
                                 <th>name</th>
                                 <th>price</th>
                                 <th>Description</th>
+                                <th>Request(s) Allowed</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -47,22 +48,24 @@
                                 <th>name</th>
                                 <th>price</th>
                                 <th>Description</th>
+                                <th>Request(s) Allowed</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            @foreach($products as $product)
+                            @foreach($subscriptions as $subscription)
                             <tr>
-                                <td>{{ $product->id }}</td>
-                                <td>{{ $product->category->name }}</td>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->price }}</td>
-                                <td>{{ $product->description }}</td>
-                                <td>{{ $product->status == 0 ? 'In Active' : 'Active'}}</td>
+                                <td>{{ $subscription->id }}</td>
+                                <td>{{ $subscription->category_id }}</td>
+                                <td>{{ $subscription->name }}</td>
+                                <td>{{ $subscription->price }}</td>
+                                <td>{{ $subscription->description }}</td>
+                                <td>{{ $subscription->request_allowed }}</td>
+                                <td>{{ $subscription->status }}</td>
                                 <td>
-                                    <a href="{{ route('product.edit', $product->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
-                                    {{ Form::open(['url' => route('product.destroy', $product->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
+                                    <a href="{{ route('subscription.edit', $subscription->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
+                                    {{ Form::open(['url' => route('subscription.destroy', $subscription->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
                                     <button type="submit" class="btn btn-danger red"><i class="fa fa-trash "></i></button>
                                     {{ Form::close() }}
                                 </td>
