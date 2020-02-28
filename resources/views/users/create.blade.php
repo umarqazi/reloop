@@ -132,7 +132,7 @@
                             <option value="0">Inactive</option>
                             <option value="1">Active</option>
                         </select>
-                        <label for="address" data-error="wrong" data-success="right">Status</label>
+                        <label for="status" data-error="wrong" data-success="right">Status</label>
                     </div>
                 </div>
                 <div class="col s12">

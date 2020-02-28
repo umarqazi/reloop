@@ -73,8 +73,13 @@ ul#slide-out li ul.collapsible li:last-child a:after {
     font-size: 16px;
 }
 .box-image img{
-    max-width: 200px;
-    width: 100%;
-    height: 100px;
+    max-width: 100%;
+    width: auto;
+    height: auto;
     object-fit: cover;
+}
+
+h6.custom-label {
+    color: #9e9e9e;
+    padding-bottom: 10px;
 }

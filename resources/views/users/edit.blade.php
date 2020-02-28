@@ -115,7 +115,7 @@
                                 <option value="0" @if($user->status == 0) selected @endif>Inactive</option>
                                 <option value="1" @if($user->status == 1) selected @endif>Active</option>
                             </select>
-                            <label for="address" data-error="wrong" data-success="right">Status</label>
+                            <label for="status" data-error="wrong" data-success="right">Status</label>
                         </div>
                     </div>
                     <div class="col s12">
@@ -136,7 +136,7 @@
                     </div>
                 {{ Form::close() }}
             @endif
-            @if ($message = Session::get('error'))
+            @if ($message = Session::get('empty'))
                 <div id="card-alert" class="card red">
                     <div class="card-content white-text">
                         <p>{{ $message }}</p>
