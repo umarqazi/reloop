@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MaterialCategory\CreateRequest;
+use App\Http\Requests\MaterialCategory\UpdateRequest;
 use App\Services\Admin\MaterialCategoryService;
-use Illuminate\Http\Request;
 
 class MaterialCategoryController extends Controller
 {
@@ -98,7 +98,7 @@ class MaterialCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         if(!empty($request)){
             $materialCategory = $this->materialCategoryService->upgrade($id, $request);
