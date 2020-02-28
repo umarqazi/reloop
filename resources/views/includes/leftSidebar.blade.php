@@ -51,7 +51,7 @@
                         <span class="nav-text">Orders</span>
                     </a>
                 </li><li class="bold">
-                    <a class="collapsible-header  waves-effect waves-cyan">
+                    <a href="{{ route('material-category.index') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Material Categories</span>
                     </a>

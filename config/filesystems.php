@@ -15,6 +15,9 @@ return [
 
     'default' => env('FILESYSTEM_DRIVER', 'local'),
 
+    'material_category_avatar_upload_path'  => 'public/uploads/images/material-category/',
+    'user_avatar_upload_path'               => 'public/uploads/images/user/',
+
     /*
     |--------------------------------------------------------------------------
     | Default Cloud Filesystem Disk

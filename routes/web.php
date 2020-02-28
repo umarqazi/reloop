@@ -25,3 +25,4 @@ Route::resource('subscription', 'Admin\SubscriptionController');
 Route::resource('user', 'Admin\UserController');
 Route::resource('supervisor', 'Admin\SupervisorController');
 Route::resource('driver', 'Admin\DriverController');
+Route::resource('material-category', 'Admin\MaterialCategoryController');
