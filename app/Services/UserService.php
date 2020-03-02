@@ -8,9 +8,11 @@ use App\Forms\IForm;
 use App\Forms\User\CreateForm;
 use App\Forms\User\LoginForm;
 use App\Forms\User\PasswordResetForm;
+use App\Helpers\IResponseHelperInterface;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -122,13 +124,21 @@ class UserService extends BaseService
     /**
      * Method: authenticate
      *
-     * @param LoginForm $loginForm
+     * @param IForm $loginForm
      *
-     * @return bool|\Illuminate\Contracts\Auth\Authenticatable|null
+     * @return bool|\Illuminate\Contracts\Auth\Authenticatable|mixed|null
      */
-    public function authenticate(LoginForm $loginForm)
+    public function authenticate(IForm $loginForm)
     {
-        $loginForm->validate();
+        if($loginForm->fails())
+        {
+            $response = [
+                'message' => Config::get('constants.INVALID_OPERATION'),
+                'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'data' => $loginForm->errors()
+            ];
+            return $response;
+        }
         $credentials = [
             'email' => $loginForm->email,
             'password' => $loginForm->password
@@ -139,7 +149,12 @@ class UserService extends BaseService
             $authUser = auth()->user();
             if ($authUser->status == true) {
 
-                return $authUser;
+                $response = [
+                    'message' => Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
+                    'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+                    'data' => $authUser
+                ];
+                return $response;
             }
         }
         return false;
@@ -148,19 +163,32 @@ class UserService extends BaseService
     /**
      * Method: getPasswordResetToken
      *
-     * @param PasswordResetForm $resetForm
+     * @param IForm $resetForm
      *
-     * @return bool
+     * @return bool|mixed
      */
-    public function getPasswordResetToken(PasswordResetForm $resetForm)
+    public function getPasswordResetToken(IForm $resetForm)
     {
-        $resetForm->fails();
+        if($resetForm->fails())
+        {
+            $response = [
+                'message' => Config::get('constants.INVALID_OPERATION'),
+                'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'data' => $resetForm->errors()
+            ];
+            return $response;
+        }
         $model = $this->model->where('email', $resetForm->email)->first();
         if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD){
 
             $this->emailNotificationService->passwordReset($resetForm->toArray());
 
-            return true;
+            $response = [
+                'message' => Config::get('constants.CHANGE_PASSWORD_SUCCESS_EMAIL'),
+                'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+                'data' => null
+            ];
+            return $response;
         }
         return false;
     }

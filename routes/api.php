@@ -18,5 +18,6 @@ Route::post('login', 'Api\LoginController@login');
 Route::post('password/email', 'Api\LoginController@getPasswordResetToken');
 Route::middleware('auth:api')->group(function () {
 
-    Route::get('product_categories', 'Api\ProductController@productCategoriesList');
+    Route::get('categories', 'Api\ProductController@categories');
+    Route::get('category/products/', 'Api\ProductController@categoryProducts');
 });

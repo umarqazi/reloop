@@ -36,8 +36,10 @@ return[
     'PRODUCT_DELETION_SUCCESS'              => 'Product deleted successfully',
     'PRODUCT_PUBLISHED_SUCCESS'             => 'Product published successfully',
     'PRODUCT_CATEGORY_SUCCESS'              => 'Product category list shown as',
+    'PRODUCTS_SUCCESS'                      => 'Products list shown as',
 
     'UN_AUTHORIZE_ERROR'                    => 'You are not authorized',
     'GENERAL_ERROR'                         => 'Something went wrong.Please try again later!',
+    'RECORD_NOT_FOUND'                      => 'Record not found!',
 
 ];

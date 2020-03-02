@@ -49,9 +49,9 @@ class LoginController extends Controller
         if ($authUser){
 
             return ResponseHelper::jsonResponse(
-                Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
-                IResponseHelperInterface::SUCCESS_RESPONSE,
-                $authUser
+                $authUser['message'],
+                $authUser['code'],
+                $authUser['data']
             );
         }
         return ResponseHelper::jsonResponse(
@@ -68,14 +68,13 @@ class LoginController extends Controller
         if ($userEmail){
 
             return ResponseHelper::jsonResponse(
-                Config::get('constants.CHANGE_PASSWORD_SUCCESS_EMAIL'),
-                IResponseHelperInterface::SUCCESS_RESPONSE,
-                $userEmail
+                $userEmail['message'],
+                $userEmail['code'],
+                $userEmail['data']
             );
         }
-
         return ResponseHelper::jsonResponse(
-            Config::get('constants.USER_LOGIN_FAILED'),
+            Config::get('constants.INVALID_OPERATION'),
             IResponseHelperInterface::FAIL_RESPONSE
         );
     }
