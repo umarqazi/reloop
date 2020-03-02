@@ -85,10 +85,10 @@
                                             <td>{{ ($user->status == 1) ? 'Active' : 'Inactive' }}</td>
                                             @if($route != '')
                                                 <td>
-                                                    <a class="btn-link" href="{{ route($route.'.edit',$user->id) }}">Edit</a>
-                                                    {!! Form::open(['method' => 'DELETE','route' => [$route.'.destroy', $user->id],'style'=>'display:inline']) !!}
-                                                    {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn-link', 'id' => 'btn-remove']) !!}
-                                                    {!! Form::close() !!}
+                                                    <a href="{{ route($route.'.edit', $user->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
+                                                    {{ Form::open(['url' => route($route.'.destroy', $user->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
+                                                    <button type="submit" class="btn btn-danger red"><i class="fa fa-trash "></i></button>
+                                                    {{ Form::close() }}
                                                 </td>
                                             @endif
                                         </tr>

@@ -11,11 +11,11 @@
                 <div class="container">
                     <div class="row">
                         <div class="col s10 m6 l6">
-                            <h5 class="breadcrumbs-title">Products</h5>
+                            <h5 class="breadcrumbs-title">Organizations</h5>
                             <ol class="breadcrumbs">
                                 <li><a href="{{route('home')}}">Dashboard</a>
                                 </li>
-                                <li class="active">Products</li>
+                                <li class="active">Organizations</li>
                             </ol>
                         </div>
                     </div>
@@ -48,44 +48,50 @@
                 <div class="row">
                     <div class="col s12">
                         <a class="btn waves-effect waves-light primary-btn-bgcolor"
-                           href="{{ route('product.create') }}">Create</a>
+                           href="{{ route('organization.create') }}">Create</a>
                     </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Category</th>
                                 <th>name</th>
-                                <th>price</th>
-                                <th>Description</th>
-                                <th>Status</th>
+                                <th>email</th>
+                                <th>phone number</th>
+                                <th>Number of branches</th>
+                                <th>Number of employees</th>
+                                <th>Address</th>
+                                <th>Cities operate in</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Id</th>
-                                <th>Category</th>
                                 <th>name</th>
-                                <th>price</th>
-                                <th>Description</th>
-                                <th>Status</th>
+                                <th>email</th>
+                                <th>phone number</th>
+                                <th>Number of branches</th>
+                                <th>Number of employees</th>
+                                <th>Address</th>
+                                <th>Cities operate in</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            @foreach($products as $product)
+                            @foreach($organizations as $organization)
                             <tr>
-                                <td>{{ $product->id }}</td>
-                                <td>{{ $product->category->name }}</td>
-                                <td>{{ $product->name }}</td>
-                                <td>{{ $product->price }}</td>
-                                <td>{{ $product->description }}</td>
-                                <td>{{ $product->status == 0 ? 'Inactive' : 'Active'}}</td>
+                                <td>{{ $organization->id }}</td>
+                                <td>{{ $organization->name }}</td>
+                                <td>{{ $organization->users[0]->email }}</td>
+                                <td>{{ $organization->users[0]->phone_number }}</td>
+                                <td>{{ $organization->no_of_branches }}</td>
+                                <td>{{ $organization->no_of_employees }}</td>
+                                <td>{{ $organization->address }}</td>
+                                <td>{{ $organization->cities_operate_in }}</td>
                                 <td>
-                                    <a href="{{ route('product.edit', $product->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
-                                    {{ Form::open(['url' => route('product.destroy', $product->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
+                                    <a href="{{ route('organization.edit', $organization->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
+                                    {{ Form::open(['url' => route('organization.destroy', $organization->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
                                     <button type="submit" class="btn btn-danger red"><i class="fa fa-trash "></i></button>
                                     {{ Form::close() }}
                                 </td>

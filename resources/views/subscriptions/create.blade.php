@@ -22,6 +22,28 @@
         </div>
     </div>
 
+    @if ($message = Session::get('success'))
+        <div id="card-alert" class="card green">
+            <div class="card-content white-text">
+                <p>{{ $message }}</p>
+            </div>
+            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    @endif
+
+    @if ($message = Session::get('error'))
+        <div id="card-alert" class="card red">
+            <div class="card-content white-text">
+                <p>{{ $message }}</p>
+            </div>
+            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    @endif
+
     <div class="container">
         <div class="section">
             <br>
@@ -62,24 +84,24 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    {{ Form::select('subscription_category', (['' => 'Choose Subscription Category'] + $categories), null, ['id' => 'subscription_category']) }}
+                    {{ Form::select('category_id', (['' => 'Choose Subscription Category'] + $categories), null, ['id' => 'category_id']) }}
                     <label>Subscription Category</label>
-                    @if ($errors->has('subscription_category'))
+                    @if ($errors->has('category_id'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('subscription_category') }}</strong>
+                        <strong class="red-text">{{ $errors->first('category_id') }}</strong>
                     </span>
                     @endif
                 </div>
                 <div class="input-field col s6">
-                    <select name="subscription_status" required>
+                    <select name="status"  id="status" required>
                         <option value="" disabled selected>Choose Subscription Status</option>
-                        <option value="0">In Active</option>
+                        <option value="0">Inactive</option>
                         <option value="1">Active</option>
                     </select>
                     <label>Subscription Status</label>
-                    @if ($errors->has('subscription_status'))
+                    @if ($errors->has('status'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('subscription_status') }}</strong>
+                        <strong class="red-text">{{ $errors->first('status') }}</strong>
                     </span>
                     @endif
                 </div>
@@ -90,11 +112,12 @@
                     <label for="request_allowed">Request(s) Allowed</label>
                     @if ($errors->has('request_allowed'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('name') }}</strong>
+                        <strong class="red-text">{{ $errors->first('request_allowed') }}</strong>
                     </span>
                     @endif
                 </div>
                 <div class="input-field col s6">
+                    <h6 class="custom-label">Avatar</h6>
                     <input type="file" class="form-control-file" name="avatar" id="avatar">
                     @if ($errors->has('avatar'))
                         <br><span class="help-block">

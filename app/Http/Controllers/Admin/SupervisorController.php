@@ -53,9 +53,8 @@ class SupervisorController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $data = $request->except('_token');
-        if(!empty($data)){
-            $user = $this->userService->create($data);
+        if(!empty($request)){
+            $user = $this->userService->insert($request);
             if($user){
                 $user->assignRole('supervisor');
                 return redirect()->back()->with('success','Supervisor Created Successfully');
@@ -104,9 +103,8 @@ class SupervisorController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        $data = $request->except('_token', '_method', 'email');
-        if(!empty($data)){
-            $user = $this->userService->update($id, $data);
+        if(!empty($request)){
+            $user = $this->userService->upgrade($id, $request);
             if($user){
                 return redirect()->back()->with('success','Supervisor Update Successfully');
             } else {

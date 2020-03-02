@@ -52,9 +52,8 @@ class UserController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $data = $request->except('_token');
-        if(!empty($data)){
-            $user = $this->userService->create($data);
+        if(!empty($request)){
+            $user = $this->userService->insert($request);
             if($user){
                 $user->assignRole('user');
                 return redirect()->back()->with('success','User Created Successfully');
@@ -103,9 +102,8 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        $data = $request->except('_token', '_method', 'email');
-        if(!empty($data)){
-            $user = $this->userService->update($id, $data);
+        if(!empty($request)){
+            $user = $this->userService->upgrade($id, $request);
             if($user){
                 return redirect()->back()->with('success','User Update Successfully');
             } else {

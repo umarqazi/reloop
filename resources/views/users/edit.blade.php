@@ -58,7 +58,7 @@
                     $type = $user->user_type;
                     $route = ($type == 1) ? 'user' : (($type == 3) ? 'driver' : (($type == 4) ? 'supervisor' : ''));
                 @endphp
-                {{ Form::open(['url' => route($route.'.update', $user->id), 'method' => 'PUT', 'class' => 'row']) }}
+                {{ Form::open(['url' => route($route.'.update', $user->id), 'method' => 'PUT', 'class' => 'row','enctype' => 'multipart/form-data']) }}
                 {{ Form::hidden('user_type', $type) }}
                     <div class="col s12">
                         <div class="input-field col s6">
@@ -127,6 +127,14 @@
                                     <strong class="red-text">{{ $errors->first('address') }}</strong>
                                 </span>
                             @endif
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="col s6 box-image">
+                            <img src="{{ \Illuminate\Support\Facades\Storage::disk(env('FILESYSTEM_DRIVER'))->url(config('filesystems.user_avatar_upload_path')).$user->avatar }}">
+                        </div>
+                        <div class="input-field col s6 ">
+                            <input type="file" class="form-control-file" name="avatar" id="avatar">
                         </div>
                     </div>
                     <div class="col s12">

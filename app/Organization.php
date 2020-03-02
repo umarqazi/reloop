@@ -18,4 +18,12 @@ class Organization extends Model
     protected $fillable = [
         'name', 'address', 'no_of_employees', 'no_of_branches', 'cities_operate_in'
     ];
+
+    /**
+     * @return HasMany
+     */
+    public function users() {
+        return $this->hasMany(User::class, 'organization_id');
+    }
+
 }
