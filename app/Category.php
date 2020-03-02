@@ -19,7 +19,7 @@ class Category extends Model
     /**
      * @return HasMany
      */
-    public function openHouses() {
+    public function subscriptions() {
         return $this->hasMany(Subscription::class, 'category_id');
     }
 

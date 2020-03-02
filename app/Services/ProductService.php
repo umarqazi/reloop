@@ -4,8 +4,11 @@
 namespace App\Services;
 
 
-use App\Categories;
+use App\Category;
 use App\Forms\IForm;
+use App\Forms\Product\CategoryProductsForm;
+use App\Product;
+use App\Subscription;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -20,15 +23,21 @@ use Illuminate\Validation\ValidationException;
 class ProductService extends BaseService
 {
 
-    private $model;
+    private $category;
+    private $subscription;
+    private $product;
 
     /**
      * ProductService constructor.
-     * @param Categories $model
+     * @param Category $category
+     * @param Product $product
+     * @param Subscription $subscription
      */
-    public function __construct(Categories $model)
+    public function __construct(Category $category, Product $product, Subscription $subscription)
     {
-        $this->model = $model;
+        $this->category = $category;
+        $this->product = $product;
+        $this->subscription = $subscription;
     }
 
     /**
@@ -58,11 +67,40 @@ class ProductService extends BaseService
     /**
      * Method: categoriesList
      *
-     * @return Categories[]|\Illuminate\Database\Eloquent\Collection
+     * @return Category[]|\Illuminate\Database\Eloquent\Collection
      */
     public function categoriesList()
     {
-        $model = $this->model->all();
-        return $model;
+        $category = $this->category->all();
+        return $category;
+    }
+
+    /**
+     * Method: categoryProducts
+     *
+     * @param IForm $category
+     *
+     * @return mixed
+     */
+    public function categoryProducts(IForm $category)
+    {
+        if ($category->fails())
+        {
+            return $category->errors();
+        }
+        if($category->category_type == ICategoryType::SUBSCRIPTION){
+
+            $categoryProducts = $this->category->where([
+                'id' => $category->category_id,
+                'type' => $category->category_type
+            ])->with('subscriptions')->get();
+        } else {
+
+            $categoryProducts = $this->category->where([
+                'id' => $category->category_id,
+                'type' => $category->category_type
+            ])->with('products')->get();
+        }
+        return $categoryProducts;
     }
 }
