@@ -28,6 +28,7 @@ class UserService extends BaseService
 {
     private $model;
     private $organizationService;
+    private $addressService;
     /**
      * Property: emailNotificationService
      *
@@ -41,11 +42,15 @@ class UserService extends BaseService
      * @param OrganizationService $organizationService
      * @param EmailNotificationService $emailNotificationService
      */
-    public function __construct(User $model, OrganizationService $organizationService, EmailNotificationService $emailNotificationService)
+    public function __construct(User $model, OrganizationService $organizationService,
+                                AddressService $addressService,
+                                EmailNotificationService $emailNotificationService
+    )
     {
         $this->model = $model;
         $this->organizationService = $organizationService;
         $this->emailNotificationService = $emailNotificationService;
+        $this->addressService = $addressService;
     }
 
     /**
@@ -92,6 +97,14 @@ class UserService extends BaseService
         $model->password = bcrypt($form->password);
 
         $model->save();
+
+        $this->addressService->storeAddress(
+            [
+                'user_id' => $model->id,
+                'location' => $form->location,
+                'city_id' => $form->city_id
+            ]
+        );
 
         if ( $form->user_type == IUserType::HOUSE_HOLD ){
 
