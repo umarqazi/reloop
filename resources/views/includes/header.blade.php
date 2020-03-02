@@ -39,7 +39,7 @@
                             <i class="material-icons">lock_outline</i> Lock</a>
                     </li>
                     <li>
-                        <a href="#" class="grey-text text-darken-1">
+                        <a href="{{ route('logout') }}" class="grey-text text-darken-1">
                             <i class="material-icons">keyboard_tab</i> Logout</a>
                     </li>
                 </ul>

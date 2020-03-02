@@ -8,6 +8,10 @@ use App\Mail\admin\OrganizationSignUpRequestNotification;
 use App\Mail\admin\PasswordResetNotification;
 use App\Mail\admin\SignUpNotification;
 use App\Mail\organization\OrganizationSignupEmail;
+use App\Mail\User\AdminOrganizationCreate;
+use App\Mail\User\AdminUserCreate;
+use App\Mail\User\AdminSupervisorCreate;
+use App\Mail\User\AdminDriverCreate;
 use App\Mail\user\PasswordResetEmail;
 use App\Mail\user\SignupEmail;
 use Illuminate\Support\Facades\Mail;
@@ -61,6 +65,54 @@ class EmailNotificationService
     {
         Mail::to($this->getAdminEmail())->queue(new PasswordResetNotification($data));
         Mail::to($this->getUserEmail($data))->queue(new PasswordResetEmail($data));
+    }
+
+    /**
+     * Method: adminUserCreateEmail
+     *
+     * @param $data
+     *
+     * @return void
+     */
+
+    public  function adminUserCreateEmail($data){
+        Mail::to($this->getUserEmail($data))->queue(new AdminUserCreate($data));
+    }
+
+    /**
+     * Method: adminSupervisorCreateEmail
+     *
+     * @param $data
+     *
+     * @return void
+     */
+
+    public  function adminSupervisorCreateEmail($data){
+        Mail::to($this->getUserEmail($data))->queue(new AdminSupervisorCreate($data));
+    }
+
+    /**
+     * Method: adminDriverCreateEmail
+     *
+     * @param $data
+     *
+     * @return void
+     */
+
+    public  function adminDriverCreateEmail($data){
+        Mail::to($this->getUserEmail($data))->queue(new AdminDriverCreate($data));
+    }
+
+    /**
+     * Method: adminDriverCreateEmail
+     *
+     * @param $data
+     *
+     * @return void
+     */
+
+    public  function adminOrganizationCreateEmail($data){
+        Mail::to($this->getUserEmail($data))->queue(new AdminOrganizationCreate($data));
     }
 
     /**

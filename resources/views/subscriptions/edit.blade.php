@@ -22,6 +22,28 @@
         </div>
     </div>
 
+    @if ($message = Session::get('success'))
+        <div id="card-alert" class="card green">
+            <div class="card-content white-text">
+                <p>{{ $message }}</p>
+            </div>
+            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    @endif
+
+    @if ($message = Session::get('error'))
+        <div id="card-alert" class="card red">
+            <div class="card-content white-text">
+                <p>{{ $message }}</p>
+            </div>
+            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    @endif
+
     <div class="container">
         <div class="section">
             <br>
@@ -59,20 +81,30 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    <select name="subscription_category" required>
+                    <select name="category_id" id="category_id" required>
                         <option value="" disabled selected>Choose Subscription Category</option>
                         <option value="1" {{ $subscription->category_id==1 ? 'selected': '' }}>Monthly Subscription</option>
                         <option value="2" {{ $subscription->category_id==2 ? 'selected': '' }}>One Time Service</option>
                     </select>
                     <label>Subscription Category</label>
+                    @if ($errors->has('category_id'))
+                        <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('category_id') }}</strong>
+                    </span>
+                    @endif
                 </div>
                 <div class="input-field col s6">
-                    <select name="subscription_status" required>
+                    <select name="status" id="status" required>
                         <option value="" disabled selected>Choose Product Status</option>
-                        <option value="1" {{ $subscription->status==0 ? 'selected': '' }}>In Active</option>
-                        <option value="2" {{ $subscription->status==1 ? 'selected': '' }}>Active</option>
+                        <option value="0" {{ $subscription->status==0 ? 'selected': '' }}>In Active</option>
+                        <option value="1" {{ $subscription->status==1 ? 'selected': '' }}>Active</option>
                     </select>
                     <label>Subscription Status</label>
+                    @if ($errors->has('status'))
+                        <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('status') }}</strong>
+                    </span>
+                    @endif
                 </div>
             </div>
             <div class="col s12">
@@ -81,12 +113,13 @@
                     <label for="request_allowed">Request(s) Allowed</label>
                     @if ($errors->has('request_allowed'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('name') }}</strong>
+                        <strong class="red-text">{{ $errors->first('request_allowed') }}</strong>
                     </span>
                     @endif
                 </div>
                 <div class="input-field col s6 ">
-                    <input type="file" class="form-control-file" name="avatar" id="avatar" value="{{$subscription->avatar}}">
+                    <h6 class="custom-label">Update Avatar</h6>
+                    <input type="file" class="form-control-file" name="avatar" id="avatar">
                 </div>
                 @if ($errors->has('avatar'))
                     <span class="help-block">
@@ -96,7 +129,8 @@
             </div>
             <div class="col s12">
                 <div class="col s6 box-image">
-                    <img src="{{url('storage/images/subscriptions/'.$subscription->avatar )}}">
+                    <h6 class="custom-label">Avatar</h6>
+                    <img src="{{ \Illuminate\Support\Facades\Storage::disk(env('FILESYSTEM_DRIVER'))->url(config('filesystems.subscription_avatar_upload_path')).$subscription->avatar }}" alt="No Avatar">
                 </div>
             </div>
             <div class="col s12">

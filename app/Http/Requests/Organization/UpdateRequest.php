@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Subscription;
+namespace App\Http\Requests\Organization;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,12 +24,13 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'              => 'required',
-            'price'             => 'required',
-            'description'       => 'required',
-            'request_allowed'   => 'required|numeric',
-            'category_id'       => 'required',
-            'status'            => 'required',
+                'name'                => 'required',
+                'email'               => 'required',
+                'phone_number'        => 'required',
+                'address'             => 'required',
+                'no_of_employees'     => 'required',
+                'no_of_branches'      => 'required',
+                'cities_operate_in'   => 'required',
         ];
     }
 }

@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row">
                 <div class="col s10 m6 l6">
-                    <h5 class="breadcrumbs-title">Create Product</h5>
+                    <h5 class="breadcrumbs-title">Update Product</h5>
                     <ol class="breadcrumbs">
                         <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
@@ -21,6 +21,28 @@
             </div>
         </div>
     </div>
+
+    @if ($message = Session::get('success'))
+        <div id="card-alert" class="card green">
+            <div class="card-content white-text">
+                <p>{{ $message }}</p>
+            </div>
+            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    @endif
+
+    @if ($message = Session::get('error'))
+        <div id="card-alert" class="card red">
+            <div class="card-content white-text">
+                <p>{{ $message }}</p>
+            </div>
+            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    @endif
 
     <div class="container">
         <div class="section">
@@ -59,28 +81,40 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    <select name="product_category" required>
+                    <select name="category_id" id="category_id" required>
                         <option value="" disabled selected>Choose Product Category</option>
                         <option value="3" {{ $product->category_id==3 ? 'selected': '' }}>Recycling Boxes</option>
                         <option value="4" {{ $product->category_id==4 ? 'selected': '' }}>Environmental Products</option>
                     </select>
                     <label>Product Category</label>
+                    @if ($errors->has('category_id'))
+                        <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('category_id') }}</strong>
+                    </span>
+                    @endif
                 </div>
                 <div class="input-field col s6">
-                    <select name="product_status" required>
+                    <select name="status" id="status" required>
                         <option value="" disabled selected>Choose Product Status</option>
-                        <option value="1" {{ $product->status==0 ? 'selected': '' }}>In Active</option>
-                        <option value="2" {{ $product->status==1 ? 'selected': '' }}>Active</option>
+                        <option value="0" {{ $product->status==0 ? 'selected': '' }}>Inactive</option>
+                        <option value="1" {{ $product->status==1 ? 'selected': '' }}>Active</option>
                     </select>
                     <label>Product Status</label>
+                    @if ($errors->has('status'))
+                        <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('status') }}</strong>
+                    </span>
+                    @endif
                 </div>
             </div>
             <div class="col s12">
                 <div class="col s6 box-image">
-                    <img src="{{url('storage/images/products/'.$product->avatar )}}">
+                    <h6 class="custom-label">Avatar</h6>
+                    <img src="{{ \Illuminate\Support\Facades\Storage::disk(env('FILESYSTEM_DRIVER'))->url(config('filesystems.product_avatar_upload_path')).$product->avatar }}" alt="No Avatar">
                 </div>
                 <div class="input-field col s6 ">
-                    <input type="file" class="form-control-file" name="avatar" id="avatar" value="{{$product->avatar}}">
+                    <h6 class="custom-label">Update Avatar</h6>
+                    <input type="file" class="form-control-file" name="avatar" id="avatar">
                 </div>
                 @if ($errors->has('avatar'))
                     <span class="help-block">

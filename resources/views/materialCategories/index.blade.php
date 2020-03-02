@@ -68,10 +68,10 @@
                                             <td>{{ $material->name }}</td>
                                             <td>{{ ($material->status == 1) ? 'Active' : 'Inactive' }}</td>
                                             <td>
-                                                <a class="btn-link" href="{{ route('material-category.edit',$material->id) }}">Edit</a>
-                                                {!! Form::open(['method' => 'DELETE','route' => ['material-category.destroy', $material->id],'style'=>'display:inline']) !!}
-                                                {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn-link', 'id' => 'btn-remove']) !!}
-                                                {!! Form::close() !!}
+                                                <a href="{{ route('material-category.edit', $material->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
+                                                {{ Form::open(['url' => route('material-category.destroy', $material->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
+                                                <button type="submit" class="btn btn-danger red"><i class="fa fa-trash "></i></button>
+                                                {{ Form::close() }}
                                             </td>
                                         </tr>
                                     @endforeach

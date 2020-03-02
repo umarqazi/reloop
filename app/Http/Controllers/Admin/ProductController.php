@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\CreateRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Repositories\Admin\CategoryRepo;
-use App\Services\Admin\ProductSerivce;
+use App\Services\Admin\ProductService;
 use App\Services\ICategoryType;
 use Illuminate\Support\Facades\File;
 
@@ -14,13 +14,14 @@ class ProductController extends Controller
 {
 
     private $categoryRepository ;
+    private $productService ;
 
     /**
      * ProductController constructor.
      */
-    public function __construct(CategoryRepo $categoryRepository) {
+    public function __construct(CategoryRepo $categoryRepository,ProductService $productService) {
         $this->categoryRepository =  $categoryRepository;
-        $this->productSerivce = new ProductSerivce();
+        $this->productService     =  $productService;
     }
 
 
@@ -31,7 +32,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->productSerivce->all() ;
+        $products = $this->productService->all() ?? null;
         return view('products.index', compact('products'));
     }
 
@@ -54,13 +55,15 @@ class ProductController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $product = $this->productSerivce->create($request->all());
-
-        if($product){
-            return redirect()->route('product.index')->with('success','Product Created Successfully');
-        }
-        else{
-            return redirect()->route('product.index')->with('error','Something went wrong');
+        if (!empty($request)) {
+            $product = $this->productService->insert($request);
+            if ($product) {
+                return redirect()->back()->with('success', 'Product Created Successfully');
+            } else {
+                return redirect()->back()->with('error', 'Error While Creating Product');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Error While Creating Product');
         }
     }
 
@@ -83,8 +86,12 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = $this->productSerivce->findById($id);
-        return view('products.edit',compact('product'));
+        $product = $this->productService->findById($id);
+        if ($product) {
+            return view('products.edit', compact('product'));
+        } else {
+            return view('products.edit')->with('error', 'No Information Founded !');
+        }
     }
 
     /**
@@ -96,15 +103,16 @@ class ProductController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        $product = $this->productSerivce->update($id,$request->all());
-
-        if($product){
-            return redirect()->route('product.edit',['id'=> $id])->with('success','Product Updated Successfully');
+        if (!empty($request)) {
+            $product = $this->productService->upgrade($id, $request);
+            if ($product) {
+                return redirect()->back()->with('success', 'Product Update Successfully');
+            } else {
+                return redirect()->back()->with('error', 'Error While Updating Product');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Error While Updating Product');
         }
-        else {
-            return redirect()->back()->with('error','Something went wrong');
-        }
-
     }
 
     /**
@@ -115,7 +123,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = $this->productSerivce->destroy($id);
+        $product = $this->productService->destroy($id);
         if($product){
             return redirect()->route('product.index')->with('success','Product Deleted Successfully');
         }

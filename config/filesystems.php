@@ -17,6 +17,8 @@ return [
 
     'material_category_avatar_upload_path'  => 'public/uploads/images/material-category/',
     'user_avatar_upload_path'               => 'public/uploads/images/user/',
+    'product_avatar_upload_path'            => 'public/uploads/images/product/',
+    'subscription_avatar_upload_path'       => 'public/uploads/images/subscription/',
 
     /*
     |--------------------------------------------------------------------------

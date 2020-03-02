@@ -53,7 +53,7 @@
                     </button>
                 </div>
             @endif
-            {{ Form::open(['url' => route($route.'.store'), 'class' => 'row']) }}
+            {{ Form::open(['url' => route($route.'.store'), 'class' => 'row','enctype' => 'multipart/form-data']) }}
             {{ Form::hidden('user_type', $type) }}
                 <div class="col s12">
                     <div class="input-field col s6">
@@ -127,12 +127,16 @@
                     </div>
                 </div>
                 <div class="col s12">
-                    <div class="input-field col s12">
+                    <div class="input-field col s6">
                         <select class="validate" id="status" name="status">
                             <option value="0">Inactive</option>
                             <option value="1">Active</option>
                         </select>
                         <label for="status" data-error="wrong" data-success="right">Status</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <h6 class="custom-label">Avatar</h6>
+                        <input type="file" class="form-control-file" name="avatar" id="avatar">
                     </div>
                 </div>
                 <div class="col s12">

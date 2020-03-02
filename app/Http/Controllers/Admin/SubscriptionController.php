@@ -29,7 +29,7 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        $subscriptions = $this->subscriptionService->all() ;
+        $subscriptions = $this->subscriptionService->all() ?? null ;
         return view('subscriptions.index', compact('subscriptions'));
     }
 
@@ -52,16 +52,16 @@ class SubscriptionController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $subscription = $this->subscriptionService->create($request->all());
-
-        if($subscription){
-            return redirect()->route('subscription.index')->with('success','Subscription Created Successfully');
+        if(!empty($request)){
+            $subscription = $this->subscriptionService->insert($request);
+            if($subscription){
+                return redirect()->back()->with('success','Subscription Created Successfully');
+            } else {
+                return redirect()->back()->with('error','Error While Creating Subscription');
+            }
+        }else{
+            return redirect()->back()->with('error','Error While Creating Subscription');
         }
-
-        else{
-            return redirect()->route('subscription.index')->with('error','Something went wrong');
-        }
-
     }
 
     /**
@@ -84,7 +84,11 @@ class SubscriptionController extends Controller
     public function edit($id)
     {
         $subscription = $this->subscriptionService->findById($id);
-        return view('subscriptions.edit',compact('subscription'));
+        if($subscription){
+            return view('subscriptions.edit', compact('subscription'));
+        }else{
+            return view('subscriptions.edit')->with('error', 'No Information Founded !');
+        }
     }
 
     /**
@@ -96,14 +100,15 @@ class SubscriptionController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        $subscription = $this->subscriptionService->update($id,$request->all());
-
-        if($subscription){
-
-            return redirect()->route('subscription.edit',['id'=> $id])->with('success','Subscription Updated Successfully');
-        }
-        else{
-            return redirect()->back()->with('error','Something went wrong');
+        if(!empty($request)){
+            $subscription = $this->subscriptionService->upgrade($id, $request);
+            if($subscription){
+                return redirect()->back()->with('success','Subscription Update Successfully');
+            } else {
+                return redirect()->back()->with('error','Error While Updating Subscription');
+            }
+        }else{
+            return redirect()->back()->with('error','Error While Updating Subscription');
         }
     }
 

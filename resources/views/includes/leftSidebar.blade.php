@@ -28,7 +28,7 @@
                             <li>
                                 <a href="{{ route('user.index') }}">
                                     <i class="material-icons">keyboard_arrow_right</i>
-                                    <span>Users</span>
+                                    <span>Users (Household)</span>
                                 </a>
                             </li>
                             <li>
@@ -45,6 +45,13 @@
                             </li>
                         </ul>
                     </div>
+
+                </li>
+                <li class="bold">
+                    <a href="{{ route('organization.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Organizations</span>
+                    </a>
                 </li><li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
                         <i class="material-icons">account_circle</i>
@@ -83,7 +90,7 @@
                         <span class="nav-text">Geographical Zones</span>
                     </a>
                 </li><li class="bold">
-                    <a class="collapsible-header  waves-effect waves-cyan">
+                    <a class="collapsible-header  waves-effect waves-cyan" href="{{ route('logout') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Logout</span>
                     </a>

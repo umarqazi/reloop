@@ -27,8 +27,8 @@ class CreateRequest extends FormRequest
             'name'                   => 'required',
             'price'                  => 'required',
             'description'            => 'required',
-            'subscription_category'  => 'required',
-            'subscription_status'    => 'required',
+            'category_id'            => 'required',
+            'status'                 => 'required',
             'request_allowed'        => 'required|numeric',
             'avatar'                 => 'required|mimes:jpeg,jpg,png,gif'
         ];
