@@ -13,7 +13,8 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "spatie/laravel-permission": "^3.8",
-        "laravelcollective/html": "^5.8.0"
+        "laravelcollective/html": "^5.8.0",
+        "cartalyst/stripe-laravel": "10.0.*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
