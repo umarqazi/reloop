@@ -13,4 +13,14 @@ class City extends Model
      */
     protected $fillable = ['city' ];
 
+    /**
+     * Method: addresses
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
 }

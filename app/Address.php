@@ -23,4 +23,24 @@ class Address extends Model
         'user_id', 'city_id', 'location', 'villa', 'no_of_bedrooms', 'no_of_occupants', 'district', 'street', 'floor',
         'unit_number'
     ];
+
+    /**
+     * Method: user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Method: city
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
 }
