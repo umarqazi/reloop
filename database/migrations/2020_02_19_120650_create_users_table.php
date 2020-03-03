@@ -24,7 +24,6 @@ class CreateUsersTable extends Migration
             $table->string('phone_number');
             $table->date('birth_date')->nullable();
             $table->string('avatar')->nullable();
-            $table->text('address');
             $table->tinyInteger('user_type')->nullable();
             $table->integer('trips')->nullable();
             $table->integer('reward_points')->nullable();

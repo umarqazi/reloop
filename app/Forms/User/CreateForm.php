@@ -24,7 +24,7 @@ class CreateForm extends BaseForm
     public $phone_number;
     public $birth_date;
     public $avatar;
-    public $address;
+    public $location;
     public $user_type;
     public $trips;
     public $reward_points;
@@ -33,7 +33,8 @@ class CreateForm extends BaseForm
     public $name;
     public $no_of_employees;
     public $no_of_branches;
-    public $cities_operate_in;
+    public $city_id;
+    public $sector_id;
     public $password_confirmation;
 
     /**
@@ -64,14 +65,15 @@ class CreateForm extends BaseForm
             'phone_number'           => $this->phone_number,
             'birth_date'             => $this->birth_date,
             'avatar'                 => $this->avatar,
-            'address'                => $this->address,
+            'location'               => $this->location,
             'user_type'              => $this->user_type,
             'trips'                  => $this->trips,
             'reward_points'          => $this->reward_points,
             'name'                   => $this->name,
             'no_of_employees'        => $this->no_of_employees,
             'no_of_branches'         => $this->no_of_branches,
-            'cities_operate_in'      => $this->cities_operate_in,
+            'city_id'                => $this->city_id,
+            'sector_id'              => $this->sector_id,
         ];
     }
 
@@ -86,7 +88,7 @@ class CreateForm extends BaseForm
             'password' => 'required|confirmed|min:8',
             'password_confirmation' => 'required',
             'phone_number' => 'required',
-            'address' => 'required'
+            'location' => 'required'
         ];
 
     }

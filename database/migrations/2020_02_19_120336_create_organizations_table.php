@@ -16,10 +16,8 @@ class CreateOrganizationsTable extends Migration
         Schema::create('organizations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->text('address');
             $table->integer('no_of_employees');
             $table->integer('no_of_branches');
-            $table->string('cities_operate_in');
             $table->timestamps();
         });
     }
