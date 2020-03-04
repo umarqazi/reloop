@@ -41,5 +41,6 @@ return[
     'UN_AUTHORIZE_ERROR'                    => 'You are not authorized',
     'GENERAL_ERROR'                         => 'Something went wrong.Please try again later!',
     'RECORD_NOT_FOUND'                      => 'Record not found!',
+    'CURRENCY'                              => 'USD'
 
 ];
