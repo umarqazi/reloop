@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\RedeemPoint;
+namespace App\Http\Requests\RewardPoint;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,9 +24,9 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'start'        => 'required',
-            'end'          => 'required',
-            'discount'     => 'required',
+            'min_kg'    => 'required',
+            'max_kg'    => 'required',
+            'points'    => 'required',
         ];
     }
 

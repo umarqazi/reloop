@@ -4,27 +4,22 @@
 namespace App\Services\Admin;
 
 
-use App\Repositories\Admin\ProductRepo;
-use App\Repositories\Admin\RedeemPointRepo;
+use App\Repositories\Admin\RewardPointRepo;
 use App\Services\Admin\BaseService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use App\Services\StripeService;
 
-class RedeemPointService extends BaseService
+class RewardPointService extends BaseService
 {
 
-    private $redeemPointRepo;
+    private $rewardPointRepo;
 
     /**
-     * RedeemPointService constructor.
+     * RewardPointService constructor.
      */
 
     public function __construct()
     {
-        $redeemPointRepo =  $this->getRepo(RedeemPointRepo::class);
-        $this->productRepo = new $redeemPointRepo;
+        $rewardPointRepo =  $this->getRepo(RewardPointRepo::class);
+        $this->rewardPointRepo = new $rewardPointRepo;
     }
 
 

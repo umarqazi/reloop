@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRedeemPointsTable extends Migration
+class AddStripeProductIdToSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateRedeemPointsTable extends Migration
      */
     public function up()
     {
-        Schema::create('redeem_points', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('start');
-            $table->integer('end');
-            $table->integer('discount');
-            $table->timestamps();
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->string('stripe_product_id')->after('category_id')->nullable();
         });
     }
 
@@ -29,6 +25,8 @@ class CreateRedeemPointsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('redeem_points');
+        Schema::table('subscriptions', function (Blueprint $table) {
+            $table->dropColumn('stripe_product_id');
+        });
     }
 }

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RedeemPoint extends Model
+class RewardPoint extends Model
 {
 
     /**
@@ -12,6 +12,6 @@ class RedeemPoint extends Model
      *
      * @var array
      */
-    protected $fillable = ['start','end','discount'];
+    protected $fillable = ['min_kg','max_kg','points'];
 
 }

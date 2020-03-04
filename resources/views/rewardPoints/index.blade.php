@@ -11,11 +11,11 @@
                 <div class="container">
                     <div class="row">
                         <div class="col s10 m6 l6">
-                            <h5 class="breadcrumbs-title">Redeem Points</h5>
+                            <h5 class="breadcrumbs-title">Reward Points</h5>
                             <ol class="breadcrumbs">
                                 <li><a href="{{route('home')}}">Dashboard</a>
                                 </li>
-                                <li class="active">Redeem points</li>
+                                <li class="active">Reward points</li>
                             </ol>
                         </div>
                     </div>
@@ -48,38 +48,38 @@
                 <div class="row">
                     <div class="col s12">
                         <a class="btn waves-effect waves-light primary-btn-bgcolor"
-                           href="{{ route('redeem-point.create') }}">Create</a>
+                           href="{{ route('reward-point.create') }}">Create</a>
                     </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Start</th>
-                                <th>End</th>
-                                <th>Discount</th>
+                                <th>Min (Kg)</th>
+                                <th>Max (Kg)</th>
+                                <th>Points</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Id</th>
-                                <th>Start</th>
-                                <th>End</th>
-                                <th>Discount</th>
+                                <th>Min (Kg)</th>
+                                <th>Max (Kg)</th>
+                                <th>Points</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            @foreach($redeemPoints as $redeemPoint)
+                            @foreach($rewardPoints as $rewardPoint)
                             <tr>
-                                <td>{{ $redeemPoint->id }}</td>
-                                <td>{{ $redeemPoint->start }}</td>
-                                <td>{{ $redeemPoint->end }}</td>
-                                <td>{{ $redeemPoint->discount }}</td>
+                                <td>{{ $rewardPoint->id }}</td>
+                                <td>{{ $rewardPoint->min_kg }}</td>
+                                <td>{{ $rewardPoint->max_kg }}</td>
+                                <td>{{ $rewardPoint->points }}</td>
                                 <td>
-                                    <a href="{{ route('redeem-point.edit', $redeemPoint->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
-                                    {{ Form::open(['url' => route('redeem-point.destroy', $redeemPoint->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
+                                    <a href="{{ route('reward-point.edit', $rewardPoint->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
+                                    {{ Form::open(['url' => route('reward-point.destroy', $rewardPoint->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
                                     <button type="submit" class="btn btn-danger red"><i class="fa fa-trash "></i></button>
                                     {{ Form::close() }}
                                 </td>

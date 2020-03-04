@@ -31,6 +31,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('material-category', 'Admin\MaterialCategoryController');
     Route::resource('organization', 'Admin\OrganizationController');
     Route::resource('coupon', 'Admin\CouponController');
-    Route::resource('redeem-point', 'Admin\RedeemPointController');
+    Route::resource('reward-point', 'Admin\RewardPointController');
 
 });
