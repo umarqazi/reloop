@@ -85,6 +85,18 @@
                     </div>
                 </li>
                 <li class="bold">
+                    <a href="{{ route('coupon.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Coupons</span>
+                    </a>
+                </li>
+                <li class="bold">
+                    <a href="{{ route('redeem-point.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Redeem points</span>
+                    </a>
+                </li>
+                <li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Geographical Zones</span>
