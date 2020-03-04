@@ -6,17 +6,22 @@ namespace App\Services\Admin;
 
 use App\Repositories\Admin\SubscriptionRepo;
 use App\Services\Admin\BaseService;
+use App\Services\ICategoryType;
+use App\Services\ISubscriptionType;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Services\StripeService;
 
 class SubscriptionSerivce extends BaseService
 {
 
     private $subscriptionRepo;
+    private  $stripeService;
 
     public function __construct()
     {
         $this->subscriptionRepo = $this->getRepo(SubscriptionRepo::class);
+        $this->stripeService = new StripeService();
     }
 
     /**
@@ -31,7 +36,32 @@ class SubscriptionSerivce extends BaseService
         if(array_key_exists('avatar', $data) && $data['avatar'] != null){
             $data = $this->uploadFile($data, $request);
         }
-        return parent::create($data);
+
+        $subscription = parent::create($data);
+
+        if($subscription) {
+
+            if ($data['category_id'] == ISubscriptionType::MONTHLY) {
+                //add subscription to stripe
+                $stripeData = [
+                    'name' => $request['name'],
+                    'price' => $request['price']
+                ];
+
+                $stripeProduct = $this->stripeService->addProduct($stripeData);
+
+                //store stripe product id to product table
+                $stripe['stripe_product_id'] = $stripeProduct['id'];
+
+                return parent::update($subscription->id, $stripe);
+            }
+
+            return true;
+        }
+
+        else {
+            return false ;
+        }
 
     }
 

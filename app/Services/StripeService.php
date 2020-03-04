@@ -26,7 +26,7 @@ class StripeService
         $product = $this->stripe->plans()->create([
             'name'        => $data['name'],
             'amount'      => $data['price'],
-            'currency'    => 'USD',
+            'currency'    => config('constants.CURRENCY'),
             'interval'    => 'month',
         ]);
         return $product;
