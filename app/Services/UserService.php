@@ -13,6 +13,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -29,6 +30,7 @@ class UserService extends BaseService
     private $model;
     private $organizationService;
     private $addressService;
+    private $stripeService;
     /**
      * Property: emailNotificationService
      *
@@ -44,13 +46,16 @@ class UserService extends BaseService
      */
     public function __construct(User $model, OrganizationService $organizationService,
                                 AddressService $addressService,
+                                StripeService $stripeService,
                                 EmailNotificationService $emailNotificationService
     )
     {
+        parent::__construct();
         $this->model = $model;
         $this->organizationService = $organizationService;
         $this->emailNotificationService = $emailNotificationService;
         $this->addressService = $addressService;
+        $this->stripeService = $stripeService;
     }
 
     /**
@@ -84,6 +89,8 @@ class UserService extends BaseService
         {
             return $form->errors();
         }
+        DB::beginTransaction();
+
         $model = $this->model;
         $form->loadToModel($model);
         if ( $form->user_type == IUserType::ORGANIZATION ){
@@ -106,14 +113,28 @@ class UserService extends BaseService
             ]
         );
 
-        if ( $form->user_type == IUserType::HOUSE_HOLD ){
+        $stripeCustomerId = $this->stripeService->createCustomer($form);
 
-            $this->emailNotificationService->userSignUpEmail($model);
-        } elseif ($form->user_type == IUserType::ORGANIZATION) {
+        if($stripeCustomerId){
 
-            $this->emailNotificationService->organizationSignUpEmail($model);
+            $model->stripe_customer_id = $stripeCustomerId;
+            $model->save();
+
+            DB::commit();
+
+            if ( $form->user_type == IUserType::HOUSE_HOLD ){
+
+                $this->emailNotificationService->userSignUpEmail($model);
+            } elseif ($form->user_type == IUserType::ORGANIZATION) {
+
+                $this->emailNotificationService->organizationSignUpEmail($model);
+            }
+            return $model;
+
+        } else {
+
+            DB::rollback();
         }
-        return $model;
     }
 
     /**
