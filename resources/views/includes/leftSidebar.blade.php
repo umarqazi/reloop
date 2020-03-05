@@ -65,7 +65,7 @@
                 </li><li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
                         <i class="material-icons">account_circle</i>
-                        <span class="nav-text">Add on products</span>
+                        <span class="nav-text">Add on Products</span>
                     </a>
                     <div class="collapsible-body">
                         <ul>
@@ -83,6 +83,18 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li class="bold">
+                    <a href="{{ route('coupon.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Coupons</span>
+                    </a>
+                </li>
+                <li class="bold">
+                    <a href="{{ route('reward-point.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Reward Points</span>
+                    </a>
                 </li>
                 <li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
