@@ -41,6 +41,9 @@ return[
     'UN_AUTHORIZE_ERROR'                    => 'You are not authorized',
     'GENERAL_ERROR'                         => 'Something went wrong.Please try again later!',
     'RECORD_NOT_FOUND'                      => 'Record not found!',
-    'CURRENCY'                              => 'USD'
+    'CURRENCY'                              => 'USD',
+    'MONTHLY_SUBSCRIPTION'                  => 'month',
+    'ORDER_SUCCESSFUL'                      => 'Your order has been placed successfully!',
+    'DEPENDENCIES_LIST'                     => 'Cities, Sectors and Organizations list shown as:'
 
 ];

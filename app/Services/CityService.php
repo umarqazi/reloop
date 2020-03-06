@@ -4,51 +4,41 @@
 namespace App\Services;
 
 
+use App\City;
 use App\Forms\IForm;
-use App\Forms\User\CreateForm;
-use App\Organization;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class OrganizationService
+ * Class CityService
  *
  * @package   App\Services
  * @author    Faisal Raza <faisal.raza@gems.techverx.com>
  * @copyright 2020 Techverx.com All rights reserved.
- * @since     Feb 20, 2020
+ * @since     Mar 06, 2020
  * @project   reloop
  */
-class OrganizationService extends BaseService
+class CityService extends BaseService
 {
 
+    /**
+     * Property: model
+     *
+     * @var City
+     */
     private $model;
 
-    /**
-     * OrganizationService constructor.
-     * @param Organization $model
-     */
-    public function __construct(Organization $model)
+    public function __construct(City $model)
     {
         parent::__construct();
         $this->model = $model;
     }
 
     /**
-     * Method: store
-     *
-     * @param IForm $form
-     *
-     * @return Organization|mixed
+     * @inheritDoc
      */
     public function store(IForm $form)
     {
-        /* @var CreateForm $form */
-        $form->fails();
-        $model = $this->model;
-        $form->loadToModel($model);
-        $model->save();
-
-        return $model;
+        // TODO: Implement store() method.
     }
 
     /**
@@ -56,7 +46,7 @@ class OrganizationService extends BaseService
      */
     public function findById($id)
     {
-
+        // TODO: Implement findById() method.
     }
 
     /**
@@ -64,7 +54,7 @@ class OrganizationService extends BaseService
      */
     public function remove($id)
     {
-
+        // TODO: Implement remove() method.
     }
 
     public function getAll()
