@@ -43,6 +43,7 @@ return[
     'RECORD_NOT_FOUND'                      => 'Record not found!',
     'CURRENCY'                              => 'USD',
     'MONTHLY_SUBSCRIPTION'                  => 'month',
-    'ORDER_SUCCESSFUL'                      => 'Your order has been placed successfully!'
+    'ORDER_SUCCESSFUL'                      => 'Your order has been placed successfully!',
+    'DEPENDENCIES_LIST'                     => 'Cities, Sectors and Organizations list shown as:'
 
 ];
