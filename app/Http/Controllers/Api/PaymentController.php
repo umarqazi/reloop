@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Forms\PaymentForm;
+use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
+use App\Jobs\SaveOrderDetailsJob;
 use App\Services\StripeService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Class PaymentController
@@ -23,7 +26,7 @@ class PaymentController extends Controller
      *
      * @var StripeService
      */
-    public $stripeService;
+    private $stripeService;
 
     public function __construct(StripeService $stripeService)
     {
@@ -32,6 +35,16 @@ class PaymentController extends Controller
 
     public function checkout(Request $request)
     {
-        $makePayment = $this->stripeService->makePayment($request->all());
+        $makePayment = $this->stripeService->checkout($request->all());
+
+        if(!empty($makePayment)){
+
+            SaveOrderDetailsJob::dispatch($makePayment);
+            return ResponseHelper::jsonResponse(
+                Config::get('constants.ORDER_SUCCESSFUL'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                $makePayment
+            );
+        }
     }
 }

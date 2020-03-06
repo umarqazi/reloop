@@ -86,10 +86,34 @@ class StripeService extends BaseService
      *
      * @return mixed
      */
-    public function makePayment($data)
+    public function checkout($data)
     {
         $authUser = $this->user->where('id', auth()->id())->first();
 
+        $token = $this->__createToken($data);
+        $this->__createCard($authUser->stripe_customer_id, $token);
+
+        if(array_key_exists('plan_id', $data)) {
+
+            $paymentStatus = $this->__createSubscription($data, $authUser->stripe_customer_id);
+        } else {
+
+            $paymentStatus = $this->__makePayment($data, $authUser->stripe_customer_id);
+        }
+        return $paymentStatus;
+    }
+
+    private function __createCard($customerId, $token)
+    {
+        $card = $this->stripe
+            ->cards()
+            ->create( $customerId, $token );
+
+        return $card['id'];
+    }
+
+    private function __createToken($data)
+    {
         $token = $this->stripe->tokens()->create([
             'card' => [
                 'number'    => $data['card_number'],
@@ -99,12 +123,26 @@ class StripeService extends BaseService
             ],
         ]);
 
-        $this->stripe->cards()->create($authUser->stripe_customer_id, $token['id']);
+        return $token['id'];
+    }
 
-        $subscription = $this->stripe->subscriptions()->create($authUser->stripe_customer_id, [
+    private function __createSubscription($data, $customerId)
+    {
+        $subscription = $this->stripe->subscriptions()->create($customerId, [
             'plan' => $data['plan_id'],
         ]);
 
         return $subscription;
+    }
+
+    private function __makePayment($data, $customerId)
+    {
+        $charge = $this->stripe->charges()->create([
+            'customer' => $customerId,
+            'currency' => config('constants.CURRENCY'),
+            'amount'   => $data['price'],
+        ]);
+
+        return $charge;
     }
 }
