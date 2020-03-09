@@ -15,8 +15,8 @@ namespace App\Helpers;
  */
 class ResponseHelper implements IResponseHelperInterface
 {
-    public static function jsonResponse($msg, $code = IResponseHelperInterface::SUCCESS_RESPONSE, $data = null)
+    public static function jsonResponse($msg, $code = IResponseHelperInterface::SUCCESS_RESPONSE, $status=true, $data = null)
     {
-        return response()->json(['message' => $msg, 'code' => $code, 'data' => $data], $code);
+        return response()->json(['message' => $msg, 'code' => $code, 'status' => $status, 'data' => $data], $code);
     }
 }

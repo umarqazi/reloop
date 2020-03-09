@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Forms\User\CreateForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
+use App\Services\CityService;
+use App\Services\OrganizationService;
+use App\Services\SectorService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
 /**
@@ -52,9 +56,32 @@ class RegisterController extends Controller
         $regUser = $this->userService->store($regForm);
 
         return ResponseHelper::jsonResponse(
-            Config::get('constants.USER_CREATION_SUCCESS'),
+            $regUser['message'],
+            $regUser['code'],
+            $regUser['status'],
+            $regUser['data']
+        );
+    }
+
+    /**
+     * Method: dependencies
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function dependencies()
+    {
+        $cities = App::make(CityService::class)->getAll();
+        $sectors = App::make(SectorService::class)->getAll();
+        $organizations   = App::make(OrganizationService::class)->getAll();
+        $data = [
+            'cities' => $cities,
+            'sectors' => $sectors,
+            'organizations' => $organizations,
+        ];
+        return ResponseHelper::jsonResponse(
+            Config::get('constants.DEPENDENCIES_LIST'),
             IResponseHelperInterface::SUCCESS_RESPONSE,
-            $regUser
+            true,
+            $data
         );
     }
 }
