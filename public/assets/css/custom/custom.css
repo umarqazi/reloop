@@ -83,3 +83,39 @@ h6.custom-label {
     color: #9e9e9e;
     padding-bottom: 10px;
 }
+
+
+
+.adrs-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.custom-radio-btn {
+    position: relative;
+    margin: 1.7rem 0;
+}
+.appendable-filed {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    min-height: 100%;
+
+    padding: 15px 0;
+}
+.top-bordered{
+    border-bottom: 1px solid #9e9e9e;
+}
+.remove-append {
+    position: absolute;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #000;
+    text-align: center;
+    line-height: 15px;
+    border-radius: 100%;
+    font-size: 10px;
+}
+

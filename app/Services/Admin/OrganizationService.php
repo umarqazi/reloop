@@ -4,10 +4,12 @@
 namespace App\Services\Admin;
 
 
+use App\Repositories\Admin\AddressRepo;
 use App\Repositories\Admin\OrganizationRepo;
 use App\Repositories\Admin\UserRepo;
 use App\Services\Admin\BaseService;
 use App\Services\Admin\UserService;
+use App\Services\IUserStatus;
 use App\Services\IUserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +21,7 @@ class OrganizationService extends BaseService
 {
 
     private $organizationRepo;
+    private $addressRepo;
     private $userService;
     /**
      * Property: emailNotificationService
@@ -30,10 +33,11 @@ class OrganizationService extends BaseService
      * ProductService constructor.
      */
 
-    public function __construct(UserService $userService,EmailNotificationService $emailNotificationService)
+    public function __construct(UserService $userService,EmailNotificationService $emailNotificationService,AddressRepo $addressRepo)
     {
         $organizationRepo =  $this->getRepo(OrganizationRepo::class);
         $this->organizationRepo = new $organizationRepo;
+        $this->addressRepo =  $addressRepo;
         $this->userService = $userService;
         $this->emailNotificationService = $emailNotificationService;
     }
@@ -45,25 +49,48 @@ class OrganizationService extends BaseService
      */
     public function insert($request)
     {
-        $data = $request->except('_token');
+        $organizationData = array(
+            'name'              => $request['name'],
+            'no_of_employees'   => $request['no_of_employees'],
+            'no_of_branches'    => $request['no_of_branches'],
+            'sector_id'         => $request['sector_id'],
+        );
         DB::beginTransaction();
-        $organization  =  parent::create($data);
-        if($organization){
-            $subscriptionData = array(
-                'organization_id'     => $organization->id,
-                'email'               => $data['email'],
-                'phone_number'        => $data['phone_number'],
-                'password'            => $data['password'],
-                'address'             => $data['address'],
-                'status'              => 1,
-                'user_type'           => IUserType::ORGANIZATION,
+        $organization = parent::create($organizationData);
+        if ($organization) {
+            $userData = array(
+                'organization_id' => $organization->id,
+                'email'           => $request['email'],
+                'phone_number'    => $request['phone_number'],
+                'password'        => $request['password'],
+                'status'          => IUserStatus::ACTIVE,
+                'user_type'       => IUserType::ORGANIZATION,
             );
-            $this->userService->create($subscriptionData);
-            DB::commit();
-            $this->emailNotificationService->adminOrganizationCreateEmail($data);
-            return true ;
+            $user = $this->userService->create($userData);
+            if ($user) {
+                for ($i = 0; $i < sizeof($request['bedrooms']); $i++) {
+                    $address = array(
+                        'user_id'         => $user->id,
+                        'city_id'         => $request['city_id'][$i],
+                        'location'        => $request['location'],
+                        'type'            => $request['type'][$i],
+                        'no_of_bedrooms'  => $request['bedrooms'][$i],
+                        'no_of_occupants' => $request['occupants'][$i],
+                        'district'        => $request['district'][$i],
+                        'street'          => $request['street'][$i],
+                        'floor'           => $request['floor'][$i],
+                        'unit_number'     => $request['unit-number'][$i],
+                    );
+                    $this->addressRepo->create($address);
+                }
+                DB::commit();
+                $this->emailNotificationService->adminOrganizationCreateEmail($userData);
+                return true;
+            } else {
+                DB::rollBack();
+                return false;
             }
-        else {
+        } else {
             DB::rollBack();
             return false;
         }
@@ -76,9 +103,79 @@ class OrganizationService extends BaseService
      */
     public function upgrade($id, $request)
     {
-        $data = $request->except('_token', 'email','phone_number','status');
+        $organizationData = array(
+            'name' => $request['name'],
+            'no_of_employees' => $request['no_of_employees'],
+            'no_of_branches'  => $request['no_of_branches'],
+            'sector_id'       => $request['sector_id'],
+        );
+        DB::beginTransaction();
+        $organization = parent::update($id, $organizationData);
+        if ($organization) {
+            $users = $this->findById($id)->users;
+            $user_id = $users[0]->id;
+            $userData = array(
+                'email'        => $request['email'],
+                'phone_number' => $request['phone_number'],
+                'status'       => $request['status'],
+            );
+            $user = $this->userService->update($user_id, $userData);
 
-        return  parent::update($id, $data);
+            if ($user) {
+                if ($request->has('bedrooms')) {
+                    for ($i = 0; $i < sizeof($request['bedrooms']); $i++) {
+                        $address = array(
+                            'city_id'         => $request['city_id'][$i],
+                            'location'        => $request['location'],
+                            'type'            => $request['type'][$i],
+                            'no_of_bedrooms'  => $request['bedrooms'][$i],
+                            'no_of_occupants' => $request['occupants'][$i],
+                            'district'        => $request['district'][$i],
+                            'street'          => $request['street'][$i],
+                            'floor'           => $request['floor'][$i],
+                            'unit_number'     => $request['unit-number'][$i],
+                        );
+                        if (array_key_exists($i, $request['address-id'])) {
+                            $this->addressRepo->update($request['address-id'][$i], $address);
+                        } else {
+                            $address['user_id'] = $user_id;
+                            $this->addressRepo->create($address);
+                        }
+                    }
+
+                }
+
+                $old_ids = array();
+                foreach ($users[0]->addresses as $address) {
+                    $old_ids[] += $address->id;
+                }
+                if ($request->has('address-id')) {
+                    $difference = array_diff($old_ids, $request['address-id']);
+
+                    if (sizeof($difference) > 0) {
+                        foreach ($difference as $key => $diff) {
+                            $this->addressRepo->destroy($diff);
+                        }
+                    }
+
+                }
+
+                if (sizeof($old_ids) && !$request->has('address-id')) {
+                    foreach ($old_ids as $key => $old) {
+                        $this->addressRepo->destroy($old);
+                    }
+                }
+
+                DB::commit();
+                return true;
+            } else {
+                DB::rollBack();
+                return false;
+            }
+        } else {
+            DB::rollBack();
+            return false;
+        }
     }
 
     /**
@@ -87,11 +184,15 @@ class OrganizationService extends BaseService
 
     public function delete(int $id)
     {
-     $organization = $this->organizationRepo->findById($id);
-     foreach($organization->users as $user){
-         $this->userService->destroy($user->id);
-     }
-     return $this->destroy($id);
+        $organization = $this->organizationRepo->findById($id);
+        foreach ($organization->users as $user) {
+            foreach ($user->addresses as $address) {
+                $this->addressRepo->destroy($address->id);
+            }
+
+            $this->userService->destroy($user->id);
+        }
+        return $this->destroy($id);
     }
 
 }

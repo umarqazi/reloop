@@ -24,13 +24,12 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-                'name'                => 'required',
-                'email'               => 'required',
-                'phone_number'        => 'required',
-                'address'             => 'required',
-                'no_of_employees'     => 'required',
-                'no_of_branches'      => 'required',
-                'cities_operate_in'   => 'required',
+            'name'                => 'required',
+            'email'               => 'required',
+            'phone_number'        => 'required',
+            'no_of_employees'     => 'required',
+            'no_of_branches'      => 'required',
+            'sector_id'           => 'required',
         ];
     }
 }

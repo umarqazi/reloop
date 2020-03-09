@@ -60,8 +60,6 @@
                                 <th>phone number</th>
                                 <th>Number of branches</th>
                                 <th>Number of employees</th>
-                                <th>Address</th>
-                                <th>Cities operate in</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -73,8 +71,6 @@
                                 <th>phone number</th>
                                 <th>Number of branches</th>
                                 <th>Number of employees</th>
-                                <th>Address</th>
-                                <th>Cities operate in</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
@@ -83,12 +79,10 @@
                             <tr>
                                 <td>{{ $organization->id }}</td>
                                 <td>{{ $organization->name }}</td>
-                                <td>{{ $organization->users[0]->email }}</td>
+                                <td>{{ Str::limit($organization->users[0]->email, 10) }}</td>
                                 <td>{{ $organization->users[0]->phone_number }}</td>
                                 <td>{{ $organization->no_of_branches }}</td>
                                 <td>{{ $organization->no_of_employees }}</td>
-                                <td>{{ $organization->address }}</td>
-                                <td>{{ $organization->cities_operate_in }}</td>
                                 <td>
                                     <a href="{{ route('organization.edit', $organization->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
                                     {{ Form::open(['url' => route('organization.destroy', $organization->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
