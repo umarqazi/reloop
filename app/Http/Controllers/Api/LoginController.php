@@ -46,17 +46,11 @@ class LoginController extends Controller
         $loginForm->loadFromArray($request->all());
         $authUser = $this->userService->authenticate($loginForm);
 
-        if ($authUser){
-
-            return ResponseHelper::jsonResponse(
-                $authUser['message'],
-                $authUser['code'],
-                $authUser['data']
-            );
-        }
         return ResponseHelper::jsonResponse(
-            Config::get('constants.INVALID_OPERATION'),
-            IResponseHelperInterface::FAIL_RESPONSE
+            $authUser['message'],
+            $authUser['code'],
+            $authUser['status'],
+            $authUser['data']
         );
     }
 
@@ -65,17 +59,12 @@ class LoginController extends Controller
         $resetForm = new PasswordResetForm();
         $resetForm->loadFromArray($request->all());
         $userEmail = $this->userService->getPasswordResetToken($resetForm);
-        if ($userEmail){
 
-            return ResponseHelper::jsonResponse(
-                $userEmail['message'],
-                $userEmail['code'],
-                $userEmail['data']
-            );
-        }
         return ResponseHelper::jsonResponse(
-            Config::get('constants.INVALID_OPERATION'),
-            IResponseHelperInterface::FAIL_RESPONSE
+            $userEmail['message'],
+            $userEmail['code'],
+            $userEmail['status'],
+            $userEmail['data']
         );
     }
 }

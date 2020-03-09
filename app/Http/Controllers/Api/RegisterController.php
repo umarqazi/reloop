@@ -56,9 +56,10 @@ class RegisterController extends Controller
         $regUser = $this->userService->store($regForm);
 
         return ResponseHelper::jsonResponse(
-            Config::get('constants.USER_CREATION_SUCCESS'),
-            IResponseHelperInterface::SUCCESS_RESPONSE,
-            $regUser
+            $regUser['message'],
+            $regUser['code'],
+            $regUser['status'],
+            $regUser['data']
         );
     }
 
@@ -79,6 +80,7 @@ class RegisterController extends Controller
         return ResponseHelper::jsonResponse(
             Config::get('constants.DEPENDENCIES_LIST'),
             IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
             $data
         );
     }

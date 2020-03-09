@@ -47,6 +47,7 @@ class UserService extends BaseService
                                 EmailNotificationService $emailNotificationService
     )
     {
+        parent::__construct();
         $this->model = $model;
         $this->organizationService = $organizationService;
         $this->emailNotificationService = $emailNotificationService;
@@ -82,7 +83,13 @@ class UserService extends BaseService
         /* @var CreateForm $form */
         if($form->fails())
         {
-            return $form->errors();
+            $responseData = [
+                'message' => Config::get('constants.INVALID_OPERATION'),
+                'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'status' => false,
+                'data' => $form->errors()
+            ];
+            return $responseData;
         }
         $model = $this->model;
         $form->loadToModel($model);
@@ -113,7 +120,13 @@ class UserService extends BaseService
 
             $this->emailNotificationService->organizationSignUpEmail($model);
         }
-        return $model;
+        $responseData = [
+            'message' => Config::get('constants.USER_CREATION_SUCCESS'),
+            'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+            'status' => true,
+            'data' => $model
+        ];
+        return $responseData;
     }
 
     /**
@@ -145,12 +158,13 @@ class UserService extends BaseService
     {
         if($loginForm->fails())
         {
-            $response = [
+            $responseData = [
                 'message' => Config::get('constants.INVALID_OPERATION'),
                 'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'status' => false,
                 'data' => $loginForm->errors()
             ];
-            return $response;
+            return $responseData;
         }
         $credentials = [
             'email' => $loginForm->email,
@@ -162,15 +176,27 @@ class UserService extends BaseService
             $authUser = auth()->user();
             if ($authUser->status == true) {
 
-                $response = [
+                $responseData = [
                     'message' => Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
                     'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+                    'status' => true,
                     'data' => $authUser
                 ];
-                return $response;
+                return $responseData;
             }
         }
-        return false;
+        $errorMessage = [
+            "credentials" => [
+                Config::get('constants.INVALID_CREDENTIALS')
+            ]
+        ];
+        $responseData = [
+            'message' => Config::get('constants.INVALID_OPERATION'),
+            'code' => IResponseHelperInterface::FAIL_RESPONSE,
+            'status' => false,
+            'data' => $errorMessage
+        ];
+        return $responseData;
     }
 
     /**
@@ -184,25 +210,44 @@ class UserService extends BaseService
     {
         if($resetForm->fails())
         {
-            $response = [
+            $responseData = [
                 'message' => Config::get('constants.INVALID_OPERATION'),
                 'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'status' => false,
                 'data' => $resetForm->errors()
             ];
-            return $response;
+            return $responseData;
         }
         $model = $this->model->where('email', $resetForm->email)->first();
-        if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD){
-
+        if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD)
+        {
             $this->emailNotificationService->passwordReset($resetForm->toArray());
 
-            $response = [
+            $successMessage = [
+                "ResetEmail" => [
+                    Config::get('constants.PASSWORD_RESET_EMAIL_SENT')
+                ]
+            ];
+
+            $responseData = [
                 'message' => Config::get('constants.CHANGE_PASSWORD_SUCCESS_EMAIL'),
                 'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-                'data' => null
+                'status' => true,
+                'data' => $successMessage
             ];
-            return $response;
+            return $responseData;
         }
-        return false;
+        $errorMessage = [
+            "ResetEmail" => [
+                Config::get('constants.PASSWORD_RESET_EMAIL_NOT_SENT')
+            ]
+        ];
+        $responseData = [
+            'message' => Config::get('constants.INVALID_OPERATION'),
+            'code' => IResponseHelperInterface::FAIL_RESPONSE,
+            'status' => false,
+            'data' => $errorMessage
+        ];
+        return $responseData;
     }
 }

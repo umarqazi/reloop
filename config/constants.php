@@ -44,6 +44,9 @@ return[
     'CURRENCY'                              => 'USD',
     'MONTHLY_SUBSCRIPTION'                  => 'month',
     'ORDER_SUCCESSFUL'                      => 'Your order has been placed successfully!',
-    'DEPENDENCIES_LIST'                     => 'Cities, Sectors and Organizations list shown as:'
+    'DEPENDENCIES_LIST'                     => 'Cities, Sectors and Organizations list shown as:',
+    'PASSWORD_RESET_EMAIL_NOT_SENT'         => 'Password reset email didn\'t sent!',
+    'PASSWORD_RESET_EMAIL_SENT'             => 'Password reset email sent!',
+    'INVALID_CREDENTIALS'                   => 'These credentials do not match our records!'
 
 ];
