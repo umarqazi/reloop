@@ -5,19 +5,26 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Organization\CreateRequest;
 use App\Http\Requests\Organization\UpdateRequest;
+use App\Repositories\Admin\CityRepo;
+use App\Repositories\Admin\SectorRepo;
 use App\Services\Admin\OrganizationService;
 use App\Services\ICategoryType;
+use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
 
     private $organizationService ;
+    private $sectorRepo ;
+    private $cityRepo ;
 
     /**
      * OrganizationController constructor.
      */
-    public function __construct(OrganizationService $productService) {
-        $this->organizationService     =  $productService;
+    public function __construct(OrganizationService $productService,SectorRepo $sectorRepo,CityRepo $cityRepo) {
+        $this->organizationService   =  $productService;
+        $this->sectorRepo            =  $sectorRepo;
+        $this->cityRepo              =  $cityRepo;
     }
 
 
@@ -39,7 +46,9 @@ class OrganizationController extends Controller
      */
     public function create()
     {
-        return view('organizations.create', compact('categories'));
+        $sectors = $this->sectorRepo->all()->pluck('name', 'id')->toArray();
+        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
+        return view('organizations.create', compact('sectors','cities'));
     }
 
     /**
@@ -51,8 +60,8 @@ class OrganizationController extends Controller
     public function store(CreateRequest $request)
     {
         if (!empty($request)) {
-            $product = $this->organizationService->insert($request);
-            if ($product) {
+            $organization = $this->organizationService->insert($request);
+            if ($organization) {
                 return redirect()->back()->with('success', 'Organization Created Successfully');
             } else {
                 return redirect()->back()->with('error', 'Error While Creating Organization');
@@ -81,9 +90,11 @@ class OrganizationController extends Controller
      */
     public function edit($id)
     {
+        $sectors = $this->sectorRepo->all()->pluck('name', 'id')->toArray();
+        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
         $organization = $this->organizationService->findById($id);
         if ($organization) {
-            return view('organizations.edit', compact('organization'));
+            return view('organizations.edit', compact('organization','sectors','cities'));
         } else {
             return view('organizations.edit')->with('error', 'No Information Founded !');
         }

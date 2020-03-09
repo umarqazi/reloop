@@ -27,7 +27,6 @@ class UpdateRequest extends FormRequest
             'first_name'    => 'required',
             'last_name'     => 'required',
             'phone_number'  => 'required',
-            'address'       => 'required'
         ];
     }
 }

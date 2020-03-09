@@ -27,4 +27,14 @@ class Organization extends Model
         return $this->hasMany(User::class, 'organization_id');
     }
 
+    /**
+     * Method: sector
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class, 'sector_id');
+    }
+
 }
