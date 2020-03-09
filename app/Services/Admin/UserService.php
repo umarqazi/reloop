@@ -52,18 +52,17 @@ class UserService extends BaseService
         $user =  parent::create($data);
 
         if($user){
-
-        if($data['user_type'] == IUserType::HOUSE_HOLD){
-            $this->emailNotificationService->adminUserCreateEmail($data);
-        }
-
-        elseif($data['user_type'] == IUserType::SUPERVISOR){
-            $this->emailNotificationService->adminSupervisorCreateEmail($data);
-        }
-
-        elseif($data['user_type'] == IUserType::DRIVER){
-            $this->emailNotificationService->adminDriverCreateEmail($data);
-        }
+//            if($data['user_type'] == IUserType::HOUSE_HOLD){
+//                $this->emailNotificationService->adminUserCreateEmail($data);
+//            }
+//
+//            elseif($data['user_type'] == IUserType::SUPERVISOR){
+//                $this->emailNotificationService->adminSupervisorCreateEmail($data);
+//            }
+//
+//            elseif($data['user_type'] == IUserType::DRIVER){
+//                $this->emailNotificationService->adminDriverCreateEmail($data);
+//            }
             return $user;
         }
         else{
