@@ -40,17 +40,11 @@ class ProductController extends Controller
     public function categories()
     {
         $productCategoriesList = $this->productService->categoriesList();
-        if($productCategoriesList){
 
-            return ResponseHelper::jsonResponse(
-                Config::get('constants.PRODUCT_CATEGORY_SUCCESS'),
-                IResponseHelperInterface::SUCCESS_RESPONSE,
-                $productCategoriesList
-            );
-        }
         return ResponseHelper::jsonResponse(
-            Config::get('constants.INVALID_OPERATION'),
-            IResponseHelperInterface::FAIL_RESPONSE,
+            Config::get('constants.PRODUCT_CATEGORY_SUCCESS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
             $productCategoriesList
         );
     }

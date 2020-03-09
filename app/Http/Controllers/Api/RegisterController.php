@@ -54,17 +54,12 @@ class RegisterController extends Controller
         $regForm = new CreateForm();
         $regForm->loadFromArray( $request->all() );
         $regUser = $this->userService->store($regForm);
-        if($regUser){
 
-            return ResponseHelper::jsonResponse(
-                Config::get('constants.USER_CREATION_SUCCESS'),
-                IResponseHelperInterface::SUCCESS_RESPONSE,
-                $regUser
-            );
-        }
         return ResponseHelper::jsonResponse(
-            Config::get('constants.INVALID_OPERATION'),
-            IResponseHelperInterface::FAIL_RESPONSE
+            $regUser['message'],
+            $regUser['code'],
+            $regUser['status'],
+            $regUser['data']
         );
     }
 
@@ -85,6 +80,7 @@ class RegisterController extends Controller
         return ResponseHelper::jsonResponse(
             Config::get('constants.DEPENDENCIES_LIST'),
             IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
             $data
         );
     }
