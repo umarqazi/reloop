@@ -47,7 +47,7 @@
         <div class="section">
             <br>
             {{ Form::open(['url' => route('organization.store'),
-                           'class' => 'row']) }}
+                           'class' => 'row', 'id'=> 'appended-filed-wrap']) }}
 
             <div class="col s12">
                 <div class="input-field col s6">
@@ -110,23 +110,68 @@
                 </div>
             </div>
             <div class="col s12">
-                <div class="input-field col s6">
-                    <input id="address" type="text"  name="address" required>
-                    <label for="address">Address</label>
-                    @if ($errors->has('address'))
+                <div class="input-field col s12">
+                    <input id="location" type="text" name="location" required>
+                    <label for="location">Location</label>
+                    @if ($errors->has('location'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('address') }}</strong>
-                    </span>
+                                <strong class="red-text">{{ $errors->first('location') }}</strong>
+                            </span>
                     @endif
                 </div>
-                <div class="input-field col s6">
-                    <input id="cities_operate_in" type="text" name="cities_operate_in" required>
-                    <label for="cities_operate_in">City</label>
-                    @if ($errors->has('cities_operate_in'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('cities_operate_in') }}</strong>
-                    </span>
-                    @endif
+            </div>
+            <div class="col s12">
+                <div class="input-field col s12">
+                      {{ Form::select('sector_id', (['' => 'Choose Organization Sector'] + $sectors), null, ['id' => 'sector_id']) }}
+                      <label>Sector</label>
+                </div>
+            </div>
+            <div id="input_fields_wrap" class="col s12">
+                <div class="adrs-title">
+                    <h5>Address</h5>
+                    <button class="btn btn-primary add-more-filed">Add More</button>
+                </div>
+                <div class="appendable-filed">
+                    <div class="input-field col s3">
+                        <select name="type[]"  id="type1" required>
+                            <option value="" disabled selected>Choose Type</option>
+                            <option value="1">Villa</option>
+                            <option value="2">Apartment</option>
+                        </select>
+                        <label>Type</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="bedrooms[]" type="number" name="bedrooms[]" required>
+                        <label for="bedrooms">No of Bedrooms</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="occupants[]" type="number" name="occupants[]" required>
+                        <label for="occupants">No of Occupants</label>
+                    </div>
+                    <div class="input-field col s3">
+                        {{ Form::select('city_id[]', (['' => 'Choose City'] + $cities), null, ['id' => 'city_id']) }}
+                        <label>City</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <select name="district[]"  id="district1" required>
+                            <option value="" disabled selected>Choose District</option>
+                            <option value="Qasur">Qasur</option>
+                            <option value="Okarda">Okarda</option>
+                        </select>
+                        <label>District</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="street[]" type="text" name="street[]" required>
+                        <label for="street[]">Street</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="floor[]" type="text" name="floor[]" required>
+                        <label for="floor[]">Floor</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="unit-number[]" type="text" name="unit-number[]" required>
+                        <label for="unit-number[]">Unit Number</label>
+                    </div>
                 </div>
             </div>
 
@@ -135,6 +180,7 @@
                     <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </div>
+
             {{ Form::close() }}
         </div>
     </div>

@@ -28,10 +28,17 @@ class CreateRequest extends FormRequest
             'email'               => 'required',
             'password'            => 'required',
             'phone_number'        => 'required',
-            'address'             => 'required',
             'no_of_employees'     => 'required',
             'no_of_branches'      => 'required',
-            'cities_operate_in'   => 'required',
+            'sector_id'           => 'required',
+            'type'                => 'required',
+            'bedrooms'            => 'required',
+            'occupants'           => 'required',
+            'city_id'             => 'required',
+            'district'            => 'required',
+            'street'              => 'required',
+            'floor'               => 'required',
+            'unit-number'         => 'required',
         ];
     }
 
