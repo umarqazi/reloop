@@ -72,7 +72,6 @@ class UserService extends BaseService
         $user =  parent::create($userData);
 
         if($user){
-
                 $address = array(
                     'user_id'         => $user->id,
                     'city_id'         => $data['city_id'],
