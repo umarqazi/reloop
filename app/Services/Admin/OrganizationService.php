@@ -122,6 +122,21 @@ class OrganizationService extends BaseService
             $user = $this->userService->update($user_id, $userData);
 
             if ($user) {
+                $old_ids = array();
+                foreach ($users[0]->addresses as $address) {
+                    $old_ids[] += $address->id;
+                }
+                if ($request->has('address-id')) {
+                    $difference = array_diff($old_ids, $request['address-id']);
+
+                    if (sizeof($difference) > 0) {
+                        foreach ($difference as $key => $diff) {
+                            $this->addressRepo->destroy($diff);
+                        }
+                    }
+
+                }
+
                 if ($request->has('bedrooms')) {
                     for ($i = 0; $i < sizeof($request['bedrooms']); $i++) {
                         $address = array(
@@ -143,27 +158,6 @@ class OrganizationService extends BaseService
                         }
                     }
 
-                }
-
-                $old_ids = array();
-                foreach ($users[0]->addresses as $address) {
-                    $old_ids[] += $address->id;
-                }
-                if ($request->has('address-id')) {
-                    $difference = array_diff($old_ids, $request['address-id']);
-
-                    if (sizeof($difference) > 0) {
-                        foreach ($difference as $key => $diff) {
-                            $this->addressRepo->destroy($diff);
-                        }
-                    }
-
-                }
-
-                if (sizeof($old_ids) && !$request->has('address-id')) {
-                    foreach ($old_ids as $key => $old) {
-                        $this->addressRepo->destroy($old);
-                    }
                 }
 
                 DB::commit();
