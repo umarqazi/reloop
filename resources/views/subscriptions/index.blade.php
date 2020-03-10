@@ -80,12 +80,12 @@
                             @foreach($subscriptions as $subscription)
                             <tr>
                                 <td>{{ $subscription->id }}</td>
-                                <td>{{ $subscription->category_id }}</td>
+                                <td>{{ $subscription->category_id == 1 ? 'Renewable Subscriptions':'One Time Services' }}</td>
                                 <td>{{ $subscription->name }}</td>
                                 <td>{{ $subscription->price }}</td>
                                 <td>{{ $subscription->description }}</td>
                                 <td>{{ $subscription->request_allowed }}</td>
-                                <td>{{ $subscription->status }}</td>
+                                <td>{{ $subscription->status == 1 ? 'Active':'InActive' }}</td>
                                 <td>
                                     <a href="{{ route('subscription.edit', $subscription->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
                                     {{ Form::open(['url' => route('subscription.destroy', $subscription->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}

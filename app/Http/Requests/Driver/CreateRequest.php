@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Subscription;
+namespace App\Http\Requests\Driver;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,13 +24,12 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'                   => 'required',
-            'price'                  => 'required',
-            'description'            => 'required',
-            'category_id'            => 'required',
-            'status'                 => 'required',
-            'request_allowed'        => 'required|numeric',
+            'first_name'    => 'required',
+            'last_name'     => 'required',
+            'email'         => 'required|email|unique:users',
+            'password'      => 'required|min:8',
+            'phone_number'  => 'required',
+            'location'      => 'required',
         ];
     }
-
 }

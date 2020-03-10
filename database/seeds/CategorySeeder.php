@@ -13,12 +13,12 @@ class CategorySeeder extends Seeder
     public function run()
     {
         Category::create([
-            'name'      => 'Monthly Subscription',
+            'name'      => 'Renewable Subscriptions',
             'status'    => 1,
             'type'      => 1
         ]);
         Category::create([
-            'name'      => 'One Time Service',
+            'name'      => 'One Time Services',
             'status'    => 1,
             'type'      => 1
         ]);

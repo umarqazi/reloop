@@ -117,21 +117,6 @@
                     </span>
                     @endif
                 </div>
-                <div class="input-field col s6 ">
-                    <h6 class="custom-label">Update Avatar</h6>
-                    <input type="file" class="form-control-file" name="avatar" id="avatar">
-                </div>
-                @if ($errors->has('avatar'))
-                    <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('avatar') }}</strong>
-                    </span>
-                @endif
-            </div>
-            <div class="col s12">
-                <div class="col s6 box-image">
-                    <h6 class="custom-label">Avatar</h6>
-                    <img src="{{ \Illuminate\Support\Facades\Storage::disk(env('FILESYSTEM_DRIVER'))->url(config('filesystems.subscription_avatar_upload_path')).$subscription->avatar }}" alt="No Avatar">
-                </div>
             </div>
             <div class="col s12">
                 <div class="input-field col s12">

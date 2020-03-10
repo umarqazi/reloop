@@ -20,7 +20,7 @@ class CreateSubscriptionsTable extends Migration
             $table->string('name');
             $table->integer('price');
             $table->text('description')->nullable();
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->integer('request_allowed');
             $table->boolean('status');
             $table->timestamps();
