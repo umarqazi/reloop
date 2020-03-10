@@ -109,12 +109,6 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
-                    <input id="location" type="text" name="location" value="{{ $organization->users[0]->addresses[0]->location }}" required>
-                    <label for="location">Location</label>
-                </div>
-            </div>
-            <div class="col s12">
-                <div class="input-field col s12">
                     {{ Form::select('sector_id', (['' => 'Choose Organization Sector'] + $sectors), $organization->sector->id, ['id' => 'sector_id']) }}
                     <label>Sector</label>
                 </div>
@@ -143,11 +137,11 @@
                         </div>
                         <div class="input-field col s3">
                             <input id="bedrooms[]" type="number" name="bedrooms[]" value="{{ $address->no_of_bedrooms }}" required>
-                            <label for="bedrooms">No of Bedrooms</label>
+                            <label for="bedrooms[]"">No of Bedrooms</label>
                         </div>
                         <div class="input-field col s3">
                             <input id="occupants[]" type="number" name="occupants[]" value="{{ $address->no_of_occupants }}"  required>
-                            <label for="occupants">No of Occupants</label>
+                            <label for="occupants[]">No of Occupants</label>
                         </div>
                         <div class="input-field col s3">
                             {{ Form::select('city_id[]', (['' => 'Choose City'] + $cities), $address->city_id , ['id' => 'city_id']) }}
@@ -172,6 +166,10 @@
                         <div class="input-field col s3">
                             <input id="unit-number[]" type="text" name="unit-number[]" value="{{ $address->unit_number }}" required>
                             <label for="unit-number[]">Unit Number</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="location[]" type="text" name="location[]" value="{{ $address->location }}" required>
+                            <label for="location[]">Location</label>
                         </div>
                     </div>
             @endforeach

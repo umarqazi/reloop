@@ -72,7 +72,7 @@ class OrganizationService extends BaseService
                     $address = array(
                         'user_id'         => $user->id,
                         'city_id'         => $request['city_id'][$i],
-                        'location'        => $request['location'],
+                        'location'        => $request['location'][$i],
                         'type'            => $request['type'][$i],
                         'no_of_bedrooms'  => $request['bedrooms'][$i],
                         'no_of_occupants' => $request['occupants'][$i],
@@ -104,7 +104,7 @@ class OrganizationService extends BaseService
     public function upgrade($id, $request)
     {
         $organizationData = array(
-            'name' => $request['name'],
+            'name'            => $request['name'],
             'no_of_employees' => $request['no_of_employees'],
             'no_of_branches'  => $request['no_of_branches'],
             'sector_id'       => $request['sector_id'],
@@ -120,7 +120,6 @@ class OrganizationService extends BaseService
                 'status'       => $request['status'],
             );
             $user = $this->userService->update($user_id, $userData);
-
             if ($user) {
                 $old_ids = array();
                 foreach ($users[0]->addresses as $address) {
@@ -128,40 +127,68 @@ class OrganizationService extends BaseService
                 }
                 if ($request->has('address-id')) {
                     $difference = array_diff($old_ids, $request['address-id']);
+                } else {
+                    $difference = $old_ids;
+                }
+                if ($request->has('bedrooms')) {
+                    if (sizeof($difference) > 0) {
+                        foreach ($difference as $key => $diff) {
+                            $this->addressRepo->destroy($diff);
+                        }
+                        for ($i = 0; $i < sizeof($request['bedrooms']); $i++) {
+                            $address = array(
+                                'city_id'         => $request['city_id'][$i],
+                                'location'        => $request['location'][$i],
+                                'type'            => $request['type'][$i],
+                                'no_of_bedrooms'  => $request['bedrooms'][$i],
+                                'no_of_occupants' => $request['occupants'][$i],
+                                'district'        => $request['district'][$i],
+                                'street'          => $request['street'][$i],
+                                'floor'           => $request['floor'][$i],
+                                'unit_number'     => $request['unit-number'][$i],
+                            );
+                            if (array_key_exists($i, $request['address-id'])) {
+                                $this->addressRepo->update($request['address-id'][$i], $address);
+                            } else {
+                                $address['user_id'] = $user_id;
+                                $this->addressRepo->create($address);
+                            }
+                        }
+                        DB::commit();
+                        return true;
+                    } else {
+                        for ($i = 0; $i < sizeof($request['bedrooms']); $i++) {
+                            $address = array(
+                                'city_id'         => $request['city_id'][$i],
+                                'location'        => $request['location'][$i],
+                                'type'            => $request['type'][$i],
+                                'no_of_bedrooms'  => $request['bedrooms'][$i],
+                                'no_of_occupants' => $request['occupants'][$i],
+                                'district'        => $request['district'][$i],
+                                'street'          => $request['street'][$i],
+                                'floor'           => $request['floor'][$i],
+                                'unit_number'     => $request['unit-number'][$i],
+                            );
+                            if (array_key_exists($i, $request['address-id'])) {
+                                $this->addressRepo->update($request['address-id'][$i], $address);
+                            } else {
+                                $address['user_id'] = $user_id;
+                                $this->addressRepo->create($address);
+                            }
+                        }
+                        DB::commit();
+                        return true;
+                    }
 
+                } else {
                     if (sizeof($difference) > 0) {
                         foreach ($difference as $key => $diff) {
                             $this->addressRepo->destroy($diff);
                         }
                     }
-
+                    DB::commit();
+                    return true;
                 }
-
-                if ($request->has('bedrooms')) {
-                    for ($i = 0; $i < sizeof($request['bedrooms']); $i++) {
-                        $address = array(
-                            'city_id'         => $request['city_id'][$i],
-                            'location'        => $request['location'],
-                            'type'            => $request['type'][$i],
-                            'no_of_bedrooms'  => $request['bedrooms'][$i],
-                            'no_of_occupants' => $request['occupants'][$i],
-                            'district'        => $request['district'][$i],
-                            'street'          => $request['street'][$i],
-                            'floor'           => $request['floor'][$i],
-                            'unit_number'     => $request['unit-number'][$i],
-                        );
-                        if (array_key_exists($i, $request['address-id'])) {
-                            $this->addressRepo->update($request['address-id'][$i], $address);
-                        } else {
-                            $address['user_id'] = $user_id;
-                            $this->addressRepo->create($address);
-                        }
-                    }
-
-                }
-
-                DB::commit();
-                return true;
             } else {
                 DB::rollBack();
                 return false;
