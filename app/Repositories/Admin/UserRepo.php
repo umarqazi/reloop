@@ -4,6 +4,7 @@
 namespace App\Repositories\Admin;
 
 use App\User;
+use Illuminate\Support\Collection;
 
 class UserRepo extends BaseRepo
 {
@@ -15,6 +16,15 @@ class UserRepo extends BaseRepo
     {
         $getModel = $this->getModel(User::class);
         $this->getModel = new $getModel;
+    }
+
+    public function all(): Collection
+    {
+        $users = $this->getModel::whereHas("roles", function($q) {
+            $q->where("name", "!=", "admin");
+        })->orderBy('email')->get();
+
+        return $users;
     }
 
     /**

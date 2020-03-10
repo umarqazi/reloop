@@ -18,8 +18,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password','organization_id','phone_number','birth_date','avatar','address',
-        'user_type','trips','reward_points','status','verified_at', 'signup_token', 'api_token', 'stripe_customer_id'
+        'first_name', 'last_name', 'email', 'password','organization_id','phone_number','birth_date',
+        'avatar','user_type','trips','reward_points','status','verified_at', 'signup_token', 'api_token','stripe_customer_id'
     ];
 
     /**

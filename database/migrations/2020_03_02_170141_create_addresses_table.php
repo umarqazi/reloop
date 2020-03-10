@@ -23,7 +23,7 @@ class CreateAddressesTable extends Migration
             $table->foreign('city_id')->references('id')->on('cities');
 
             $table->text('location');
-            $table->string('villa')->nullable();
+            $table->string('type')->nullable();
             $table->integer('no_of_bedrooms')->nullable();
             $table->integer('no_of_occupants')->nullable();
             $table->string('district')->nullable();

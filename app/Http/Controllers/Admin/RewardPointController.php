@@ -6,18 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RewardPoint\CreateRequest;
 use App\Http\Requests\RewardPoint\UpdateRequest;
 use App\Services\Admin\RewardPointService;
+use App\Services\Admin\UserService;
+use Illuminate\Http\Request;
 
 
 class RewardPointController extends Controller
 {
 
-    private $rewardPointService ;
+    private $rewardPointService;
+    private $userService;
 
     /**
      * RewardPointController constructor.
      */
-    public function __construct(RewardPointService $rewardPointService) {
-        $this->rewardPointService     =  $rewardPointService;
+    public function __construct(RewardPointService $rewardPointService, UserService $userService) {
+        $this->rewardPointService   = $rewardPointService;
+        $this->userService          = $userService;
     }
 
 
@@ -126,5 +130,27 @@ class RewardPointController extends Controller
             return redirect()->route('reward-point.index')->with('error','Something went wrong');
         }
 
+    }
+
+    public function allUsers()
+    {
+        $users = $this->userService->all();
+        return view('users.all', compact('users'));
+    }
+
+    public function getUser($id)
+    {
+        $user = $this->userService->findById($id);
+        return response()->json(['response' => $user]);
+    }
+
+    public function updateRewardPoints(Request $request)
+    {
+        $data = $request->all();
+        $user = $this->userService->update($data['id'], $data);
+        if($user){
+            $result = $this->userService->findById($data['id']);
+            return response()->json(['result' => $result]);
+        }
     }
 }

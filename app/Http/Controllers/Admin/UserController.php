@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Repositories\Admin\CityRepo;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
@@ -13,10 +14,12 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     private $userService;
+    private $cityRepo;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService,CityRepo $cityRepo)
     {
         $this->userService = $userService;
+        $this->cityRepo = $cityRepo;
     }
 
     /**
@@ -43,7 +46,8 @@ class UserController extends Controller
     public function create()
     {
         $type = IUserType::HOUSE_HOLD;
-        return view('users.create', compact('type'));
+        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
+        return view('users.create', compact('type','cities'));
     }
 
     /**
@@ -86,10 +90,11 @@ class UserController extends Controller
     {
         $type = IUserType::HOUSE_HOLD;
         $user = $this->userService->findById($id);
+        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
         if($user){
-            return view('users.edit', compact('user', 'type'));
+            return view('users.edit', compact('user', 'type','cities'));
         }else{
-            return view('users.edit')->with('empty', 'No Information Founded !');
+            return view('users.edit')->with('error', 'No Information Founded !');
         }
     }
 

@@ -97,6 +97,12 @@
                     </a>
                 </li>
                 <li class="bold">
+                    <a href="{{ route('all-users') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Users Reward Points</span>
+                    </a>
+                </li>
+                <li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Geographical Zones</span>

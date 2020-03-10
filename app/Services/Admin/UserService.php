@@ -4,15 +4,19 @@
 namespace App\Services\Admin;
 
 
+use App\Repositories\Admin\AddressRepo;
 use App\Repositories\Admin\UserRepo;
 use App\Services\EmailNotificationService;
+use App\Services\IUserStatus;
 use App\Services\IUserType;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class UserService extends BaseService
 {
     private $userRepo;
+    private $addressRepo;
     /**
      * Property: emailNotificationService
      *
@@ -21,10 +25,11 @@ class UserService extends BaseService
     private $emailNotificationService;
 
 
-    public function __construct(EmailNotificationService $emailNotificationService)
+    public function __construct(EmailNotificationService $emailNotificationService,AddressRepo $addressRepo)
     {
         $userRepo = $this->getRepo(UserRepo::class);
         $this->userRepo = new $userRepo;
+        $this->addressRepo  = $addressRepo;
         $this->emailNotificationService = $emailNotificationService;
     }
 
@@ -49,9 +54,38 @@ class UserService extends BaseService
         if(array_key_exists('avatar', $data) && $data['avatar'] != null){
             $data = $this->uploadFile($data, $request);
         }
-        $user =  parent::create($data);
+        $userData = array(
+
+            'first_name'      => $data['first_name'],
+            'last_name'       => $data['last_name'],
+            'email'           => $data['email'],
+            'birth_date'      => $data['birth_date'],
+            'avatar'          => $data['avatar'],
+            'phone_number'    => $data['phone_number'],
+            'password'        => $data['password'],
+            'status'          => $data['status'],
+            'user_type'       => $data['user_type'],
+        );
+
+        DB::beginTransaction();
+
+        $user =  parent::create($userData);
 
         if($user){
+                $address = array(
+                    'user_id'         => $user->id,
+                    'city_id'         => $data['city_id'],
+                    'location'        => $data['location'],
+                    'type'            => $data['type'],
+                    'no_of_bedrooms'  => $data['bedrooms'],
+                    'no_of_occupants' => $data['occupants'],
+                    'district'        => $data['district'],
+                    'street'          => $data['street'],
+                    'floor'           => $data['floor'],
+                    'unit_number'     => $data['unit-number'],
+                );
+
+                $this->addressRepo->create($address);
 
         if($data['user_type'] == IUserType::HOUSE_HOLD){
             $this->emailNotificationService->adminUserCreateEmail($data);
@@ -64,25 +98,65 @@ class UserService extends BaseService
         elseif($data['user_type'] == IUserType::DRIVER){
             $this->emailNotificationService->adminDriverCreateEmail($data);
         }
+            DB::commit();
             return $user;
         }
         else{
+            DB::rollBack();
             return  false;
         }
     }
 
     /**
      * @param int $id
-     * @param array $data
+     * @param array $request
      * @return mixed
      */
     public function upgrade($id, $request)
     {
         $data = $request->except('_token', '_method', 'email');
+
+        $userData = array(
+            'first_name'      => $data['first_name'],
+            'last_name'       => $data['last_name'],
+            'birth_date'      => $data['birth_date'],
+            'phone_number'    => $data['phone_number'],
+            'status'          => $data['status'],
+            'user_type'       => $data['user_type'],
+        );
         if(array_key_exists('avatar', $data) && $data['avatar'] != null){
             $data = $this->uploadFile($data, $request, $id);
+            $userData['avatar']  = $data['avatar'];
         }
-        return parent::update($id, $data);
+
+        DB::beginTransaction();
+
+        $user =  parent::update($id, $userData);
+
+        if($user){
+
+            $address = array(
+                'city_id'         => $data['city_id'],
+                'location'        => $data['location'],
+                'type'            => $data['type'],
+                'no_of_bedrooms'  => $data['bedrooms'],
+                'no_of_occupants' => $data['occupants'],
+                'district'        => $data['district'],
+                'street'          => $data['street'],
+                'floor'           => $data['floor'],
+                'unit_number'     => $data['unit-number'],
+            );
+
+           $this->addressRepo->update($data['address-id'],$address);
+
+            DB::commit();
+            return true;
+        }
+        else{
+            DB::rollBack();
+            return false;
+        }
+
 
     }
 
@@ -96,6 +170,13 @@ class UserService extends BaseService
         if($image != null) {
             Storage::disk()->delete(config('filesystems.user_avatar_upload_path').$image);
         }
+
+        $user = $this->findById($id);
+
+        foreach ($user->addresses as $address){
+            $this->addressRepo->destroy($address->id);
+        }
+
         return parent::destroy($id);
     }
 

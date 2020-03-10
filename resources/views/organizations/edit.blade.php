@@ -99,26 +99,6 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
-                    <input id="cities_operate_in" type="text" name="cities_operate_in"  value="{{$organization->cities_operate_in}}" required>
-                    <label for="cities_operate_in">City</label>
-                    @if ($errors->has('cities_operate_in'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('cities_operate_in') }}</strong>
-                    </span>
-                    @endif
-                </div>
-            </div>
-            <div class="col s12">
-                <div class="input-field col s6">
-                    <input id="address" type="text"  name="address"  value="{{$organization->address}}" required>
-                    <label for="address">Address</label>
-                    @if ($errors->has('address'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('address') }}</strong>
-                    </span>
-                    @endif
-                </div>
-                <div class="input-field col s6">
                     <select name="status" id="status" required>
                         <option value="" disabled selected>Choose Product Status</option>
                         <option value="0" {{ $organization->users[0]->status==false ? 'selected': '' }}>Unapproved</option>
@@ -127,6 +107,77 @@
                     <label>Organization Status</label>
                 </div>
             </div>
+            <div class="col s12">
+                <div class="input-field col s12">
+                    <input id="location" type="text" name="location" value="{{ $organization->users[0]->addresses[0]->location }}" required>
+                    <label for="location">Location</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s12">
+                    {{ Form::select('sector_id', (['' => 'Choose Organization Sector'] + $sectors), $organization->sector->id, ['id' => 'sector_id']) }}
+                    <label>Sector</label>
+                </div>
+            </div>
+
+            <div id="input_fields_wrap" class="col s12">
+
+            @foreach($organization->users[0]->addresses as $key => $address)
+
+                    @if($key == 0)
+                    <div class="adrs-title">
+                        <h5>Address</h5>
+                        <button class="btn btn-primary add-more-filed">Add More</button>
+                    </div>
+                    @endif
+                    <div class="appendable-filed">
+                        <a href="javascript:void(0);" class="remove-append"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                        <div class="input-field col s3">
+                            <input type="hidden" name="address-id[]" value="{{ $address->id }}">
+                            <select name="type[]"  id="type1" required>
+                                <option value="" disabled selected>Choose Type</option>
+                                <option value="1" {{ $address->type=='1' ? 'selected': '' }}>Villa</option>
+                                <option value="2" {{ $address->type=='2' ? 'selected': '' }}>Apartment</option>
+                            </select>
+                            <label>Type</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <input id="bedrooms[]" type="number" name="bedrooms[]" value="{{ $address->no_of_bedrooms }}" required>
+                            <label for="bedrooms">No of Bedrooms</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <input id="occupants[]" type="number" name="occupants[]" value="{{ $address->no_of_occupants }}"  required>
+                            <label for="occupants">No of Occupants</label>
+                        </div>
+                        <div class="input-field col s3">
+                            {{ Form::select('city_id[]', (['' => 'Choose City'] + $cities), $address->city_id , ['id' => 'city_id']) }}
+                            <label>City</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <select name="district[]"  id="district1" required>
+                                <option value="" disabled selected>Choose District</option>
+                                <option value="Qasur" {{ $address->district=='Qasur' ? 'selected': '' }} >Qasur</option>
+                                <option value="Okarda" {{ $address->district=='Okarda' ? 'selected': '' }}>Okarda</option>
+                            </select>
+                            <label>District</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <input id="street[]" type="text" name="street[]" value="{{ $address->street }}" required>
+                            <label for="street[]">Street</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <input id="floor[]" type="text" name="floor[]" value="{{ $address->floor }}" required>
+                            <label for="floor[]">Floor</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <input id="unit-number[]" type="text" name="unit-number[]" value="{{ $address->unit_number }}" required>
+                            <label for="unit-number[]">Unit Number</label>
+                        </div>
+                    </div>
+            @endforeach
+            </div>
+
+
             <div class="col s12">
                 <div class="input-field col s12">
                     <button type="submit" class="btn btn-primary">Update</button>
