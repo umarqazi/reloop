@@ -74,15 +74,7 @@ class UserService extends BaseService
         if($user){
                 $address = array(
                     'user_id'         => $user->id,
-                    'city_id'         => $data['city_id'],
                     'location'        => $data['location'],
-                    'type'            => $data['type'],
-                    'no_of_bedrooms'  => $data['bedrooms'],
-                    'no_of_occupants' => $data['occupants'],
-                    'district'        => $data['district'],
-                    'street'          => $data['street'],
-                    'floor'           => $data['floor'],
-                    'unit_number'     => $data['unit-number'],
                 );
 
                 $this->addressRepo->create($address);
@@ -136,15 +128,7 @@ class UserService extends BaseService
         if($user){
 
             $address = array(
-                'city_id'         => $data['city_id'],
                 'location'        => $data['location'],
-                'type'            => $data['type'],
-                'no_of_bedrooms'  => $data['bedrooms'],
-                'no_of_occupants' => $data['occupants'],
-                'district'        => $data['district'],
-                'street'          => $data['street'],
-                'floor'           => $data['floor'],
-                'unit_number'     => $data['unit-number'],
             );
 
            $this->addressRepo->update($data['address-id'],$address);

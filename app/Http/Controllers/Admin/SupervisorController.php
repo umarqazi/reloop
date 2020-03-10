@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\CreateRequest;
-use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\Supervisor\CreateRequest;
+use App\Http\Requests\Supervisor\UpdateRequest;
 use App\Repositories\Admin\CityRepo;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
