@@ -6,6 +6,7 @@ use App\Forms\User\CreateForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\CityService;
+use App\Services\DistrictService;
 use App\Services\OrganizationService;
 use App\Services\SectorService;
 use App\Services\UserService;
@@ -65,15 +66,19 @@ class RegisterController extends Controller
 
     /**
      * Method: dependencies
+     * Get dependencies list before signup
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function dependencies()
     {
         $cities = App::make(CityService::class)->getAll();
+        $districts = App::make(DistrictService::class)->getAll();
         $sectors = App::make(SectorService::class)->getAll();
         $organizations   = App::make(OrganizationService::class)->getAll();
         $data = [
             'cities' => $cities,
+            'districts' => $districts,
             'sectors' => $sectors,
             'organizations' => $organizations,
         ];

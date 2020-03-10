@@ -60,12 +60,14 @@ class ProductController extends Controller
             return ResponseHelper::jsonResponse(
                 Config::get('constants.PRODUCTS_SUCCESS'),
                 IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
                 $categoryProducts
             );
         }
         return ResponseHelper::jsonResponse(
             Config::get('constants.RECORD_NOT_FOUND'),
-            IResponseHelperInterface::FAIL_RESPONSE
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false
         );
     }
 }

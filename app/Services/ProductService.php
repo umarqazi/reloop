@@ -103,4 +103,16 @@ class ProductService extends BaseService
         }
         return $categoryProducts;
     }
+
+    /**
+     * Method: findSubscriptionById
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function findSubscriptionById($id)
+    {
+        return $this->subscription->where('id', $id)->first();
+    }
 }

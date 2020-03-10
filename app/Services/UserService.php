@@ -13,6 +13,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -29,6 +30,7 @@ class UserService extends BaseService
     private $model;
     private $organizationService;
     private $addressService;
+    private $stripeService;
     /**
      * Property: emailNotificationService
      *
@@ -44,6 +46,7 @@ class UserService extends BaseService
      */
     public function __construct(User $model, OrganizationService $organizationService,
                                 AddressService $addressService,
+                                StripeService $stripeService,
                                 EmailNotificationService $emailNotificationService
     )
     {
@@ -52,6 +55,7 @@ class UserService extends BaseService
         $this->organizationService = $organizationService;
         $this->emailNotificationService = $emailNotificationService;
         $this->addressService = $addressService;
+        $this->stripeService = $stripeService;
     }
 
     /**
@@ -68,6 +72,13 @@ class UserService extends BaseService
     public function remove($id)
     {
         // TODO: Implement remove() method.
+    }
+
+    public function updateTrips($data)
+    {
+        $model = $this->model->where('id', $data['user_id'])->first();
+        $model->trips += $data['product_details']->request_allowed;
+        $model->save();
     }
 
     /**
@@ -91,6 +102,8 @@ class UserService extends BaseService
             ];
             return $responseData;
         }
+        DB::beginTransaction();
+
         $model = $this->model;
         $form->loadToModel($model);
         if ( $form->user_type == IUserType::ORGANIZATION ){
@@ -113,12 +126,26 @@ class UserService extends BaseService
             ]
         );
 
-        if ( $form->user_type == IUserType::HOUSE_HOLD ){
+        $stripeCustomerId = $this->stripeService->createCustomer($form);
 
-            $this->emailNotificationService->userSignUpEmail($model);
-        } elseif ($form->user_type == IUserType::ORGANIZATION) {
+        if($stripeCustomerId){
 
-            $this->emailNotificationService->organizationSignUpEmail($model);
+            $model->stripe_customer_id = $stripeCustomerId;
+            $model->save();
+
+            DB::commit();
+
+            if ( $form->user_type == IUserType::HOUSE_HOLD ){
+
+                $this->emailNotificationService->userSignUpEmail($model);
+            } elseif ($form->user_type == IUserType::ORGANIZATION) {
+
+                $this->emailNotificationService->organizationSignUpEmail($model);
+            }
+
+        } else {
+
+            DB::rollback();
         }
         $responseData = [
             'message' => Config::get('constants.USER_CREATION_SUCCESS'),
@@ -156,6 +183,7 @@ class UserService extends BaseService
      */
     public function authenticate(IForm $loginForm)
     {
+        /* @var LoginForm $loginForm */
         if($loginForm->fails())
         {
             $responseData = [
