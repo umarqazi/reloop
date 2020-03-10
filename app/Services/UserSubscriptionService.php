@@ -5,6 +5,8 @@ namespace App\Services;
 
 
 use App\Forms\IForm;
+use App\UserSubscription;
+use Illuminate\Support\Facades\App;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -19,6 +21,18 @@ use Illuminate\Validation\ValidationException;
 class UserSubscriptionService extends BaseService
 {
 
+    /**
+     * Property: model
+     *
+     * @var UserSubscription
+     */
+    private $model;
+
+    public function __construct(UserSubscription $model)
+    {
+        parent::__construct();
+        $this->model = $model;
+    }
     /**
      * @inheritDoc
      */
@@ -45,6 +59,24 @@ class UserSubscriptionService extends BaseService
 
     public function create($data)
     {
+        $startTime = null;
+        $endTime = null;
+        $stripeSubId = null;
+        if($data['product_details']->category_id == ISubscriptionType::MONTHLY){
 
+            $startTime = date("Y-m-d h:i:s",$data['stripe_response']['current_period_start']);
+            $endTime = date("Y-m-d h:i:s",$data['stripe_response']['current_period_end']);
+            $stripeSubId = $data['stripe_response']['id'];
+        }
+
+        $model = $this->model;
+        $model->user_id = $data['user_id'];
+        $model->subscription_id = $data['product_details']->id;
+        $model->stripe_subscription_id = $stripeSubId;
+        $model->subscription_number = $data['order_number'];
+        $model->start_date = $startTime;
+        $model->end_date = $endTime;
+        $model->trips = $data['product_details']->request_allowed;
+        $model->save();
     }
 }

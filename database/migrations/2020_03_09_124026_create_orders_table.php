@@ -19,11 +19,20 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
 
+            $table->string('order_number');
             $table->double('subtotal');
             $table->string('discount_type')->nullable();
             $table->double('discount')->nullable();
             $table->string('coupon')->nullable();
             $table->double('total');
+            $table->string('location')->nullable();
+
+            $table->unsignedBigInteger('city_id')->nullable();
+            $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
+
+            $table->unsignedBigInteger('district_id')->nullable();
+            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

@@ -62,7 +62,7 @@ class PaymentService extends BaseService
     public function afterCheckout($data)
     {
         $transaction = App::make(TransactionService::class)->create($data);
-        $userSubscriptionService = App::make(UserSubscriptionService::class)->create($data);
-        $orderService = App::make(OrderService::class)->create($data);
+        $userSubscription = App::make(UserSubscriptionService::class)->create($data);
+        $authUser = App::make(UserService::class)->updateTrips($data);
     }
 }

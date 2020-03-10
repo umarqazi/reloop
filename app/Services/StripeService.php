@@ -80,29 +80,38 @@ class StripeService extends BaseService
     }
 
     /**
-     * Method: makePayment
+     * Method: buyPlan
      *
      * @param $data
      *
      * @return mixed
      */
-    public function checkout($data)
+    public function buyPlan($data)
     {
         $authUser = $this->user->where('id', auth()->id())->first();
 
         $token = $this->__createToken($data);
         $this->__createCard($authUser->stripe_customer_id, $token);
 
-        if(array_key_exists('plan_id', $data)) {
+        if(array_key_exists('plan_id', $data) && $data['subscription_type'] == ISubscriptionType::MONTHLY) {
 
-            $paymentStatus = $this->__createSubscription($data, $authUser->stripe_customer_id);
+            $makePayment = $this->__createSubscription($data, $authUser->stripe_customer_id);
         } else {
 
-            $paymentStatus = $this->__makePayment($data, $authUser->stripe_customer_id);
+            $makePayment = $this->__makePayment($data, $authUser->stripe_customer_id);
         }
-        return $paymentStatus;
+        return $makePayment;
     }
 
+    /**
+     * Method: __createCard
+     *
+     * @param $customerId
+     * @param $token
+     * Create card for user on stripe
+     *
+     * @return mixed
+     */
     private function __createCard($customerId, $token)
     {
         $card = $this->stripe
@@ -112,6 +121,14 @@ class StripeService extends BaseService
         return $card['id'];
     }
 
+    /**
+     * Method: __createToken
+     * Create token for user card on stripe
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
     private function __createToken($data)
     {
         $token = $this->stripe->tokens()->create([
@@ -126,6 +143,15 @@ class StripeService extends BaseService
         return $token['id'];
     }
 
+    /**
+     * Method: __createSubscription
+     * Create subscription on stripe
+     *
+     * @param $data
+     * @param $customerId
+     *
+     * @return mixed
+     */
     private function __createSubscription($data, $customerId)
     {
         $subscription = $this->stripe->subscriptions()->create($customerId, [
@@ -135,6 +161,15 @@ class StripeService extends BaseService
         return $subscription;
     }
 
+    /**
+     * Method: __makePayment
+     * Charge payment to user using stripe
+     *
+     * @param $data
+     * @param $customerId
+     *
+     * @return mixed
+     */
     private function __makePayment($data, $customerId)
     {
         $charge = $this->stripe->charges()->create([

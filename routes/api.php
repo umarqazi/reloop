@@ -21,5 +21,5 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('categories', 'Api\ProductController@categories');
     Route::get('category/products/', 'Api\ProductController@categoryProducts');
-    Route::post('checkout', 'Api\PaymentController@checkout');
+    Route::post('buy-plan', 'Api\PaymentController@buyPlan');
 });

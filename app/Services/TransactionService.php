@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Forms\IForm;
+use App\Transaction;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -18,6 +19,13 @@ use Illuminate\Validation\ValidationException;
  */
 class TransactionService extends BaseService
 {
+    private $model;
+
+    public function __construct(Transaction $model)
+    {
+        parent::__construct();
+        $this->model = $model;
+    }
 
     /**
      * @inheritDoc
@@ -45,6 +53,11 @@ class TransactionService extends BaseService
 
     public function create($data)
     {
-
+        $model = $this->model;
+        $model->user_id = $data['user_id'];
+        $model->transactionable_id = $data['product_details']->id;
+        $model->transactionable_type = $data['product_details']->getMorphClass();
+        $model->price = $data['product_details']->price;
+        $model->save();
     }
 }

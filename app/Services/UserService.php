@@ -74,6 +74,13 @@ class UserService extends BaseService
         // TODO: Implement remove() method.
     }
 
+    public function updateTrips($data)
+    {
+        $model = $this->model->where('id', $data['user_id'])->first();
+        $model->trips += $data['product_details']->request_allowed;
+        $model->save();
+    }
+
     /**
      * Method: store
      *
@@ -135,7 +142,6 @@ class UserService extends BaseService
 
                 $this->emailNotificationService->organizationSignUpEmail($model);
             }
-            return $model;
 
         } else {
 

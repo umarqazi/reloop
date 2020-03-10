@@ -23,7 +23,8 @@ class CreateUserSubscriptionsTable extends Migration
             $table->foreign('subscription_id')->references('id')->on('subscriptions')
                   ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->integer('stripe_subscription_id')->nullable();
+            $table->string('stripe_subscription_id')->nullable();
+            $table->string('subscription_number');
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->integer('trips');
