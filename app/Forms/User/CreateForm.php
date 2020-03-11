@@ -30,12 +30,13 @@ class CreateForm extends BaseForm
     public $reward_points;
     public $status;
     public $api_token;
-    public $name;
+    public $organization_name;
     public $no_of_employees;
     public $no_of_branches;
     public $city_id;
     public $sector_id;
     public $password_confirmation;
+    public $district_id;
 
     /**
      * CreateForm constructor.
@@ -69,11 +70,12 @@ class CreateForm extends BaseForm
             'user_type'              => $this->user_type,
             'trips'                  => $this->trips,
             'reward_points'          => $this->reward_points,
-            'name'                   => $this->name,
+            'organization_name'      => $this->organization_name,
             'no_of_employees'        => $this->no_of_employees,
             'no_of_branches'         => $this->no_of_branches,
             'city_id'                => $this->city_id,
             'sector_id'              => $this->sector_id,
+            'district_id'            => $this->district_id
         ];
     }
 
