@@ -107,17 +107,6 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
-                    <h6 class="custom-label">Avatar</h6>
-                    <input type="file" class="form-control-file" name="avatar" id="avatar">
-                    @if ($errors->has('avatar'))
-                        <br><span class="help-block">
-                        <strong class="red-text">{{ $errors->first('avatar') }}</strong>
-                    </span>
-                    @endif
-                </div>
-            </div>
-            <div class="col s12">
-                <div class="input-field col s12">
                     <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </div>

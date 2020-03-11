@@ -46,6 +46,7 @@ class OrganizationService extends BaseService
         $form->fails();
         $model = $this->model;
         $form->loadToModel($model);
+        $model->name = $form->organization_name;
         $model->save();
 
         return $model;
