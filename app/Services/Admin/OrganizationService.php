@@ -80,6 +80,7 @@ class OrganizationService extends BaseService
                         'street'          => $request['street'][$i],
                         'floor'           => $request['floor'][$i],
                         'unit_number'     => $request['unit-number'][$i],
+                        'default'         => $i == 0 ? 1 : 0 ,
                     );
                     $this->addressRepo->create($address);
                 }
