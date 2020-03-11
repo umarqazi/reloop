@@ -87,6 +87,29 @@ $(document).ready(function () {
         x--;
     });
 
+    $( "#subscription_category_id" ).change(function() {
+        let subscription_category_value = $(this).val();
+        if(subscription_category_value == 2){
+            $('#subscription_request_allowed').remove();
+            $('label[for=subscription_request_allowed]').remove();
+            $('.subscription_request_allowed_input_field').append('' +
+                '                    <select name="category_type"  id="subscription_category_type" required>\n' +
+                '                        <option value="" disabled selected>Choose Subscription Category Type</option>\n' +
+                '                        <option value="1">Same Day</option>\n' +
+                '                        <option value="2">Next Day</option>\n' +
+                '                    </select>' +
+                '                    <label for="subscription_category_type">Subscription Category Type</label>');
+            $('#subscription_category_type').material_select();
+        }
+        else{
+            $('.subscription_request_allowed_input_field').html('');
+            $('.subscription_request_allowed_input_field').append('' +
+                '                    <input id="subscription_request_allowed" type="number" name="request_allowed" required>\n' +
+                '                    <label for="subscription_request_allowed">Request(s) Allowed</label>\n' +
+                '                    ');
+        }
+    });
+
     /**
      * author: Abdullah Wazir
     */

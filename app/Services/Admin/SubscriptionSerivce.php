@@ -69,6 +69,12 @@ class SubscriptionSerivce extends BaseService
     public function upgrade($id, $request)
     {
         $data = $request->except('_token', '_method', 'email');
+        if($request->has('request_allowed')){
+            $data["category_type"] = null;
+        }
+        else{
+            $data["request_allowed"] = null;
+        }
         return parent::update($id, $data);
     }
 

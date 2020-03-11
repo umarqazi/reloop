@@ -27,7 +27,6 @@ class UpdateRequest extends FormRequest
             'name'              => 'required',
             'price'             => 'required',
             'description'       => 'required',
-            'request_allowed'   => 'required|numeric',
             'category_id'       => 'required',
             'status'            => 'required',
         ];
