@@ -105,7 +105,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6 subscription_request_allowed_input_field">
-                    @if($subscription->request_allowed !== null)
+                    @if($subscription->request_allowed !== null &&  $subscription->category_type == null)
                     <input id="subscription_request_allowed" type="number" name="request_allowed" value="{{$subscription->request_allowed}}" required>
                     <label for="subscription_request_allowed">Request(s) Allowed</label>
                      @if ($errors->has('request_allowed'))

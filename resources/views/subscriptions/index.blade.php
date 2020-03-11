@@ -84,7 +84,7 @@
                                 <td>{{ $subscription->name }}</td>
                                 <td>{{ $subscription->price }}</td>
                                 <td>{{ $subscription->description }}</td>
-                                <td>{{ $subscription->request_allowed ==  null ? 'None'  : $subscription->request_allowed }}</td>
+                                <td>{{ $subscription->request_allowed }}</td>
                                 <td>{{ $subscription->status == 1 ? 'Active':'InActive' }}</td>
                                 <td>
                                     <a href="{{ route('subscription.edit', $subscription->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>

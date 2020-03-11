@@ -8,6 +8,7 @@ use App\Repositories\Admin\SubscriptionRepo;
 use App\Services\Admin\BaseService;
 use App\Services\ICategoryType;
 use App\Services\ISubscriptionType;
+use App\Services\ITrips;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Services\StripeService;
@@ -32,7 +33,9 @@ class SubscriptionSerivce extends BaseService
     public function insert($request)
     {
         $data = $request->except('_token');
-
+        if(!$request->has('request_allowed')){
+            $data["request_allowed"] = ITrips::ONE_TRIP;
+        }
         $subscription = parent::create($data);
 
         if($subscription) {
@@ -73,7 +76,7 @@ class SubscriptionSerivce extends BaseService
             $data["category_type"] = null;
         }
         else{
-            $data["request_allowed"] = null;
+            $data["request_allowed"] = ITrips::ONE_TRIP;
         }
         return parent::update($id, $data);
     }
