@@ -28,13 +28,4 @@ class HomeController extends Controller
     {
         return view('index');
     }
-
-    /**
-     * logout  function
-     */
-    public function logout(){
-        Session::flush();
-        Auth::logout();
-        return redirect(route('login'));
-    }
 }

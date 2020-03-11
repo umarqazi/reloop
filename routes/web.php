@@ -22,7 +22,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', 'Admin\HomeController@index')->name('home');
     Route::get('/activate-account/{id}/{token}', 'UserController@accountVerification');
     Route::get('/thankyou', 'PageController@thankyou')->name('thankyou');
-    Route::get('/logout', 'Admin\HomeController@logout')->name('logout');
     Route::get('/cities', 'Admin\CityController@index')->name('cities');
     Route::resource('product', 'Admin\ProductController');
     Route::resource('subscription', 'Admin\SubscriptionController');
