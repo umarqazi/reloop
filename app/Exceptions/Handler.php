@@ -2,8 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Config;
 
 class Handler extends ExceptionHandler
 {
@@ -47,5 +51,32 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         return parent::render($request, $exception);
+    }
+
+    /**
+     * Method: unauthenticated
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param AuthenticationException $exception
+     *
+     * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception) {
+        $guard = $exception->guards()[0];
+        $errorMessage = [
+            "token" => [
+                Config::get('constants.UN_AUTHORIZE_ERROR')
+            ]
+        ];
+        switch ($guard) {
+            case 'api':
+                return ResponseHelper::jsonResponse(
+                    Config::get('constants.UN_AUTHORIZE_ERROR'),
+                    IResponseHelperInterface::FAIL_RESPONSE,
+                    false,
+                    $errorMessage
+                );
+                break;
+        }
     }
 }

@@ -54,7 +54,12 @@ $(document).ready(function () {
                 '                <div class="input-field col s3">\n' +
                 '                    <input id="unit-number[]" type="text" name="unit-number[]" required>\n' +
                 '                    <label for="unit-number[]">Unit Number</label>\n' +
-                '                </div></div>' +
+                '                </div>' +
+                '                <div class="input-field col s12">\n' +
+                '                    <input id="location[]" type="text" name="location[]" required>\n' +
+                '                    <label for="location[]">Location</label>\n' +
+                '                </div>' +
+                '                </div>' +
                 '<div> ');
         }
         $('#' + district_name).material_select();
