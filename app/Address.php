@@ -21,7 +21,7 @@ class Address extends Model
      */
     protected $fillable = [
         'user_id', 'city_id', 'location', 'type', 'no_of_bedrooms', 'no_of_occupants', 'district', 'street', 'floor',
-        'unit_number'
+        'unit_number','default'
     ];
 
     /**
