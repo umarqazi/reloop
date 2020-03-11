@@ -30,6 +30,7 @@ class CreateAddressesTable extends Migration
             $table->string('street')->nullable();
             $table->string('floor')->nullable();
             $table->string('unit_number')->nullable();
+            $table->boolean('default')->default(0);
             $table->timestamps();
         });
     }
