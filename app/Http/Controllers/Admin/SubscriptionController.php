@@ -84,8 +84,9 @@ class SubscriptionController extends Controller
     public function edit($id)
     {
         $subscription = $this->subscriptionService->findById($id);
+        $categories = $this->categoryRepository->getCategory(ICategoryType::SUBSCRIPTION)->pluck('name', 'id')->toArray();
         if($subscription){
-            return view('subscriptions.edit', compact('subscription'));
+            return view('subscriptions.edit', compact('subscription','categories'));
         }else{
             return view('subscriptions.edit')->with('error', 'No Information Founded !');
         }
