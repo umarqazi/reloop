@@ -58,4 +58,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Address::class);
     }
+
+    /**
+     * Method: userSubscription
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userSubscription()
+    {
+        return $this->hasMany(UserSubscription::class);
+    }
 }

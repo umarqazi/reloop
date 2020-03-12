@@ -134,4 +134,13 @@ class UserController extends Controller
             return redirect()->back()->with('error','Error While Deleting The User');
         }
     }
+
+    /**
+     * get all users with their subscriptions
+     */
+    public function userSubscription()
+    {
+        $data = $this->userService->getSelected(IUserType::HOUSE_HOLD);
+        return view('users.user-subscription');
+    }
 }

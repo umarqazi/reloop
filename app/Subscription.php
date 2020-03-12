@@ -31,4 +31,14 @@ class Subscription extends Model
         return $this->morphMany(Transaction::class, 'transactionable');
     }
 
+    /**
+     * Method: userSubscription
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userSubscription()
+    {
+        return $this->hasMany(UserSubscription::class);
+    }
+
 }
