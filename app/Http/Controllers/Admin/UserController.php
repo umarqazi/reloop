@@ -8,6 +8,7 @@ use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Repositories\Admin\CityRepo;
 use App\Repositories\Admin\UserSubscriptionRepo;
+use App\Repositories\Admin\DistrictRepo;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
@@ -16,12 +17,14 @@ class UserController extends Controller
 {
     private $userService;
     private $cityRepo;
+    private  $districtRepo;
     private $userSubscriptionRepo;
 
-    public function __construct(UserService $userService,CityRepo $cityRepo,UserSubscriptionRepo $userSubscriptionRepo)
+    public function __construct(UserService $userService,CityRepo $cityRepo,UserSubscriptionRepo $userSubscriptionRepo,DistrictRepo $districtRepo)
     {
         $this->userService = $userService;
         $this->cityRepo = $cityRepo;
+        $this->districtRepo = $districtRepo;
         $this->userSubscriptionRepo = $userSubscriptionRepo;
     }
 
@@ -50,7 +53,8 @@ class UserController extends Controller
     {
         $type = IUserType::HOUSE_HOLD;
         $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
-        return view('users.create', compact('type','cities'));
+        $districts = $this->districtRepo->all()->pluck('name', 'id')->toArray();
+        return view('users.create', compact('type','cities','districts'));
     }
 
     /**
@@ -94,8 +98,9 @@ class UserController extends Controller
         $type = IUserType::HOUSE_HOLD;
         $user = $this->userService->findById($id);
         $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
+        $districts = $this->districtRepo->all()->pluck('name', 'id')->toArray();
         if($user){
-            return view('users.edit', compact('user', 'type','cities'));
+            return view('users.edit', compact('user', 'type','cities','districts'));
         }else{
             return view('users.edit')->with('error', 'No Information Founded !');
         }

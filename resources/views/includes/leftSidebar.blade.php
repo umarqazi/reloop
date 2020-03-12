@@ -96,12 +96,6 @@
                     </a>
                 </li>
                 <li class="bold">
-                    <a href="{{ route('reward-point.index') }}">
-                        <i class="material-icons">account_circle</i>
-                        <span class="nav-text">Reward Points</span>
-                    </a>
-                </li>
-                <li class="bold">
                     <a href="{{ route('all-users') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Users Reward Points</span>

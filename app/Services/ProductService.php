@@ -7,8 +7,10 @@ namespace App\Services;
 use App\Category;
 use App\Forms\IForm;
 use App\Forms\Product\CategoryProductsForm;
+use App\Helpers\IResponseHelperInterface;
 use App\Product;
 use App\Subscription;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -35,6 +37,7 @@ class ProductService extends BaseService
      */
     public function __construct(Category $category, Product $product, Subscription $subscription)
     {
+        parent::__construct();
         $this->category = $category;
         $this->product = $product;
         $this->subscription = $subscription;
@@ -86,22 +89,34 @@ class ProductService extends BaseService
     {
         if ($category->fails())
         {
-            return $category->errors();
+            $responseData = [
+                'message' => Config::get('constants.RECORD_NOT_FOUND'),
+                'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'status' => false,
+                'data' => $category->errors()
+            ];
+            return $responseData;
         }
-        if($category->category_type == ICategoryType::SUBSCRIPTION){
 
-            $categoryProducts = $this->category->where([
-                'id' => $category->category_id,
-                'type' => $category->category_type
-            ])->with('subscriptions')->get();
-        } else {
+        $cat = $this->category->where('id', $category->category_id)->first();
+        if($cat){
 
-            $categoryProducts = $this->category->where([
-                'id' => $category->category_id,
-                'type' => $category->category_type
-            ])->with('products')->get();
+            if($cat->type == ICategoryType::SUBSCRIPTION){
+
+                $categoryProducts = $this->subscription->where('category_id', $category->category_id)->get();
+            } else {
+
+                $categoryProducts = $this->product->where('category_id', $category->category_id)->get();
+            }
         }
-        return $categoryProducts;
+
+        $responseData = [
+            'message' => Config::get('constants.PRODUCTS_SUCCESS'),
+            'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+            'status' => true,
+            'data' => $categoryProducts
+        ];
+        return $responseData;
     }
 
     /**

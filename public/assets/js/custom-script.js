@@ -156,8 +156,6 @@ $(document).ready(function () {
 
     function updateUser(action) {
         document.getElementById("user-update-form").reset();
-        // $('input[name="id"]').empty();
-        // $('input[name="reward_points"]').empty();
         $.ajax({
             type: "GET",
             url: action,
@@ -165,7 +163,7 @@ $(document).ready(function () {
                 let data = msg.response;
                 $('#userUpdateModal').modal('open');
                 $("#userUpdateModal form input[name='id']").val(data.id);
-                $("#userUpdateModal form input[name='reward_points']").val(data.reward_points);
+                $("#userUpdateModal form input[name='redeem_points']").attr('max', data.reward_points);
             }
         });
     }
@@ -200,6 +198,8 @@ $(document).ready(function () {
                     + '</td><td>' + view +'</td>';
                 $('#user-' + userId).closest('tr').html(trHTML);
                 $('#userUpdateModal').modal('close');
+                $('div#card-alert').removeClass('hide');
+                $('div#card-alert .card-content p').html('Reward Points Update Successfully');
                 bindUpdateUserEvent();
             },
             error: function (msg) {
