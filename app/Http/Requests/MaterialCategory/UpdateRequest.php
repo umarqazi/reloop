@@ -24,8 +24,11 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'    => 'required',
-            'status'  => 'required'
+            'name'          => 'required',
+            'status'        => 'required',
+            'quantity'      => 'required',
+            'unit'          => 'required',
+            'reward_points' => 'required',
         ];
     }
 }

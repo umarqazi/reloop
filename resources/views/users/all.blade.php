@@ -23,27 +23,16 @@
                 </div>
             </div>
 
-            @if ($message = Session::get('success'))
-                <div id="card-alert" class="card green">
-                    <div class="card-content white-text">
-                        <p>{{ $message }}</p>
-                    </div>
-                    <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-            @endif
 
-            @if ($message = Session::get('error'))
-                <div id="card-alert" class="card red">
-                    <div class="card-content white-text">
-                        <p>{{ $message }}</p>
-                    </div>
-                    <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+            <div id="card-alert" class="card green hide">
+                <div class="card-content white-text">
+                    <p></p>
                 </div>
-            @endif
+                <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
 
             <div id="table-datatables">
                 <div class="row">
@@ -106,10 +95,10 @@
 
                 <div class="modal-body">
                     <div class="form-group @if ($errors->has('reward_points')) has-error @endif">
-                        {!! Form::label('Reward Points') !!}
-                        {!! Form::number('reward_points', null, ['class' => 'form-control', 'placeholder' => 'Reward Points']) !!}
-                        @if ($errors->has('reward_points')) <p class="help-block">{{ $errors->first('reward_points') }}</p> @endif
-                        <p class="text-danger reward_points"></p>
+                        {!! Form::label('Redeem Points') !!}
+                        {!! Form::number('redeem_points', null, ['class' => 'form-control', 'placeholder' => 'Enter Redeem Points', 'min' => 0, 'max' => '', 'required']) !!}
+                        @if ($errors->has('redeem_points')) <p class="help-block">{{ $errors->first('redeem_points') }}</p> @endif
+                        <p class="text-danger redeem_points"></p>
                     </div>
                 </div>
 
