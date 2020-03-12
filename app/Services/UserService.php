@@ -228,28 +228,28 @@ class UserService extends BaseService
     }
 
     /**
-     * Method: getPasswordResetToken
+     * Method: getPasswordForgotToken
      *
-     * @param IForm $resetForm
+     * @param IForm $forgotForm
      *
-     * @return bool|mixed
+     * @return array
      */
-    public function getPasswordResetToken(IForm $resetForm)
+    public function getPasswordForgotToken(IForm $forgotForm)
     {
-        if($resetForm->fails())
+        if($forgotForm->fails())
         {
             $responseData = [
                 'message' => Config::get('constants.INVALID_OPERATION'),
                 'code' => IResponseHelperInterface::FAIL_RESPONSE,
                 'status' => false,
-                'data' => $resetForm->errors()
+                'data' => $forgotForm->errors()
             ];
             return $responseData;
         }
-        $model = $this->model->where('email', $resetForm->email)->first();
+        $model = $this->model->where('email', $forgotForm->email)->first();
         if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD)
         {
-            $this->emailNotificationService->passwordReset($resetForm->toArray());
+            $this->emailNotificationService->passwordReset($forgotForm->toArray());
 
             $successMessage = [
                 "ResetEmail" => [
