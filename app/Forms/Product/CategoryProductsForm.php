@@ -19,7 +19,6 @@ class CategoryProductsForm extends BaseForm
 {
 
     public $category_id;
-    public $category_type;
     /**
      * @inheritDoc
      */
@@ -27,7 +26,6 @@ class CategoryProductsForm extends BaseForm
     {
         return [
             'category_id' => $this->category_id,
-            'category_type' => $this->category_type
         ];
     }
 
@@ -37,8 +35,7 @@ class CategoryProductsForm extends BaseForm
     public function rules()
     {
         return [
-            'category_id' => 'required|integer',
-            'category_type' => 'required|integer'
+            'category_id' => 'required',
         ];
     }
 }
