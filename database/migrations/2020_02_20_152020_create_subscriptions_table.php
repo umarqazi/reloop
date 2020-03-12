@@ -20,8 +20,9 @@ class CreateSubscriptionsTable extends Migration
             $table->string('name');
             $table->integer('price');
             $table->text('description')->nullable();
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->integer('request_allowed');
+            $table->integer('category_type')->nullable();
             $table->boolean('status');
             $table->timestamps();
         });

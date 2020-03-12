@@ -54,7 +54,7 @@
                                 $route = ($type == 1) ? 'user' : (($type == 3) ? 'driver' : (($type == 4) ? 'supervisor' : ''));
                             }
                         @endphp
-                        @if($route != '')
+                        @if($route != '' && $type != 1)
                             <a class="btn btn-primary" href="{{ route($route.'.create') }}">Create</a>
                         @endif
                     </p>

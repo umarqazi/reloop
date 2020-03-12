@@ -139,7 +139,7 @@
                         <input type="file" class="form-control-file" name="avatar" id="avatar">
                     </div>
                 </div>
-
+                @if($type == 1)
                 <div id="input_fields_wrap" class="col s12">
                     <div class="adrs-title">
                         <h5>Address</h5>
@@ -165,11 +165,7 @@
                             <label>City</label>
                         </div>
                         <div class="input-field col s3">
-                            <select name="district"  id="district1" required>
-                                <option value="" disabled selected>Choose District</option>
-                                <option value="Qasur">Qasur</option>
-                                <option value="Okarda">Okarda</option>
-                            </select>
+                            {{ Form::select('district_id', (['' => 'Choose District'] + $districts), null, ['id' => 'district_id']) }}
                             <label>District</label>
                         </div>
                         <div class="input-field col s3">
@@ -185,6 +181,7 @@
                             <label for="unit-number">Unit Number</label>
                         </div>
                 </div>
+                @endif
 
                 <div class="col s12">
                     <div class="input-field col s12">

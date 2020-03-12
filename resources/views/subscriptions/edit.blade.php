@@ -81,11 +81,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    <select name="category_id" id="category_id" required>
-                        <option value="" disabled selected>Choose Subscription Category</option>
-                        <option value="1" {{ $subscription->category_id==1 ? 'selected': '' }}>Monthly Subscription</option>
-                        <option value="2" {{ $subscription->category_id==2 ? 'selected': '' }}>One Time Service</option>
-                    </select>
+                    {{ Form::select('category_id', (['' => 'Choose Subscription Category'] + $categories), $subscription->category_id, ['id' => 'subscription_category_id']) }}
                     <label>Subscription Category</label>
                     @if ($errors->has('category_id'))
                         <span class="help-block">
@@ -108,29 +104,23 @@
                 </div>
             </div>
             <div class="col s12">
-                <div class="input-field col s6">
-                    <input id="request_allowed" type="number" name="request_allowed" value="{{$subscription->request_allowed}}" required>
-                    <label for="request_allowed">Request(s) Allowed</label>
-                    @if ($errors->has('request_allowed'))
+                <div class="input-field col s6 subscription_request_allowed_input_field">
+                    @if($subscription->request_allowed !== null &&  $subscription->category_type == null)
+                    <input id="subscription_request_allowed" type="number" name="request_allowed" value="{{$subscription->request_allowed}}" required>
+                    <label for="subscription_request_allowed">Request(s) Allowed</label>
+                     @if ($errors->has('request_allowed'))
                         <span class="help-block">
                         <strong class="red-text">{{ $errors->first('request_allowed') }}</strong>
                     </span>
                     @endif
-                </div>
-                <div class="input-field col s6 ">
-                    <h6 class="custom-label">Update Avatar</h6>
-                    <input type="file" class="form-control-file" name="avatar" id="avatar">
-                </div>
-                @if ($errors->has('avatar'))
-                    <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('avatar') }}</strong>
-                    </span>
-                @endif
-            </div>
-            <div class="col s12">
-                <div class="col s6 box-image">
-                    <h6 class="custom-label">Avatar</h6>
-                    <img src="{{ \Illuminate\Support\Facades\Storage::disk(env('FILESYSTEM_DRIVER'))->url(config('filesystems.subscription_avatar_upload_path')).$subscription->avatar }}" alt="No Avatar">
+                    @else
+                        <select name="category_type"  id="subscription_category_type" required>
+                          <option value="" disabled selected>Choose Subscription Category Type</option>
+                          <option value="Same Day" {{ $subscription->category_type==\App\Services\ISubscriptionSubType::SAME_DAY ? 'selected': '' }} >Same Day</option>
+                          <option value="Next Day" {{ $subscription->category_type==\App\Services\ISubscriptionSubType::NEXT_DAY ? 'selected': '' }} >Next Day</option>
+                         </select>
+                         <label for="subscription_category_type">Subscription Category Type</label>
+                    @endif
                 </div>
             </div>
             <div class="col s12">

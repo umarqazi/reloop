@@ -84,7 +84,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    {{ Form::select('category_id', (['' => 'Choose Subscription Category'] + $categories), null, ['id' => 'category_id']) }}
+                    {{ Form::select('category_id', (['' => 'Choose Subscription Category'] + $categories), null, ['id' => 'subscription_category_id']) }}
                     <label>Subscription Category</label>
                     @if ($errors->has('category_id'))
                         <span class="help-block">
@@ -107,21 +107,12 @@
                 </div>
             </div>
             <div class="col s12">
-                <div class="input-field col s6">
-                    <input id="request_allowed" type="number" name="request_allowed" required>
-                    <label for="request_allowed">Request(s) Allowed</label>
+                <div class="input-field col s6 subscription_request_allowed_input_field">
+                    <input id="subscription_request_allowed" type="number" name="request_allowed" required>
+                    <label for="subscription_request_allowed">Request(s) Allowed</label>
                     @if ($errors->has('request_allowed'))
                         <span class="help-block">
                         <strong class="red-text">{{ $errors->first('request_allowed') }}</strong>
-                    </span>
-                    @endif
-                </div>
-                <div class="input-field col s6">
-                    <h6 class="custom-label">Avatar</h6>
-                    <input type="file" class="form-control-file" name="avatar" id="avatar">
-                    @if ($errors->has('avatar'))
-                        <br><span class="help-block">
-                        <strong class="red-text">{{ $errors->first('avatar') }}</strong>
                     </span>
                     @endif
                 </div>

@@ -54,7 +54,12 @@ $(document).ready(function () {
                 '                <div class="input-field col s3">\n' +
                 '                    <input id="unit-number[]" type="text" name="unit-number[]" required>\n' +
                 '                    <label for="unit-number[]">Unit Number</label>\n' +
-                '                </div></div>' +
+                '                </div>' +
+                '                <div class="input-field col s12">\n' +
+                '                    <input id="location[]" type="text" name="location[]" required>\n' +
+                '                    <label for="location[]">Location</label>\n' +
+                '                </div>' +
+                '                </div>' +
                 '<div> ');
         }
         $('#' + district_name).material_select();
@@ -82,6 +87,29 @@ $(document).ready(function () {
         x--;
     });
 
+    $( "#subscription_category_id" ).change(function() {
+        let subscription_category_value = $(this).val();
+        if(subscription_category_value == 2){
+            $('#subscription_request_allowed').remove();
+            $('label[for=subscription_request_allowed]').remove();
+            $('.subscription_request_allowed_input_field').append('' +
+                '                    <select name="category_type"  id="subscription_category_type" required>\n' +
+                '                        <option value="" disabled selected>Choose Subscription Category Type</option>\n' +
+                '                        <option value="1">Same Day</option>\n' +
+                '                        <option value="2">Next Day</option>\n' +
+                '                    </select>' +
+                '                    <label for="subscription_category_type">Subscription Category Type</label>');
+            $('#subscription_category_type').material_select();
+        }
+        else{
+            $('.subscription_request_allowed_input_field').html('');
+            $('.subscription_request_allowed_input_field').append('' +
+                '                    <input id="subscription_request_allowed" type="number" name="request_allowed" required>\n' +
+                '                    <label for="subscription_request_allowed">Request(s) Allowed</label>\n' +
+                '                    ');
+        }
+    });
+
     /**
      * author: Abdullah Wazir
     */
@@ -103,8 +131,6 @@ $(document).ready(function () {
 
     function updateUser(action) {
         document.getElementById("user-update-form").reset();
-        // $('input[name="id"]').empty();
-        // $('input[name="reward_points"]').empty();
         $.ajax({
             type: "GET",
             url: action,
@@ -112,7 +138,7 @@ $(document).ready(function () {
                 let data = msg.response;
                 $('#userUpdateModal').modal('open');
                 $("#userUpdateModal form input[name='id']").val(data.id);
-                $("#userUpdateModal form input[name='reward_points']").val(data.reward_points);
+                $("#userUpdateModal form input[name='redeem_points']").attr('max', data.reward_points);
             }
         });
     }
@@ -147,6 +173,8 @@ $(document).ready(function () {
                     + '</td><td>' + view +'</td>';
                 $('#user-' + userId).closest('tr').html(trHTML);
                 $('#userUpdateModal').modal('close');
+                $('div#card-alert').removeClass('hide');
+                $('div#card-alert .card-content p').html('Reward Points Update Successfully');
                 bindUpdateUserEvent();
             },
             error: function (msg) {

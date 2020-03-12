@@ -39,6 +39,7 @@ class CreateRequest extends FormRequest
             'street'              => 'required',
             'floor'               => 'required',
             'unit-number'         => 'required',
+            'location'            => 'required',
         ];
     }
 

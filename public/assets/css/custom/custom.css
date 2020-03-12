@@ -118,4 +118,25 @@ h6.custom-label {
     border-radius: 100%;
     font-size: 10px;
 }
+.logout-btn{
+    width: 100%;
+    font-weight: 400 !important;
+}
+ul.side-nav .collapsible-header.logout-btn:after {
+   display: none !important;
+}
+button i.material-icons {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 20px;
+}
+.collapsible-header.drop-down-logout-btn{
+    width: 100%;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
 
+.nav-wrapper .drop-down-logout-btn i {
+    height: 25px;
+    line-height: 25px;
+}

@@ -39,8 +39,11 @@
                             <i class="material-icons">lock_outline</i> Lock</a>
                     </li>
                     <li>
-                        <a href="{{ route('logout') }}" class="grey-text text-darken-1">
-                            <i class="material-icons">keyboard_tab</i> Logout</a>
+                        {{ Form::open(['url' => route('logout'),
+                                   'method' => 'POST',]) }}
+
+                        <button type="submit" class="collapsible-header drop-down-logout-btn  waves-effect waves-cyan"><i class="material-icons">keyboard_tab</i>  Logout</button>
+                        {{ Form::close() }}
                     </li>
                 </ul>
             </div>

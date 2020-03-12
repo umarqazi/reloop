@@ -29,20 +29,7 @@ class CreateRequest extends FormRequest
             'description'            => 'required',
             'category_id'            => 'required',
             'status'                 => 'required',
-            'request_allowed'        => 'required|numeric',
-            'avatar'                 => 'required|mimes:jpeg,jpg,png,gif'
         ];
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'avatar.required'  => 'Avatar is required.',
-        ];
-    }
 }

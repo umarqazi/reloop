@@ -91,12 +91,6 @@
                     </a>
                 </li>
                 <li class="bold">
-                    <a href="{{ route('reward-point.index') }}">
-                        <i class="material-icons">account_circle</i>
-                        <span class="nav-text">Reward Points</span>
-                    </a>
-                </li>
-                <li class="bold">
                     <a href="{{ route('all-users') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Users Reward Points</span>
@@ -108,10 +102,11 @@
                         <span class="nav-text">Geographical Zones</span>
                     </a>
                 </li><li class="bold">
-                    <a class="collapsible-header  waves-effect waves-cyan" href="{{ route('logout') }}">
-                        <i class="material-icons">account_circle</i>
-                        <span class="nav-text">Logout</span>
-                    </a>
+                    {{ Form::open(['url' => route('logout'),
+                                   'method' => 'POST',]) }}
+
+                    <button type="submit" class="collapsible-header logout-btn  waves-effect waves-cyan"><i class="material-icons">account_circle</i>Logout</button>
+                    {{ Form::close() }}
                 </li>
             </ul>
         </li>

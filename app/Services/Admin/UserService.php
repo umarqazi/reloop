@@ -74,15 +74,7 @@ class UserService extends BaseService
         if($user){
                 $address = array(
                     'user_id'         => $user->id,
-                    'city_id'         => $data['city_id'],
                     'location'        => $data['location'],
-                    'type'            => $data['type'],
-                    'no_of_bedrooms'  => $data['bedrooms'],
-                    'no_of_occupants' => $data['occupants'],
-                    'district'        => $data['district'],
-                    'street'          => $data['street'],
-                    'floor'           => $data['floor'],
-                    'unit_number'     => $data['unit-number'],
                 );
 
                 $this->addressRepo->create($address);
@@ -135,19 +127,30 @@ class UserService extends BaseService
 
         if($user){
 
-            $address = array(
-                'city_id'         => $data['city_id'],
-                'location'        => $data['location'],
-                'type'            => $data['type'],
-                'no_of_bedrooms'  => $data['bedrooms'],
-                'no_of_occupants' => $data['occupants'],
-                'district'        => $data['district'],
-                'street'          => $data['street'],
-                'floor'           => $data['floor'],
-                'unit_number'     => $data['unit-number'],
-            );
+            if($data['user_type'] == IUserType::HOUSE_HOLD){
+                $update_address = array(
+                    'city_id'         => $request['city_id'],
+                    'location'        => $request['location'],
+                    'type'            => $request['type'],
+                    'no_of_bedrooms'  => $request['bedrooms'],
+                    'no_of_occupants' => $request['occupants'],
+                    'district_id'     => $request['district_id'],
+                    'street'          => $request['street'],
+                    'floor'           => $request['floor'],
+                    'unit_number'     => $request['unit-number'],
+                );
+            }
+            else{
+                $update_address = array(
+                    'location'        => $request['location'],
+                );
+            }
+            $user_addresses = $this->findById($id)->addresses;
 
-           $this->addressRepo->update($data['address-id'],$address);
+            if(sizeof($user_addresses) > 0){
+                $address_id  = $user_addresses[0]->id;
+                $this->addressRepo->update($address_id,$update_address);
+            }
 
             DB::commit();
             return true;
@@ -203,5 +206,15 @@ class UserService extends BaseService
 
         return $data;
 
+    }
+
+    public function update(int $id, array $data)
+    {
+        $user = $this->userRepo->findById($id);
+        $rewardPoints = $user->reward_points - $data['redeem_points'];
+        $data = array(
+            'reward_points' => $rewardPoints
+        );
+        return parent::update($id, $data);
     }
 }
