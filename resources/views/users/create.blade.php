@@ -165,11 +165,7 @@
                             <label>City</label>
                         </div>
                         <div class="input-field col s3">
-                            <select name="district"  id="district1" required>
-                                <option value="" disabled selected>Choose District</option>
-                                <option value="Qasur">Qasur</option>
-                                <option value="Okarda">Okarda</option>
-                            </select>
+                            {{ Form::select('district_id', (['' => 'Choose District'] + $districts), null, ['id' => 'district_id']) }}
                             <label>District</label>
                         </div>
                         <div class="input-field col s3">
