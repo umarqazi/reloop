@@ -25,7 +25,6 @@ class PasswordForgotForm extends BaseForm
     {
         return [
             'email'     => $this->email,
-            'token'  => $this->token
         ];
     }
 
@@ -36,7 +35,6 @@ class PasswordForgotForm extends BaseForm
     {
         return [
             'email' => 'required|email',
-            'token' => 'required'
         ];
     }
 }
