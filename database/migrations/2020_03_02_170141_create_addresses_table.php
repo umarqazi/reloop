@@ -20,13 +20,12 @@ class CreateAddressesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->unsignedBigInteger('city_id')->nullable();
-            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
 
             $table->text('location');
             $table->string('type')->nullable();
             $table->integer('no_of_bedrooms')->nullable();
             $table->integer('no_of_occupants')->nullable();
-            $table->string('district')->nullable();
             $table->string('street')->nullable();
             $table->string('floor')->nullable();
             $table->string('unit_number')->nullable();
