@@ -55,19 +55,20 @@ class ProductController extends Controller
         $categoryProductForm->loadFromArray($request->all());
         $categoryProducts = $this->productService->categoryProducts($categoryProductForm);
 
-        if (!$categoryProducts->isEmpty()){
+        if(array_key_exists('message', $categoryProducts)){
 
             return ResponseHelper::jsonResponse(
-                Config::get('constants.PRODUCTS_SUCCESS'),
-                IResponseHelperInterface::SUCCESS_RESPONSE,
-                true,
-                $categoryProducts
+                $categoryProducts['message'],
+                $categoryProducts['code'],
+                $categoryProducts['status'],
+                $categoryProducts['data']
             );
         }
         return ResponseHelper::jsonResponse(
-            Config::get('constants.RECORD_NOT_FOUND'),
+            Config::get('constants.INVALID_OPERATION'),
             IResponseHelperInterface::FAIL_RESPONSE,
-            false
+            false,
+            null
         );
     }
 }

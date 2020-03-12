@@ -1,31 +1,30 @@
 <?php
 
 
-namespace App\Forms\Product;
-
-
+namespace App\Forms\User;
 use App\Forms\BaseForm;
 
 /**
- * Class CategoryProductsForm
+ * Class PasswordForgotForm
  *
- * @package   App\Forms\Product
+ * @package   App\Forms\User
  * @author    Faisal Raza <faisal.raza@gems.techverx.com>
  * @copyright 2020 Techverx.com All rights reserved.
- * @since     Feb 28, 2020
+ * @since     Mar 12, 2020
  * @project   reloop
  */
-class CategoryProductsForm extends BaseForm
+class PasswordForgotForm extends BaseForm
 {
 
-    public $category_id;
+    public $email;
+    public $token;
     /**
      * @inheritDoc
      */
     public function toArray()
     {
         return [
-            'category_id' => $this->category_id,
+            'email'     => $this->email,
         ];
     }
 
@@ -35,7 +34,7 @@ class CategoryProductsForm extends BaseForm
     public function rules()
     {
         return [
-            'category_id' => 'required',
+            'email' => 'required|email',
         ];
     }
 }

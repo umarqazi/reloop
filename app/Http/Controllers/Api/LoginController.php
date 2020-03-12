@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Forms\User\LoginForm;
+use App\Forms\User\PasswordForgotForm;
 use App\Forms\User\PasswordResetForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
@@ -58,7 +59,21 @@ class LoginController extends Controller
     {
         $resetForm = new PasswordResetForm();
         $resetForm->loadFromArray($request->all());
-        $userEmail = $this->userService->getPasswordResetToken($resetForm);
+        $userEmail = $this->userService->getPasswordForgotToken($resetForm);
+
+        return ResponseHelper::jsonResponse(
+            $userEmail['message'],
+            $userEmail['code'],
+            $userEmail['status'],
+            $userEmail['data']
+        );
+    }
+
+    public function getPasswordForgotToken(Request $request)
+    {
+        $forgotForm = new PasswordForgotForm();
+        $forgotForm->loadFromArray($request->all());
+        $userEmail = $this->userService->getPasswordForgotToken($forgotForm);
 
         return ResponseHelper::jsonResponse(
             $userEmail['message'],

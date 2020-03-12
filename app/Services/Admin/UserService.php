@@ -127,11 +127,30 @@ class UserService extends BaseService
 
         if($user){
 
-            $address = array(
-                'location'        => $data['location'],
-            );
+            if($data['user_type'] == IUserType::HOUSE_HOLD){
+                $update_address = array(
+                    'city_id'         => $request['city_id'],
+                    'location'        => $request['location'],
+                    'type'            => $request['type'],
+                    'no_of_bedrooms'  => $request['bedrooms'],
+                    'no_of_occupants' => $request['occupants'],
+                    'district_id'     => $request['district_id'],
+                    'street'          => $request['street'],
+                    'floor'           => $request['floor'],
+                    'unit_number'     => $request['unit-number'],
+                );
+            }
+            else{
+                $update_address = array(
+                    'location'        => $request['location'],
+                );
+            }
+            $user_addresses = $this->findById($id)->addresses;
 
-           $this->addressRepo->update($data['address-id'],$address);
+            if(sizeof($user_addresses) > 0){
+                $address_id  = $user_addresses[0]->id;
+                $this->addressRepo->update($address_id,$update_address);
+            }
 
             DB::commit();
             return true;
