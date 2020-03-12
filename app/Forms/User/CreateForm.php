@@ -44,7 +44,7 @@ class CreateForm extends BaseForm
      */
     public function __construct()
     {
-        $this->status = false;
+        $this->status = 0;
         $this->api_token = str_random(60);
         $this->signup_token = str_random(30);
     }
