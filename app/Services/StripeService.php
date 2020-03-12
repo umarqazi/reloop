@@ -5,6 +5,12 @@ namespace App\Services;
 
 use App\Forms\IForm;
 use App\User;
+use Cartalyst\Stripe\Exception\BadRequestException;
+use Cartalyst\Stripe\Exception\CardErrorException;
+use Cartalyst\Stripe\Exception\InvalidRequestException;
+use Cartalyst\Stripe\Exception\NotFoundException;
+use Cartalyst\Stripe\Exception\ServerErrorException;
+use Cartalyst\Stripe\Exception\UnauthorizedException;
 use Cartalyst\Stripe\Stripe;
 
 class StripeService extends BaseService
@@ -88,19 +94,124 @@ class StripeService extends BaseService
      */
     public function buyPlan($data)
     {
-        $authUser = $this->user->where('id', auth()->id())->first();
+        try {
+            $authUser = $this->user->where('id', auth()->id())->first();
+            $token = $this->__createToken($data);
+            $this->__createCard($authUser->stripe_customer_id, $token);
 
-        $token = $this->__createToken($data);
-        $this->__createCard($authUser->stripe_customer_id, $token);
+            if (array_key_exists('plan_id', $data) && $data->subscription_type == ISubscriptionType::MONTHLY) {
 
-        if(array_key_exists('plan_id', $data) && $data['subscription_type'] == ISubscriptionType::MONTHLY) {
+                $makePayment = $this->__createSubscription($data, $authUser->stripe_customer_id);
+            } else {
 
-            $makePayment = $this->__createSubscription($data, $authUser->stripe_customer_id);
-        } else {
+                $makePayment = $this->__makePayment($data, $authUser->stripe_customer_id);
+            }
+            return $makePayment;
+        } catch (BadRequestException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (UnauthorizedException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (InvalidRequestException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (NotFoundException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (CardErrorException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (ServerErrorException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+        }
+        $responseData = [
+            'stripe_error' => [
+                'stripe_error_message' => $message
+            ]
+        ];
+        return $responseData;
+    }
+
+    /**
+     * Method: buyProduct
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function buyProduct($data)
+    {
+        try {
+
+            $authUser = $this->user->where('id', auth()->id())->first();
+
+            $token = $this->__createToken($data);
+            $this->__createCard($authUser->stripe_customer_id, $token);
 
             $makePayment = $this->__makePayment($data, $authUser->stripe_customer_id);
+
+            return $makePayment;
+        } catch (BadRequestException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (UnauthorizedException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (InvalidRequestException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (NotFoundException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (CardErrorException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
+
+        } catch (ServerErrorException $e){
+
+            $code = $e->getCode();
+            $message = $e->getMessage();
+            $type = $e->getErrorType();
         }
-        return $makePayment;
+        $responseData = [
+            'stripe_error' => [
+                'stripe_error_message' => $message
+            ]
+        ];
+        return $responseData;
     }
 
     /**
@@ -133,10 +244,10 @@ class StripeService extends BaseService
     {
         $token = $this->stripe->tokens()->create([
             'card' => [
-                'number'    => $data['card_number'],
-                'exp_month' => $data['exp_month'],
-                'cvc'       => $data['cvc'],
-                'exp_year'  => $data['exp_year'],
+                'number'    => $data->card_number,
+                'exp_month' => $data->exp_month,
+                'cvc'       => $data->cvc,
+                'exp_year'  => $data->exp_year
             ],
         ]);
 
@@ -155,7 +266,7 @@ class StripeService extends BaseService
     private function __createSubscription($data, $customerId)
     {
         $subscription = $this->stripe->subscriptions()->create($customerId, [
-            'plan' => $data['plan_id'],
+            'plan' => $data->plan_id,
         ]);
 
         return $subscription;
@@ -175,7 +286,7 @@ class StripeService extends BaseService
         $charge = $this->stripe->charges()->create([
             'customer' => $customerId,
             'currency' => config('constants.CURRENCY'),
-            'amount'   => $data['price'],
+            'amount'   => $data->total
         ]);
 
         return $charge;

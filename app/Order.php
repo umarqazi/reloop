@@ -15,5 +15,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Order extends Model
 {
-    protected $fillable = ['user_id','subtotal', 'discount_type', 'discount', 'coupon', 'total'];
+    protected $fillable = [
+        'user_id', 'order_number', 'subtotal', 'redeem_points', 'coupon_discount', 'total', 'first_name', 'last_name', 'email',
+        'phone_number', 'location', 'city', 'district'
+    ];
+
+    /**
+     * Method: userTransaction
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function userTransaction()
+    {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
 }

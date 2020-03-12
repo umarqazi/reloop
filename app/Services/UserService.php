@@ -74,10 +74,31 @@ class UserService extends BaseService
         // TODO: Implement remove() method.
     }
 
+    /**
+     * Method: updateTrips
+     *
+     * @param $data
+     *
+     * @return void
+     */
     public function updateTrips($data)
     {
         $model = $this->model->where('id', $data['user_id'])->first();
         $model->trips += $data['product_details']->request_allowed;
+        $model->save();
+    }
+
+    /**
+     * Method: updateRewardPoints
+     *
+     * @param $data
+     *
+     * @return void
+     */
+    public function updateRewardPoints($data)
+    {
+        $model = $this->model->where('id', $data['user_id'])->first();
+        $model->reward_points -= $data['request_data']['points_discount'];
         $model->save();
     }
 
