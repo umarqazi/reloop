@@ -103,10 +103,10 @@ class ProductService extends BaseService
 
             if($cat->type == ICategoryType::SUBSCRIPTION){
 
-                $categoryProducts = $this->subscription->where('category_id', $category->category_id)->get();
+                $categoryProducts = $this->subscription->where(['category_id' => $category->category_id, 'status' => true])->get();
             } else {
 
-                $categoryProducts = $this->product->where('category_id', $category->category_id)->get();
+                $categoryProducts = $this->product->where(['category_id' => $category->category_id, 'status' => true])->get();
             }
         }
 
@@ -129,5 +129,17 @@ class ProductService extends BaseService
     public function findSubscriptionById($id)
     {
         return $this->subscription->where('id', $id)->first();
+    }
+
+    /**
+     * Method: findProductById
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function findProductById($data)
+    {
+        return $this->product->find(array_column($data['products'], 'id'));
     }
 }

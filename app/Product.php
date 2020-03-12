@@ -22,13 +22,4 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    /**
-     * Method: userTransaction
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function userTransaction()
-    {
-        return $this->morphMany(Transaction::class, 'transactionable');
-    }
-
 }

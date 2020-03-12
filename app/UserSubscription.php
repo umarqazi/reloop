@@ -33,4 +33,13 @@ class UserSubscription extends Model
         return $this->belongsTo(Subscription::class, 'subscription_id');
     }
 
+    /**
+     * Method: userTransaction
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function userTransaction()
+    {
+        return $this->morphMany(Transaction::class, 'transactionable');
+    }
 }

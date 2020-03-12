@@ -78,5 +78,7 @@ class UserSubscriptionService extends BaseService
         $model->end_date = $endTime;
         $model->trips = $data['product_details']->request_allowed;
         $model->save();
+
+        return $model;
     }
 }

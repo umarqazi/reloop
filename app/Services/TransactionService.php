@@ -51,13 +51,29 @@ class TransactionService extends BaseService
         // TODO: Implement remove() method.
     }
 
-    public function create($data)
+    public function buyPlanTransaction($data, $transactionable)
     {
         $model = $this->model;
         $model->user_id = $data['user_id'];
-        $model->transactionable_id = $data['product_details']->id;
-        $model->transactionable_type = $data['product_details']->getMorphClass();
-        $model->price = $data['product_details']->price;
+        $model->transactionable_id = $transactionable->id;
+        $model->transactionable_type = $transactionable->getMorphClass();
+
+        if (array_key_exists('plan', $data['stripe_response'])) {
+            $processedData = $data['stripe_response']['plan'];
+        } else {
+            $processedData = $data['stripe_response'];
+        }
+        $model->total = $processedData['amount']/100;
+        $model->save();
+    }
+
+    public function buyProductTransaction($data, $transactionable)
+    {
+        $model = $this->model;
+        $model->user_id = $data['user_id'];
+        $model->transactionable_id = $transactionable->id;
+        $model->transactionable_type = $transactionable->getMorphClass();
+        $model->total = $data['stripe_response']['amount']/100;
         $model->save();
     }
 }

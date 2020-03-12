@@ -2,20 +2,34 @@
 
 
 namespace App\Services;
+use App\Coupon;
 use App\Forms\IForm;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class OrderItemService
+ * Class CouponService
  *
  * @package   App\Services
  * @author    Faisal Raza <faisal.raza@gems.techverx.com>
  * @copyright 2020 Techverx.com All rights reserved.
- * @since     Mar 06, 2020
+ * @since     Mar 12, 2020
  * @project   reloop
  */
-class OrderItemService extends BaseService
+class CouponService extends BaseService
 {
+
+    /**
+     * Property: model
+     *
+     * @var Coupon
+     */
+    private $model;
+
+    public function __construct(Coupon $model)
+    {
+        parent::__construct();
+        $this->model = $model;
+    }
 
     /**
      * @inheritDoc
@@ -30,7 +44,7 @@ class OrderItemService extends BaseService
      */
     public function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->model->find($id);
     }
 
     /**
@@ -39,10 +53,5 @@ class OrderItemService extends BaseService
     public function remove($id)
     {
         // TODO: Implement remove() method.
-    }
-
-    public function create()
-    {
-
     }
 }

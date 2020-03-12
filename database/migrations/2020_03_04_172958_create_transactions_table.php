@@ -20,7 +20,7 @@ class CreateTransactionsTable extends Migration
 
             $table->integer('transactionable_id')->nullable();
             $table->string('transactionable_type')->nullable();
-            $table->double('price');
+            $table->double('total');
             $table->timestamps();
         });
     }
