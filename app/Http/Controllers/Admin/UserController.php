@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Repositories\Admin\CityRepo;
+use App\Repositories\Admin\UserSubscriptionRepo;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
@@ -15,11 +16,13 @@ class UserController extends Controller
 {
     private $userService;
     private $cityRepo;
+    private $userSubscriptionRepo;
 
-    public function __construct(UserService $userService,CityRepo $cityRepo)
+    public function __construct(UserService $userService,CityRepo $cityRepo,UserSubscriptionRepo $userSubscriptionRepo)
     {
         $this->userService = $userService;
         $this->cityRepo = $cityRepo;
+        $this->userSubscriptionRepo = $userSubscriptionRepo;
     }
 
     /**
@@ -140,7 +143,7 @@ class UserController extends Controller
      */
     public function userSubscription()
     {
-        $data = $this->userService->getSelected(IUserType::HOUSE_HOLD);
-        return view('users.user-subscription');
+        $userSubscriptions = $this->userSubscriptionRepo->all();
+        return view('users.user-subscription',compact('userSubscriptions'));
     }
 }
