@@ -9,6 +9,6 @@ class MaterialCategory extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'description', 'avatar', 'status'];
+    protected $fillable = ['name', 'description', 'avatar', 'status', 'quantity', 'unit', 'reward_points'];
 
 }

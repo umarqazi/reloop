@@ -207,4 +207,14 @@ class UserService extends BaseService
         return $data;
 
     }
+
+    public function update(int $id, array $data)
+    {
+        $user = $this->userRepo->findById($id);
+        $rewardPoints = $user->reward_points - $data['redeem_points'];
+        $data = array(
+            'reward_points' => $rewardPoints
+        );
+        return parent::update($id, $data);
+    }
 }

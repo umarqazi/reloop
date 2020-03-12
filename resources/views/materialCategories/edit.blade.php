@@ -89,6 +89,38 @@
                             <input type="file" class="form-control-file" name="avatar" id="avatar" >
                         </div>
                     </div>
+                    <div id="input_fields_wrap" class="col s12 mt-5">
+                        <div class="adrs-title col s12">
+                            <h5>Reward Points</h5>
+                        </div>
+                        <div class="input-field col s4">
+                            <input id="quantity" name="quantity" type="number" class="validate" value="{{ $materialCategory->quantity }}">
+                            <label for="quantity">Quantity</label>
+                            @if ($errors->has('quantity'))
+                                <span class="help-block">
+                                <strong class="red-text">{{ $errors->first('quantity') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                        <div class="input-field col s4">
+                            {{ Form::select('unit', (['' => 'Choose Unit'] + $units), $materialCategory->unit, ['id' => 'unit']) }}
+                            <label for="unit">Product Category</label>
+                            @if ($errors->has('unit'))
+                                <span class="help-block">
+                                <strong class="red-text">{{ $errors->first('unit') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                        <div class="input-field col s4">
+                            <input id="reward_points" name="reward_points" type="number" class="validate" value="{{ $materialCategory->reward_points }}">
+                            <label for="reward-points">Reward Points</label>
+                            @if ($errors->has('reward_points'))
+                                <span class="help-block">
+                                <strong class="red-text">{{ $errors->first('reward_points') }}</strong>
+                            </span>
+                            @endif
+                        </div>
+                    </div>
 
                     <div class="col s12">
                         <div class="input-field col s12">

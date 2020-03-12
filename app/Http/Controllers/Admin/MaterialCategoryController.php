@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MaterialCategory\CreateRequest;
 use App\Http\Requests\MaterialCategory\UpdateRequest;
 use App\Services\Admin\MaterialCategoryService;
+use Illuminate\Support\Facades\Config;
 
 class MaterialCategoryController extends Controller
 {
@@ -41,7 +42,8 @@ class MaterialCategoryController extends Controller
      */
     public function create()
     {
-        return view('materialCategories.create');
+        $units = Config::get('global.Unit');
+        return view('materialCategories.create', compact('units'));
     }
 
     /**
@@ -83,9 +85,10 @@ class MaterialCategoryController extends Controller
      */
     public function edit($id)
     {
+        $units = Config::get('global.Unit');
         $materialCategory = $this->materialCategoryService->findById($id);
         if($materialCategory){
-            return view('materialCategories.edit', compact('materialCategory'));
+            return view('materialCategories.edit', compact('materialCategory', 'units'));
         }else{
             return view('materialCategories.edit')->with('empty', 'No Information Founded !');
         }
