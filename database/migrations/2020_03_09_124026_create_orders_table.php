@@ -21,17 +21,16 @@ class CreateOrdersTable extends Migration
 
             $table->string('order_number');
             $table->double('subtotal');
-            $table->string('discount_type')->nullable();
-            $table->double('discount')->nullable();
-            $table->string('coupon')->nullable();
+            $table->double('redeem_points')->nullable();
+            $table->string('coupon_discount')->nullable();
             $table->double('total');
-            $table->string('location')->nullable();
-
-            $table->unsignedBigInteger('city_id')->nullable();
-            $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
-
-            $table->unsignedBigInteger('district_id')->nullable();
-            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email');
+            $table->string('phone_number');
+            $table->string('location');
+            $table->string('city');
+            $table->string('district');
 
             $table->timestamps();
         });

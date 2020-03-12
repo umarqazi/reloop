@@ -23,4 +23,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('categories', 'Api\ProductController@categories');
     Route::get('category/products/', 'Api\ProductController@categoryProducts');
     Route::post('buy-plan', 'Api\PaymentController@buyPlan');
+    Route::post('buy-product', 'Api\PaymentController@buyProduct');
 });

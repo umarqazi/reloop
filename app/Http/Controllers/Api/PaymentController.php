@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Forms\Checkout\BuyPlanForm;
+use App\Forms\Checkout\BuyProductForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
-use App\Jobs\SaveOrderDetailsJob;
-use App\Jobs\SaveSubscriptionDetailsJob;
-use App\Services\ProductService;
-use App\Services\StripeService;
-use Carbon\Carbon;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
@@ -25,68 +23,78 @@ use Illuminate\Support\Facades\Config;
 class PaymentController extends Controller
 {
     /**
-     * Property: stripeService
+     * Property: paymentService
      *
-     * @var StripeService
+     * @var PaymentService
      */
-    private $stripeService;
-    /**
-     * Property: productService
-     *
-     * @var ProductService
-     */
-    private $productService;
-    /**
-     * Property: order_number
-     *
-     * @var string
-     */
-    private $order_number;
+    private $paymentService;
 
-    public function __construct(StripeService $stripeService, ProductService $productService)
+    /**
+     * PaymentController constructor.
+     * @param PaymentService $paymentService
+     */
+    public function __construct(PaymentService $paymentService)
     {
-        $this->stripeService = $stripeService;
-        $this->productService = $productService;
-        $this->order_number = 'RE'.strtotime(now());
+        $this->paymentService = $paymentService;
     }
 
+    /**
+     * Method: buyPlan
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function buyPlan(Request $request)
     {
-        $requestData = $request->all();
-        $userId = auth()->id();
-        $planDetails = $this->productService->findSubscriptionById($requestData['subscription_id']);
+        $buyPlanForm = new BuyPlanForm();
+        $buyPlanForm->loadFromArray($request->all());
 
-        if(!empty($planDetails)){
+        $buyPlan = $this->paymentService->buyPlan($buyPlanForm);
+        if(!empty($buyPlan)){
 
-            $makePayment = $this->stripeService->buyPlan($requestData);
-
-            if(!empty($makePayment)){
-
-                $data = [
-                    'stripe_response' => $makePayment,
-                    'product_details' => $planDetails,
-                    'user_id'         => $userId,
-                    'order_number'    => $this->order_number
-                ];
-                $reponseData = [
-                    'buy_plan' => [
-                        'Your subscription number is '.$this->order_number
-                    ]
-                ];
-
-                SaveSubscriptionDetailsJob::dispatch($data);
-                return ResponseHelper::jsonResponse(
-                    Config::get('constants.ORDER_SUCCESSFUL'),
-                    IResponseHelperInterface::SUCCESS_RESPONSE,
-                    true,
-                    $reponseData
-                );
-            }
+            return ResponseHelper::jsonResponse(
+                $buyPlan['message'],
+                $buyPlan['code'],
+                $buyPlan['status'],
+                $buyPlan['data']
+            );
         }
         return ResponseHelper::jsonResponse(
             Config::get('constants.INVALID_OPERATION'),
             IResponseHelperInterface::FAIL_RESPONSE,
-            false
+            false,
+            null
+        );
+    }
+
+    /**
+     * Method: buyProduct
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function buyProduct(Request $request)
+    {
+        $buyProductForm = new BuyProductForm();
+        $buyProductForm->loadFromArray($request->all());
+
+        $buyProduct = $this->paymentService->buyProduct($buyProductForm, $request->all());
+        if(!empty($buyProduct)){
+
+            return ResponseHelper::jsonResponse(
+                $buyProduct['message'],
+                $buyProduct['code'],
+                $buyProduct['status'],
+                $buyProduct['data']
+            );
+        }
+        return ResponseHelper::jsonResponse(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
         );
     }
 }

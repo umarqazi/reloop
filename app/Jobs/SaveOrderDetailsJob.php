@@ -2,11 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Services\PaymentService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\App;
 
 /**
  * Class SaveOrderDetailsJob
@@ -27,9 +29,9 @@ class SaveOrderDetailsJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data)
     {
-
+        $this->data = $data;
     }
 
     /**
@@ -39,6 +41,8 @@ class SaveOrderDetailsJob implements ShouldQueue
      */
     public function handle()
     {
-
+        /** @var PaymentService $paymentService */
+        $paymentService = App::make(PaymentService::class);
+        $paymentService->afterBuyProduct($this->data);
     }
 }
