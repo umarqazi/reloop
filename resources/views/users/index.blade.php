@@ -100,7 +100,7 @@
                                 <th>User ID</th>
                                 <th>User Name</th>
                                 <th>User Type</th>
-                                <th>Earned points</th>
+                                <th>Rewards Points</th>
                                 <th>User status</th>
                                 {{--<th>Total Orders</th>
                                 <th>Last Activity</th>--}}

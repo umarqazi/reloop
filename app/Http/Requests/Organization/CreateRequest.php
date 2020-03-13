@@ -35,7 +35,7 @@ class CreateRequest extends FormRequest
             'bedrooms'            => 'required',
             'occupants'           => 'required',
             'city_id'             => 'required',
-            'district'            => 'required',
+            'district_id'         => 'required',
             'street'              => 'required',
             'floor'               => 'required',
             'unit-number'         => 'required',
