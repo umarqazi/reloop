@@ -72,7 +72,7 @@ class OrderItemService extends BaseService
                 'order_id'   => $orderService->id,
                 'product_id' => $product->id,
                 'price'      => $product->price,
-                'quantity'   => (int)$data['request_data']['products'][$count]['qty']
+                'quantity'   => (int)$data['request_data']->products[$count]['qty']
             ];
             $count++;
         }
