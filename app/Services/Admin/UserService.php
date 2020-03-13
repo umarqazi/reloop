@@ -217,4 +217,14 @@ class UserService extends BaseService
         );
         return parent::update($id, $data);
     }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
+    public function userUpdate(int $id, array $data)
+    {
+        return parent::update($id, $data);
+    }
 }

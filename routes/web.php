@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/activate-account/{id}/{token}', 'UserController@accountVerification');
     Route::get('/thankyou', 'PageController@thankyou')->name('thankyou');
     Route::get('/cities', 'Admin\CityController@index')->name('cities');
+    Route::get('/districts', 'Admin\DistrictController@index')->name('districts');
     Route::resource('product', 'Admin\ProductController');
     Route::resource('subscription', 'Admin\SubscriptionController');
     Route::resource('user', 'Admin\UserController');
