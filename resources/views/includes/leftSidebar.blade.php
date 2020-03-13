@@ -45,7 +45,6 @@
                             </li>
                         </ul>
                     </div>
-
                 </li>
                 <li class="bold">
                     <a href="{{ route('organization.index') }}">
@@ -57,6 +56,16 @@
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Orders</span>
                     </a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li>
+                                <a href="{{ route('order.index') }}">
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                    <span>User Orders</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li><li class="bold">
                     <a href="{{ route('material-category.index') }}">
                         <i class="material-icons">account_circle</i>
