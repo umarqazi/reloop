@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Repositories\Admin\CityRepo;
+use App\Repositories\Admin\UserSubscriptionRepo;
 use App\Repositories\Admin\DistrictRepo;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
@@ -17,12 +18,14 @@ class UserController extends Controller
     private $userService;
     private $cityRepo;
     private  $districtRepo;
+    private $userSubscriptionRepo;
 
-    public function __construct(UserService $userService,CityRepo $cityRepo,DistrictRepo $districtRepo)
+    public function __construct(UserService $userService,CityRepo $cityRepo,UserSubscriptionRepo $userSubscriptionRepo,DistrictRepo $districtRepo)
     {
         $this->userService = $userService;
         $this->cityRepo = $cityRepo;
         $this->districtRepo = $districtRepo;
+        $this->userSubscriptionRepo = $userSubscriptionRepo;
     }
 
     /**
@@ -138,5 +141,14 @@ class UserController extends Controller
         } else {
             return redirect()->back()->with('error','Error While Deleting The User');
         }
+    }
+
+    /**
+     * get all users with their subscriptions
+     */
+    public function userSubscription()
+    {
+        $userSubscriptions = $this->userSubscriptionRepo->all();
+        return view('users.user-subscription',compact('userSubscriptions'));
     }
 }

@@ -123,6 +123,31 @@ $(document).ready(function () {
         }
     });
 
+    $( ".getSubscription" ).click(function() {
+        let subscription_id = $(this).attr('id');
+        let route = 'subscription/'+ subscription_id;
+
+        $("#userSubscriptionModal input[id='subscription-name']").empty();
+        $("#userSubscriptionModal input[id='subscription-price']").empty();
+        $("#userSubscriptionModal textarea[id='subscription-description']").empty();
+        $("#userSubscriptionModal input[id='subscription-request-allowed']").empty();
+        $("#userSubscriptionModal input[id='subscription-category']").empty();
+
+        $.ajax({
+            type: "GET",
+            url:  route,
+            success: function (data) {
+                $("#userSubscriptionModal input[id='subscription-name']").val(data.name);
+                $("#userSubscriptionModal input[id='subscription-price']").val(data.price);
+                $("#userSubscriptionModal textarea[id='subscription-description']").text(data.description);
+                $("#userSubscriptionModal input[id='subscription-request-allowed']").val(data.request_allowed);
+                $("#userSubscriptionModal input[id='subscription-category']").val(data.category.name);
+
+                $('#userSubscriptionModal').modal('open');
+            }
+        });
+    });
+
     /**
      * author: Abdullah Wazir
     */
