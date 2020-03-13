@@ -72,7 +72,15 @@ class SubscriptionController extends Controller
      */
     public function show($id)
     {
-        //
+        $subscription = $this->subscriptionService->findById($id);
+        $subscription->category = $subscription->category;
+
+        if($subscription){
+            return $subscription;
+        }
+        else{
+            return 'error';
+        }
     }
 
     /**

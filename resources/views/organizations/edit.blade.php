@@ -137,7 +137,7 @@
                         </div>
                         <div class="input-field col s3">
                             <input id="bedrooms[]" type="number" name="bedrooms[]" value="{{ $address->no_of_bedrooms }}" required>
-                            <label for="bedrooms[]"">No of Bedrooms</label>
+                            <label for="bedrooms[]">No of Bedrooms</label>
                         </div>
                         <div class="input-field col s3">
                             <input id="occupants[]" type="number" name="occupants[]" value="{{ $address->no_of_occupants }}"  required>
@@ -148,11 +148,7 @@
                             <label>City</label>
                         </div>
                         <div class="input-field col s3">
-                            <select name="district[]"  id="district1" required>
-                                <option value="" disabled selected>Choose District</option>
-                                <option value="Qasur" {{ $address->district=='Qasur' ? 'selected': '' }} >Qasur</option>
-                                <option value="Okarda" {{ $address->district=='Okarda' ? 'selected': '' }}>Okarda</option>
-                            </select>
+                            {{ Form::select('district_id[]', (['' => 'Choose District'] + $districts), $address->district_id , ['id' => 'district_id']) }}
                             <label>District</label>
                         </div>
                         <div class="input-field col s3">

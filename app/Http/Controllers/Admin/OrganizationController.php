@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Organization\CreateRequest;
 use App\Http\Requests\Organization\UpdateRequest;
 use App\Repositories\Admin\CityRepo;
+use App\Repositories\Admin\DistrictRepo;
 use App\Repositories\Admin\SectorRepo;
 use App\Services\Admin\OrganizationService;
 use App\Services\ICategoryType;
@@ -17,14 +18,16 @@ class OrganizationController extends Controller
     private $organizationService ;
     private $sectorRepo ;
     private $cityRepo ;
+    private $districtRepo ;
 
     /**
      * OrganizationController constructor.
      */
-    public function __construct(OrganizationService $productService,SectorRepo $sectorRepo,CityRepo $cityRepo) {
+    public function __construct(OrganizationService $productService,SectorRepo $sectorRepo,CityRepo $cityRepo,DistrictRepo $districtRepo) {
         $this->organizationService   =  $productService;
         $this->sectorRepo            =  $sectorRepo;
         $this->cityRepo              =  $cityRepo;
+        $this->districtRepo          =  $districtRepo;
     }
 
 
@@ -46,9 +49,10 @@ class OrganizationController extends Controller
      */
     public function create()
     {
-        $sectors = $this->sectorRepo->all()->pluck('name', 'id')->toArray();
-        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
-        return view('organizations.create', compact('sectors','cities'));
+        $sectors    = $this->sectorRepo->all()->pluck('name', 'id')->toArray();
+        $cities     = $this->cityRepo->all()->pluck('name', 'id')->toArray();
+        $districts  = $this->districtRepo->all()->pluck('name', 'id')->toArray();
+        return view('organizations.create', compact('sectors','cities','districts'));
     }
 
     /**
@@ -92,9 +96,10 @@ class OrganizationController extends Controller
     {
         $sectors = $this->sectorRepo->all()->pluck('name', 'id')->toArray();
         $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
+        $districts  = $this->districtRepo->all()->pluck('name', 'id')->toArray();
         $organization = $this->organizationService->findById($id);
         if ($organization) {
-            return view('organizations.edit', compact('organization','sectors','cities'));
+            return view('organizations.edit', compact('organization','sectors','cities','districts'));
         } else {
             return view('organizations.edit')->with('error', 'No Information Founded !');
         }
