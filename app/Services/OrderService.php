@@ -53,24 +53,23 @@ class OrderService extends BaseService
 
     public function create($data)
     {
-
-        $city = App::make(CityService::class)->findById($data['request_data']['city_id']);
-        $district = App::make(DistrictService::class)->findById($data['request_data']['district_id']);
-        $coupon = App::make(CouponService::class)->findById($data['request_data']['coupon_id']);
+        $city = App::make(CityService::class)->findById($data['request_data']->city_id);
+        $district = App::make(DistrictService::class)->findById($data['request_data']->district_id);
+        $coupon = App::make(CouponService::class)->findById($data['request_data']->coupon_id);
 
         $model = $this->model;
         $model = $model->create([
             'user_id'         => $data['user_id'],
             'order_number'    => $data['order_number'],
-            'subtotal'        => $data['request_data']['subtotal'],
-            'redeem_points'   => $data['request_data']['points_discount'] ?? null,
+            'subtotal'        => $data['request_data']->subtotal,
+            'redeem_points'   => $data['request_data']->points_discount ?? null,
             'coupon_discount' => $coupon->code ?? null,
-            'total'           => $data['request_data']['total'],
-            'first_name'      => $data['request_data']['first_name'],
-            'last_name'       => $data['request_data']['last_name'],
-            'email'           => $data['request_data']['email'],
-            'phone_number'    => $data['request_data']['phone_number'],
-            'location'        => $data['request_data']['location'],
+            'total'           => $data['request_data']->total,
+            'first_name'      => $data['request_data']->first_name,
+            'last_name'       => $data['request_data']->last_name,
+            'email'           => $data['request_data']->email,
+            'phone_number'    => $data['request_data']->phone_number,
+            'location'        => $data['request_data']->location,
             'city'            => $city->name ?? null,
             'district'        => $district->name ?? null
         ]);

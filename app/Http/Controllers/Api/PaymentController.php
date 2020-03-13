@@ -80,7 +80,7 @@ class PaymentController extends Controller
         $buyProductForm = new BuyProductForm();
         $buyProductForm->loadFromArray($request->all());
 
-        $buyProduct = $this->paymentService->buyProduct($buyProductForm, $request->all());
+        $buyProduct = $this->paymentService->buyProduct($buyProductForm);
         if(!empty($buyProduct)){
 
             return ResponseHelper::jsonResponse(

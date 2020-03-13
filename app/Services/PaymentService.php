@@ -7,7 +7,6 @@ use App\Forms\Checkout\BuyPlanForm;
 use App\Forms\Checkout\BuyProductForm;
 use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
-use App\Helpers\ResponseHelper;
 use App\Jobs\SaveOrderDetailsJob;
 use App\Jobs\SaveSubscriptionDetailsJob;
 use Illuminate\Support\Facades\App;
@@ -89,6 +88,7 @@ class PaymentService extends BaseService
      */
     public function buyPlan(BuyPlanForm $buyPlanForm)
     {
+        /* @var BuyPlanForm $buyPlanForm */
         if($buyPlanForm->fails()){
 
             $responseData = [
@@ -142,12 +142,12 @@ class PaymentService extends BaseService
      * Method: buyProduct
      *
      * @param BuyProductForm $buyProductForm
-     * @param $requestData
      *
      * @return array
      */
-    public function buyProduct(BuyProductForm $buyProductForm, $requestData)
+    public function buyProduct(BuyProductForm $buyProductForm)
     {
+        /* @var BuyProductForm $buyProductForm */
         if($buyProductForm->fails()){
 
             $responseData = [
@@ -179,7 +179,7 @@ class PaymentService extends BaseService
                 $data = [
                     'stripe_response' => $makePayment,
                     'product_details' => $productDetails,
-                    'request_data'    => $requestData,
+                    'request_data'    => $buyProductForm,
                     'user_id'         => auth()->id(),
                     'order_number'    => $this->order_number
                 ];
@@ -225,7 +225,7 @@ class PaymentService extends BaseService
      */
     public function afterBuyProduct($data)
     {
-        if(!empty($data['request_data']['points_discount'])){
+        if(!empty($data['request_data']->points_discount)){
 
             $userService = App::make(UserService::class)->updateRewardPoints($data);
         }
