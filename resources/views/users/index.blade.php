@@ -63,7 +63,7 @@
                             <thead>
                             <tr>
                                 <th>User ID</th>
-                                <th>User Name</th>
+                                <th>User Email</th>
                                 <th>User Type</th>
                                 <th>Rewards Points</th>
                                 <th>User Status</th>
@@ -79,7 +79,7 @@
                                     @foreach($users as $user)
                                         <tr>
                                             <td>{{ $user->id }}</td>
-                                            <td>{{ $user->first_name .' '. $user->last_name}}</td>
+                                            <td>{{ $user->email }}</td>
                                                 <td>{{ ($user->user_type == \App\Services\IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == \App\Services\IUserType::DRIVER) ? 'Driver' : (($user->user_type == \App\Services\IUserType::SUPERVISOR) ? 'Supervisor' : '')) }}</td>
                                             <td>{{ $user->reward_points ?? '0' }}</td>
                                             <td>{{ ($user->status == 1) ? 'Active' : 'Inactive' }}</td>
@@ -98,7 +98,7 @@
                             <tfoot>
                             <tr>
                                 <th>User ID</th>
-                                <th>User Name</th>
+                                <th>User Email</th>
                                 <th>User Type</th>
                                 <th>Rewards Points</th>
                                 <th>User status</th>
