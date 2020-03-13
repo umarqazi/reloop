@@ -3,6 +3,8 @@
 
 namespace App\Services;
 
+use App\Forms\Checkout\BuyPlanForm;
+use App\Forms\Checkout\BuyProductForm;
 use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
@@ -81,12 +83,23 @@ class PaymentService extends BaseService
     /**
      * Method: buyPlan
      *
-     * @param $buyPlanForm
+     * @param BuyPlanForm $buyPlanForm
      *
      * @return array
      */
-    public function buyPlan($buyPlanForm)
+    public function buyPlan(BuyPlanForm $buyPlanForm)
     {
+        if($buyPlanForm->fails()){
+
+            $responseData = [
+                'message' => Config::get('constants.INVALID_OPERATION'),
+                'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'status' => false,
+                'data' => $buyPlanForm->errors()
+            ];
+            return $responseData;
+        }
+
         $planDetails = $this->productService->findSubscriptionById($buyPlanForm->subscription_id);
         if(!empty($planDetails)){
 
@@ -128,14 +141,25 @@ class PaymentService extends BaseService
     /**
      * Method: buyProduct
      *
-     * @param $buyProductForm
+     * @param BuyProductForm $buyProductForm
      * @param $requestData
      *
      * @return array
      */
-    public function buyProduct($buyProductForm, $requestData)
+    public function buyProduct(BuyProductForm $buyProductForm, $requestData)
     {
-        $productDetails = $this->productService->findProductById($requestData);
+        if($buyProductForm->fails()){
+
+            $responseData = [
+                'message' => Config::get('constants.INVALID_OPERATION'),
+                'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'status' => false,
+                'data' => $buyProductForm->errors()
+            ];
+            return $responseData;
+        }
+
+        $productDetails = $this->productService->findProductById($buyProductForm->products);
         if(!$productDetails->isEmpty()){
 
             $makePayment = $this->stripeService->buyProduct($buyProductForm);
@@ -207,6 +231,6 @@ class PaymentService extends BaseService
         }
         $orderService = App::make(OrderService::class)->create($data);
         $transaction = App::make(TransactionService::class)->buyProductTransaction($data, $orderService);
-        //$orderItemService = App::make(OrderItemService::class)->create($data, $orderService);
+        $orderItemService = App::make(OrderItemService::class)->insert($data, $orderService);
     }
 }

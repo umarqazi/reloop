@@ -3,6 +3,7 @@
 
 namespace App\Services;
 use App\Forms\IForm;
+use App\OrderItem;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -17,6 +18,18 @@ use Illuminate\Validation\ValidationException;
 class OrderItemService extends BaseService
 {
 
+    /**
+     * Property: orderItem
+     *
+     * @var OrderItem
+     */
+    private $orderItem;
+
+    public function __construct(OrderItem $orderItem)
+    {
+        parent::__construct();
+        $this->orderItem = $orderItem;
+    }
     /**
      * @inheritDoc
      */
@@ -41,8 +54,28 @@ class OrderItemService extends BaseService
         // TODO: Implement remove() method.
     }
 
-    public function create()
+    /**
+     * Method: insert
+     *
+     * @param $data
+     * @param $orderService
+     *
+     * @return void
+     */
+    public function insert($data, $orderService)
     {
+        $count = 0;
+        foreach ($data['product_details'] as $product){
 
+            $orderItems[] = [
+                'user_id'    => $data['user_id'],
+                'order_id'   => $orderService->id,
+                'product_id' => $product->id,
+                'price'      => $product->price,
+                'quantity'   => (int)$data['request_data']['products'][$count]['qty']
+            ];
+            $count++;
+        }
+        $this->orderItem->insert($orderItems);
     }
 }
