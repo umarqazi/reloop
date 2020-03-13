@@ -47,6 +47,12 @@
                     </div>
                 </li>
                 <li class="bold">
+                    <a href="{{ route('user-subscription') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">User Subscription</span>
+                    </a>
+                </li>
+                <li class="bold">
                     <a href="{{ route('organization.index') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Organizations</span>

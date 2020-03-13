@@ -36,10 +36,7 @@ $(document).ready(function () {
                 '                    <label>City</label>\n' +
                 '                </div>\n' +
                 '                <div class="input-field col s3">\n' +
-                '                    <select name="district[]"  id="district' + x + '" required>\n' +
-                '                        <option value="" disabled selected>Choose District</option>\n' +
-                '                        <option value="Qasur">Qasur</option>\n' +
-                '                        <option value="Okarda">Okarda</option>\n' +
+                '                    <select name="district_id[]"  id="district' + x + '" required>\n' +
                 '                    </select>\n' +
                 '                    <label>District</label>\n' +
                 '                </div>\n' +
@@ -62,7 +59,7 @@ $(document).ready(function () {
                 '                </div>' +
                 '<div> ');
         }
-        $('#' + district_name).material_select();
+
         $('#' + type_name).material_select();
         var select = $('#' + city_name);
 
@@ -80,7 +77,23 @@ $(document).ready(function () {
                 }
             }
         });
+
+        //ajax call to append districts from backend
+        $.ajax({
+            type: "get",
+            url: "/districts",
+            success: function (res) {
+                $('#' + district_name).append('<option value="" disabled selected >Choose District</option>');
+                if (res) {
+                    $.each(res, function (key, value) {
+                        $('#' + district_name).append('<option value="' + key + '">' + value + '</option>');
+                    });
+                    $('#' + district_name).material_select();
+                }
+            }
+        });
     });
+
     $(wrapper).on("click", ".remove-append", function (e) {
         e.preventDefault();
         $(this).parent('div').remove();
@@ -108,6 +121,31 @@ $(document).ready(function () {
                 '                    <label for="subscription_request_allowed">Request(s) Allowed</label>\n' +
                 '                    ');
         }
+    });
+
+    $( ".getSubscription" ).click(function() {
+        let subscription_id = $(this).attr('id');
+        let route = 'subscription/'+ subscription_id;
+
+        $("#userSubscriptionModal input[id='subscription-name']").empty();
+        $("#userSubscriptionModal input[id='subscription-price']").empty();
+        $("#userSubscriptionModal textarea[id='subscription-description']").empty();
+        $("#userSubscriptionModal input[id='subscription-request-allowed']").empty();
+        $("#userSubscriptionModal input[id='subscription-category']").empty();
+
+        $.ajax({
+            type: "GET",
+            url:  route,
+            success: function (data) {
+                $("#userSubscriptionModal input[id='subscription-name']").val(data.name);
+                $("#userSubscriptionModal input[id='subscription-price']").val(data.price);
+                $("#userSubscriptionModal textarea[id='subscription-description']").text(data.description);
+                $("#userSubscriptionModal input[id='subscription-request-allowed']").val(data.request_allowed);
+                $("#userSubscriptionModal input[id='subscription-category']").val(data.category.name);
+
+                $('#userSubscriptionModal').modal('open');
+            }
+        });
     });
 
     /**

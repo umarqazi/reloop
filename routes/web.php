@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/activate-account/{id}/{token}', 'UserController@accountVerification');
     Route::get('/thankyou', 'PageController@thankyou')->name('thankyou');
     Route::get('/cities', 'Admin\CityController@index')->name('cities');
+    Route::get('/districts', 'Admin\DistrictController@index')->name('districts');
     Route::resource('product', 'Admin\ProductController');
     Route::resource('subscription', 'Admin\SubscriptionController');
     Route::resource('user', 'Admin\UserController');
@@ -37,5 +38,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/all-users', 'Admin\RewardPointController@allUsers')->name('all-users');
     Route::get('/get-user/{id}', 'Admin\RewardPointController@getUser')->name('get-user');
     Route::put('/update-user', 'Admin\RewardPointController@updateRewardPoints')->name('update-user');
+    Route::get('/user-subscription', 'Admin\UserController@userSubscription')->name('user-subscription');
 
 });
