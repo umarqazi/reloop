@@ -25,6 +25,7 @@ return[
     'CHANGE_PASSWORD_SUCCESS'               => 'Password successfully updated',
     'CHANGE_PASSWORD_SUCCESS_EMAIL'         => 'Change Password email sent',
     'CHANGE_PASSWORD_ERROR'                 => 'Error occurred while changing the password',
+    'OLD_PASSWORD_WRONG'                    => 'Your old password is not correct!',
 
 
     'ROLE_AND_PERMISSION_CREATION_SUCCESS'  => 'Role Created Successfully',

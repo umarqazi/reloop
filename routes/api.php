@@ -16,8 +16,7 @@ use Illuminate\Http\Request;
 Route::get('dependencies', 'Api\RegisterController@dependencies');
 Route::post('register', 'Api\RegisterController@signUp');
 Route::post('login', 'Api\LoginController@login');
-Route::post('password/reset', 'Api\LoginController@getPasswordResetToken');
-Route::post('password/forgot', 'Api\LoginController@getPasswordForgotToken');
+Route::post('forgot-password', 'Api\LoginController@forgotPassword');
 Route::middleware('auth:api')->group(function () {
 
     Route::get('categories', 'Api\ProductController@categories');
@@ -25,4 +24,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('buy-plan', 'Api\PaymentController@buyPlan');
     Route::post('buy-product', 'Api\PaymentController@buyProduct');
     Route::post('coupon-verification', 'Api\CouponController@couponVerification');
+    Route::post('change-password', 'Api\LoginController@changePassword');
 });
