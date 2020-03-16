@@ -120,7 +120,7 @@ class OrganizationService extends BaseService
                 'phone_number' => $request['phone_number'],
                 'status'       => $request['status'],
             );
-            $user = $this->userService->userUpdate($user_id, $userData);
+            $user = $this->userService->update($user_id, $userData);
             if ($user) {
                 $old_ids = array();
                 foreach ($users[0]->addresses as $address) {

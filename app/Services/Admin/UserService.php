@@ -49,23 +49,23 @@ class UserService extends BaseService
      */
     public function insert($request)
     {
-        //check that avatar exists or not
         $data = $request->except('_token');
-        if(array_key_exists('avatar', $data) && $data['avatar'] != null){
-            $data = $this->uploadFile($data, $request);
-        }
-        $userData = array(
 
+        $userData = array(
             'first_name'      => $data['first_name'],
             'last_name'       => $data['last_name'],
             'email'           => $data['email'],
             'birth_date'      => $data['birth_date'],
-            'avatar'          => $data['avatar'],
             'phone_number'    => $data['phone_number'],
             'password'        => $data['password'],
             'status'          => $data['status'],
             'user_type'       => $data['user_type'],
         );
+        //check that avatar exists or not
+        if(array_key_exists('avatar', $data) && $data['avatar'] != null){
+            $data = $this->uploadFile($data, $request);
+            $userData['avatar']  = $data['avatar'];
+        }
 
         DB::beginTransaction();
 
