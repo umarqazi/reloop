@@ -51,9 +51,9 @@ class BuyPlanForm extends BaseForm
             'exp_month'               => 'required',
             'cvc'                     => 'required',
             'exp_year'                => 'required',
-            'plan_id'                 => 'required',
             'subscription_id'         => 'required',
-            'subscription_type'       => 'required'
+            'subscription_type'       => 'required',
+            'total'                   => 'required'
         ];
     }
 }

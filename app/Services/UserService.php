@@ -98,7 +98,7 @@ class UserService extends BaseService
     public function updateRewardPoints($data)
     {
         $model = $this->model->where('id', $data['user_id'])->first();
-        $model->reward_points -= $data['request_data']['points_discount'];
+        $model->reward_points -= $data['request_data']->points_discount;
         $model->save();
     }
 
