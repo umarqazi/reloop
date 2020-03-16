@@ -78,4 +78,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserSubscription::class);
     }
+
+    /**
+
+     * Method: orderItems
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }
