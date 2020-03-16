@@ -54,4 +54,16 @@ class CouponService extends BaseService
     {
         // TODO: Implement remove() method.
     }
+
+    /**
+     * Method: couponVerification
+     *
+     * @param $coupon
+     *
+     * @return mixed
+     */
+    public function couponVerification($coupon)
+    {
+        return $this->model->where('code', $coupon)->first();
+    }
 }
