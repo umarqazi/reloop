@@ -125,8 +125,10 @@
                     </div>
                     @endif
                     <div class="appendable-filed">
+                        @if($key != 0)
                         <a href="javascript:void(0);" class="remove-append"><i class="fa fa-minus" aria-hidden="true"></i></a>
-                        <div class="input-field col s3">
+                        @endif
+                            <div class="input-field col s3">
                             <input type="hidden" name="address-id[]" value="{{ $address->id }}">
                             <select name="type[]"  id="type1" required>
                                 <option value="" disabled selected>Choose Type</option>
