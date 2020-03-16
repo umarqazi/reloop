@@ -75,7 +75,7 @@
                             <tr>
                                 <td>{{ $coupon->id }}</td>
                                 <td>{{ $coupon->code }}</td>
-                                <td>{{ $coupon->type }}</td>
+                                <td>{{ $coupon->type == 1 ? 'Fixed' : 'Percentage' }}</td>
                                 <td>{{ $coupon->amount }}</td>
                                 <td>
                                     <a href="{{ route('coupon.edit', $coupon->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
