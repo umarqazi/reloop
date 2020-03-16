@@ -102,11 +102,6 @@
                     </a>
                 </li>
                 <li class="bold">
-                    <a class="collapsible-header  waves-effect waves-cyan">
-                        <i class="material-icons">account_circle</i>
-                        <span class="nav-text">Geographical Zones</span>
-                    </a>
-                </li><li class="bold">
                     {{ Form::open(['url' => route('logout'),
                                    'method' => 'POST',]) }}
 
