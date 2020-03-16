@@ -140,6 +140,6 @@ class ProductService extends BaseService
      */
     public function findProductById($data)
     {
-        return $this->product->find(array_column($data['products'], 'id'));
+        return $this->product->find(array_column($data, 'id'));
     }
 }

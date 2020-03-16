@@ -62,7 +62,7 @@
                 {{ Form::hidden('user_type', $type) }}
                     <div class="col s12">
                         <div class="input-field col s6">
-                            <input id="first_name" name="first_name" type="text" value="{{ $user->first_name }}" class="validate">
+                            <input id="first_name" name="first_name" type="text" value="{{ $user->first_name }}" required >
                             <label for="first_name">First Name</label>
                             @if ($errors->has('first_name'))
                                 <span class="help-block">
@@ -71,7 +71,7 @@
                             @endif
                         </div>
                         <div class="input-field col s6">
-                            <input id="last_name" name="last_name" type="text" value="{{ $user->last_name }}" class="validate">
+                            <input id="last_name" name="last_name" type="text" value="{{ $user->last_name }}" required >
                             <label for="last_name">Last Name</label>
                             @if ($errors->has('last_name'))
                                 <span class="help-block">
@@ -82,8 +82,8 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s6">
-                            <input id="phone_number" name="phone_number" type="number" value="{{ $user->phone_number }}" class="validate">
-                            <label for="phone_number" data-error="wrong" data-success="right">Phone Number</label>
+                            <input id="phone_number" name="phone_number" type="number" value="{{ $user->phone_number }}" required >
+                            <label for="phone_number" >Phone Number</label>
                             @if ($errors->has('phone_number'))
                                 <span class="help-block">
                                 <strong class="red-text">{{ $errors->first('phone_number') }}</strong>
@@ -91,7 +91,7 @@
                             @endif
                         </div>
                         <div class="input-field col s6">
-                            <input id="birth_date" name="birth_date" placeholder="Date of Birth" type="date" value="{{ $user->birth_date }}" class="validate">
+                            <input id="birth_date" name="birth_date" placeholder="Date of Birth" type="date" value="{{ $user->birth_date }}" required >
                             {{--<label for="birth_date">Date of Birth</label>--}}
                             @if ($errors->has('birth_date'))
                                 <span class="help-block">
@@ -102,21 +102,21 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s6">
-                            <input disabled id="email" name="email" type="email" class="validate" value="{{ $user->email }}">
-                            <label for="email" data-error="wrong" data-success="right">Email</label>
+                            <input disabled id="email" name="email" type="email"  value="{{ $user->email }}" required >
+                            <label for="email" >Email</label>
                         </div>
                         <div class="input-field col s6">
-                            <select class="validate" id="status" name="status">
+                            <select  id="status" name="status">
                                 <option value="0" @if($user->status == 0) selected @endif>Inactive</option>
                                 <option value="1" @if($user->status == 1) selected @endif>Active</option>
                             </select>
-                            <label for="status" data-error="wrong" data-success="right">Status</label>
+                            <label for="status" >Status</label>
                         </div>
                     </div>
                     <div class="col s12">
                         <div class="input-field col s12">
-                            <textarea class="validate materialize-textarea" id="location" name="location">{{ $user->addresses[0]->location }}</textarea>
-                            <label for="address" data-error="wrong" data-success="right">Location</label>
+                            <textarea class="materialize-textarea" id="location" name="location" required>{{ $user->addresses[0]->location }}</textarea>
+                            <label for="address" >Location</label>
                             @if ($errors->has('location'))
                                 <span class="help-block">
                                     <strong class="red-text">{{ $errors->first('location') }}</strong>

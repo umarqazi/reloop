@@ -57,7 +57,7 @@
             {{ Form::hidden('user_type', $type) }}
                 <div class="col s12">
                     <div class="input-field col s6">
-                        <input id="first_name" name="first_name" type="text" class="validate">
+                        <input id="first_name" name="first_name" type="text" required >
                         <label for="first_name">First Name</label>
                         @if ($errors->has('first_name'))
                             <span class="help-block">
@@ -66,7 +66,7 @@
                         @endif
                     </div>
                     <div class="input-field col s6">
-                        <input id="last_name" name="last_name" type="text" class="validate">
+                        <input id="last_name" name="last_name" type="text"required >
                         <label for="last_name">Last Name</label>
                         @if ($errors->has('last_name'))
                             <span class="help-block">
@@ -77,7 +77,7 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s6">
-                        <input id="phone_number" name="phone_number" type="number" class="validate">
+                        <input id="phone_number" name="phone_number" type="number" required >
                         <label for="phone_number" data-error="wrong" data-success="right">Phone Number</label>
                         @if ($errors->has('phone_number'))
                             <span class="help-block">
@@ -86,7 +86,7 @@
                         @endif
                     </div>
                     <div class="input-field col s6">
-                        <input id="birth_date" name="birth_date" placeholder="Date of Birth" type="date" class="validate">
+                        <input id="birth_date" name="birth_date" placeholder="Date of Birth" type="date" required >
                         {{--<label for="birth_date">Date of Birth</label>--}}
                         @if ($errors->has('birth_date'))
                             <span class="help-block">
@@ -97,8 +97,8 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s6">
-                        <input id="email" name="email" type="email" class="validate">
-                        <label for="email" data-error="wrong" data-success="right">Email</label>
+                        <input id="email" name="email" type="email" required>
+                        <label for="email" >Email</label>
                         @if ($errors->has('email'))
                             <span class="help-block">
                                 <strong class="red-text">{{ $errors->first('email') }}</strong>
@@ -106,7 +106,7 @@
                         @endif
                     </div>
                     <div class="input-field col s6">
-                        <input id="password" name="password" type="password" class="validate">
+                        <input id="password" name="password" type="password" required >
                         <label for="password">Password</label>
                         @if ($errors->has('password'))
                             <span class="help-block">
@@ -128,11 +128,11 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s6">
-                        <select class="validate" id="status" name="status">
+                        <select  id="status" name="status">
                             <option value="0">Inactive</option>
                             <option value="1">Active</option>
                         </select>
-                        <label for="status" data-error="wrong" data-success="right">Status</label>
+                        <label for="status" >Status</label>
                     </div>
                     <div class="input-field col s6">
                         <h6 class="custom-label">Avatar</h6>
