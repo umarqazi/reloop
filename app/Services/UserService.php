@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Forms\IForm;
+use App\Forms\User\ChangePasswordForm;
 use App\Forms\User\CreateForm;
 use App\Forms\User\LoginForm;
 use App\Forms\User\PasswordResetForm;
@@ -14,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -195,6 +197,29 @@ class UserService extends BaseService
         return $getUser->update();
     }
 
+    public function userProfile()
+    {
+        $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
+        if($userProfile){
+
+            $responseData = [
+                'message' => Config::get('constants.USER_PROFILE'),
+                'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+                'status' => true,
+                'data' => $userProfile
+            ];
+            return $responseData;
+        }
+
+        $responseData = [
+            'message' => Config::get('constants.INVALID_OPERATION'),
+            'code' => IResponseHelperInterface::FAIL_RESPONSE,
+            'status' => false,
+            'data' => null
+        ];
+        return $responseData;
+    }
+
     /**
      * Method: authenticate
      *
@@ -255,7 +280,7 @@ class UserService extends BaseService
      *
      * @return array
      */
-    public function getPasswordForgotToken(IForm $forgotForm)
+    public function forgotPassword(IForm $forgotForm)
     {
         if($forgotForm->fails())
         {
@@ -297,6 +322,63 @@ class UserService extends BaseService
             'status' => false,
             'data' => $errorMessage
         ];
+        return $responseData;
+    }
+
+    /**
+     * Method: changePassword
+     *
+     * @param IForm $changePasswordForm
+     *
+     * @return array
+     */
+    public function changePassword(IForm $changePasswordForm)
+    {
+        if($changePasswordForm->fails()){
+
+            $responseData = [
+                'message' => Config::get('constants.INVALID_OPERATION'),
+                'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'status' => false,
+                'data' => $changePasswordForm->errors()
+            ];
+            return $responseData;
+        }
+        $authUser = auth()->user();
+        if (Hash::check($changePasswordForm->old_password, $authUser->password)) {
+
+            $getUser = $this->model->where('id', $authUser->id)->first();
+            $getUser->password = Hash::make($changePasswordForm->new_password);
+            $getUser->update();
+
+            $successMessage = [
+                "password_changed" => [
+                    Config::get('constants.CHANGE_PASSWORD_SUCCESS')
+                ]
+            ];
+
+            $responseData = [
+                'message' => Config::get('constants.CHANGE_PASSWORD_SUCCESS'),
+                'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+                'status' => true,
+                'data' => $successMessage
+            ];
+
+        } else {
+
+            $errorMessage = [
+                "old_password" => [
+                    Config::get('constants.OLD_PASSWORD_WRONG')
+                ]
+            ];
+
+            $responseData = [
+                'message' => Config::get('constants.INVALID_OPERATION'),
+                'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'status' => false,
+                'data' => $errorMessage
+            ];
+        }
         return $responseData;
     }
 }

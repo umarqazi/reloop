@@ -129,7 +129,7 @@ class PaymentService extends BaseService
                     'status' => true,
                     'data' => [
                         'buy_plan' => [
-                            'Your subscription number is ' . $this->order_number
+                            $this->order_number
                         ],
                     ],
                 ];
@@ -191,7 +191,7 @@ class PaymentService extends BaseService
                     'status' => true,
                     'data' => [
                         'buy_product' => [
-                            'Your order number is ' . $this->order_number
+                            $this->order_number
                         ],
                     ],
                 ];

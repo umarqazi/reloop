@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Forms\User\ChangePasswordForm;
 use App\Forms\User\LoginForm;
 use App\Forms\User\PasswordForgotForm;
-use App\Forms\User\PasswordResetForm;
-use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Config;
 
 /**
  * Class LoginController
@@ -55,31 +53,45 @@ class LoginController extends Controller
         );
     }
 
-    public function getPasswordResetToken(Request $request)
+    /**
+     * Method: changePassword
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changePassword(Request $request)
     {
-        $resetForm = new PasswordResetForm();
-        $resetForm->loadFromArray($request->all());
-        $userEmail = $this->userService->getPasswordForgotToken($resetForm);
+        $changePasswordForm = new ChangePasswordForm();
+        $changePasswordForm->loadFromArray($request->all());
+        $changePassword = $this->userService->changePassword($changePasswordForm);
 
         return ResponseHelper::jsonResponse(
-            $userEmail['message'],
-            $userEmail['code'],
-            $userEmail['status'],
-            $userEmail['data']
+            $changePassword['message'],
+            $changePassword['code'],
+            $changePassword['status'],
+            $changePassword['data']
         );
     }
 
-    public function getPasswordForgotToken(Request $request)
+    /**
+     * Method: forgotPassword
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function forgotPassword(Request $request)
     {
         $forgotForm = new PasswordForgotForm();
         $forgotForm->loadFromArray($request->all());
-        $userEmail = $this->userService->getPasswordForgotToken($forgotForm);
+        $forgotPassword = $this->userService->forgotPassword($forgotForm);
 
         return ResponseHelper::jsonResponse(
-            $userEmail['message'],
-            $userEmail['code'],
-            $userEmail['status'],
-            $userEmail['data']
+            $forgotPassword['message'],
+            $forgotPassword['code'],
+            $forgotPassword['status'],
+            $forgotPassword['data']
         );
     }
 }
