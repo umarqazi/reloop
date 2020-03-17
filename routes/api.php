@@ -25,4 +25,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('buy-product', 'Api\PaymentController@buyProduct');
     Route::post('coupon-verification', 'Api\CouponController@couponVerification');
     Route::post('change-password', 'Api\LoginController@changePassword');
+    Route::get('user-profile', 'UserController@userProfile');
 });

@@ -10,6 +10,7 @@ return[
 
     'USER_CREATION_SUCCESS'                 => 'User created successfully',
     'PROFILE_UPDATE_SUCCESS'                => 'Profile updated successfully',
+    'USER_PROFILE'                          => 'User Profile shown as',
     'USER_UPDATE_SUCCESS'                   => 'User updated successfully',
     'REGISTRATION_EXPIRED_SUCCESS'          => 'Registration Expired',
     'REGISTRATION_ACTIVATION_SUCCESS'       => 'Registration Activated',
