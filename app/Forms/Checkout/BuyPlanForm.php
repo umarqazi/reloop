@@ -17,7 +17,7 @@ class BuyPlanForm extends BaseForm
 {
     public $card_number;
     public $exp_month;
-    public $cvc;
+    public $cvv;
     public $exp_year;
     public $plan_id;
     public $subscription_id;
@@ -32,7 +32,7 @@ class BuyPlanForm extends BaseForm
         return [
             'card_number'             => $this->card_number,
             'exp_month'               => $this->exp_month,
-            'cvc'                     => $this->cvc,
+            'cvv'                     => $this->cvv,
             'exp_year'                => $this->exp_year,
             'plan_id'                 => $this->plan_id,
             'subscription_id'         => $this->subscription_id,
@@ -49,7 +49,7 @@ class BuyPlanForm extends BaseForm
         return [
             'card_number'             => 'required',
             'exp_month'               => 'required',
-            'cvc'                     => 'required',
+            'cvv'                     => 'required',
             'exp_year'                => 'required',
             'subscription_id'         => 'required',
             'subscription_type'       => 'required',

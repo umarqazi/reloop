@@ -26,6 +26,7 @@ return[
     'CHANGE_PASSWORD_SUCCESS'               => 'Password successfully updated',
     'CHANGE_PASSWORD_SUCCESS_EMAIL'         => 'Change Password email sent',
     'CHANGE_PASSWORD_ERROR'                 => 'Error occurred while changing the password',
+    'OLD_PASSWORD_WRONG'                    => 'Your old password is not correct!',
 
 
     'ROLE_AND_PERMISSION_CREATION_SUCCESS'  => 'Role Created Successfully',
@@ -49,6 +50,9 @@ return[
     'DEPENDENCIES_LIST'                     => 'Cities, Sectors and Organizations list shown as:',
     'PASSWORD_RESET_EMAIL_NOT_SENT'         => 'Password reset email didn\'t sent!',
     'PASSWORD_RESET_EMAIL_SENT'             => 'Password reset email sent!',
-    'INVALID_CREDENTIALS'                   => 'These credentials do not match our records!'
+    'INVALID_CREDENTIALS'                   => 'These credentials do not match our records!',
+
+    'COUPON_VERIFICATION'                   => 'Your coupon code has verified!',
+    'COUPON_FAIL'                           => 'Invalid coupon!'
 
 ];
