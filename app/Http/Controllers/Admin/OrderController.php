@@ -58,7 +58,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $order = $this->orderService->findById($id);
+        return  view('orders.view', compact('order'));
     }
 
     /**

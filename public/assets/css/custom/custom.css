@@ -1,3 +1,4 @@
+
 /*================================================================================
 	Item Name: Materialize - Material Design Admin Template
 	Version: 4.0
@@ -140,3 +141,13 @@ button i.material-icons {
     height: 25px;
     line-height: 25px;
 }
+.order-user-detail li {
+    margin: 5px 0;
+    font-size: 14px;
+}
+.order-user-detail li strong {
+    font-weight: 700;
+    margin-right: 15px;
+    text-transform: capitalize;
+}
+

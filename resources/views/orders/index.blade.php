@@ -51,7 +51,7 @@
                             <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>User Name</th>
+                                <th>Email</th>
                                 <th>Redeem Points</th>
                                 <th>Total</th>
                                 <th>Detail</th>
@@ -60,7 +60,7 @@
                             <tfoot>
                             <tr>
                                 <th>Id</th>
-                                <th>User Name</th>
+                                <th>Email</th>
                                 <th>Redeem Points</th>
                                 <th>Total</th>
                                 <th>Detail</th>
@@ -70,10 +70,10 @@
                             @foreach($orders as $order)
                             <tr>
                                 <td>{{ $order->id }}</td>
-                                <td>{{ $order->user->first_name.' '.$order->user->last_name  }}</td>
+                                <td>{{ $order->email  }}</td>
                                 <td>{{ $order->redeem_points }}</td>
                                 <td>{{ $order->total }}</td>
-                                <td><a href="{{ route('product.edit', $order->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a></td>
+                                <td><a href="{{ route('order.show', $order->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
                             </tr>
                             @endforeach
                             </tbody>

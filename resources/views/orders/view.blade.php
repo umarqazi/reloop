@@ -15,7 +15,9 @@
                             <ol class="breadcrumbs">
                                 <li><a href="{{route('home')}}">Dashboard</a>
                                 </li>
-                                <li class="active">Orders</li>
+                                <li><a href="{{route('order.index')}}">Orders</a>
+                                </li>
+                                <li class="active">Order Details</li>
                             </ol>
                         </div>
                     </div>
@@ -44,37 +46,72 @@
                 </div>
             @endif
 
+
+            <div class="details-section">
+                <div class="row">
+                    <div class="col s6">
+                        <div class="order-user-detail">
+                            <h5>Order Detail</h5>
+                            <ul>
+                                <li><strong>Id :</strong><span>{{$order->id}}</span></li>
+                                <li><strong>Number :</strong><span>{{$order->order_number}}</span></li>
+                                <li><strong>Redeem Points :</strong><span>{{$order->redeem_points == null ? 'None' : $order->redeem_points}}</span></li>
+                                <li><strong>Coupon Discount :</strong><span>{{$order->coupon_discount == null ? 'None' : $order->coupon_discount}}</span></li>
+                                <li><strong>Subtotal :</strong><span>{{$order->subtotal}}</span></li>
+                                <li><strong>Total :</strong><span>{{$order->total}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <div class="order-user-detail">
+                            <h5>User Detail</h5>
+                            <ul>
+                                <li><strong>Name :</strong><span>{{$order->first_name.' '.$order->last_name}}</span></li>
+                                <li><strong>Email :</strong><span>{{$order->email}}</span></li>
+                                <li><strong>Phone Number :</strong><span>{{$order->phone_number}}</span></li>
+                                <li><strong>Location :</strong><span>{{$order->location}}</span></li>
+                                <li><strong>City :</strong><span>{{$order->city_belong->name}}</span></li>
+                                <li><strong>District :</strong><span>{{$order->district_belong->name}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
             <div id="table-datatables">
                 <div class="row">
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>Id</th>
-                                <th>User Name</th>
-                                <th>Redeem Points</th>
+                                <th>Product Id</th>
+                                <th>Product Name</th>
+                                <th>Product Quantity</th>
+                                <th>Product Price</th>
                                 <th>Total</th>
-                                <th>Detail</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Id</th>
-                                <th>User Name</th>
-                                <th>Redeem Points</th>
+                                <th>Product Id</th>
+                                <th>Product Name</th>
+                                <th>Product Quantity</th>
+                                <th>Product Price</th>
                                 <th>Total</th>
-                                <th>Detail</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            @foreach($orders as $order)
-                            <tr>
-                                <td>{{ $order->id }}</td>
-                                <td>{{ $order->user->first_name.' '.$order->user->last_name  }}</td>
-                                <td>{{ $order->redeem_points }}</td>
-                                <td>{{ $order->total }}</td>
-                                <td><a href="{{ route('product.edit', $order->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a></td>
-                            </tr>
+                            @foreach($order->orderItems as $orderItem)
+                                <tr>
+                                    <td>{{ $orderItem->product_id }}</td>
+                                    <td>{{ $orderItem->product->name }}</td>
+                                    <td>{{ $orderItem->quantity }}</td>
+                                    <td>{{ $orderItem->product->price }}</td>
+                                    <td>{{ $orderItem->price }}</td>
+                                </tr>
                             @endforeach
                             </tbody>
                         </table>
