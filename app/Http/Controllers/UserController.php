@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -42,5 +43,20 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Method: userProfile
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userProfile()
+    {
+        $userProfile = $this->userService->userProfile();
+
+        return ResponseHelper::jsonResponse(
+            $userProfile['message'],
+            $userProfile['code'],
+            $userProfile['status'],
+            $userProfile['data']
+        );
+    }
 
 }

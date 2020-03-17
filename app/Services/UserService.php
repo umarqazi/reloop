@@ -195,6 +195,29 @@ class UserService extends BaseService
         return $getUser->update();
     }
 
+    public function userProfile()
+    {
+        $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
+        if($userProfile){
+
+            $responseData = [
+                'message' => Config::get('constants.USER_PROFILE'),
+                'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+                'status' => true,
+                'data' => $userProfile
+            ];
+            return $responseData;
+        }
+
+        $responseData = [
+            'message' => Config::get('constants.INVALID_OPERATION'),
+            'code' => IResponseHelperInterface::FAIL_RESPONSE,
+            'status' => false,
+            'data' => null
+        ];
+        return $responseData;
+    }
+
     /**
      * Method: authenticate
      *
