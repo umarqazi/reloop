@@ -53,7 +53,7 @@
                             <thead>
                             <tr>
                                 <th>User ID</th>
-                                <th>User Name</th>
+                                <th>User Email</th>
                                 <th>User Type</th>
                                 <th>Subscription</th>
                                 <th>Trip(s)</th>
@@ -62,18 +62,20 @@
                             <tbody>
 
                             @foreach($userSubscriptions as $userSubscription)
-                                <td> {{ $userSubscription->user->id }} </td>
-                                <td>{{ $userSubscription->user->first_name }}</td>
+                                <tr>
+                                <td>{{ $userSubscription->user->id }}</td>
+                                <td>{{ $userSubscription->user->email }}</td>
                                 <td>{{ $userSubscription->user->user_type == \App\Services\IUserType::HOUSE_HOLD ? 'House Hold' : 'Organization' }}</td>
                                 <td><a href="javascript:void(0)"  id="{{ $userSubscription->subscription->id }}" class="getSubscription">{{ $userSubscription->subscription->name }}</a></td>
                                 <td>{{ $userSubscription->trips }}</td>
+                                </tr>
                             @endforeach
 
                             </tbody>
                             <tfoot>
                             <tr>
                                 <th>User ID</th>
-                                <th>User Name</th>
+                                <th>User Email</th>
                                 <th>User Type</th>
                                 <th>Subscription</th>
                                 <th>Trip(s)</th>

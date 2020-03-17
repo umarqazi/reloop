@@ -17,7 +17,7 @@ class BuyProductForm extends BaseForm
 {
     public $card_number;
     public $exp_month;
-    public $cvc;
+    public $cvv;
     public $exp_year;
     public $total;
     public $subtotal;
@@ -40,7 +40,7 @@ class BuyProductForm extends BaseForm
         return [
             'card_number'     => $this->card_number,
             'exp_month'       => $this->exp_month,
-            'cvc'             => $this->cvc,
+            'cvv'             => $this->cvv,
             'exp_year'        => $this->exp_year,
             'subtotal'        => $this->subtotal,
             'points_discount' => $this->points_discount,
@@ -65,7 +65,7 @@ class BuyProductForm extends BaseForm
         return [
             'card_number'     => 'required',
             'exp_month'       => 'required',
-            'cvc'             => 'required',
+            'cvv'             => 'required',
             'exp_year'        => 'required',
             'subtotal'        => 'required',
             'total'           => 'required',

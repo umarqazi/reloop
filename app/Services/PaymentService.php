@@ -110,7 +110,7 @@ class PaymentService extends BaseService
                     'message' => Config::get('constants.ORDER_FAIL'),
                     'code' => IResponseHelperInterface::FAIL_RESPONSE,
                     'status' => false,
-                    'data' => $makePayment['stripe_error']
+                    'data' => $makePayment
                 ];
                 return $responseData;
             } else {
@@ -169,7 +169,7 @@ class PaymentService extends BaseService
                     'message' => Config::get('constants.ORDER_FAIL'),
                     'code' => IResponseHelperInterface::FAIL_RESPONSE,
                     'status' => false,
-                    'data' => $makePayment['stripe_error']
+                    'data' => $makePayment
                 ];
                 return $responseData;
 
