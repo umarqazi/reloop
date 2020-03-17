@@ -70,8 +70,10 @@ class OrderService extends BaseService
             'email'           => $data['request_data']->email,
             'phone_number'    => $data['request_data']->phone_number,
             'location'        => $data['request_data']->location,
-            'city'            => $city->name ?? null,
-            'district'        => $district->name ?? null
+            'latitude'        => $data['request_data']->latitude,
+            'longitude'       => $data['request_data']->longitude,
+            'city'            => $city->name,
+            'district'        => $district->name
         ]);
         return $model->fresh();
     }

@@ -28,6 +28,8 @@ class BuyProductForm extends BaseForm
     public $email;
     public $phone_number;
     public $location;
+    public $latitude;
+    public $longitude;
     public $city_id;
     public $district_id;
     public $products;
@@ -51,6 +53,8 @@ class BuyProductForm extends BaseForm
             'email'           => $this->email,
             'phone_number'    => $this->phone_number,
             'location'        => $this->location,
+            'latitude'        => $this->latitude,
+            'longitude'       => $this->longitude,
             'city_id'         => $this->city_id,
             'district_id'     => $this->district_id,
             'products'        => $this->products,
@@ -74,6 +78,8 @@ class BuyProductForm extends BaseForm
             'email'           => 'required',
             'phone_number'    => 'required',
             'location'        => 'required',
+            'latitude'        => 'required',
+            'longitude'       => 'required',
             'city_id'         => 'required',
             'district_id'     => 'required',
             'products'        => 'required'

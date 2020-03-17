@@ -17,7 +17,7 @@ class Order extends Model
 {
     protected $fillable = [
         'user_id', 'order_number', 'subtotal', 'redeem_points', 'coupon_discount', 'total', 'first_name', 'last_name', 'email',
-        'phone_number', 'location', 'city', 'district'
+        'phone_number', 'location', 'latitude', 'longitude', 'city', 'district'
     ];
 
     /**
