@@ -143,9 +143,12 @@ class UserService extends BaseService
 
         $this->addressService->storeAddress(
             [
-                'user_id' => $model->id,
-                'location' => $form->location,
-                'city_id' => $form->city_id
+                'user_id'     => $model->id,
+                'city_id'     => $form->city_id,
+                'district_id' => $form->district_id,
+                'location'    => $form->location,
+                'latitude'    => $form->latitude,
+                'longitude'   => $form->longitude,
             ]
         );
 

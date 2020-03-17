@@ -29,6 +29,8 @@ class CreateOrdersTable extends Migration
             $table->string('email');
             $table->string('phone_number');
             $table->string('location');
+            $table->string('latitude');
+            $table->string('longitude');
             $table->string('city');
             $table->string('district');
 
