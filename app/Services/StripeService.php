@@ -145,7 +145,7 @@ class StripeService extends BaseService
         }
         $responseData = [
             'stripe_error' => [
-                'stripe_error_message' => $message
+                $message
             ]
         ];
         return $responseData;
@@ -208,7 +208,7 @@ class StripeService extends BaseService
         }
         $responseData = [
             'stripe_error' => [
-                'stripe_error_message' => $message
+                $message
             ]
         ];
         return $responseData;
@@ -246,7 +246,7 @@ class StripeService extends BaseService
             'card' => [
                 'number'    => $data->card_number,
                 'exp_month' => $data->exp_month,
-                'cvc'       => $data->cvc,
+                'cvc'       => $data->cvv,
                 'exp_year'  => $data->exp_year
             ],
         ]);
