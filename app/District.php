@@ -16,4 +16,14 @@ use Illuminate\Database\Eloquent\Model;
 class District extends Model
 {
     protected $fillable = ['name', 'description'];
+
+    /**
+     * Method: orders
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
