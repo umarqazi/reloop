@@ -96,9 +96,7 @@ class CreateForm extends BaseForm
             'phone_number' => 'required',
             'city_id' => 'required',
             'district_id' => 'required',
-            'location' => 'required',
-            'latitude' => 'required',
-            'longitude' => 'required',
+            'location' => 'required'
         ];
 
     }

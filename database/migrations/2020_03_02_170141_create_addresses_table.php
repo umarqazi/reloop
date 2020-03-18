@@ -23,6 +23,8 @@ class CreateAddressesTable extends Migration
             $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
 
             $table->text('location');
+            $table->double('latitude')->nullable();
+            $table->double('longitude')->nullable();
             $table->string('type')->nullable();
             $table->integer('no_of_bedrooms')->nullable();
             $table->integer('no_of_occupants')->nullable();

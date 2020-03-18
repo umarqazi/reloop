@@ -145,8 +145,8 @@ class UserService extends BaseService
                 'city_id'     => $form->city_id,
                 'district_id' => $form->district_id,
                 'location'    => $form->location,
-                'latitude'    => $form->latitude,
-                'longitude'   => $form->longitude,
+                'latitude'    => $form->latitude ?? null,
+                'longitude'   => $form->longitude ?? null,
             ]
         );
 
