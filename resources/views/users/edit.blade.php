@@ -115,13 +115,16 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s12">
-                            <textarea class="materialize-textarea" id="location" name="location" required>{{ $user->addresses[0]->location }}</textarea>
+                            <input id="location" type="text" name="location" value="{{ $user->addresses[0]->location }}" required>
                             <label for="address" >Location</label>
                             @if ($errors->has('location'))
                                 <span class="help-block">
                                     <strong class="red-text">{{ $errors->first('location') }}</strong>
                                 </span>
                             @endif
+
+                            <input type="hidden" name="latitude" id="address-latitude" value="{{ $user->addresses[0]->latitude }}" />
+                            <input type="hidden" name="longitude" id="address-longitude" value="{{ $user->addresses[0]->longitude }}" />
                         </div>
                     </div>
                     @if($type != 1)
