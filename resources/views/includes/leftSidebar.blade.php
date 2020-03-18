@@ -130,7 +130,7 @@
                         <div class="collapsible-body">
                             <ul>
                                 <li>
-                                    <a href="">
+                                    <a href="{{ route('get-orders') }}">
                                         <i class="material-icons">keyboard_arrow_right</i>
                                         <span>Manage Orders</span>
                                     </a>

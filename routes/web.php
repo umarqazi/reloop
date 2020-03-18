@@ -39,4 +39,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/update-user', 'Admin\RewardPointController@updateRewardPoints')->name('update-user');
     Route::get('/user-subscription', 'Admin\UserController@userSubscription')->name('user-subscription');
 
+    //supervisor routes
+    Route::get('/get-orders', 'Supervisor\OrderController@index')->name('get-orders');
+
+
 });
