@@ -5,10 +5,8 @@ namespace App\Services;
 
 
 use App\Forms\IForm;
-use App\Forms\User\ChangePasswordForm;
 use App\Forms\User\CreateForm;
 use App\Forms\User\LoginForm;
-use App\Forms\User\PasswordResetForm;
 use App\Helpers\IResponseHelperInterface;
 use App\User;
 use Carbon\Carbon;
@@ -383,5 +381,31 @@ class UserService extends BaseService
             ];
         }
         return $responseData;
+    }
+
+    /**
+     * Method: updateAddress
+     *
+     * @param IForm $updateAddressForm
+     *
+     * @return array
+     */
+    public function updateAddress(IForm $updateAddressForm)
+    {
+        if($updateAddressForm->fails()){
+
+            $responseData = [
+                'message' => Config::get('constants.INVALID_OPERATION'),
+                'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                'status' => false,
+                'data' => $updateAddressForm->errors()
+            ];
+            return $responseData;
+        } else {
+
+            $data = $updateAddressForm;
+            $updateAddress = $this->addressService->updateOrCreate($data);
+            return $updateAddress;
+        }
     }
 }

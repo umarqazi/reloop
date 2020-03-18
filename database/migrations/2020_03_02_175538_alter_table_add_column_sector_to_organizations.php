@@ -14,8 +14,8 @@ class AlterTableAddColumnSectorToOrganizations extends Migration
     public function up()
     {
         Schema::table('organizations', function (Blueprint $table) {
-            $table->unsignedBigInteger('sector_id');
-            $table->foreign('sector_id')->references('id')->on('sectors');
+            $table->unsignedBigInteger('sector_id')->after('no_of_branches');
+            $table->foreign('sector_id')->references('id')->on('sectors')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

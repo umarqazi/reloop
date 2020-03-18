@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms\User\UpdateAddressForm;
 use App\Helpers\ResponseHelper;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -59,4 +60,24 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * Method: updateAddress
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateAddress(Request $request)
+    {
+        $updateAddressForm = new UpdateAddressForm();
+        $updateAddressForm->loadFromArray($request->all());
+        $updateAddress = $this->userService->updateAddress($updateAddressForm);
+
+        return ResponseHelper::jsonResponse(
+            $updateAddress['message'],
+            $updateAddress['code'],
+            $updateAddress['status'],
+            $updateAddress['data']
+        );
+    }
 }

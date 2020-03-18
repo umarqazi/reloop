@@ -53,6 +53,10 @@ return[
     'INVALID_CREDENTIALS'                   => 'These credentials do not match our records!',
 
     'COUPON_VERIFICATION'                   => 'Your coupon code has verified!',
-    'COUPON_FAIL'                           => 'Invalid coupon!'
+    'COUPON_FAIL'                           => 'Invalid coupon!',
+
+    'ADDRESS_UPDATE'                        => 'Address has updated!',
+    'INVALID_ADDRESS_ID'                    => 'You\'ve requested for invalid Address!',
+    'ADDRESS_SAVED'                         => 'Address saved successfully!',
 
 ];

@@ -6,6 +6,8 @@ namespace App\Services;
 
 use App\Address;
 use App\Forms\IForm;
+use App\Helpers\IResponseHelperInterface;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -61,7 +63,7 @@ class AddressService extends BaseService
      */
     public function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->model->find($id);
     }
 
     /**
@@ -70,5 +72,64 @@ class AddressService extends BaseService
     public function remove($id)
     {
         // TODO: Implement remove() method.
+    }
+
+    /**
+     * Method: updateOrCreate
+     *
+     * @param $address
+     *
+     * @return array
+     */
+    public function updateOrCreate($address)
+    {
+        if(!empty($address->id)){
+
+            $findAddress = $this->findById($address->id);
+            if($findAddress){
+
+                $findAddress->id = $address->id;
+                $findAddress->user_id = auth()->id();
+                $findAddress->city_id = $address->city_id;
+                $findAddress->district_id = $address->district_id;
+                $findAddress->location = $address->location;
+                $findAddress->latitude = $address->latitude;
+                $findAddress->longitude = $address->longitude;
+                $findAddress->update();
+
+                $responseData = [
+                    'message' => Config::get('constants.ADDRESS_UPDATE'),
+                    'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+                    'status' => true,
+                    'data' => $findAddress
+                ];
+            } else {
+
+                $responseData = [
+                    'message' => Config::get('constants.INVALID_ADDRESS_ID'),
+                    'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                    'status' => false,
+                    'data' => null
+                ];
+            }
+        } else{
+
+            $newAddress = [
+                'user_id'     => auth()->id(),
+                'city_id'     => $address->city_id,
+                'district_id' => $address->district_id,
+                'location'    => $address->location,
+                'latitude'    => $address->latitude,
+                'longitude'   => $address->longitude,
+            ];
+            $saveAddress = $this->model->create($newAddress);
+            $responseData = [
+                'message' => Config::get('constants.ADDRESS_SAVED'),
+                'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+                'status' => true,
+                'data' => $saveAddress
+            ];
+        }
+        return $responseData;
     }
 }
