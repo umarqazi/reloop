@@ -14,6 +14,7 @@ use App\Services\IUserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Services\EmailNotificationService;
 
@@ -62,7 +63,7 @@ class OrganizationService extends BaseService
                 'organization_id' => $organization->id,
                 'email'           => $request['email'],
                 'phone_number'    => $request['phone_number'],
-                'password'        => $request['password'],
+                'password'        => Hash::make($request['password']),
                 'status'          => IUserStatus::ACTIVE,
                 'user_type'       => IUserType::ORGANIZATION,
             );

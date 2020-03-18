@@ -101,8 +101,8 @@
                 <div class="input-field col s6">
                     <select name="status" id="status" required>
                         <option value="" disabled selected>Choose Product Status</option>
-                        <option value="0" {{ $organization->users[0]->status==false ? 'selected': '' }}>Unapproved</option>
-                        <option value="1" {{ $organization->users[0]->status==true ? 'selected': '' }}>approved</option>
+                        <option value="0" {{ $organization->users[0]->status== \App\Services\IUserStatus::INACTIVE ? 'selected': '' }}>Unapproved</option>
+                        <option value="1" {{ $organization->users[0]->status== \App\Services\IUserStatus::ACTIVE ? 'selected': '' }}>Approved</option>
                     </select>
                     <label>Organization Status</label>
                 </div>

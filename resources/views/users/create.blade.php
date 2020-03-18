@@ -128,6 +128,16 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s6">
+                        {{ Form::select('city_id', (['' => 'Choose City'] + $cities), null, ['id' => 'city_id','required' => 'required']) }}
+                        <label>City</label>
+                    </div>
+                    <div class="input-field col s6">
+                        {{ Form::select('district_id', (['' => 'Choose District'] + $districts), null, ['id' => 'district_id','required' => 'required']) }}
+                        <label>District</label>
+                    </div>
+                </div>
+                <div class="col s12">
+                    <div class="input-field col s6">
                         <select  id="status" name="status">
                             <option value="0">Inactive</option>
                             <option value="1">Active</option>

@@ -124,6 +124,18 @@
                             @endif
                         </div>
                     </div>
+                    @if($type != 1)
+                    <div class="col s12">
+                        <div class="input-field col s6">
+                            {{ Form::select('city_id', (['' => 'Choose City'] + $cities), $user->addresses[0]->city_id, ['id' => 'city_id','required' => 'required']) }}
+                            <label>City</label>
+                        </div>
+                        <div class="input-field col s6">
+                            {{ Form::select('district_id', (['' => 'Choose District'] + $districts), $user->addresses[0]->district_id, ['id' => 'district_id','required' => 'required']) }}
+                            <label>District</label>
+                        </div>
+                    </div>
+                    @endif
                     <div class="col s12">
                         <div class="col s6 box-image">
                             <img src="{{ \Illuminate\Support\Facades\Storage::disk(env('FILESYSTEM_DRIVER'))->url(config('filesystems.user_avatar_upload_path')).$user->avatar }}">
