@@ -24,7 +24,7 @@ class CouponController extends Controller
 {
     /**
      * Method: couponVerification
-     * 
+     *
      * @param Request $request
      *
      * @return \Illuminate\Http\JsonResponse
@@ -43,12 +43,17 @@ class CouponController extends Controller
                 $couponVerification
             );
         }
+        $errorMessage = [
+            "invalid_coupon" => [
+                Config::get('constants.COUPON_FAIL')
+            ]
+        ];
 
         return ResponseHelper::jsonResponse(
             Config::get('constants.COUPON_FAIL'),
             IResponseHelperInterface::FAIL_RESPONSE,
             false,
-            null
+            $errorMessage
         );
     }
 }
