@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTableAddColumnDistrictIdToAddresses extends Migration
+class AlterTableAddresses extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class AlterTableAddColumnDistrictIdToAddresses extends Migration
     public function up()
     {
         Schema::table('addresses', function (Blueprint $table) {
-            $table->unsignedBigInteger('district_id')->after('city_id');
-            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
+            $table->double('latitude')->after('location');
+            $table->double('longitude')->after('latitude');
         });
     }
 
@@ -27,7 +27,8 @@ class AlterTableAddColumnDistrictIdToAddresses extends Migration
     public function down()
     {
         Schema::table('addresses', function (Blueprint $table) {
-            $table->dropColumn('district_id');
+            $table->dropColumn('latitude');
+            $table->dropColumn('longitude');
         });
     }
 }

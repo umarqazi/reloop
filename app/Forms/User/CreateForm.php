@@ -37,6 +37,8 @@ class CreateForm extends BaseForm
     public $sector_id;
     public $password_confirmation;
     public $district_id;
+    public $latitude;
+    public $longitude;
 
     /**
      * CreateForm constructor.
@@ -67,6 +69,8 @@ class CreateForm extends BaseForm
             'birth_date'             => $this->birth_date,
             'avatar'                 => $this->avatar,
             'location'               => $this->location,
+            'latitude'               => $this->latitude,
+            'longitude'               => $this->longitude,
             'user_type'              => $this->user_type,
             'trips'                  => $this->trips,
             'reward_points'          => $this->reward_points,
@@ -90,7 +94,11 @@ class CreateForm extends BaseForm
             'password' => 'required|confirmed|min:8',
             'password_confirmation' => 'required',
             'phone_number' => 'required',
-            'location' => 'required'
+            'city_id' => 'required',
+            'district_id' => 'required',
+            'location' => 'required',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ];
 
     }
