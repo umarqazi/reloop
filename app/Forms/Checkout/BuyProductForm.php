@@ -78,8 +78,6 @@ class BuyProductForm extends BaseForm
             'email'           => 'required',
             'phone_number'    => 'required',
             'location'        => 'required',
-            'latitude'        => 'required',
-            'longitude'       => 'required',
             'city_id'         => 'required',
             'district_id'     => 'required',
             'products'        => 'required'
