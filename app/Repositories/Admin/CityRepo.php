@@ -17,4 +17,13 @@ class CityRepo extends BaseRepo
         $this->getModel(City::class);
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function findByName(string $name)
+    {
+        return $this->all()->where('name',$name)->first();
+    }
+
 }

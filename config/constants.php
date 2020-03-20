@@ -53,6 +53,9 @@ return[
     'INVALID_CREDENTIALS'                   => 'These credentials do not match our records!',
 
     'COUPON_VERIFICATION'                   => 'Your coupon code has verified!',
-    'COUPON_FAIL'                           => 'Invalid coupon!'
+    'COUPON_FAIL'                           => 'Invalid coupon!',
+
+    'ORDER_ASSIGNED'                        => 'Order assigned successfully!',
+    'ORDER_ASSIGNMENT_FAIL'                 => 'Something went wrong in assigning order!'
 
 ];

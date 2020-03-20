@@ -19,6 +19,9 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
 
+            $table->unsignedBigInteger('driver_id')->nullable();
+            $table->foreign('driver_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+
             $table->string('order_number');
             $table->double('subtotal');
             $table->double('redeem_points')->nullable();
@@ -33,6 +36,8 @@ class CreateOrdersTable extends Migration
             $table->string('longitude');
             $table->string('city');
             $table->string('district');
+            $table->tinyInteger('status')->default(1);
+            $table->date('delivery_date')->nullable();
 
             $table->timestamps();
         });

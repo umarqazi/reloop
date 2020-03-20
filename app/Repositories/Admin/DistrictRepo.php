@@ -18,4 +18,13 @@ class DistrictRepo extends BaseRepo
         $getModel = $this->getModel(District::class);
         $this->getModel = new $getModel;
     }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function findByName(string $name)
+    {
+        return $this->all()->where('name',$name)->first();
+    }
 }

@@ -4,6 +4,9 @@ $(document).ready(function () {
      * author: Bilal Saqib
      */
 
+    $('#driver_id_div').append('<select name="driver_id"  id="driver_id"  required>\n' +
+        '</select>\n');
+
     var max_fields = 5; //maximum input boxes allowed
     var wrapper = $("#input_fields_wrap"); //Fields wrapper
     var add_button = $(".add-more-filed"); //Add button ID
@@ -148,6 +151,29 @@ $(document).ready(function () {
         });
     });
 
+    $( "#delivery_date" ).change(function() {
+       let date      =  $(this).val() ;
+       let order_id  =  $(this).closest("form").attr('id');
+       let select    =  $('#driver_id');
+       let route     =  '/driver-availability/' + date + '/' + order_id;
+
+        $.ajax({
+            type: "GET",
+            url:  route,
+            success: function (data) {
+                       select.html('');
+                       select.append('<option value="" disabled selected >Choose Driver</option>');
+                if (data) {
+                    for(let i=0 ; i < data.length ; i++){
+                        select.append('<option value="' + data[i].id + '">' +data[i].first_name+'</option>');
+                    }
+                    $('#driver_id').material_select();
+                }
+            }
+        });
+
+    });
+
     /**
      * author: Abdullah Wazir
     */
@@ -191,7 +217,6 @@ $(document).ready(function () {
             url: action,
             data: formData,
             success: function( msg ) {
-                console.log(msg);
                 let userType = '';
                 if(msg.result.user_type == 1){
                     userType = 'House Hold';
