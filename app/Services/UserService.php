@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -63,7 +64,7 @@ class UserService extends BaseService
      */
     public function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->model->find($id);
     }
 
     /**
@@ -407,5 +408,60 @@ class UserService extends BaseService
             $updateAddress = $this->addressService->updateOrCreate($data);
             return $updateAddress;
         }
+    }
+
+    /**
+     * Method: updateUserProfile
+     *
+     * @param IForm $updateUserProfileForm
+     * @param $request
+     *
+     * @return array
+     */
+    public function updateUserProfile(IForm $updateUserProfileForm, $request)
+    {
+        $authUser = $this->findById(auth()->id());
+        if($request->file()){
+
+            if(!empty($authUser->avatar)){
+
+                Storage::disk()->delete(config('filesystems.profile_pic_upload_path').$authUser->avatar);
+            }
+
+            //upload new image
+            $fileName = 'Profile-'.strtotime(now()).'.'.$request->file('profile_pic')->getClientOriginalExtension();
+            $filePath = config('filesystems.profile_pic_upload_path').$fileName;
+            Storage::disk()->put($filePath, file_get_contents($request->file('profile_pic')),'public');
+
+            $authUser->avatar = $fileName ?? $authUser->avatar;
+        }
+
+        $authUser->first_name = $updateUserProfileForm->first_name ?? $authUser->first_name;
+        $authUser->last_name = $updateUserProfileForm->last_name ?? $authUser->last_name;
+        $authUser->phone_number = $updateUserProfileForm->phone_number ?? $authUser->phone_number;
+
+        $organization = $this->organizationService->findById($updateUserProfileForm->organization_id);
+        if($organization){
+
+            $authUser->organization_id = $updateUserProfileForm->organization_id ?? $authUser->organization_id;
+        }
+        $authUser->update();
+
+        if($authUser->user_type == IUserType::ORGANIZATION && !empty($authUser->organization_id)){
+
+            $this->organizationService->update($authUser->organization_id, $updateUserProfileForm);
+        }
+
+        $responseData = [
+            'message' => Config::get('constants.PROFILE_UPDATE_SUCCESS'),
+            'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+            'status' => true,
+            'data' => [
+                "profileUpdate" => [
+                    Config::get('constants.PROFILE_UPDATE_SUCCESS')
+                ],
+            ]
+        ];
+        return $responseData;
     }
 }
