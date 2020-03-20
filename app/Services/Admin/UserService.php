@@ -77,8 +77,6 @@ class UserService extends BaseService
                     'location'        => $data['location'],
                     'city_id'         => $data['city_id'],
                     'district_id'     => $data['district_id'],
-                    'latitude'        => $data['latitude'],
-                    'longitude'       => $data['longitude'],
                 );
 
                 $this->addressRepo->create($address);
@@ -142,8 +140,6 @@ class UserService extends BaseService
                     'street'          => $request['street'],
                     'floor'           => $request['floor'],
                     'unit_number'     => $request['unit-number'],
-                    'latitude'        => $request['latitude'],
-                    'longitude'       => $request['longitude'],
                 );
             }
             else{
@@ -151,8 +147,6 @@ class UserService extends BaseService
                     'location'        => $request['location'],
                     'city_id'         => $request['city_id'],
                     'district_id'     => $request['district_id'],
-                    'latitude'        => $request['latitude'],
-                    'longitude'       => $request['longitude'],
                 );
             }
             $user_addresses = $this->findById($id)->addresses;

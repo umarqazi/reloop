@@ -122,9 +122,6 @@
                                     <strong class="red-text">{{ $errors->first('location') }}</strong>
                                 </span>
                             @endif
-
-                            <input type="hidden" name="latitude" id="address-latitude" value="{{ $user->addresses[0]->latitude }}" />
-                            <input type="hidden" name="longitude" id="address-longitude" value="{{ $user->addresses[0]->longitude }}" />
                         </div>
                     </div>
                     @if($type != 1)
