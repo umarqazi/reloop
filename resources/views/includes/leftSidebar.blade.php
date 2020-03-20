@@ -9,6 +9,7 @@
             </a>
         </h1>
     </div>
+    @if(Auth::user()->hasRole('admin'))
     <ul id="slide-out" class="side-nav fixed leftside-navigation">
         <li class="no-padding">
             <ul class="collapsible" data-collapsible="accordion">
@@ -111,4 +112,47 @@
             </ul>
         </li>
     </ul>
+    @else
+        <ul id="slide-out" class="side-nav fixed leftside-navigation">
+            <li class="no-padding">
+                <ul class="collapsible" data-collapsible="accordion">
+                    <li class="bold">
+                        <a class="collapsible-header  waves-effect waves-cyan" href="{{ route('home') }}">
+                            <i class="material-icons">dashboard</i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="bold">
+                        <a class="collapsible-header  waves-effect waves-cyan">
+                            <i class="material-icons">account_circle</i>
+                            <span class="nav-text">Orders</span>
+                        </a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li>
+                                    <a href="">
+                                        <i class="material-icons">keyboard_arrow_right</i>
+                                        <span>Manage Orders</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="bold">
+                        <a href="">
+                            <i class="material-icons">account_circle</i>
+                            <span class="nav-text">Contact Admin</span>
+                        </a>
+                    </li>
+                    <li class="bold">
+                        {{ Form::open(['url' => route('logout'),
+                                       'method' => 'POST',]) }}
+
+                        <button type="submit" class="collapsible-header logout-btn  waves-effect waves-cyan"><i class="material-icons">account_circle</i>Logout</button>
+                        {{ Form::close() }}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    @endif
 </aside>

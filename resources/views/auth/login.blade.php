@@ -89,7 +89,7 @@
                 <div class="row">
                     <div class="input-field col s12 center">
                         <img src="/assets/images/logo/login-logo.png" alt="" class="responsive-img">
-                        <p class="center login-form-text">Reloop Admin Panel</p>
+                        <p class="center login-form-text">Reloop</p>
                     </div>
                 </div>
                 <div class="row margin">

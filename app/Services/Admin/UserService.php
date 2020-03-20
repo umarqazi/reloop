@@ -11,6 +11,7 @@ use App\Services\IUserStatus;
 use App\Services\IUserType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserService extends BaseService
@@ -57,7 +58,7 @@ class UserService extends BaseService
             'email'           => $data['email'],
             'birth_date'      => $data['birth_date'],
             'phone_number'    => $data['phone_number'],
-            'password'        => $data['password'],
+            'password'        => Hash::make($data['password']),
             'status'          => $data['status'],
             'user_type'       => $data['user_type'],
         );
