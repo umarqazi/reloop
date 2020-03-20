@@ -81,11 +81,11 @@
                             <tr>
                                 <td>{{ $organization->id }}</td>
                                 <td>{{ $organization->name }}</td>
-                                <td>{{ Str::limit($organization->users[0]->email, 10) }}</td>
-                                <td>{{ $organization->users[0]->phone_number }}</td>
+                                <td>{{ Str::limit($organization->users->first()->email, 10) }}</td>
+                                <td>{{ $organization->users->first()->phone_number }}</td>
                                 <td>{{ $organization->no_of_branches }}</td>
                                 <td>{{ $organization->no_of_employees }}</td>
-                                <td>{{ $organization->users[0]->status == \App\Services\IUserStatus::ACTIVE ? 'Approved' : 'Unapproved'}}</td>
+                                <td>{{ $organization->users->first()->status == \App\Services\IUserStatus::ACTIVE ? 'Active' : 'Inactive'}}</td>
                                 <td>
                                     <a href="{{ route('organization.edit', $organization->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
                                     {{ Form::open(['url' => route('organization.destroy', $organization->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
