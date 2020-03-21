@@ -21,7 +21,7 @@ class CategoryRepo extends BaseRepo
     /**
      * get  categories
      */
-    public function getCategory($type){
+    public function getCategory(int $type){
         $Categories =  $this->getModel(Category::class)->where('type', $type)->where('status', 1)->get();
         return $Categories;
     }

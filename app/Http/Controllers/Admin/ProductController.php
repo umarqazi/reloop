@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\CreateRequest;
 use App\Http\Requests\Product\UpdateRequest;
-use App\Repositories\Admin\CategoryRepo;
+use App\Services\Admin\CategoryService;
 use App\Services\Admin\ProductService;
 use App\Services\ICategoryType;
 use Illuminate\Support\Facades\File;
@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\File;
 class ProductController extends Controller
 {
 
-    private $categoryRepository ;
+    private $categoryService ;
     private $productService ;
 
     /**
      * ProductController constructor.
      */
-    public function __construct(CategoryRepo $categoryRepository,ProductService $productService) {
-        $this->categoryRepository =  $categoryRepository;
+    public function __construct(ProductService $productService, CategoryService $categoryService) {
+        $this->categoryService    =  $categoryService;
         $this->productService     =  $productService;
     }
 
@@ -43,7 +43,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = $this->categoryRepository->getCategory(ICategoryType::PRODUCT)->pluck('name', 'id')->toArray();
+        $categories = $this->categoryService->getCategory(ICategoryType::PRODUCT)->pluck('name', 'id')->toArray();
         return view('products.create', compact('categories'));
     }
 
