@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Supervisor\CreateRequest;
 use App\Http\Requests\Supervisor\UpdateRequest;
-use App\Repositories\Admin\CityRepo;
-use App\Repositories\Admin\DistrictRepo;
 use App\Services\Admin\CityService;
 use App\Services\Admin\DistrictService;
 use App\Services\IUserType;

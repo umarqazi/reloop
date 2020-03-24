@@ -115,7 +115,7 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s12">
-                            <textarea class="materialize-textarea" id="location" name="location" required>{{ $user->addresses[0]->location }}</textarea>
+                            <input id="location" type="text" name="location" value="{{ $user->addresses[0]->location }}" required>
                             <label for="address" >Location</label>
                             @if ($errors->has('location'))
                                 <span class="help-block">
