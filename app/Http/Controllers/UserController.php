@@ -102,4 +102,21 @@ class UserController extends Controller
             $updateProfile['data']
         );
     }
+
+    /**
+     * Method: getUserPlans
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserPlans()
+    {
+        $userProfile = $this->userService->getUserPlans();
+
+        return ResponseHelper::jsonResponse(
+            $userProfile['message'],
+            $userProfile['code'],
+            $userProfile['status'],
+            $userProfile['data']
+        );
+    }
 }

@@ -110,6 +110,8 @@ $(document).ready(function () {
                 '                        <option value="" disabled selected>Choose Subscription Category Type</option>\n' +
                 '                        <option value="1">Same Day</option>\n' +
                 '                        <option value="2">Next Day</option>\n' +
+                '                        <option value="3">Single Collection</option>\n' +
+                '                        <option value="4">Bulky Item</option>\n' +
                 '                    </select>' +
                 '                    <label for="subscription_category_type">Subscription Category Type</label>');
             $('#subscription_category_type').material_select();
