@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Supervisor;
 
+use App\Http\Requests\Order\UpdateRequest;
 use App\Services\Admin\CityService;
 use App\Services\Admin\DistrictService;
 use App\Services\Admin\UserService;
@@ -126,7 +127,7 @@ class OrderController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function assignOrder(Request $request,$id){
+    public function assignOrder(UpdateRequest $request,$id){
            $order = $this->orderService->upgrade($request,$id);
            if($order){
                return redirect()->back()->with('success',Config::get('constants.ORDER_ASSIGNED'));

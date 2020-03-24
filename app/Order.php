@@ -40,25 +40,7 @@ class Order extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * Method: city
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function district_belong()
-    {
-        return $this->belongsTo(District::class, 'district');
-    }
 
-    /**
-     * Method: district
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function city_belong()
-    {
-        return $this->belongsTo(City::class, 'city');
-    }
     /**
 
      * Method: orderItems

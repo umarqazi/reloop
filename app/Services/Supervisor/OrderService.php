@@ -9,6 +9,7 @@ use App\Repositories\Admin\DistrictRepo;
 use App\Repositories\Admin\UserRepo;
 use App\Repositories\Supervisor\OrderRepo;
 use App\Services\Admin\BaseService;
+use App\Services\EmailNotificationService;
 use App\Services\IOrderStaus;
 use App\Services\IUserType;
 use Illuminate\Http\Request;
@@ -21,18 +22,20 @@ class OrderService extends BaseService
     private $userRepo;
     private $cityRepo;
     private $districtRepo;
+    private $emailNotificationService;
 
     /**
      * OrderService constructor.
      */
 
-    public function __construct(UserRepo $userRepo,CityRepo $cityRepo,DistrictRepo $districtRepo)
+    public function __construct(UserRepo $userRepo,CityRepo $cityRepo,DistrictRepo $districtRepo,EmailNotificationService $emailNotificationService)
     {
         $orderRepo =  $this->getRepo(OrderRepo::class);
-        $this->orderRepo = new $orderRepo;
-        $this->userRepo  = $userRepo;
-        $this->cityRepo  = $cityRepo;
-        $this->districtRepo = $districtRepo;
+        $this->orderRepo                = new $orderRepo;
+        $this->userRepo                 = $userRepo;
+        $this->cityRepo                 = $cityRepo;
+        $this->districtRepo             = $districtRepo;
+        $this->emailNotificationService = $emailNotificationService;
     }
 
     /**
@@ -56,7 +59,37 @@ class OrderService extends BaseService
             'delivery_date'    => $request['delivery_date'],
             'status'           => IOrderStaus::ASSIGNED,
         );
-        return parent::update($id, $order);
+
+        $orderAssignment =  parent::update($id, $order);
+
+        $order = $this->findById($id);
+
+        if($orderAssignment){
+            $user = array(
+                'email'   => $this->userRepo->findById($order->user_id)->email,
+            );
+
+            $this->emailNotificationService->userOrderAssignedEmail($user);
+
+            $driver = array(
+                'email'   => $this->userRepo->findById($order->driver_id)->email,
+            );
+
+            $this->emailNotificationService->driverOrderAssignedEmail($driver);
+
+            $admin = array(
+                'user'   => $this->userRepo->findById($order->user_id)->email,
+                'driver' => $this->userRepo->findById($order->driver_id)->email
+            );
+
+            $this->emailNotificationService->adminOrderAssignmentNotification($admin);
+
+            return true ;
+        }
+
+        else {
+            return false;
+        }
     }
 
     /**
