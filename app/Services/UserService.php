@@ -252,11 +252,25 @@ class UserService extends BaseService
             $authUser = auth()->user();
             if ($authUser->status == true) {
 
+                $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
                 $responseData = [
                     'message' => Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
                     'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
                     'status' => true,
-                    'data' => $authUser
+                    'data' => $userProfile
+                ];
+                return $responseData;
+            } else {
+
+                $responseData = [
+                    'message' => Config::get('constants.INVALID_OPERATION'),
+                    'code' => IResponseHelperInterface::FAIL_RESPONSE,
+                    'status' => false,
+                    'data' => [
+                        "email_not_verified" => [
+                            Config::get('constants.USER_LOGIN_FAILED')
+                        ]
+                    ]
                 ];
                 return $responseData;
             }
@@ -452,15 +466,13 @@ class UserService extends BaseService
             $this->organizationService->update($authUser->organization_id, $updateUserProfileForm);
         }
 
+        $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
+
         $responseData = [
             'message' => Config::get('constants.PROFILE_UPDATE_SUCCESS'),
             'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
             'status' => true,
-            'data' => [
-                "profileUpdate" => [
-                    Config::get('constants.PROFILE_UPDATE_SUCCESS')
-                ],
-            ]
+            'data' => $userProfile
         ];
         return $responseData;
     }
