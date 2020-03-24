@@ -68,4 +68,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserSubscription::class);
     }
+
+    public function getAvatarAttribute($value)
+    {
+        if(!empty($value)){
+
+            return env('APP_URL').'/storage/uploads/images/profile-pictures/' . $value;
+        }
+    }
 }
