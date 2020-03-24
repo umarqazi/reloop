@@ -88,5 +88,15 @@ class User extends Authenticatable
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+
+    }
+
+
+    public function getAvatarAttribute($value)
+    {
+        if(!empty($value)){
+
+            return env('APP_URL').'/storage/uploads/images/profile-pictures/' . $value;
+        }
     }
 }

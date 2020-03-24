@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Forms\User\UpdateAddressForm;
+use App\Forms\User\UpdateProfileForm;
 use App\Helpers\ResponseHelper;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -78,6 +79,27 @@ class UserController extends Controller
             $updateAddress['code'],
             $updateAddress['status'],
             $updateAddress['data']
+        );
+    }
+
+    /**
+     * Method: updateUserProfile
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateUserProfile(Request $request)
+    {
+        $updateProfileForm = new UpdateProfileForm();
+        $updateProfileForm->loadFromArray($request->all());
+        $updateProfile = $this->userService->updateUserProfile($updateProfileForm, $request);
+
+        return ResponseHelper::jsonResponse(
+            $updateProfile['message'],
+            $updateProfile['code'],
+            $updateProfile['status'],
+            $updateProfile['data']
         );
     }
 }

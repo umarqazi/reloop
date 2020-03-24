@@ -57,7 +57,7 @@ class OrganizationService extends BaseService
      */
     public function findById($id)
     {
-
+        return $this->model->find($id);
     }
 
     /**
@@ -71,5 +71,26 @@ class OrganizationService extends BaseService
     public function getAll()
     {
         return $this->model->all();
+    }
+
+    /**
+     * Method: update
+     *
+     * @param $id
+     * @param $data
+     *
+     * @return void
+     */
+    public function update($id, $data)
+    {
+        $organization = $this->findById($id);
+        if($organization){
+
+            $organization->name = $data->organization_name ?? $organization->name;
+            $organization->no_of_branches = $data->no_of_branches ?? $organization->no_of_branches;
+            $organization->no_of_employees = $data->no_of_employees ?? $organization->no_of_employees;
+            $organization->sector_id = $data->sector_id ?? $organization->sector_id;
+            $organization->update();
+        }
     }
 }
