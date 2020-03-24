@@ -15,6 +15,7 @@ class RoleAndPermissionSeeder extends Seeder
         $roles = [
             'admin',
             'supervisor',
+            'driver',
             'user'
         ];
 

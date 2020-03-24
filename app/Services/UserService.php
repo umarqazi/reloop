@@ -139,6 +139,7 @@ class UserService extends BaseService
         $model->password = bcrypt($form->password);
 
         $model->save();
+        $model->assignRole('user');
 
         $this->addressService->storeAddress(
             [
