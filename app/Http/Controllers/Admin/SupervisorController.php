@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Supervisor\CreateRequest;
 use App\Http\Requests\Supervisor\UpdateRequest;
 use App\Repositories\Admin\CityRepo;
+use App\Repositories\Admin\DistrictRepo;
+use App\Services\Admin\CityService;
+use App\Services\Admin\DistrictService;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
@@ -13,12 +16,14 @@ use Illuminate\Http\Request;
 class SupervisorController extends Controller
 {
     private $userService;
-    private $cityRepo;
+    private $cityService;
+    private $districtService;
 
-    public function __construct(UserService $userService,CityRepo $cityRepo)
+    public function __construct(UserService $userService,CityService $cityService,DistrictService $districtService)
     {
-        $this->userService = $userService;
-        $this->cityRepo = $cityRepo;
+        $this->userService     = $userService;
+        $this->cityService     = $cityService;
+        $this->districtService = $districtService;
     }
 
     /**
@@ -45,8 +50,9 @@ class SupervisorController extends Controller
     public function create()
     {
         $type = IUserType::SUPERVISOR;
-        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
-        return view('users.create', compact('type','cities'));
+        $cities  = $this->cityService->all()->pluck('name', 'id')->toArray();
+        $districts  = $this->districtService->all()->pluck('name', 'id')->toArray();
+        return view('users.create', compact('type','cities','districts'));
     }
 
     /**
@@ -91,9 +97,10 @@ class SupervisorController extends Controller
     {
         $type = IUserType::SUPERVISOR;
         $user = $this->userService->findById($id);
-        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
+        $cities  = $this->cityService->all()->pluck('name', 'id')->toArray();
+        $districts  = $this->districtService->all()->pluck('name', 'id')->toArray();
         if($user){
-            return view('users.edit', compact('user', 'type','cities'));
+            return view('users.edit', compact('user', 'type','cities','districts'));
         }else{
             return view('users.edit')->with('empty', 'No Information Founded !');
         }

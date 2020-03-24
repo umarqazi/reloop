@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\CreateRequest;
 use App\Http\Requests\Subscription\UpdateRequest;
-use App\Repositories\Admin\CategoryRepo;
+use App\Services\Admin\CategoryService;
 use App\Services\Admin\SubscriptionSerivce;
 use App\Services\ICategoryType;
 use Illuminate\Support\Facades\File;
@@ -13,13 +13,15 @@ use Illuminate\Support\Facades\File;
 class SubscriptionController extends Controller
 {
 
-    private $categoryRepository ;
+    private $subscriptionService ;
+    private $categoryService ;
+
     /**
-     * ProductController constructor.
+     * SubscriptionController constructor.
      */
-    public function __construct(CategoryRepo $categoryRepository) {
-        $this->categoryRepository =  $categoryRepository;
-        $this->subscriptionService = new SubscriptionSerivce();
+    public function __construct(SubscriptionSerivce $subscriptionSerivce,CategoryService $categoryService) {
+        $this->categoryService =  $categoryService;
+        $this->subscriptionService = $subscriptionSerivce;
     }
 
     /**
@@ -40,7 +42,7 @@ class SubscriptionController extends Controller
      */
     public function create()
     {
-        $categories = $this->categoryRepository->getCategory(ICategoryType::SUBSCRIPTION)->pluck('name', 'id')->toArray();
+        $categories = $this->categoryService->getCategory(ICategoryType::SUBSCRIPTION)->pluck('name', 'id')->toArray();
         return view('subscriptions.create', compact('categories'));
     }
 
@@ -92,7 +94,7 @@ class SubscriptionController extends Controller
     public function edit($id)
     {
         $subscription = $this->subscriptionService->findById($id);
-        $categories = $this->categoryRepository->getCategory(ICategoryType::SUBSCRIPTION)->pluck('name', 'id')->toArray();
+        $categories = $this->categoryService->getCategory(ICategoryType::SUBSCRIPTION)->pluck('name', 'id')->toArray();
         if($subscription){
             return view('subscriptions.edit', compact('subscription','categories'));
         }else{

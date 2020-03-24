@@ -59,7 +59,7 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
-                    <input id="email" type="email"  name="email"   value="{{$organization->users[0]->email}}" readonly required>
+                    <input id="email" type="email"  name="email"   value="{{$organization->users->first()->email}}" readonly required>
                     <label for="email">Email</label>
                     @if ($errors->has('email'))
                         <span class="help-block">
@@ -70,7 +70,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="phone_number" type="number" name="phone_number"  value="{{$organization->users[0]->phone_number}}" readonly required>
+                    <input id="phone_number" type="number" name="phone_number"  value="{{$organization->users->first()->phone_number}}" readonly required>
                     <label for="phone_number">Phone Number</label>
                     @if ($errors->has('phone_number'))
                         <span class="help-block">
@@ -101,8 +101,8 @@
                 <div class="input-field col s6">
                     <select name="status" id="status" required>
                         <option value="" disabled selected>Choose Product Status</option>
-                        <option value="0" {{ $organization->users[0]->status==false ? 'selected': '' }}>Unapproved</option>
-                        <option value="1" {{ $organization->users[0]->status==true ? 'selected': '' }}>approved</option>
+                        <option value="0" {{ $organization->users->first()->status== \App\Services\IUserStatus::INACTIVE ? 'selected': '' }}>Inactive</option>
+                        <option value="1" {{ $organization->users->first()->status== \App\Services\IUserStatus::ACTIVE ? 'selected': '' }}>Active</option>
                     </select>
                     <label>Organization Status</label>
                 </div>
@@ -116,7 +116,7 @@
 
             <div id="input_fields_wrap" class="col s12">
 
-            @foreach($organization->users[0]->addresses as $key => $address)
+            @foreach($organization->users->first()->addresses as $key => $address)
 
                     @if($key == 0)
                     <div class="adrs-title">
@@ -130,7 +130,7 @@
                         @endif
                             <div class="input-field col s3">
                             <input type="hidden" name="address-id[]" value="{{ $address->id }}">
-                            <select name="type[]"  id="type1" required>
+                            <select name="type[]"  id="type1" >
                                 <option value="" disabled selected>Choose Type</option>
                                 <option value="1" {{ $address->type=='1' ? 'selected': '' }}>Villa</option>
                                 <option value="2" {{ $address->type=='2' ? 'selected': '' }}>Apartment</option>
@@ -138,11 +138,11 @@
                             <label>Type</label>
                         </div>
                         <div class="input-field col s3">
-                            <input id="bedrooms[]" type="number" name="bedrooms[]" value="{{ $address->no_of_bedrooms }}" required>
+                            <input id="bedrooms[]" type="number" name="bedrooms[]" value="{{ $address->no_of_bedrooms }}" >
                             <label for="bedrooms[]">No of Bedrooms</label>
                         </div>
                         <div class="input-field col s3">
-                            <input id="occupants[]" type="number" name="occupants[]" value="{{ $address->no_of_occupants }}"  required>
+                            <input id="occupants[]" type="number" name="occupants[]" value="{{ $address->no_of_occupants }}" >
                             <label for="occupants[]">No of Occupants</label>
                         </div>
                         <div class="input-field col s3">
@@ -154,15 +154,15 @@
                             <label>District</label>
                         </div>
                         <div class="input-field col s3">
-                            <input id="street[]" type="text" name="street[]" value="{{ $address->street }}" required>
+                            <input id="street[]" type="text" name="street[]" value="{{ $address->street }}" >
                             <label for="street[]">Street</label>
                         </div>
                         <div class="input-field col s3">
-                            <input id="floor[]" type="text" name="floor[]" value="{{ $address->floor }}" required>
+                            <input id="floor[]" type="text" name="floor[]" value="{{ $address->floor }}" >
                             <label for="floor[]">Floor</label>
                         </div>
                         <div class="input-field col s3">
-                            <input id="unit-number[]" type="text" name="unit-number[]" value="{{ $address->unit_number }}" required>
+                            <input id="unit-number[]" type="text" name="unit-number[]" value="{{ $address->unit_number }}" >
                             <label for="unit-number[]">Unit Number</label>
                         </div>
                         <div class="input-field col s12">

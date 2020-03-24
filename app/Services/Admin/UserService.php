@@ -76,6 +76,8 @@ class UserService extends BaseService
                 $address = array(
                     'user_id'         => $user->id,
                     'location'        => $data['location'],
+                    'city_id'         => $data['city_id'],
+                    'district_id'     => $data['district_id']
                 );
 
                 $this->addressRepo->create($address);
@@ -144,6 +146,8 @@ class UserService extends BaseService
             else{
                 $update_address = array(
                     'location'        => $request['location'],
+                    'city_id'         => $request['city_id'],
+                    'district_id'     => $request['district_id'],
                 );
             }
             $user_addresses = $this->findById($id)->addresses;

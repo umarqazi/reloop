@@ -35,6 +35,10 @@ class ProductService extends BaseService
         //check that avatar exists or not
         $data = $request->except('_token');
 
+        //check that avatar exists or not
+        if(array_key_exists('avatar', $data) && $data['avatar'] != null){
+            $data = $this->uploadFile($data, $request);
+        }
         return parent::create($data);
     }
 
@@ -47,6 +51,10 @@ class ProductService extends BaseService
     {
         $data = $request->except('_token', '_method', 'email');
 
+        //check that avatar exists or not
+        if(array_key_exists('avatar', $data) && $data['avatar'] != null){
+            $data = $this->uploadFile($data, $request,$id);
+        }
         return parent::update($id, $data);
     }
 
@@ -56,8 +64,35 @@ class ProductService extends BaseService
      */
     public function destroy(int $id)
     {
+        $image = $this->findById($id)->avatar ;
+        if($image != null) {
+            Storage::disk()->delete(config('filesystems.product_avatar_upload_path').$image);
+        }
         return parent::destroy($id);
     }
 
+    /**
+     * @param $data
+     * @param $request
+     * @param null $id
+     * @return mixed
+     */
+    public function uploadFile($data, $request, $id = null)
+    {
+        if($id != null){
+            //Deleting the existing image of respective user.
+            $getOldData = $this->productRepo->findById($id);
+            if($getOldData->avatar != null){
+                Storage::disk()->delete(config('filesystems.product_avatar_upload_path').$getOldData->avatar);
+            }
+        }
+        //upload new image
+        $fileName = 'image-'.time().'-'.$request->file('avatar')->getClientOriginalName();
+        $filePath = config('filesystems.product_avatar_upload_path').$fileName;
+        Storage::disk()->put($filePath, file_get_contents($request->file('avatar')),'public');
+        $data['avatar'] = $fileName;
 
+        return $data;
+
+    }
 }
