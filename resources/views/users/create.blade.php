@@ -124,9 +124,6 @@
                                 <strong class="red-text">{{ $errors->first('location') }}</strong>
                             </span>
                         @endif
-
-                        <input type="hidden" name="latitude" id="address-latitude" value="31.561920" />
-                        <input type="hidden" name="longitude" id="address-longitude" value="74.348083" />
                     </div>
                 </div>
                 <div class="col s12">

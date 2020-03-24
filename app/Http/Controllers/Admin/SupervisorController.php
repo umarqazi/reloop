@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Supervisor\CreateRequest;
 use App\Http\Requests\Supervisor\UpdateRequest;
-use App\Repositories\Admin\CityRepo;
-use App\Repositories\Admin\DistrictRepo;
+use App\Services\Admin\CityService;
+use App\Services\Admin\DistrictService;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
@@ -14,14 +14,14 @@ use Illuminate\Http\Request;
 class SupervisorController extends Controller
 {
     private $userService;
-    private $cityRepo;
-    private $districtRepo;
+    private $cityService;
+    private $districtService;
 
-    public function __construct(UserService $userService,CityRepo $cityRepo,DistrictRepo $districtRepo)
+    public function __construct(UserService $userService,CityService $cityService,DistrictService $districtService)
     {
-        $this->userService = $userService;
-        $this->cityRepo = $cityRepo;
-        $this->districtRepo = $districtRepo;
+        $this->userService     = $userService;
+        $this->cityService     = $cityService;
+        $this->districtService = $districtService;
     }
 
     /**
@@ -48,8 +48,8 @@ class SupervisorController extends Controller
     public function create()
     {
         $type = IUserType::SUPERVISOR;
-        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
-        $districts  = $this->districtRepo->all()->pluck('name', 'id')->toArray();
+        $cities  = $this->cityService->all()->pluck('name', 'id')->toArray();
+        $districts  = $this->districtService->all()->pluck('name', 'id')->toArray();
         return view('users.create', compact('type','cities','districts'));
     }
 
@@ -95,8 +95,8 @@ class SupervisorController extends Controller
     {
         $type = IUserType::SUPERVISOR;
         $user = $this->userService->findById($id);
-        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
-        $districts  = $this->districtRepo->all()->pluck('name', 'id')->toArray();
+        $cities  = $this->cityService->all()->pluck('name', 'id')->toArray();
+        $districts  = $this->districtService->all()->pluck('name', 'id')->toArray();
         if($user){
             return view('users.edit', compact('user', 'type','cities','districts'));
         }else{

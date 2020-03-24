@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
-use App\Repositories\Admin\CityRepo;
-use App\Repositories\Admin\UserSubscriptionRepo;
-use App\Repositories\Admin\DistrictRepo;
+use App\Services\Admin\CityService;
+use App\Services\Admin\DistrictService;
+use App\Services\Admin\UserSubscriptionService;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
@@ -16,16 +16,16 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     private $userService;
-    private $cityRepo;
-    private  $districtRepo;
-    private $userSubscriptionRepo;
+    private $cityService;
+    private $districtService;
+    private $userSubscriptionService;
 
-    public function __construct(UserService $userService,CityRepo $cityRepo,UserSubscriptionRepo $userSubscriptionRepo,DistrictRepo $districtRepo)
+    public function __construct(UserService $userService,CityService $cityService,DistrictService $districtService,UserSubscriptionService $userSubscriptionService)
     {
-        $this->userService = $userService;
-        $this->cityRepo = $cityRepo;
-        $this->districtRepo = $districtRepo;
-        $this->userSubscriptionRepo = $userSubscriptionRepo;
+        $this->userService             = $userService;
+        $this->cityService             = $cityService;
+        $this->districtService         = $districtService;
+        $this->userSubscriptionService = $userSubscriptionService;
     }
 
     /**
@@ -52,8 +52,8 @@ class UserController extends Controller
     public function create()
     {
         $type = IUserType::HOUSE_HOLD;
-        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
-        $districts = $this->districtRepo->all()->pluck('name', 'id')->toArray();
+        $cities  = $this->cityService->all()->pluck('name', 'id')->toArray();
+        $districts = $this->districtService->all()->pluck('name', 'id')->toArray();
         return view('users.create', compact('type','cities','districts'));
     }
 
@@ -97,8 +97,8 @@ class UserController extends Controller
     {
         $type = IUserType::HOUSE_HOLD;
         $user = $this->userService->findById($id);
-        $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
-        $districts = $this->districtRepo->all()->pluck('name', 'id')->toArray();
+        $cities  = $this->cityService->all()->pluck('name', 'id')->toArray();
+        $districts = $this->districtService->all()->pluck('name', 'id')->toArray();
         if($user){
             return view('users.edit', compact('user', 'type','cities','districts'));
         }else{
@@ -148,7 +148,7 @@ class UserController extends Controller
      */
     public function userSubscription()
     {
-        $userSubscriptions = $this->userSubscriptionRepo->all();
+        $userSubscriptions = $this->userSubscriptionService->all();
         return view('users.user-subscription',compact('userSubscriptions'));
     }
 }
