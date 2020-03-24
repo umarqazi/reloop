@@ -81,4 +81,16 @@ class UserSubscriptionService extends BaseService
 
         return $model;
     }
+
+    /**
+     * Method: findByUserId
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function findByUserId($userId)
+    {
+        return $this->model->where('user_id', $userId)->with('subscription.category')->get();
+    }
 }

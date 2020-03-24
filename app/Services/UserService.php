@@ -32,12 +32,8 @@ class UserService extends BaseService
     private $organizationService;
     private $addressService;
     private $stripeService;
-    /**
-     * Property: emailNotificationService
-     *
-     * @var EmailNotificationService
-     */
     private $emailNotificationService;
+    private $userSubscriptionService;
 
     /**
      * UserService constructor.
@@ -48,6 +44,7 @@ class UserService extends BaseService
     public function __construct(User $model, OrganizationService $organizationService,
                                 AddressService $addressService,
                                 StripeService $stripeService,
+                                UserSubscriptionService $userSubscriptionService,
                                 EmailNotificationService $emailNotificationService
     )
     {
@@ -56,6 +53,7 @@ class UserService extends BaseService
         $this->organizationService = $organizationService;
         $this->emailNotificationService = $emailNotificationService;
         $this->addressService = $addressService;
+        $this->userSubscriptionService = $userSubscriptionService;
         $this->stripeService = $stripeService;
     }
 
@@ -474,6 +472,34 @@ class UserService extends BaseService
             'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
             'status' => true,
             'data' => $userProfile
+        ];
+        return $responseData;
+    }
+
+    /**
+     * Method: getUserPlans
+     *
+     * @return array
+     */
+    public function getUserPlans()
+    {
+        $getUserPlans = $this->userSubscriptionService->findByUserId(auth()->id());
+        if($getUserPlans){
+
+            $responseData = [
+                'message' => Config::get('constants.USER_PLANS'),
+                'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
+                'status' => true,
+                'data' => $getUserPlans
+            ];
+            return $responseData;
+        }
+
+        $responseData = [
+            'message' => Config::get('constants.INVALID_OPERATION'),
+            'code' => IResponseHelperInterface::FAIL_RESPONSE,
+            'status' => false,
+            'data' => null
         ];
         return $responseData;
     }

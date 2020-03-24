@@ -40,6 +40,9 @@ return[
     'PRODUCT_CATEGORY_SUCCESS'              => 'Product category list shown as',
     'PRODUCTS_SUCCESS'                      => 'Products list shown as',
 
+    'MATERIAL_CATEGORY_SUCCESS'             => 'Material category list shown as',
+    'USER_PLANS'                            => 'User plans shown as:',
+
     'UN_AUTHORIZE_ERROR'                    => 'You are not authorized',
     'GENERAL_ERROR'                         => 'Something went wrong.Please try again later!',
     'RECORD_NOT_FOUND'                      => 'Record not found!',
