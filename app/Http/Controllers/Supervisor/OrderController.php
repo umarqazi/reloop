@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Supervisor;
 
-use App\Repositories\Admin\CityRepo;
-use App\Repositories\Admin\DistrictRepo;
-use App\Repositories\Admin\UserRepo;
+use App\Services\Admin\CityService;
+use App\Services\Admin\DistrictService;
+use App\Services\Admin\UserService;
 use App\Services\IUserType;
 use App\Services\Supervisor\OrderService;
 use Illuminate\Http\Request;
@@ -16,18 +16,18 @@ class OrderController extends Controller
 {
 
     private $orderService ;
-    private $cityRepo ;
-    private $districtRepo;
-    private $userRepo;
+    private $cityService ;
+    private $districtService;
+    private $userService;
 
     /**
      * OrderController constructor.
      */
-    public function __construct(OrderService $orderService,CityRepo $cityRepo, DistrictRepo $districtRepo,UserRepo $userRepo) {
-        $this->orderService   =  $orderService;
-        $this->cityRepo       =  $cityRepo;
-        $this->districtRepo   =  $districtRepo;
-        $this->userRepo       =  $userRepo;
+    public function __construct(OrderService $orderService,CityService $cityService, DistrictService $districtService,UserService $userService) {
+        $this->orderService      =  $orderService;
+        $this->cityService       =  $cityService;
+        $this->districtService   =  $districtService;
+        $this->userService       =  $userService;
     }
 
     /**
@@ -37,11 +37,17 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $city_id = Auth::user()->addresses[0]->city_id ;
-        $city = $this->cityRepo->findById($city_id)->name ;
-        $didtrict_id = Auth::user()->addresses[0]->district_id ;
-        $district = $this->districtRepo->findById($didtrict_id)->name ;
+        //get city_id and district_id of current supervisor
+        $city_id = Auth::user()->addresses->first()->city_id ;
+        $district_id = Auth::user()->addresses->first()->district_id ;
+
+        //get name of city and district of current supervisor
+        $city = $this->cityService->findById($city_id)->name ;
+        $district = $this->districtService->findById($district_id)->name ;
+
+        //get orders of supervisor's city and district
         $orders = $this->orderService->getOrders($city,$district);
+
         return view('supervisor.orders.index', compact('orders'));
     }
 
@@ -76,10 +82,7 @@ class OrderController extends Controller
     {
         $order = $this->orderService->findById($id);
         if($order->driver_id != null){
-           $drivers = $this->availableDrivers($order->delivery_date, $id)->pluck('first_name', 'id')->toArray();
-        }
-        else{
-           $drivers = $this->userRepo->getSelected(IUserType::DRIVER)->pluck('first_name', 'id')->toArray();
+           $drivers = $this->availableDrivers($order->delivery_date, $id);
         }
         return  view('supervisor.orders.view', compact('order','drivers'));
     }
@@ -139,7 +142,7 @@ class OrderController extends Controller
      * @return mixed
      */
     public function availableDrivers($date,$order_id){
-          $availableDrivers = $this->orderService->availableDrivers($date,$order_id);
+          $availableDrivers = $this->orderService->availableDrivers($date,$order_id)->pluck('first_name', 'id')->toArray();
           return $availableDrivers;
     }
 }

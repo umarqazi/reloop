@@ -31,16 +31,17 @@ class OrderRepo extends BaseRepo
     }
 
     /**
-     * @param $id
+     * @param $drivers
+     * @param $date
+     * @return mixed
      */
     public function availableDrivers($drivers,$date){
-       //$drivers = $drivers->toArray();
 
        for($i = 0 ; $i < sizeof($drivers) ; $i++){
-           $id = $drivers[$i] ;
+           $id    = $drivers[$i]->id ;
            $check = $this->checkDriver($id,$date);
            if(!$check){
-               array_splice($drivers, $i, 1);
+               $drivers->forget($i);
            }
        }
        return $drivers;
@@ -52,7 +53,7 @@ class OrderRepo extends BaseRepo
      * @return bool
      */
     public function checkDriver($id,$date){
-        $check = $this->all()->where('driver_id',$id)->where('delivery_Date',$date);
+        $check = $this->all()->where('driver_id',$id)->where('delivery_date',$date);
         $count = Count($check);
         if($count < 4){
             return true ;

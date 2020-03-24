@@ -155,19 +155,19 @@ $(document).ready(function () {
        let date      =  $(this).val() ;
        let order_id  =  $(this).closest("form").attr('id');
        let select    =  $('#driver_id');
-       let route     =  '/driver-availability/' + date + '/' + order_id;
+       let route     =  '/drivers-availability/' + date + '/' + order_id;
 
         $.ajax({
             type: "GET",
             url:  route,
-            success: function (data) {
+            success: function (res) {
                        select.html('');
                        select.append('<option value="" disabled selected >Choose Driver</option>');
-                if (data) {
-                    for(let i=0 ; i < data.length ; i++){
-                        select.append('<option value="' + data[i].id + '">' +data[i].first_name+'</option>');
-                    }
-                    $('#driver_id').material_select();
+                if (res) {
+                    $.each(res, function (key, value) {
+                        select.append('<option value="' + key + '">' + value + '</option>');
+                    });
+                    select.material_select();
                 }
             }
         });

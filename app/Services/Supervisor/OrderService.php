@@ -60,7 +60,9 @@ class OrderService extends BaseService
     }
 
     /**
-     * @param $id
+     * @param $date
+     * @param $order_id
+     * @return mixed
      */
     public function availableDrivers($date,$order_id){
         $order = $this->findById($order_id);

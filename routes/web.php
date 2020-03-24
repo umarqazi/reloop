@@ -44,6 +44,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/get-orders', 'Supervisor\OrderController@index')->name('get-orders');
     Route::get('/show-order/{id}', 'Supervisor\OrderController@show')->name('supervisor.order.show');
     Route::put('/assign-order/{id}', 'Supervisor\OrderController@assignOrder')->name('supervisor.assign.order');
-    Route::get('/driver-availability/{date}/{order}', 'Supervisor\OrderController@availableDrivers')->name('drivers.availability');
+    Route::get('/drivers-availability/{date}/{order}', 'Supervisor\OrderController@availableDrivers')->name('drivers.availability');
 
 });
