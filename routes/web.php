@@ -34,9 +34,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('organization', 'Admin\OrganizationController');
     Route::resource('coupon', 'Admin\CouponController');
     Route::resource('reward-point', 'Admin\RewardPointController');
+    Route::resource('order', 'Admin\OrderController');
     Route::get('/all-users', 'Admin\RewardPointController@allUsers')->name('all-users');
     Route::get('/get-user/{id}', 'Admin\RewardPointController@getUser')->name('get-user');
     Route::put('/update-user', 'Admin\RewardPointController@updateRewardPoints')->name('update-user');
     Route::get('/user-subscription', 'Admin\UserController@userSubscription')->name('user-subscription');
+
+    //supervisor routes
+    Route::get('/get-orders', 'Supervisor\OrderController@index')->name('get-orders');
+    Route::get('/show-order/{id}', 'Supervisor\OrderController@show')->name('supervisor.order.show');
+    Route::put('/assign-order/{id}', 'Supervisor\OrderController@assignOrder')->name('supervisor.assign.order');
+    Route::get('/drivers-availability/{date}/{order}', 'Supervisor\OrderController@availableDrivers')->name('drivers.availability');
 
 });

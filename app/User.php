@@ -60,7 +60,17 @@ class User extends Authenticatable
     }
 
     /**
-     * Method: userSubscription
+
+     * Method: orders
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+     /** Method: userSubscription
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -68,6 +78,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserSubscription::class);
     }
+
+    /**
+
+     * Method: orderItems
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+
+    }
+
 
     public function getAvatarAttribute($value)
     {

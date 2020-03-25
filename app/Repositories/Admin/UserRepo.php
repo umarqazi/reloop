@@ -3,6 +3,7 @@
 
 namespace App\Repositories\Admin;
 
+use App\Services\IUserType;
 use App\User;
 use Illuminate\Support\Collection;
 
@@ -35,5 +36,20 @@ class UserRepo extends BaseRepo
     public function getSelected($type)
     {
         return $this->getModel->where('user_type', $type)->get();
+    }
+
+    /**
+     * @param $type
+     * @param $city_id
+     * @param $district_id
+     * @return mixed
+     */
+    public function getDrivers($type,$city_id,$district_id)
+    {
+       $drivers =  $this->getModel->whereHas( 'addresses' , function ($query) use($city_id,$district_id) {
+             $query->where('city_id', $city_id)->where('district_id',$district_id);
+        })->where('user_type', $type)->get();
+
+       return $drivers;
     }
 }

@@ -58,6 +58,9 @@ return[
     'COUPON_VERIFICATION'                   => 'Your coupon code has verified!',
     'COUPON_FAIL'                           => 'Invalid coupon!',
 
+    'ORDER_ASSIGNED'                        => 'Order assigned successfully!',
+    'ORDER_ASSIGNMENT_FAIL'                 => 'Something went wrong in assigning order!',
+
     'ADDRESS_UPDATE'                        => 'Address has updated!',
     'INVALID_ADDRESS_ID'                    => 'You\'ve requested for invalid Address!',
     'ADDRESS_SAVED'                         => 'Address saved successfully!',

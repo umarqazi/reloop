@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'user_id', 'order_number', 'subtotal', 'redeem_points', 'coupon_discount', 'total', 'first_name', 'last_name', 'email',
-        'phone_number', 'location', 'latitude', 'longitude', 'city', 'district'
+        'user_id','driver_id', 'order_number', 'subtotal', 'redeem_points', 'coupon_discount', 'total', 'first_name', 'last_name', 'email',
+        'phone_number', 'location', 'latitude', 'longitude', 'city', 'district','status','delivery_date',
     ];
 
     /**
@@ -28,5 +28,27 @@ class Order extends Model
     public function userTransaction()
     {
         return $this->morphMany(Transaction::class, 'transactionable');
+    }
+
+    /**
+     * Method: user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
+    /**
+
+     * Method: orderItems
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }
