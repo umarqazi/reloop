@@ -65,4 +65,13 @@ return[
     'INVALID_ADDRESS_ID'                    => 'You\'ve requested for invalid Address!',
     'ADDRESS_SAVED'                         => 'Address saved successfully!',
 
+    'QUESTION_CREATION_SUCCESS'             => 'Question created successfully',
+    'QUESTION_CREATION_ERROR'               => 'Error Occurred while creating Question',
+    'QUESTION_UPDATE_SUCCESS'               => 'Question updated successfully',
+    'QUESTION_UPDATE_ERROR'                 => 'Error Occurred while updating Question',
+    'QUESTION_DELETE_SUCCESS'               => 'Question deleted successfully',
+    'QUESTION_DELETE_ERROR'                 => 'Error Occurred while deleting Question',
+
+    'ERROR'                                 =>  'Something went wrong!',
+
 ];
