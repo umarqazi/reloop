@@ -73,7 +73,7 @@
                                 <td>{{ $order->email  }}</td>
                                 <td>{{ $order->redeem_points }}</td>
                                 <td>{{ $order->total }}</td>
-                                <td><a href="{{ route('order.show', $order->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
+                                <td><a href="{{ route('orders.show', $order->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
                             </tr>
                             @endforeach
                             </tbody>
