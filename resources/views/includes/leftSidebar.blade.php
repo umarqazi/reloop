@@ -66,7 +66,7 @@
                     <div class="collapsible-body">
                         <ul>
                             <li>
-                                <a href="{{ route('order.index') }}">
+                                <a href="{{ route('orders.index') }}">
                                     <i class="material-icons">keyboard_arrow_right</i>
                                     <span>User Orders</span>
                                 </a>

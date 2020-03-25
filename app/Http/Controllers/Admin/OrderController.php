@@ -59,7 +59,12 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = $this->orderService->findById($id);
-        return  view('orders.view', compact('order'));
+
+        if($order->driver_id != null){
+            $drivers = $this->availableDrivers($order->delivery_date, $id);
+        }
+
+        return  view('orders.view', compact('order','drivers'));
     }
 
     /**
@@ -94,5 +99,15 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * @param $date
+     * @param $order_id
+     * @return mixed
+     */
+    public function availableDrivers($date,$order_id){
+        $availableDrivers = $this->orderService->availableDrivers($date,$order_id)->pluck('first_name', 'id')->toArray();
+        return $availableDrivers;
     }
 }
