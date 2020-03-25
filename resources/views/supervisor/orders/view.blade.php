@@ -15,7 +15,7 @@
                             <ol class="breadcrumbs">
                                 <li><a href="{{route('home')}}">Dashboard</a>
                                 </li>
-                                <li><a href="{{route('order.index')}}">Orders</a>
+                                <li><a href="{{route('get-orders')}}">Orders</a>
                                 </li>
                                 <li class="active">Order Details</li>
                             </ol>

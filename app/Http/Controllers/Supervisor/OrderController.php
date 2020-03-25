@@ -7,7 +7,7 @@ use App\Services\Admin\CityService;
 use App\Services\Admin\DistrictService;
 use App\Services\Admin\UserService;
 use App\Services\IUserType;
-use App\Services\Supervisor\OrderService;
+use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
