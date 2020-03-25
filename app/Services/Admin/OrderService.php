@@ -69,13 +69,13 @@ class OrderService extends BaseService
                 'email'   => $this->userRepo->findById($order->user_id)->email,
             );
 
-            //$this->emailNotificationService->userOrderAssignedEmail($user);
+            $this->emailNotificationService->userOrderAssignedEmail($user);
 
             $driver = array(
                 'email'   => $this->userRepo->findById($order->driver_id)->email,
             );
 
-            //$this->emailNotificationService->driverOrderAssignedEmail($driver);
+            $this->emailNotificationService->driverOrderAssignedEmail($driver);
 
             $admin = array(
                 'user'   => $this->userRepo->findById($order->user_id)->email,
