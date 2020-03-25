@@ -95,6 +95,12 @@ class AddressService extends BaseService
                 $findAddress->location = $address->location;
                 $findAddress->latitude = $address->latitude;
                 $findAddress->longitude = $address->longitude;
+                $findAddress->type = $address->type;
+                $findAddress->street = $address->street;
+                $findAddress->no_of_bedrooms = $address->no_of_bedrooms;
+                $findAddress->no_of_occupants = $address->no_of_occupants;
+                $findAddress->floor = $address->floor;
+                $findAddress->unit_number = $address->unit_number;
                 $findAddress->update();
 
                 $responseData = [
@@ -115,12 +121,18 @@ class AddressService extends BaseService
         } else{
 
             $newAddress = [
-                'user_id'     => auth()->id(),
-                'city_id'     => $address->city_id,
-                'district_id' => $address->district_id,
-                'location'    => $address->location,
-                'latitude'    => $address->latitude,
-                'longitude'   => $address->longitude,
+                'user_id'         => auth()->id(),
+                'city_id'         => $address->city_id,
+                'district_id'     => $address->district_id,
+                'type'            => $address->type,
+                'location'        => $address->location,
+                'latitude'        => $address->latitude,
+                'longitude'       => $address->longitude,
+                'no_of_bedrooms'  => $address->no_of_bedrooms,
+                'no_of_occupants' => $address->no_of_occupants,
+                'street'          => $address->street,
+                'floor'           => $address->floor,
+                'unit_number'     => $address->unit_number,
             ];
             $saveAddress = $this->model->create($newAddress);
             $responseData = [
