@@ -5,32 +5,28 @@ namespace App\Services;
 
 
 use App\Forms\IForm;
-use App\MaterialCategory;
+use App\RequestCollection;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class MaterialCategoryService
+ * Class RequestCollectionService
  *
  * @package   App\Services
  * @author    Faisal Raza <faisal.raza@gems.techverx.com>
  * @copyright 2020 Techverx.com All rights reserved.
- * @since     Mar 24, 2020
+ * @since     Mar 25, 2020
  * @project   reloop
  */
-class MaterialCategoryService extends BaseService
+class RequestCollectionService extends BaseService
 {
     /**
      * Property: model
      *
-     * @var MaterialCategory
+     * @var RequestCollection
      */
     private $model;
 
-    /**
-     * MaterialCategoryService constructor.
-     * @param MaterialCategory $model
-     */
-    public function __construct(MaterialCategory $model)
+    public function __construct(RequestCollection $model)
     {
         parent::__construct();
         $this->model = $model;
@@ -49,7 +45,7 @@ class MaterialCategoryService extends BaseService
      */
     public function findById($id)
     {
-        return $this->model->find($id);
+        // TODO: Implement findById() method.
     }
 
     /**
@@ -61,24 +57,22 @@ class MaterialCategoryService extends BaseService
     }
 
     /**
-     * Method: getAll
-     *
-     * @return MaterialCategory[]|\Illuminate\Database\Eloquent\Collection
-     */
-    public function getAll()
-    {
-        return $this->model->all();
-    }
-
-    /**
-     * Method: findMaterialCategoryById
+     * Method: create
      *
      * @param $data
+     * @param $requestId
      *
-     * @return mixed
+     * @return void
      */
-    public function findMaterialCategoryById($data)
+    public function create($data, $requestId)
     {
-        return $this->model->find(array_column($data, 'id'));
+        $model = $this->model;
+        foreach ($data['material_categories'] as $material_category){
+            $categories = [
+                'request_id' => $requestId,
+                'category_name' => $material_category->name
+                ];
+        }
+        $model->insert($categories);
     }
 }

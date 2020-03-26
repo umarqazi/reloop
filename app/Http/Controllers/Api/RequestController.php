@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Forms\Collection\CollectionRequestForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\MaterialCategoryService;
+use App\Services\RequestService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
@@ -26,14 +28,21 @@ class RequestController extends Controller
      * @var MaterialCategoryService
      */
     private $materialCategoryService;
+    /**
+     * Property: requestService
+     *
+     * @var RequestService
+     */
+    private $requestService;
 
     /**
      * RequestController constructor.
      * @param MaterialCategoryService $materialCategoryService
      */
-    public function __construct(MaterialCategoryService $materialCategoryService)
+    public function __construct(MaterialCategoryService $materialCategoryService, RequestService $requestService)
     {
         $this->materialCategoryService = $materialCategoryService;
+        $this->requestService = $requestService;
     }
 
     /**
@@ -50,6 +59,36 @@ class RequestController extends Controller
             IResponseHelperInterface::SUCCESS_RESPONSE,
             true,
             $materialCategories
+        );
+    }
+
+    /**
+     * Method: collectionRequests
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function collectionRequests(Request $request)
+    {
+        $collectionRequestForm = new CollectionRequestForm();
+        $collectionRequestForm->loadFromArray($request->all());
+
+        $collectionRequest = $this->requestService->collectionRequest($collectionRequestForm);
+        if(!empty($collectionRequest)){
+
+            return ResponseHelper::jsonResponse(
+                $collectionRequest['message'],
+                $collectionRequest['code'],
+                $collectionRequest['status'],
+                $collectionRequest['data']
+            );
+        }
+        return ResponseHelper::jsonResponse(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
         );
     }
 }

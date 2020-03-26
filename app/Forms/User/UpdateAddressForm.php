@@ -22,6 +22,7 @@ class UpdateAddressForm extends BaseForm
     public $latitude;
     public $longitude;
     public $type;
+    public $street;
     public $no_of_bedrooms;
     public $no_of_occupants;
     public $floor;
@@ -40,6 +41,7 @@ class UpdateAddressForm extends BaseForm
             'latitude'        =>$this->latitude,
             'longitude'       =>$this->longitude,
             'type'            =>$this->type,
+            'street'          =>$this->street,
             'no_of_bedrooms'  =>$this->no_of_bedrooms,
             'no_of_occupants' =>$this->no_of_occupants,
             'floor'           =>$this->floor,
