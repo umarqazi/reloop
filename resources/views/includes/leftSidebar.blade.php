@@ -113,6 +113,12 @@
                     </a>
                 </li>
                 <li class="bold">
+                    <a href="{{ route('questions.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">FAQ</span>
+                    </a>
+                </li>
+                <li class="bold">
                     {{ Form::open(['url' => route('logout'),
                                    'method' => 'POST',]) }}
 
