@@ -8,6 +8,7 @@ use App\Category;
 use App\Forms\IForm;
 use App\Forms\Product\CategoryProductsForm;
 use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use App\Product;
 use App\Subscription;
 use Illuminate\Support\Facades\Config;
@@ -89,13 +90,12 @@ class ProductService extends BaseService
     {
         if ($category->fails())
         {
-            $responseData = [
-                'message' => Config::get('constants.RECORD_NOT_FOUND'),
-                'code' => IResponseHelperInterface::FAIL_RESPONSE,
-                'status' => false,
-                'data' => $category->errors()
-            ];
-            return $responseData;
+            return ResponseHelper::responseData(
+                Config::get('constants.RECORD_NOT_FOUND'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $category->errors()
+            );
         }
 
         $cat = $this->category->where('id', $category->category_id)->first();
@@ -110,13 +110,12 @@ class ProductService extends BaseService
             }
         }
 
-        $responseData = [
-            'message' => Config::get('constants.PRODUCTS_SUCCESS'),
-            'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-            'status' => true,
-            'data' => $categoryProducts
-        ];
-        return $responseData;
+        return ResponseHelper::responseData(
+            Config::get('constants.PRODUCTS_SUCCESS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $categoryProducts
+        );
     }
 
     /**
@@ -141,5 +140,28 @@ class ProductService extends BaseService
     public function findProductById($data)
     {
         return $this->product->find(array_column($data, 'id'));
+    }
+
+    /**
+     * Method: getProductsByCategoryId
+     *
+     * @param $categoryId
+     *
+     * @return mixed
+     */
+    public function getProductsByCategoryId($categoryId)
+    {
+        $cat = $this->category->where('id', $categoryId)->first();
+        if($cat){
+
+            if($cat->type == ICategoryType::SUBSCRIPTION){
+
+                $categoryProducts = $this->subscription->where(['category_id' => $categoryId, 'status' => true])->get();
+            } else {
+
+                $categoryProducts = $this->product->where(['category_id' => $categoryId, 'status' => true])->get();
+            }
+            return $categoryProducts;
+        }
     }
 }

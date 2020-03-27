@@ -8,8 +8,10 @@ use App\Forms\IForm;
 use App\Forms\User\CreateForm;
 use App\Forms\User\LoginForm;
 use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -485,23 +487,26 @@ class UserService extends BaseService
     public function getUserPlans()
     {
         $getUserPlans = $this->userSubscriptionService->findByUserId(auth()->id());
+        $oneTimeServices = App::make(ProductService::class)->getProductsByCategoryId(ISubscriptionType::ONETIME);
+        $data = [
+            'UserPlans' => $getUserPlans,
+            'OneTimeServices' => $oneTimeServices,
+        ];
         if($getUserPlans){
 
-            $responseData = [
-                'message' => Config::get('constants.USER_PLANS'),
-                'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-                'status' => true,
-                'data' => $getUserPlans
-            ];
-            return $responseData;
+            return ResponseHelper::responseData(
+                Config::get('constants.USER_PLANS'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                $data
+            );
         }
 
-        $responseData = [
-            'message' => Config::get('constants.INVALID_OPERATION'),
-            'code' => IResponseHelperInterface::FAIL_RESPONSE,
-            'status' => false,
-            'data' => null
-        ];
-        return $responseData;
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
     }
 }
