@@ -33,4 +33,19 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    /**
+     * Method: getAvatarAttribute
+     *
+     * @param $value
+     *
+     * @return string
+     */
+    public function getAvatarAttribute($value)
+    {
+        if(!empty($value)){
+
+            return env('APP_URL').'/storage/uploads/images/product/' . $value;
+        }
+    }
+
 }
