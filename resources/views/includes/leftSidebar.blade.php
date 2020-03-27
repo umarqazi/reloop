@@ -113,6 +113,12 @@
                     </a>
                 </li>
                 <li class="bold">
+                    <a href="{{ route('pages.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Pages</span>
+                    </a>
+                </li>
+                <li class="bold">
                     {{ Form::open(['url' => route('logout'),
                                    'method' => 'POST',]) }}
 
