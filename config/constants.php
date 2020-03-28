@@ -42,6 +42,7 @@ return[
 
     'MATERIAL_CATEGORY_SUCCESS'             => 'Material category list shown as',
     'USER_PLANS'                            => 'User plans shown as:',
+    'COLLECTION_SUCCESSFUL'                 => 'Collection request successful!',
 
     'UN_AUTHORIZE_ERROR'                    => 'You are not authorized',
     'GENERAL_ERROR'                         => 'Something went wrong.Please try again later!',
@@ -65,9 +66,16 @@ return[
     'INVALID_ADDRESS_ID'                    => 'You\'ve requested for invalid Address!',
     'ADDRESS_SAVED'                         => 'Address saved successfully!',
 
-    'ERROR'                                 => 'No Information found!',
-
     'SETTING_UPDATE_SUCCESS'                => 'Settings updated successfully',
     'SETTING_UPDATE_ERROR'                  => 'Error while updating Settings',
+
+    'QUESTION_CREATION_SUCCESS'             => 'Question created successfully',
+    'QUESTION_CREATION_ERROR'               => 'Error Occurred while creating Question',
+    'QUESTION_UPDATE_SUCCESS'               => 'Question updated successfully',
+    'QUESTION_UPDATE_ERROR'                 => 'Error Occurred while updating Question',
+    'QUESTION_DELETE_SUCCESS'               => 'Question deleted successfully',
+    'QUESTION_DELETE_ERROR'                 => 'Error Occurred while deleting Question',
+
+    'ERROR'                                 =>  'Something went wrong!',
 
 ];

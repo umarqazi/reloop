@@ -12,4 +12,5 @@ interface ISubscriptionSubType
     const NEXT_DAY = 2;
     const SINGLE_COLLECTION = 3;
     const BULKY_ITEM = 4;
+    const NORMAL = 5;
 }

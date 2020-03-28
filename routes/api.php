@@ -30,4 +30,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('update-user-profile', 'UserController@updateUserProfile');
     Route::get('material-categories', 'Api\RequestController@materialCategories');
     Route::get('get-plan', 'UserController@getUserPlans');
+    Route::post('collection-request', 'Api\RequestController@collectionRequests');
 });

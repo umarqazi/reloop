@@ -19,4 +19,15 @@ class ResponseHelper implements IResponseHelperInterface
     {
         return response()->json(['message' => $msg, 'code' => $code, 'status' => $status, 'data' => $data], $code);
     }
+
+    public static function responseData($message, $code, $status, $data)
+    {
+        $responseData = [
+            'message' => $message,
+            'code' => $code,
+            'status' => $status,
+            'data' => $data
+        ];
+        return $responseData;
+    }
 }
