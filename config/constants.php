@@ -66,6 +66,9 @@ return[
     'INVALID_ADDRESS_ID'                    => 'You\'ve requested for invalid Address!',
     'ADDRESS_SAVED'                         => 'Address saved successfully!',
 
+    'SETTING_UPDATE_SUCCESS'                => 'Settings updated successfully',
+    'SETTING_UPDATE_ERROR'                  => 'Error while updating Settings',
+
     'QUESTION_CREATION_SUCCESS'             => 'Question created successfully',
     'QUESTION_CREATION_ERROR'               => 'Error Occurred while creating Question',
     'QUESTION_UPDATE_SUCCESS'               => 'Question updated successfully',
