@@ -33,8 +33,8 @@
 
 <div id="main">
     <div class="wrapper">
-        @include('includes.leftSidebar')
-        @include('includes.rightSideBar')
+        @include('includes.leftSidebar'){{--
+        @include('includes.rightSideBar')--}}
         @yield('content')
     </div>
 </div>

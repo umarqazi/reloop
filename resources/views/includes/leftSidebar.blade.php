@@ -116,6 +116,9 @@
                     <a href="{{ route('pages.index') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Pages</span>
+                    <a href="{{ route('questions.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">FAQ</span>
                     </a>
                 </li>
                 <li class="bold">

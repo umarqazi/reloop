@@ -26,7 +26,7 @@
                             <i class="material-icons">face</i> Profile</a>
                     </li>
                     <li>
-                        <a href="#" class="grey-text text-darken-1">
+                        <a href="{{ route('settings.index') }}" class="grey-text text-darken-1">
                             <i class="material-icons">settings</i> Settings</a>
                     </li>
                     <li>
