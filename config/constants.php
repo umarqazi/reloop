@@ -66,6 +66,9 @@ return[
     'INVALID_ADDRESS_ID'                    => 'You\'ve requested for invalid Address!',
     'ADDRESS_SAVED'                         => 'Address saved successfully!',
 
+    'PAGE_UPDATE_SUCCESS'                   => 'Page updated successfully!',
+    'PAGE_UPDATE_ERROR'                     => 'Error while updating page',
+
     'SETTING_UPDATE_SUCCESS'                => 'Settings updated successfully',
     'SETTING_UPDATE_ERROR'                  => 'Error while updating Settings',
 

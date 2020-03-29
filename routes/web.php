@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('coupon', 'Admin\CouponController');
     Route::resource('reward-point', 'Admin\RewardPointController');
     Route::resource('orders', 'Admin\OrderController');
+    Route::resource('pages', 'Admin\PageController');
     Route::resource('settings', 'Admin\SettingController');
     Route::resource('questions', 'Admin\QuestionController');
     Route::get('/all-users', 'Admin\RewardPointController@allUsers')->name('all-users');
