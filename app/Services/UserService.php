@@ -203,7 +203,14 @@ class UserService extends BaseService
 
     public function userProfile()
     {
-        $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
+        $userProfile = $this->model->with([
+            'addresses' => function($query){
+            $query->select('location','latitude');
+            },
+            'organization' => function($query){
+                $query->select('name');
+            }
+        ])->select('id', 'first_name', 'email')->where('id', auth()->id())->get();
         if($userProfile){
 
             $responseData = [
@@ -486,27 +493,46 @@ class UserService extends BaseService
      */
     public function getUserPlans()
     {
+        $userPlansData = [];
+        $oneTimeServicesData = [];
         $getUserPlans = $this->userSubscriptionService->findByUserId(auth()->id());
-        $oneTimeServices = App::make(ProductService::class)->getProductsByCategoryId(ISubscriptionType::ONETIME);
-        $data = [
-            'UserPlans' => $getUserPlans,
-            'OneTimeServices' => $oneTimeServices,
-        ];
-        if($getUserPlans){
+        if(!$getUserPlans->isEmpty()) {
 
-            return ResponseHelper::responseData(
-                Config::get('constants.USER_PLANS'),
-                IResponseHelperInterface::SUCCESS_RESPONSE,
-                true,
-                $data
-            );
+            foreach ($getUserPlans as $getUserPlan) {
+
+                $userPlansData[] = [
+                    'id' => $getUserPlan->id,
+                    'subscription_number' => $getUserPlan->subscription_number,
+                    'status' => $getUserPlan->status,
+                    'trips' => $getUserPlan->trips,
+                    'start_date' => $getUserPlan->start_date,
+                    'end_date' => $getUserPlan->end_date,
+                    'subscription_type' => $getUserPlan->subscription_type,
+                ];
+            }
         }
+        $oneTimeServices = App::make(ProductService::class)->getProductsByCategoryId(ISubscriptionType::ONETIME);
+        if(!$oneTimeServices->isEmpty()) {
 
+            foreach ($oneTimeServices as $oneTimeService) {
+
+                $oneTimeServicesData[] = [
+                    'id' => $oneTimeService->id,
+                    'name' => $oneTimeService->name,
+                    'price' => $oneTimeService->price,
+                    'category_type' => $oneTimeService->category_type,
+                ];
+            }
+        }
+        $data = [
+            'UserPlans' => $userPlansData,
+            'OneTimeServices' => $oneTimeServicesData,
+        ];
         return ResponseHelper::responseData(
-            Config::get('constants.INVALID_OPERATION'),
-            IResponseHelperInterface::FAIL_RESPONSE,
-            false,
-            null
+            Config::get('constants.USER_PLANS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $data
         );
     }
 }

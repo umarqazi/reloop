@@ -25,6 +25,7 @@ class CreateUserSubscriptionsTable extends Migration
 
             $table->string('stripe_subscription_id')->nullable();
             $table->string('subscription_number');
+            $table->tinyInteger('subscription_type')->nullable();
             $table->tinyInteger('status')->nullable();
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();

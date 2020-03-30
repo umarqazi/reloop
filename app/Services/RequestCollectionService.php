@@ -67,12 +67,12 @@ class RequestCollectionService extends BaseService
     public function create($data, $requestId)
     {
         $model = $this->model;
-        foreach ($data['material_categories'] as $material_category){
-            $categories = [
+        foreach ($data['material_category_details'] as $material_category){
+
+            $model->create([
                 'request_id' => $requestId,
                 'category_name' => $material_category->name
-                ];
+            ]);
         }
-        $model->insert($categories);
     }
 }

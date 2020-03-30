@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use App\Jobs\SaveCollectionRequestDetailsJob;
 use App\Request;
 use Illuminate\Support\Facades\App;
@@ -35,16 +36,23 @@ class RequestService extends BaseService
      * @var string
      */
     private $request_number;
+    /**
+     * Property: userSubscriptionService
+     *
+     * @var UserSubscriptionService
+     */
+    private $userSubscriptionService;
 
     /**
      * RequestService constructor.
      * @param Request $model
      */
-    public function __construct(Request $model)
+    public function __construct(Request $model, UserSubscriptionService $userSubscriptionService)
     {
         $this->request_number = 'RE'.strtotime(now());
         parent::__construct();
         $this->model = $model;
+        $this->userSubscriptionService = $userSubscriptionService;
     }
 
     /**
@@ -74,48 +82,56 @@ class RequestService extends BaseService
     /**
      * Method: collectionRequest
      *
-     * @param $data
+     * @param IForm $collectionRequestForm
      *
      * @return array
      */
-    public function collectionRequest($data)
+    public function collectionRequest(IForm $collectionRequestForm)
     {
-        if(!empty($data->card_number)){
+        if($collectionRequestForm->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $collectionRequestForm->errors()
+            );
+        }
+
+        if(!empty($collectionRequestForm->card_number)){
 
             $stripeService = new StripeService();
-            $makePayment = $stripeService->buyPlan($data);
+            $makePayment = $stripeService->buyPlan($collectionRequestForm);
             if(array_key_exists('stripe_error', $makePayment)){
 
-                $responseData = [
-                    'message' => Config::get('constants.ORDER_FAIL'),
-                    'code' => IResponseHelperInterface::FAIL_RESPONSE,
-                    'status' => false,
-                    'data' => $makePayment
-                ];
-                return $responseData;
+                return ResponseHelper::responseData(
+                    Config::get('constants.ORDER_FAIL'),
+                    IResponseHelperInterface::FAIL_RESPONSE,
+                    false,
+                    $makePayment
+                );
             }
         }
 
-        $material_categories = App::make(MaterialCategoryService::class)->findMaterialCategoryById($data->material_categories);
+        $material_categories = App::make(MaterialCategoryService::class)->findMaterialCategoryById($collectionRequestForm->material_categories);
         $saveData = [
-            'material_categories' => $material_categories,
-            'collection_form_data' => $data,
+            'material_category_details' => $material_categories,
+            'collection_form_data' => $collectionRequestForm,
             'user_id' => auth()->id(),
             'request_number' => $this->request_number
         ];
         SaveCollectionRequestDetailsJob::dispatch($saveData);
 
-        $responseData = [
-            'message' => Config::get('constants.COLLECTION_SUCCESSFUL'),
-            'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-            'status' => true,
-            'data' => [
+        return ResponseHelper::responseData(
+            Config::get('constants.COLLECTION_SUCCESSFUL'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            [
                 'collection_request' => [
                     $this->request_number
                 ],
-            ],
-        ];
-        return $responseData;
+            ]
+        );
     }
 
     /**
@@ -129,6 +145,7 @@ class RequestService extends BaseService
     {
         $saveRequestDetails = $this->create($data);
         $saveRequestCollectionDetails = App::make(RequestCollectionService::class)->create($data, $saveRequestDetails->id);
+        $updateTrips = App::make(UserSubscriptionService::class)->updateTrips($data);
     }
 
     /**
