@@ -57,23 +57,44 @@ class UserSubscriptionService extends BaseService
         // TODO: Implement remove() method.
     }
 
+    /**
+     * Method: create
+     *
+     * @param $data
+     *
+     * @return UserSubscription
+     */
     public function create($data)
     {
         $startTime = null;
         $endTime = null;
         $stripeSubId = null;
+        $subscriptionType = $data['product_details']->category_type;
+        $status = IUserSubscriptionStatus::ACTIVE;
+        $model = $this->model;
         if($data['product_details']->category_id == ISubscriptionType::MONTHLY){
 
             $startTime = date("Y-m-d h:i:s",$data['stripe_response']['current_period_start']);
             $endTime = date("Y-m-d h:i:s",$data['stripe_response']['current_period_end']);
             $stripeSubId = $data['stripe_response']['id'];
+            $subscriptionType = ISubscriptionSubType::NORMAL;
+
+            $userSubscriptionStatus = $model->where([
+                'user_id' => $data['user_id'],
+                'status' => IUserSubscriptionStatus::ACTIVE
+            ])->whereNotNull('stripe_subscription_id')->first();
+            if(!empty($userSubscriptionStatus)){
+
+                $status = IUserSubscriptionStatus::PENDING;
+            }
         }
 
-        $model = $this->model;
         $model->user_id = $data['user_id'];
         $model->subscription_id = $data['product_details']->id;
         $model->stripe_subscription_id = $stripeSubId;
         $model->subscription_number = $data['order_number'];
+        $model->subscription_type = $subscriptionType;
+        $model->status = $status;
         $model->start_date = $startTime;
         $model->end_date = $endTime;
         $model->trips = $data['product_details']->request_allowed;
@@ -91,6 +112,26 @@ class UserSubscriptionService extends BaseService
      */
     public function findByUserId($userId)
     {
-        return $this->model->where('user_id', $userId)->with('subscription.category')->get();
+        return $this->model->where(['user_id' => $userId, 'status' => IUserSubscriptionStatus::ACTIVE])->with('subscription.category')->get();
+    }
+
+    /**
+     * Method: updateTrips
+     *
+     * @param $data
+     *
+     * @return void
+     */
+    public function updateTrips($data)
+    {
+        $updateTrips = $this->model->where([
+            'user_id' => $data['user_id'],
+            'subscription_type' => $data['collection_form_data']->collection_type,
+            'status' => IUserSubscriptionStatus::ACTIVE
+        ])->first();
+        $updatedTrips = $updateTrips->trips - 1;
+        $updateTrips->trips = $updatedTrips;
+        $updateTrips->status = ($updatedTrips == 0) ? IUserSubscriptionStatus::COMPLETED : IUserSubscriptionStatus::ACTIVE;
+        $updateTrips->update();
     }
 }
