@@ -31,4 +31,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('material-categories', 'Api\RequestController@materialCategories');
     Route::get('get-plan', 'UserController@getUserPlans');
     Route::post('collection-request', 'Api\RequestController@collectionRequests');
+    Route::get('privacy-policy', 'Api\PageController@getPageContent')->name('privacy-policy');
+    Route::get('terms-and-conditions', 'Api\PageController@getPageContent')->name('terms-and-conditions');
+    Route::get('about-us', 'Api\PageController@getPageContent')->name('about-us');
 });
