@@ -49,8 +49,7 @@ return[
     'RECORD_NOT_FOUND'                      => 'Record not found!',
     'CURRENCY'                              => 'USD',
     'MONTHLY_SUBSCRIPTION'                  => 'month',
-    'ORDER_SUCCESSFUL'                      => 'Your order has been placed successfully!',
-    'ORDER_FAIL'                            => 'Your order has failed!',
+
     'DEPENDENCIES_LIST'                     => 'Cities, Sectors and Organizations list shown as:',
     'PASSWORD_RESET_EMAIL_NOT_SENT'         => 'Password reset email didn\'t sent!',
     'PASSWORD_RESET_EMAIL_SENT'             => 'Password reset email sent!',
@@ -59,8 +58,11 @@ return[
     'COUPON_VERIFICATION'                   => 'Your coupon code has verified!',
     'COUPON_FAIL'                           => 'Invalid coupon!',
 
+    'ORDER_SUCCESSFUL'                      => 'Your order has been placed successfully!',
+    'ORDER_FAIL'                            => 'Your order has failed!',
     'ORDER_ASSIGNED'                        => 'Order assigned successfully!',
     'ORDER_ASSIGNMENT_FAIL'                 => 'Something went wrong in assigning order!',
+    'ORDER_HISTORY_SUCCESS'                 => 'Order history shown as:',
 
     'ADDRESS_UPDATE'                        => 'Address has updated!',
     'INVALID_ADDRESS_ID'                    => 'You\'ve requested for invalid Address!',

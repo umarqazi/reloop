@@ -3,8 +3,11 @@
 
 namespace App\Services;
 use App\Forms\IForm;
+use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use App\Order;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -76,5 +79,41 @@ class OrderService extends BaseService
             'district'        => $district->name
         ]);
         return $model->fresh();
+    }
+
+    /**
+     * Method: getUserOrders
+     *
+     * @return array
+     */
+    public function userOrders()
+    {
+        $getUserOrders = $this->model->with([
+            'orderItems' => function ($query){
+                return $query->with([
+                    'product' => function($subQuery){
+                    return $subQuery->select('id', 'name');
+                    }
+                ]);
+            }
+        ])->select('id', 'order_number', 'total', 'status', 'created_at')
+            ->where(['user_id' => auth()->id()])->get();
+
+        if(!$getUserOrders->isEmpty()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.ORDER_HISTORY_SUCCESS'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                $getUserOrders
+            );
+        }
+
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
     }
 }
