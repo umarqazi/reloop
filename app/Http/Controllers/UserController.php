@@ -119,4 +119,21 @@ class UserController extends Controller
             $userProfile['data']
         );
     }
+
+    /**
+     * Method: userSubscriptions
+     * user subscriptions list
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userSubscriptions()
+    {
+        $userSubscriptions = $this->userService->userSubscriptions();
+
+        return ResponseHelper::jsonResponse(
+            $userSubscriptions['message'],
+            $userSubscriptions['code'],
+            $userSubscriptions['status'],
+            $userSubscriptions['data']
+        );
+    }
 }
