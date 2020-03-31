@@ -42,6 +42,8 @@ return[
 
     'MATERIAL_CATEGORY_SUCCESS'             => 'Material category list shown as',
     'USER_PLANS'                            => 'User plans shown as:',
+    'USER_SUBSCRIPTIONS_SUCCESS'            => 'User subscriptions shown as:',
+    'USER_SUBSCRIPTIONS_FAIL'               => 'You didn\'t buy any subscription!',
     'COLLECTION_SUCCESSFUL'                 => 'Collection request successful!',
 
     'UN_AUTHORIZE_ERROR'                    => 'You are not authorized',

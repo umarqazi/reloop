@@ -116,6 +116,18 @@ class UserSubscriptionService extends BaseService
     }
 
     /**
+     * Method: userSubscriptions
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function userSubscriptions($userId)
+    {
+        return $this->model->where(['user_id' => $userId])->whereNotNull('stripe_subscription_id')->with('subscription')->get();
+    }
+
+    /**
      * Method: updateTrips
      *
      * @param $data

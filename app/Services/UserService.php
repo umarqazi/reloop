@@ -528,4 +528,29 @@ class UserService extends BaseService
             $data
         );
     }
+
+    /**
+     * Method: userSubscriptions
+     * get users subscriptions list
+     * @return array
+     */
+    public function userSubscriptions()
+    {
+        $userSubscriptions = $this->userSubscriptionService->userSubscriptions(auth()->id());
+        if(!$userSubscriptions->isEmpty()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.USER_SUBSCRIPTIONS_SUCCESS'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                $userSubscriptions
+            );
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.USER_SUBSCRIPTIONS_FAIL'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
+    }
 }
