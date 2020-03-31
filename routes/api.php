@@ -34,4 +34,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('privacy-policy', 'Api\PageController@getPageContent')->name('privacy-policy');
     Route::get('terms-and-conditions', 'Api\PageController@getPageContent')->name('terms-and-conditions');
     Route::get('about-us', 'Api\PageController@getPageContent')->name('about-us');
+    Route::get('orders-listing', 'Api\OrderController@userOrders');
 });
