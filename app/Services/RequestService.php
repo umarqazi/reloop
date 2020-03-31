@@ -143,9 +143,12 @@ class RequestService extends BaseService
      */
     public function afterCollectionRequest($data)
     {
-        $saveRequestDetails = $this->create($data);
-        $saveRequestCollectionDetails = App::make(RequestCollectionService::class)->create($data, $saveRequestDetails->id);
         $updateTrips = App::make(UserSubscriptionService::class)->updateTrips($data);
+        if($updateTrips){
+
+            $saveRequestDetails = $this->create($data);
+            $saveRequestCollectionDetails = App::make(RequestCollectionService::class)->create($data, $saveRequestDetails->id);
+        }
     }
 
     /**

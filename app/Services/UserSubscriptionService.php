@@ -129,9 +129,14 @@ class UserSubscriptionService extends BaseService
             'subscription_type' => $data['collection_form_data']->collection_type,
             'status' => IUserSubscriptionStatus::ACTIVE
         ])->first();
-        $updatedTrips = $updateTrips->trips - 1;
-        $updateTrips->trips = $updatedTrips;
-        $updateTrips->status = ($updatedTrips == 0) ? IUserSubscriptionStatus::COMPLETED : IUserSubscriptionStatus::ACTIVE;
-        $updateTrips->update();
+        if(!empty($updateTrips)){
+
+            $updatedTrips = $updateTrips->trips - 1;
+            $updateTrips->trips = $updatedTrips;
+            $updateTrips->status = ($updatedTrips == 0) ? IUserSubscriptionStatus::COMPLETED : IUserSubscriptionStatus::ACTIVE;
+            $updateTrips->update();
+
+            return true;
+        }
     }
 }
