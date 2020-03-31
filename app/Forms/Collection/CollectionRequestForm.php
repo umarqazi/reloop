@@ -69,7 +69,7 @@ class CollectionRequestForm extends BaseForm
     public function rules()
     {
         return [
-            'collection_date'     =>'required',
+            'collection_date'     =>'required|date_format:Y-m-d',
             'first_name'          =>'required',
             'last_name'           =>'required',
             'phone_number'        =>'required',
