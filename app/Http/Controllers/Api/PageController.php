@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Forms\User\ContactUsForm;
 use App\Helpers\ResponseHelper;
+use App\Services\ContactUsService;
 use App\Services\PageService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 
 /**
  * Class PageController
@@ -48,6 +51,20 @@ class PageController extends Controller
             $getPageContent['code'],
             $getPageContent['status'],
             $getPageContent['data']
+        );
+    }
+
+    public function contactUs(Request $request)
+    {
+        $contactUsForm = new ContactUsForm();
+        $contactUsForm->loadFromArray($request->all());
+        $contactUs = App::make(ContactUsService::class)->contactUsDetails($contactUsForm);
+
+        return ResponseHelper::jsonResponse(
+            $contactUs['message'],
+            $contactUs['code'],
+            $contactUs['status'],
+            $contactUs['data']
         );
     }
 }
