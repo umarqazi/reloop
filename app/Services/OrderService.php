@@ -99,21 +99,11 @@ class OrderService extends BaseService
         ])->select('id', 'order_number', 'total', 'status', 'created_at')
             ->where(['user_id' => auth()->id()])->get();
 
-        if(!$getUserOrders->isEmpty()){
-
-            return ResponseHelper::responseData(
-                Config::get('constants.ORDER_HISTORY_SUCCESS'),
-                IResponseHelperInterface::SUCCESS_RESPONSE,
-                true,
-                $getUserOrders
-            );
-        }
-
         return ResponseHelper::responseData(
-            Config::get('constants.INVALID_OPERATION'),
-            IResponseHelperInterface::FAIL_RESPONSE,
-            false,
-            null
+            Config::get('constants.ORDER_HISTORY_SUCCESS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $getUserOrders
         );
     }
 }

@@ -36,4 +36,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('about-us', 'Api\PageController@getPageContent')->name('about-us');
     Route::get('orders-listing', 'Api\OrderController@userOrders');
     Route::get('user-subscriptions', 'UserController@userSubscriptions');
+    Route::post('contact-us', 'Api\PageController@contactUs');
 });
