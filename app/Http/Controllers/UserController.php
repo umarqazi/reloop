@@ -136,4 +136,21 @@ class UserController extends Controller
             $userSubscriptions['data']
         );
     }
+
+    /**
+     * Method: userBillings
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userBillings()
+    {
+        $userBilling = $this->userService->userBillings();
+
+        return ResponseHelper::jsonResponse(
+            $userBilling['message'],
+            $userBilling['code'],
+            $userBilling['status'],
+            $userBilling['data']
+        );
+    }
 }

@@ -76,4 +76,16 @@ class TransactionService extends BaseService
         $model->total = $data['stripe_response']['amount']/100;
         $model->save();
     }
+
+    /**
+     * Method: userBillings
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function userBillings($userId)
+    {
+        return $this->model->where('user_id', $userId)->get();
+    }
 }
