@@ -106,4 +106,23 @@ class OrderService extends BaseService
             $getUserOrders
         );
     }
+
+    /**
+     * Method: userOrdersList
+     *
+     * @return Order|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public function userOrdersList()
+    {
+        return $this->model->with([
+            'orderItems' => function ($query){
+                return $query->with([
+                    'product' => function($subQuery){
+                        return $subQuery->select('id', 'name');
+                    }
+                ]);
+            }
+        ])->select('id', 'order_number', 'total', 'status', 'created_at')
+            ->where(['user_id' => auth()->id()])->first();
+    }
 }

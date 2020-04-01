@@ -46,7 +46,7 @@ class UserSubscriptionService extends BaseService
      */
     public function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->model->find($id);
     }
 
     /**
@@ -125,6 +125,25 @@ class UserSubscriptionService extends BaseService
     public function userSubscriptions($userId)
     {
         return $this->model->where(['user_id' => $userId])->whereNotNull('stripe_subscription_id')->with('subscription')->get();
+    }
+
+    /**
+     * Method: userSubscriptionsBilling
+     * 
+     * @param $id
+     *
+     * @return UserSubscription|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public function userSubscriptionsBilling($id)
+    {
+        $userSubscriptionsBilling = $this->model->with([
+            'subscription' => function ($query){
+                return $query->select('id', 'name', 'request_allowed', 'price');
+            }
+        ])
+            ->where('id', $id) ->first();
+
+        return $userSubscriptionsBilling;
     }
 
     /**

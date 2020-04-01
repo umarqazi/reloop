@@ -9,7 +9,9 @@ use App\Forms\User\CreateForm;
 use App\Forms\User\LoginForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
+use App\Order;
 use App\User;
+use App\UserSubscription;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -551,6 +553,51 @@ class UserService extends BaseService
             IResponseHelperInterface::FAIL_RESPONSE,
             false,
             null
+        );
+    }
+
+    /**
+     * Method: userBillings
+     *
+     * @return array
+     */
+    public function userBillings()
+    {
+        $userBillings = App::make(TransactionService::class)->userBillings(auth()->id());
+        $userSubscriptionsList = [];
+        $userOrdersList = [];
+
+        foreach ($userBillings as $userBilling){
+
+            if ($userBilling->transactionable_type == UserSubscription::class){
+
+                $userSubscriptions = $this->userSubscriptionService->userSubscriptionsBilling($userBilling->transactionable_id);
+
+                $userSubscriptionsList[] = [
+                    'subscription_number' => $userSubscriptions->subscription_number,
+                    'subscription_type'   => $userSubscriptions->subscription_type,
+                    'status'              => $userSubscriptions->status,
+                    'created_at'          => $userSubscriptions->created_at->toDateTimeString(),
+                    'name'                => $userSubscriptions->subscription->name,
+                    'trips'               => $userSubscriptions->subscription->request_allowed,
+                    'total'               => $userSubscriptions->subscription->price,
+                ];
+
+            } elseif ($userBilling->transactionable_type == Order::class){
+
+                $userOrders = App::make(OrderService::class)->userOrdersList();
+                $userOrdersList[] = $userOrders;
+            }
+        }
+        $data = [
+            'userSubscriptionsList' => $userSubscriptionsList,
+            'userOrdersList' => $userOrdersList,
+        ];
+        return ResponseHelper::responseData(
+            Config::get('constants.BILLING_HISTORY_SUCCESS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $data
         );
     }
 }
