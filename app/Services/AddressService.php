@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Address;
 use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
@@ -71,7 +72,7 @@ class AddressService extends BaseService
      */
     public function remove($id)
     {
-        // TODO: Implement remove() method.
+        return $this->model->destroy($id);
     }
 
     /**
@@ -143,5 +144,33 @@ class AddressService extends BaseService
             ];
         }
         return $responseData;
+    }
+
+    /**
+     * Method: deleteAddress
+     *
+     * @param $id
+     *
+     * @return array
+     */
+    public function deleteAddress($id)
+    {
+        $findAddress = $this->findById($id);
+        if($findAddress){
+
+            $this->remove($findAddress->id);
+            return ResponseHelper::responseData(
+                Config::get('constants.ADDRESS_DELETE'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                null
+            );
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_ADDRESS_ID'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
     }
 }
