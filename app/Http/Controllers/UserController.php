@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms\User\DeleteAddressForm;
 use App\Forms\User\UpdateAddressForm;
 use App\Forms\User\UpdateProfileForm;
 use App\Helpers\ResponseHelper;
@@ -100,6 +101,27 @@ class UserController extends Controller
             $updateProfile['code'],
             $updateProfile['status'],
             $updateProfile['data']
+        );
+    }
+
+    /**
+     * Method: deleteAddress
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteAddress(Request $request)
+    {
+        $deleteAddressForm = new DeleteAddressForm();
+        $deleteAddressForm->loadFromArray($request->all());
+        $deleteAddress = $this->userService->deleteAddress($deleteAddressForm);
+
+        return ResponseHelper::jsonResponse(
+            $deleteAddress['message'],
+            $deleteAddress['code'],
+            $deleteAddress['status'],
+            $deleteAddress['data']
         );
     }
 
