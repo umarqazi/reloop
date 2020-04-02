@@ -173,4 +173,37 @@ class AddressService extends BaseService
             null
         );
     }
+
+    /**
+     * Method: defaultAddress
+     *
+     * @param $id
+     *
+     * @return array
+     */
+    public function defaultAddress($id)
+    {
+        $findAddress = $this->findById($id);
+        if($findAddress){
+
+            $prevDefaultAddress = $this->model->where(['user_id' => auth()->id(), 'default' => true])->first();
+            $prevDefaultAddress->default = false;
+            $prevDefaultAddress->update();
+
+            $findAddress->default = 1;
+            $findAddress->update();
+            return ResponseHelper::responseData(
+                Config::get('constants.CHANGE_DEFAULT_ADDRESS'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                $findAddress
+            );
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_ADDRESS_ID'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
+    }
 }
