@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('pages', 'Admin\PageController');
     Route::resource('settings', 'Admin\SettingController');
     Route::resource('questions', 'Admin\QuestionController');
+    Route::resource('donation-products', 'Admin\DonationProductController');
     Route::get('/all-users', 'Admin\RewardPointController@allUsers')->name('all-users');
     Route::get('/get-user/{id}', 'Admin\RewardPointController@getUser')->name('get-user');
     Route::put('/update-user', 'Admin\RewardPointController@updateRewardPoints')->name('update-user');
