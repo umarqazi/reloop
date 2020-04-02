@@ -150,6 +150,7 @@ class UserService extends BaseService
                 'location'    => $form->location,
                 'latitude'    => $form->latitude ?? null,
                 'longitude'   => $form->longitude ?? null,
+                'default'     => true,
             ]
         );
 
@@ -464,7 +465,7 @@ class UserService extends BaseService
 
     /**
      * Method: deleteAddress
-     * 
+     *
      * @param IForm $deleteAddressForm
      *
      * @return array
@@ -482,6 +483,28 @@ class UserService extends BaseService
         }
         $deleteAddress = App::make(AddressService::class)->deleteAddress($deleteAddressForm->address_id);
         return $deleteAddress;
+    }
+
+    /**
+     * Method: defaultAddress
+     *
+     * @param IForm $defaultAddressForm
+     *
+     * @return array
+     */
+    public function defaultAddress(IForm $defaultAddressForm)
+    {
+        if($defaultAddressForm->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $defaultAddressForm->errors()
+            );
+        }
+        $defaultAddress = App::make(AddressService::class)->defaultAddress($defaultAddressForm->address_id);
+        return $defaultAddress;
     }
 
     /**
