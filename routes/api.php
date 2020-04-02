@@ -38,4 +38,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('user-subscriptions', 'UserController@userSubscriptions');
     Route::post('contact-us', 'Api\PageController@contactUs');
     Route::get('billing-listing', 'UserController@userBillings');
+    Route::post('delete-address', 'UserController@deleteAddress');
+    Route::post('default-address', 'UserController@defaultAddress');
 });

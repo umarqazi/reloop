@@ -118,13 +118,12 @@ class UserService extends BaseService
         /* @var CreateForm $form */
         if($form->fails())
         {
-            $responseData = [
-                'message' => Config::get('constants.INVALID_OPERATION'),
-                'code' => IResponseHelperInterface::FAIL_RESPONSE,
-                'status' => false,
-                'data' => $form->errors()
-            ];
-            return $responseData;
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $form->errors()
+            );
         }
         DB::beginTransaction();
 
@@ -151,6 +150,7 @@ class UserService extends BaseService
                 'location'    => $form->location,
                 'latitude'    => $form->latitude ?? null,
                 'longitude'   => $form->longitude ?? null,
+                'default'     => true,
             ]
         );
 
@@ -176,13 +176,12 @@ class UserService extends BaseService
 
             DB::rollback();
         }
-        $responseData = [
-            'message' => Config::get('constants.USER_CREATION_SUCCESS'),
-            'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-            'status' => true,
-            'data' => $model
-        ];
-        return $responseData;
+        return ResponseHelper::responseData(
+            Config::get('constants.USER_CREATION_SUCCESS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $model
+        );
     }
 
     /**
@@ -205,25 +204,22 @@ class UserService extends BaseService
 
     public function userProfile()
     {
-        $userProfile = $this->model->with('addresses', 'organization')->where('id', auth()->id())->get();
+        $userProfile = $this->model->with('addresses', 'organization')->where('id', auth()->id())->first();
         if($userProfile){
 
-            $responseData = [
-                'message' => Config::get('constants.USER_PROFILE'),
-                'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-                'status' => true,
-                'data' => $userProfile
-            ];
-            return $responseData;
+            return ResponseHelper::responseData(
+                Config::get('constants.USER_PROFILE'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                $userProfile
+            );
         }
-
-        $responseData = [
-            'message' => Config::get('constants.INVALID_OPERATION'),
-            'code' => IResponseHelperInterface::FAIL_RESPONSE,
-            'status' => false,
-            'data' => null
-        ];
-        return $responseData;
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
     }
 
     /**
@@ -238,13 +234,12 @@ class UserService extends BaseService
         /* @var LoginForm $loginForm */
         if($loginForm->fails())
         {
-            $responseData = [
-                'message' => Config::get('constants.INVALID_OPERATION'),
-                'code' => IResponseHelperInterface::FAIL_RESPONSE,
-                'status' => false,
-                'data' => $loginForm->errors()
-            ];
-            return $responseData;
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $loginForm->errors()
+            );
         }
         $credentials = [
             'email' => $loginForm->email,
@@ -257,40 +252,36 @@ class UserService extends BaseService
             if ($authUser->status == true) {
 
                 $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
-                $responseData = [
-                    'message' => Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
-                    'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-                    'status' => true,
-                    'data' => $userProfile
-                ];
-                return $responseData;
+                return ResponseHelper::responseData(
+                    Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
+                    IResponseHelperInterface::SUCCESS_RESPONSE,
+                    true,
+                    $userProfile
+                );
             } else {
 
-                $responseData = [
-                    'message' => Config::get('constants.INVALID_OPERATION'),
-                    'code' => IResponseHelperInterface::FAIL_RESPONSE,
-                    'status' => false,
-                    'data' => [
+                return ResponseHelper::responseData(
+                    Config::get('constants.INVALID_OPERATION'),
+                    IResponseHelperInterface::FAIL_RESPONSE,
+                    false,
+                    [
                         "email_not_verified" => [
                             Config::get('constants.USER_LOGIN_FAILED')
                         ]
                     ]
-                ];
-                return $responseData;
+                );
             }
         }
-        $errorMessage = [
-            "credentials" => [
-                Config::get('constants.INVALID_CREDENTIALS')
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            [
+                "credentials" => [
+                    Config::get('constants.INVALID_CREDENTIALS')
+                ]
             ]
-        ];
-        $responseData = [
-            'message' => Config::get('constants.INVALID_OPERATION'),
-            'code' => IResponseHelperInterface::FAIL_RESPONSE,
-            'status' => false,
-            'data' => $errorMessage
-        ];
-        return $responseData;
+        );
     }
 
     /**
@@ -304,45 +295,39 @@ class UserService extends BaseService
     {
         if($forgotForm->fails())
         {
-            $responseData = [
-                'message' => Config::get('constants.INVALID_OPERATION'),
-                'code' => IResponseHelperInterface::FAIL_RESPONSE,
-                'status' => false,
-                'data' => $forgotForm->errors()
-            ];
-            return $responseData;
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $forgotForm->errors()
+            );
         }
         $model = $this->model->where('email', $forgotForm->email)->first();
         if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD)
         {
             $this->emailNotificationService->passwordReset($forgotForm->toArray());
 
-            $successMessage = [
-                "ResetEmail" => [
-                    Config::get('constants.PASSWORD_RESET_EMAIL_SENT')
+            return ResponseHelper::responseData(
+                Config::get('constants.CHANGE_PASSWORD_SUCCESS_EMAIL'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                [
+                    "ResetEmail" => [
+                        Config::get('constants.PASSWORD_RESET_EMAIL_SENT')
+                    ]
                 ]
-            ];
-
-            $responseData = [
-                'message' => Config::get('constants.CHANGE_PASSWORD_SUCCESS_EMAIL'),
-                'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-                'status' => true,
-                'data' => $successMessage
-            ];
-            return $responseData;
+            );
         }
-        $errorMessage = [
-            "ResetEmail" => [
-                Config::get('constants.PASSWORD_RESET_EMAIL_NOT_SENT')
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            [
+                "ResetEmail" => [
+                    Config::get('constants.PASSWORD_RESET_EMAIL_NOT_SENT')
+                ]
             ]
-        ];
-        $responseData = [
-            'message' => Config::get('constants.INVALID_OPERATION'),
-            'code' => IResponseHelperInterface::FAIL_RESPONSE,
-            'status' => false,
-            'data' => $errorMessage
-        ];
-        return $responseData;
+        );
     }
 
     /**
@@ -356,13 +341,12 @@ class UserService extends BaseService
     {
         if($changePasswordForm->fails()){
 
-            $responseData = [
-                'message' => Config::get('constants.INVALID_OPERATION'),
-                'code' => IResponseHelperInterface::FAIL_RESPONSE,
-                'status' => false,
-                'data' => $changePasswordForm->errors()
-            ];
-            return $responseData;
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $changePasswordForm->errors()
+            );
         }
         $authUser = auth()->user();
         if (Hash::check($changePasswordForm->old_password, $authUser->password)) {
@@ -413,13 +397,12 @@ class UserService extends BaseService
     {
         if($updateAddressForm->fails()){
 
-            $responseData = [
-                'message' => Config::get('constants.INVALID_OPERATION'),
-                'code' => IResponseHelperInterface::FAIL_RESPONSE,
-                'status' => false,
-                'data' => $updateAddressForm->errors()
-            ];
-            return $responseData;
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $updateAddressForm->errors()
+            );
         } else {
 
             $data = $updateAddressForm;
@@ -472,13 +455,56 @@ class UserService extends BaseService
 
         $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
 
-        $responseData = [
-            'message' => Config::get('constants.PROFILE_UPDATE_SUCCESS'),
-            'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-            'status' => true,
-            'data' => $userProfile
-        ];
-        return $responseData;
+        return ResponseHelper::responseData(
+            Config::get('constants.PROFILE_UPDATE_SUCCESS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $userProfile
+        );
+    }
+
+    /**
+     * Method: deleteAddress
+     *
+     * @param IForm $deleteAddressForm
+     *
+     * @return array
+     */
+    public function deleteAddress(IForm $deleteAddressForm)
+    {
+        if($deleteAddressForm->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $deleteAddressForm->errors()
+            );
+        }
+        $deleteAddress = App::make(AddressService::class)->deleteAddress($deleteAddressForm->address_id);
+        return $deleteAddress;
+    }
+
+    /**
+     * Method: defaultAddress
+     *
+     * @param IForm $defaultAddressForm
+     *
+     * @return array
+     */
+    public function defaultAddress(IForm $defaultAddressForm)
+    {
+        if($defaultAddressForm->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $defaultAddressForm->errors()
+            );
+        }
+        $defaultAddress = App::make(AddressService::class)->defaultAddress($defaultAddressForm->address_id);
+        return $defaultAddress;
     }
 
     /**
@@ -572,17 +598,18 @@ class UserService extends BaseService
             if ($userBilling->transactionable_type == UserSubscription::class){
 
                 $userSubscriptions = $this->userSubscriptionService->userSubscriptionsBilling($userBilling->transactionable_id);
+                if($userSubscriptions){
 
-                $userSubscriptionsList[] = [
-                    'subscription_number' => $userSubscriptions->subscription_number,
-                    'subscription_type'   => $userSubscriptions->subscription_type,
-                    'status'              => $userSubscriptions->status,
-                    'created_at'          => $userSubscriptions->created_at->toDateTimeString(),
-                    'name'                => $userSubscriptions->subscription->name,
-                    'trips'               => $userSubscriptions->subscription->request_allowed,
-                    'total'               => $userSubscriptions->subscription->price,
-                ];
-
+                    $userSubscriptionsList[] = [
+                        'subscription_number' => $userSubscriptions->subscription_number,
+                        'subscription_type'   => $userSubscriptions->subscription_type,
+                        'status'              => $userSubscriptions->status,
+                        'created_at'          => $userSubscriptions->created_at->toDateTimeString(),
+                        'name'                => $userSubscriptions->subscription->name,
+                        'trips'               => $userSubscriptions->subscription->request_allowed,
+                        'total'               => $userSubscriptions->subscription->price,
+                    ];
+                }
             } elseif ($userBilling->transactionable_type == Order::class){
 
                 $userOrders = App::make(OrderService::class)->userOrdersList();

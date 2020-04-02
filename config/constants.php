@@ -71,6 +71,8 @@ return[
     'ADDRESS_UPDATE'                        => 'Address has updated!',
     'INVALID_ADDRESS_ID'                    => 'You\'ve requested for invalid Address!',
     'ADDRESS_SAVED'                         => 'Address saved successfully!',
+    'ADDRESS_DELETE'                        => 'Your address has deleted successfully!',
+    'CHANGE_DEFAULT_ADDRESS'                => 'Your default address has changed successfully!',
 
     'PAGE_UPDATE_SUCCESS'                   => 'Page updated successfully!',
     'PAGE_UPDATE_ERROR'                     => 'Error while updating page',
