@@ -89,6 +89,10 @@ class AddressService extends BaseService
             $findAddress = $this->findById($address->id);
             if($findAddress){
 
+                if($address->default){
+
+                    $this->changeDefaultAddress(auth()->id());
+                }
                 $findAddress->id = $address->id;
                 $findAddress->user_id = auth()->id();
                 $findAddress->city_id = $address->city_id;
@@ -102,6 +106,7 @@ class AddressService extends BaseService
                 $findAddress->no_of_occupants = $address->no_of_occupants;
                 $findAddress->floor = $address->floor;
                 $findAddress->unit_number = $address->unit_number;
+                $findAddress->default = $address->default;
                 $findAddress->update();
 
                 $responseData = [
@@ -121,6 +126,10 @@ class AddressService extends BaseService
             }
         } else{
 
+            if($address->default){
+
+                $this->changeDefaultAddress(auth()->id());
+            }
             $newAddress = [
                 'user_id'         => auth()->id(),
                 'city_id'         => $address->city_id,
@@ -134,6 +143,7 @@ class AddressService extends BaseService
                 'street'          => $address->street,
                 'floor'           => $address->floor,
                 'unit_number'     => $address->unit_number,
+                'default'         => $address->default,
             ];
             $saveAddress = $this->model->create($newAddress);
             $responseData = [
@@ -186,10 +196,7 @@ class AddressService extends BaseService
         $findAddress = $this->findById($id);
         if($findAddress){
 
-            $prevDefaultAddress = $this->model->where(['user_id' => auth()->id(), 'default' => true])->first();
-            $prevDefaultAddress->default = false;
-            $prevDefaultAddress->update();
-
+            $this->changeDefaultAddress(auth()->id());
             $findAddress->default = 1;
             $findAddress->update();
             return ResponseHelper::responseData(
@@ -205,5 +212,22 @@ class AddressService extends BaseService
             false,
             null
         );
+    }
+
+    /**
+     * Method: findDefaultAddress
+     *
+     * @param $userId
+     *
+     * @return void
+     */
+    public function changeDefaultAddress($userId)
+    {
+        $prevDefaultAddress = $this->model->where(['user_id' => $userId, 'default' => true])->first();
+        if($prevDefaultAddress){
+
+            $prevDefaultAddress->default = false;
+            $prevDefaultAddress->update();
+        }
     }
 }
