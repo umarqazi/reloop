@@ -27,6 +27,7 @@ class UpdateAddressForm extends BaseForm
     public $no_of_occupants;
     public $floor;
     public $unit_number;
+    public $default;
 
     /**
      * @inheritDoc
@@ -45,7 +46,8 @@ class UpdateAddressForm extends BaseForm
             'no_of_bedrooms'  =>$this->no_of_bedrooms,
             'no_of_occupants' =>$this->no_of_occupants,
             'floor'           =>$this->floor,
-            'unit_number'     =>$this->unit_number
+            'unit_number'     =>$this->unit_number,
+            'default'         =>$this->default,
         ];
     }
 
