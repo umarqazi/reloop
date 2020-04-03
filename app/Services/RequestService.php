@@ -186,4 +186,12 @@ class RequestService extends BaseService
         ]);
         return $model->fresh();
     }
+
+    public function userCollectionRequests()
+    {
+        return $this->model->with('requestCollection')
+            ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+                'district', 'street', 'created_at')
+            ->where('user_id', auth()->id())->get();
+    }
 }

@@ -20,4 +20,13 @@ class Request extends Model
         'first_name', 'last_name', 'phone_number', 'location', 'latitude', 'longitude', 'city', 'district', 'street',
         'question_1', 'answer_1', 'question_2', 'answer_2'
     ];
+
+    /**
+     * Method: requestCollection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function requestCollection()
+    {
+        return $this->hasMany(RequestCollection::class);
+    }
 }

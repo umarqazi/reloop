@@ -23,11 +23,18 @@ class OrderService extends BaseService
 {
 
     private $model;
+    /**
+     * Property: requestService
+     *
+     * @var RequestService
+     */
+    private $requestService;
 
-    public function __construct(Order $model)
+    public function __construct(Order $model, RequestService $requestService)
     {
         parent::__construct();
         $this->model = $model;
+        $this->requestService = $requestService;
     }
 
     /**
@@ -96,14 +103,21 @@ class OrderService extends BaseService
                     }
                 ]);
             }
-        ])->select('id', 'order_number', 'total', 'status', 'created_at')
+        ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
+            'city', 'district')
             ->where(['user_id' => auth()->id()])->get();
+
+        $getUserCollectionRequests = $this->requestService->userCollectionRequests();
+        $data = [
+            'getUserOrders' => $getUserOrders,
+            'getUserCollectionRequests' => $getUserCollectionRequests,
+        ];
 
         return ResponseHelper::responseData(
             Config::get('constants.ORDER_HISTORY_SUCCESS'),
             IResponseHelperInterface::SUCCESS_RESPONSE,
             true,
-            $getUserOrders
+            $data
         );
     }
 
