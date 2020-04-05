@@ -35,6 +35,7 @@ class CollectionRequestForm extends BaseForm
     public $cvv;
     public $exp_year;
     public $total;
+    public $organization_name;
 
     /**
      * @inheritDoc
@@ -46,6 +47,7 @@ class CollectionRequestForm extends BaseForm
             'collection_type'     => $this->collection_type,
             'first_name'          => $this->first_name,
             'last_name'           => $this->last_name,
+            'organization_name'   => $this->organization_name,
             'phone_number'        => $this->phone_number,
             'location'            => $this->location,
             'latitude'            => $this->latitude,
@@ -70,8 +72,6 @@ class CollectionRequestForm extends BaseForm
     {
         return [
             'collection_date'     =>'required|date_format:Y-m-d',
-            'first_name'          =>'required',
-            'last_name'           =>'required',
             'phone_number'        =>'required',
             'location'            =>'required',
             'latitude'            =>'required',

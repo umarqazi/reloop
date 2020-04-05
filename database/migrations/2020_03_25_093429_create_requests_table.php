@@ -28,8 +28,9 @@ class CreateRequestsTable extends Migration
             $table->double('reward_points')->nullable();
             $table->tinyInteger('status')->default(1);
 
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('organization_name')->nullable();
             $table->string('phone_number');
             $table->string('location');
             $table->string('latitude');

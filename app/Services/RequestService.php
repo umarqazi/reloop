@@ -170,8 +170,9 @@ class RequestService extends BaseService
             'collection_date' => $data['collection_form_data']->collection_date,
             'collection_type' => $data['collection_form_data']->collection_type,
             'reward_points'   => null,
-            'first_name' => $data['collection_form_data']->first_name,
-            'last_name' => $data['collection_form_data']->last_name,
+            'first_name' => $data['collection_form_data']->first_name ?? null,
+            'last_name' => $data['collection_form_data']->last_name ?? null,
+            'organization_name' => $data['collection_form_data']->organization_name ?? null,
             'phone_number' => $data['collection_form_data']->phone_number,
             'location' => $data['collection_form_data']->location,
             'latitude' => $data['collection_form_data']->latitude,
@@ -185,5 +186,13 @@ class RequestService extends BaseService
             'answer_2' => $data['collection_form_data']->questions[1]['ans']
         ]);
         return $model->fresh();
+    }
+
+    public function userCollectionRequests()
+    {
+        return $this->model->with('requestCollection')
+            ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+                'district', 'street', 'created_at')
+            ->where('user_id', auth()->id())->get();
     }
 }
