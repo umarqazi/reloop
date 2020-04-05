@@ -116,9 +116,18 @@
                     <a href="{{ route('pages.index') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Pages</span>
+                    </a>
+                 </li>
+                 <li>
                     <a href="{{ route('questions.index') }}">
                         <i class="material-icons">account_circle</i>
-                        <span class="nav-text">FAQ</span>
+                        <span class="nav-text">Questions</span>
+                    </a>
+                 </li>
+                <li>
+                    <a href="{{ route('donation-products.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Donation Products</span>
                     </a>
                 </li>
                 <li class="bold">
