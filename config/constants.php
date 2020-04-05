@@ -97,5 +97,8 @@ return[
     'DONATION_PRODUCT_UPDATE_ERROR'         => 'Error Occurred while updating Donation Product',
     'DONATION_PRODUCT_DELETE_SUCCESS'       => 'Donation Product deleted successfully',
     'DONATION_PRODUCT_DELETE_ERROR'         => 'Error Occurred while deleting Donation Product',
+    'DONATION_CATEGORIES_LIST'              => 'Donation Categories list shown as:',
+    'DONATION_PRODUCTS_LIST'                => 'Donation Products list shown as:',
+    'DONATION_PRODUCTS_FAIL'                => 'Invalid donation category id!',
 
 ];
