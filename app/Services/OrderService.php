@@ -69,21 +69,22 @@ class OrderService extends BaseService
 
         $model = $this->model;
         $model = $model->create([
-            'user_id'         => $data['user_id'],
-            'order_number'    => $data['order_number'],
-            'subtotal'        => $data['request_data']->subtotal,
-            'redeem_points'   => $data['request_data']->points_discount ?? null,
-            'coupon_discount' => $coupon->code ?? null,
-            'total'           => $data['request_data']->total,
-            'first_name'      => $data['request_data']->first_name,
-            'last_name'       => $data['request_data']->last_name,
-            'email'           => $data['request_data']->email,
-            'phone_number'    => $data['request_data']->phone_number,
-            'location'        => $data['request_data']->location,
-            'latitude'        => $data['request_data']->latitude,
-            'longitude'       => $data['request_data']->longitude,
-            'city'            => $city->name,
-            'district'        => $district->name
+            'user_id'             => $data['user_id'],
+            'order_number'        => $data['order_number'],
+            'subtotal'            => $data['request_data']->subtotal,
+            'redeem_points'       => $data['request_data']->points_discount ?? null,
+            'coupon_discount'     => $coupon->code ?? null,
+            'total'               => $data['request_data']->total,
+            'first_name'          => $data['request_data']->first_name ?? null,
+            'last_name'           => $data['request_data']->last_name ?? null,
+            'organization_name'   => $data['request_data']->organization_name ?? null,
+            'email'               => $data['request_data']->email,
+            'phone_number'        => $data['request_data']->phone_number,
+            'location'            => $data['request_data']->location,
+            'latitude'            => $data['request_data']->latitude,
+            'longitude'           => $data['request_data']->longitude,
+            'city'                => $city->name,
+            'district'            => $district->name
         ]);
         return $model->fresh();
     }

@@ -33,6 +33,7 @@ class BuyProductForm extends BaseForm
     public $city_id;
     public $district_id;
     public $products;
+    public $organization_name;
 
     /**
      * @inheritDoc
@@ -40,24 +41,25 @@ class BuyProductForm extends BaseForm
     public function toArray()
     {
         return [
-            'card_number'     => $this->card_number,
-            'exp_month'       => $this->exp_month,
-            'cvv'             => $this->cvv,
-            'exp_year'        => $this->exp_year,
-            'subtotal'        => $this->subtotal,
-            'points_discount' => $this->points_discount,
-            'coupon_id'       => $this->coupon_id,
-            'total'           => $this->total,
-            'first_name'      => $this->first_name,
-            'last_name'       => $this->last_name,
-            'email'           => $this->email,
-            'phone_number'    => $this->phone_number,
-            'location'        => $this->location,
-            'latitude'        => $this->latitude,
-            'longitude'       => $this->longitude,
-            'city_id'         => $this->city_id,
-            'district_id'     => $this->district_id,
-            'products'        => $this->products,
+            'card_number'         => $this->card_number,
+            'exp_month'           => $this->exp_month,
+            'cvv'                 => $this->cvv,
+            'exp_year'            => $this->exp_year,
+            'subtotal'            => $this->subtotal,
+            'points_discount'     => $this->points_discount,
+            'coupon_id'           => $this->coupon_id,
+            'total'               => $this->total,
+            'first_name'          => $this->first_name,
+            'last_name'           => $this->last_name,
+            'organization_name'   => $this->organization_name,
+            'email'               => $this->email,
+            'phone_number'        => $this->phone_number,
+            'location'            => $this->location,
+            'latitude'            => $this->latitude,
+            'longitude'           => $this->longitude,
+            'city_id'             => $this->city_id,
+            'district_id'         => $this->district_id,
+            'products'            => $this->products,
         ];
     }
 
@@ -73,8 +75,6 @@ class BuyProductForm extends BaseForm
             'exp_year'        => 'required',
             'subtotal'        => 'required',
             'total'           => 'required',
-            'first_name'      => 'required',
-            'last_name'       => 'required',
             'email'           => 'required',
             'phone_number'    => 'required',
             'location'        => 'required',
