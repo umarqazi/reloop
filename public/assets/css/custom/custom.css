@@ -76,7 +76,7 @@ ul#slide-out li ul.collapsible li:last-child a:after {
 .box-image img{
     max-width: 100%;
     width: auto;
-    height: auto;
+    height: 150px;
     object-fit: cover;
 }
 

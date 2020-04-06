@@ -13,9 +13,6 @@ class PageSeeder extends Seeder
     public function run()
     {
         Page::create([
-        'title'      => 'Privacy Policy',
-        ]);
-        Page::create([
         'title'      => 'Terms and Conditions',
         ]);
         Page::create([

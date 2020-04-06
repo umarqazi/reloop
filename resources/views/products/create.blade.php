@@ -110,6 +110,11 @@
                         <input type="file" class="form-control-file" name="avatar" id="avatar">
                     </div>
                 </div>
+                @if ($errors->has('avatar'))
+                    <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('avatar') }}</strong>
+                    </span>
+                @endif
 
             </div>
             <div class="col s12">

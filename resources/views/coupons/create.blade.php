@@ -51,7 +51,7 @@
 
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="code" type="text"  name="code" required>
+                    <input id="code" type="number"  max="99999" min="0" name="code" required>
                     <label for="start">Code</label>
                     @if ($errors->has('code'))
                         <span class="help-block">

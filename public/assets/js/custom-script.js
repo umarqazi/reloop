@@ -4,6 +4,31 @@ $(document).ready(function () {
      * author: Bilal Saqib
      */
 
+    // Load google charts
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Draw the chart and set the chart values
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Hours per Day'],
+            ['Paper', 8],
+            ['Plastic', 2],
+            ['Metal', 2],
+            ['E-Waste', 4],
+        ]);
+
+        // Optional; add a title and set the width and height of the chart
+        var options = {'title':'Material', 'width':550, 'height':400};
+
+        // Display the chart inside the <div> element with id="piechart"
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
+
+
+
+
     $('#driver_id_div').append('<select name="driver_id"  id="driver_id"  required>\n' +
         '</select>\n');
 
@@ -114,7 +139,6 @@ $(document).ready(function () {
                 '                        <option value="1">Same Day</option>\n' +
                 '                        <option value="2">Next Day</option>\n' +
                 '                        <option value="3">Single Collection</option>\n' +
-                '                        <option value="4">Bulky Item</option>\n' +
                 '                    </select>' +
                 '                    <label for="subscription_category_type">Subscription Category Type</label>');
             $('#subscription_category_type').material_select();
