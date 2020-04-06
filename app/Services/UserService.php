@@ -160,7 +160,7 @@ class UserService extends BaseService
 
             $model->stripe_customer_id = $stripeCustomerId;
             $model->save();
-            $model->load('organization');
+            $model->load('organization','addresses');
 
             DB::commit();
 

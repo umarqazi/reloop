@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
          $this->call(DistrictSeeder::class);
          $this->call(PageSeeder::class);
          $this->call(SettingSeeder::class);
+         $this->call(DonationCategorySeeder::class);
     }
 }

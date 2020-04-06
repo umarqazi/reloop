@@ -18,4 +18,13 @@ class RequestCollection extends Model
     protected $fillable = [
         'request_id', 'category_name', 'weight'
     ];
+
+    /**
+     * Method: requests
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
 }

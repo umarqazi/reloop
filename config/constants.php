@@ -91,4 +91,17 @@ return[
 
     'ERROR'                                 =>  'Something went wrong!',
 
+    'DONATION_PRODUCT_CREATION_SUCCESS'     => 'Donation Product created successfully',
+    'DONATION_PRODUCT_CREATION_ERROR'       => 'Error Occurred while creating Donation Product',
+    'DONATION_PRODUCT_UPDATE_SUCCESS'       => 'Donation Product updated successfully',
+    'DONATION_PRODUCT_UPDATE_ERROR'         => 'Error Occurred while updating Donation Product',
+    'DONATION_PRODUCT_DELETE_SUCCESS'       => 'Donation Product deleted successfully',
+    'DONATION_PRODUCT_DELETE_ERROR'         => 'Error Occurred while deleting Donation Product',
+    'DONATION_CATEGORIES_LIST'              => 'Donation Categories list shown as:',
+    'DONATION_PRODUCTS_LIST'                => 'Donation Products list shown as:',
+    'DONATION_PRODUCTS_FAIL'                => 'Invalid donation category id!',
+    'INVALID_DONATION_PRODUCT'              => 'Invalid donation product id!',
+    'INVALID_DONATION_POINTS'               => 'You don\'t have enough points!',
+    'INVALID_DONATION_SUCCESS'              => 'Your donation has successfully received!',
+
 ];

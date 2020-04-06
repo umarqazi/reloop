@@ -40,4 +40,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('billing-listing', 'UserController@userBillings');
     Route::post('delete-address', 'UserController@deleteAddress');
     Route::post('default-address', 'UserController@defaultAddress');
+    Route::get('donation-categories', 'Api\DonationController@donationCategories');
+    Route::post('donation-products', 'Api\DonationController@donationProducts');
+    Route::post('donations', 'Api\DonationController@donations');
 });
