@@ -11,4 +11,5 @@
 --}}
 <script type="text/javascript" src="/assets/vendors/data-tables/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/assets/js/scripts/data-tables.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 

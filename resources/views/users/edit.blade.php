@@ -138,7 +138,7 @@
                     @endif
                     <div class="col s12">
                         <div class="col s6 box-image">
-                            <img src="{{ \Illuminate\Support\Facades\Storage::disk(env('FILESYSTEM_DRIVER'))->url(config('filesystems.user_avatar_upload_path')).$user->avatar }}">
+                            <img src="{{ $user->avatar }}">
                         </div>
                         <div class="input-field col s6 ">
                             <input type="file" class="form-control-file" name="avatar" id="avatar">

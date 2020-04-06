@@ -88,7 +88,7 @@
                         <h5>Reward Points</h5>
                     </div>
                     <div class="input-field col s4">
-                        <input id="quantity" name="quantity" type="number" class="validate">
+                        <input id="quantity" name="quantity" type="number" class="validate" value="1" readonly >
                         <label for="quantity">Quantity</label>
                         @if ($errors->has('quantity'))
                             <span class="help-block">
@@ -98,7 +98,7 @@
                     </div>
                     <div class="input-field col s4">
                         {{ Form::select('unit', (['' => 'Choose Unit'] + $units), null, ['id' => 'unit']) }}
-                        <label for="unit">Product Category</label>
+                        <label for="unit">Product Unit</label>
                         @if ($errors->has('unit'))
                             <span class="help-block">
                                 <strong class="red-text">{{ $errors->first('unit') }}</strong>

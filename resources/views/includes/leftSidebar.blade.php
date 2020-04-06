@@ -122,6 +122,13 @@
                     </a>
                 </li>
                 <li class="bold">
+                    <a href="{{ route('settings.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+
+                <li class="bold">
                     {{ Form::open(['url' => route('logout'),
                                    'method' => 'POST',]) }}
 

@@ -200,12 +200,12 @@ class UserService extends BaseService
             //Deleting the existing image of respective user.
             $getOldData = $this->userRepo->findById($id);
             if($getOldData->avatar != null){
-                Storage::disk()->delete(config('filesystems.user_avatar_upload_path').$getOldData->avatar);
+                Storage::disk()->delete(config('filesystems.profile_pic_upload_path').$getOldData->avatar);
             }
         }
         //upload new image
         $fileName = 'image-'.time().'-'.$request->file('avatar')->getClientOriginalName();
-        $filePath = config('filesystems.user_avatar_upload_path').$fileName;
+        $filePath = config('filesystems.profile_pic_upload_path').$fileName;
         Storage::disk()->put($filePath, file_get_contents($request->file('avatar')),'public');
         $data['avatar'] = $fileName;
 
