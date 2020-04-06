@@ -1,0 +1,132 @@
+<?php
+
+
+namespace App\Services;
+use App\Donation;
+use App\Forms\IForm;
+use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Validation\ValidationException;
+
+/**
+ * Class DonationService
+ *
+ * @package   App\Services
+ * @author    Faisal Raza <faisal.raza@gems.techverx.com>
+ * @copyright 2020 Techverx.com All rights reserved.
+ * @since     Apr 06, 2020
+ * @project   reloop
+ */
+class DonationService extends BaseService
+{
+
+    /**
+     * Property: model
+     *
+     * @var Donation
+     */
+    private $model;
+    /**
+     * Property: donationProductService
+     *
+     * @var DonationProductService
+     */
+    private $donationProductService;
+    /**
+     * Property: userService
+     *
+     * @var UserService
+     */
+    private $userService;
+
+    public function __construct(Donation $model, DonationProductService $donationProductService, UserService $userService)
+    {
+        parent::__construct();
+        $this->model = $model;
+        $this->donationProductService = $donationProductService;
+        $this->userService = $userService;
+    }
+    /**
+     * @inheritDoc
+     */
+    public function store(IForm $form)
+    {
+        // TODO: Implement store() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findById($id)
+    {
+        // TODO: Implement findById() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function remove($id)
+    {
+        // TODO: Implement remove() method.
+    }
+
+    /**
+     * Method: donations
+     *
+     * @param IForm $donationForm
+     *
+     * @return array
+     */
+    public function donations(IForm $donationForm)
+    {
+        if ($donationForm->fails()) {
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $donationForm->errors()
+            );
+        }
+
+        $donation = $this->donationProductService->findById($donationForm->product_id);
+        if($donation){
+
+            $authUser = $this->userService->findById(auth()->id());
+            if($authUser->reward_points >= $donation->redeem_points){
+
+                $authUser->reward_points = $authUser->reward_points - $donation->redeem_points;
+                $authUser->update();
+
+                $this->model->create([
+                    'user_id' => auth()->id(),
+                    'donation_product_id' => $donation->id,
+                    'redeemed_points' => $donation->redeem_points
+                ]);
+
+                return ResponseHelper::responseData(
+                    Config::get('constants.INVALID_DONATION_SUCCESS'),
+                    IResponseHelperInterface::SUCCESS_RESPONSE,
+                    true,
+                    null
+                );
+            } else{
+
+                return ResponseHelper::responseData(
+                    Config::get('constants.INVALID_DONATION_POINTS'),
+                    IResponseHelperInterface::FAIL_RESPONSE,
+                    false,
+                    null
+                );
+            }
+        }
+
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_DONATION_PRODUCT'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
+    }
+}

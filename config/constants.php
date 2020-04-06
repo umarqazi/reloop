@@ -100,5 +100,8 @@ return[
     'DONATION_CATEGORIES_LIST'              => 'Donation Categories list shown as:',
     'DONATION_PRODUCTS_LIST'                => 'Donation Products list shown as:',
     'DONATION_PRODUCTS_FAIL'                => 'Invalid donation category id!',
+    'INVALID_DONATION_PRODUCT'              => 'Invalid donation product id!',
+    'INVALID_DONATION_POINTS'               => 'You don\'t have enough points!',
+    'INVALID_DONATION_SUCCESS'              => 'Your donation has successfully received!',
 
 ];

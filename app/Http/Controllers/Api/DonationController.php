@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Forms\Donation\DonationForm;
 use App\Forms\Donation\DonationProductForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\DonationCategoryService;
 use App\Services\DonationProductService;
+use App\Services\DonationService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
@@ -34,16 +36,26 @@ class DonationController extends Controller
      * @var DonationProductService
      */
     private $donationProductService;
+    /**
+     * Property: donationService
+     *
+     * @var DonationService
+     */
+    private $donationService;
 
     /**
      * DonationController constructor.
      * @param DonationCategoryService $donationCategoryService
      * @param DonationProductService $donationProductService
      */
-    public function __construct(DonationCategoryService $donationCategoryService, DonationProductService $donationProductService)
+    public function __construct(DonationCategoryService $donationCategoryService,
+                                DonationService $donationService,
+                                DonationProductService $donationProductService
+    )
     {
         $this->donationCategoryService = $donationCategoryService;
         $this->donationProductService = $donationProductService;
+        $this->donationService = $donationService;
     }
 
     /**
@@ -80,6 +92,27 @@ class DonationController extends Controller
             $donationProducts['code'],
             $donationProducts['status'],
             $donationProducts['data']
+        );
+    }
+
+    /**
+     * Method: donations
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function donations(Request $request)
+    {
+        $donationForm = new DonationForm();
+        $donationForm->loadFromArray($request->all());
+        $donations = $this->donationService->donations($donationForm);
+
+        return ResponseHelper::jsonResponse(
+            $donations['message'],
+            $donations['code'],
+            $donations['status'],
+            $donations['data']
         );
     }
 }
