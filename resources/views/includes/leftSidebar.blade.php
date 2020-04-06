@@ -113,11 +113,27 @@
                     </a>
                 </li>
                 <li class="bold">
-                    <a href="{{ route('pages.index') }}">
+                    <a class="collapsible-header  waves-effect waves-cyan">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Pages</span>
                     </a>
-                 </li>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li>
+                                <a href="{{ route('pages.edit', 1) }}">
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                    <span>Terms and Conditions</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('pages.edit', 2) }}">
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                    <span>About Us</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                  <li>
                     <a href="{{ route('questions.index') }}">
                         <i class="material-icons">account_circle</i>
