@@ -18,7 +18,8 @@ class DonationProduct extends Model
      * Method: category
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo(DonationProductCategory::class, 'category_id');
     }
 }

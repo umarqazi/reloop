@@ -13,5 +13,13 @@ class DonationProductCategory extends Model
     protected $fillable = [
         'name','description','status'
     ];
-    
+
+    /**
+     * Method: donationProducts
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function donationProducts()
+    {
+        return $this->hasMany(DonationProduct::class);
+    }
 }

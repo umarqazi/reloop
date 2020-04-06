@@ -42,4 +42,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('default-address', 'UserController@defaultAddress');
     Route::get('donation-categories', 'Api\DonationController@donationCategories');
     Route::post('donation-products', 'Api\DonationController@donationProducts');
+    Route::post('donations', 'Api\DonationController@donations');
 });
