@@ -124,12 +124,12 @@ class UserSubscriptionService extends BaseService
      */
     public function userSubscriptions($userId)
     {
-        return $this->model->where(['user_id' => $userId])->whereNotNull('stripe_subscription_id')->with('subscription')->get();
+        return $this->model->where(['user_id' => $userId])->orderBy('status', 'ASC')->with('subscription')->get();
     }
 
     /**
      * Method: userSubscriptionsBilling
-     * 
+     *
      * @param $id
      *
      * @return UserSubscription|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
