@@ -67,7 +67,7 @@ class MaterialCategoryService extends BaseService
      */
     public function getAll()
     {
-        return $this->model->all();
+        return $this->model->where('status', true)->get();
     }
 
     /**
