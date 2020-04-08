@@ -7,11 +7,11 @@
                 <div class="container">
                     <div class="row">
                         <div class="col s10 m6 l6">
-                            <h5 class="breadcrumbs-title">Settings</h5>
+                            <h5 class="breadcrumbs-title">Cities</h5>
                             <ol class="breadcrumbs">
                                 <li><a href="{{route('home')}}">Dashboard</a>
                                 </li>
-                                <li class="active">Settings</li>
+                                <li class="active">Cities</li>
                             </ol>
                         </div>
                     </div>
@@ -44,34 +44,37 @@
                 <div class="row">
                     <div class="col s12">
                         <a class="btn waves-effect waves-light primary-btn-bgcolor"
-                           href="{{ route('settings.create') }}">Create</a>
+                           href="{{ route('cities.create') }}">Create</a>
                     </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Keys</th>
-                                <th>Values</th>
+                                <th>name</th>
+                                <th>status</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
                                 <th>Id</th>
-                                <th>Keys</th>
-                                <th>Values</th>
+                                <th>name</th>
+                                <th>status</th>
                                 <th>Actions</th>
                             </tr>
                             </tfoot>
                             <tbody>
-                            @foreach($settings as $setting)
+                            @foreach($cities as $city)
                             <tr>
-                                <td>{{ $setting->id }}</td>
-                                <td>{{ $setting->keys }}</td>
-                                <td>{{ $setting->values }}</td>
+                                <td>{{ $city->id }}</td>
+                                <td>{{ $city->name }}</td>
+                                <td>{{ $city->status == 0 ? 'Inactive' : 'Active'}}</td>
                                 <td>
-                                    <a href="{{ route('settings.edit', $setting->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
+                                    <a href="{{ route('cities.edit', $city->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
+                                    {{ Form::open(['url' => route('cities.destroy', $city->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
+                                    <button type="submit" class="btn btn-danger red"><i class="fa fa-trash "></i></button>
+                                    {{ Form::close() }}
                                 </td>
                             </tr>
                             @endforeach

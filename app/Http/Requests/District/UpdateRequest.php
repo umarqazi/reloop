@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Setting;
+namespace App\Http\Requests\District;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,8 +24,8 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'keys'         =>   'required',
-            'values'       =>   'required',
+            'name'              => 'required',
+            'status'            => 'required',
         ];
     }
 }

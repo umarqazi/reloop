@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class District extends Model
 {
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name','city_id','status'];
 
     /**
      * Method: orders
