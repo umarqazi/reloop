@@ -98,6 +98,20 @@ class UserService extends BaseService
     }
 
     /**
+     * Method: updateTripsAfterRequest
+     *
+     * @param $data
+     *
+     * @return void
+     */
+    public function updateTripsAfterRequest($data)
+    {
+        $model = $this->model->where('id', $data['user_id'])->first();
+        $model->trips -= 1;
+        $model->save();
+    }
+
+    /**
      * Method: updateRewardPoints
      *
      * @param $data

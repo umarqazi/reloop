@@ -146,6 +146,7 @@ class RequestService extends BaseService
         $updateTrips = App::make(UserSubscriptionService::class)->updateTrips($data);
         if($updateTrips){
 
+            $updateTripsAfterRequest = App::make(UserService::class)->updateTripsAfterRequest($data);
             $saveRequestDetails = $this->create($data);
             $saveRequestCollectionDetails = App::make(RequestCollectionService::class)->create($data, $saveRequestDetails->id);
         }
