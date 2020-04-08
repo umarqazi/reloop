@@ -38,6 +38,8 @@ class UserService extends BaseService
     private $stripeService;
     private $emailNotificationService;
     private $userSubscriptionService;
+    private $orderService;
+    private $requestService;
 
     /**
      * UserService constructor.
@@ -49,6 +51,8 @@ class UserService extends BaseService
                                 AddressService $addressService,
                                 StripeService $stripeService,
                                 UserSubscriptionService $userSubscriptionService,
+                                OrderService $orderService,
+                                RequestService $requestService,
                                 EmailNotificationService $emailNotificationService
     )
     {
@@ -59,6 +63,8 @@ class UserService extends BaseService
         $this->addressService = $addressService;
         $this->userSubscriptionService = $userSubscriptionService;
         $this->stripeService = $stripeService;
+        $this->orderService = $orderService;
+        $this->requestService = $requestService;
     }
 
     /**
@@ -251,7 +257,7 @@ class UserService extends BaseService
             $authUser = auth()->user();
             if ($authUser->status == true) {
 
-                $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
+                $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization', 'roles')->first();
                 return ResponseHelper::responseData(
                     Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
                     IResponseHelperInterface::SUCCESS_RESPONSE,
@@ -622,6 +628,28 @@ class UserService extends BaseService
         ];
         return ResponseHelper::responseData(
             Config::get('constants.BILLING_HISTORY_SUCCESS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $data
+        );
+    }
+
+    /**
+     * Method: driverAssignedTrips
+     *
+     * @return array
+     */
+    public function driverAssignedTrips()
+    {
+        $assignedOrders = $this->orderService->assignedOrders(auth()->id());
+        $assignedRequests = $this->requestService->assignedrequests(auth()->id());
+
+        $data = [
+            'assignedOrders'   => $assignedOrders,
+            'assignedRequests' => $assignedRequests,
+        ];
+        return ResponseHelper::responseData(
+            Config::get('constants.ASSIGNED_ORDER_LIST'),
             IResponseHelperInterface::SUCCESS_RESPONSE,
             true,
             $data
