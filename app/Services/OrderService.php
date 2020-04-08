@@ -140,4 +140,25 @@ class OrderService extends BaseService
         ])->select('id', 'order_number', 'total', 'status', 'created_at')
             ->where(['user_id' => auth()->id()])->first();
     }
+
+    /**
+     * Method: assignedOrders
+     *
+     * @param $driverId
+     *
+     * @return Order[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function assignedOrders($driverId)
+    {
+        return $this->model->with([
+            'orderItems' => function ($query){
+                return $query->with([
+                    'product' => function($subQuery){
+                        return $subQuery->select('id', 'name');
+                    }
+                ]);
+            }
+        ])->select('id', 'order_number', 'total', 'status', 'created_at')
+            ->where('driver_id', $driverId)->get();
+    }
 }

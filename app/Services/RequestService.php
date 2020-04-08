@@ -146,6 +146,7 @@ class RequestService extends BaseService
         $updateTrips = App::make(UserSubscriptionService::class)->updateTrips($data);
         if($updateTrips){
 
+            $updateTripsAfterRequest = App::make(UserService::class)->updateTripsAfterRequest($data);
             $saveRequestDetails = $this->create($data);
             $saveRequestCollectionDetails = App::make(RequestCollectionService::class)->create($data, $saveRequestDetails->id);
         }
@@ -194,5 +195,20 @@ class RequestService extends BaseService
             ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
                 'district', 'street', 'created_at')
             ->where('user_id', auth()->id())->get();
+    }
+
+    /**
+     * Method: assignedrequests
+     *
+     * @param $driverId
+     *
+     * @return Request[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function assignedrequests($driverId)
+    {
+        return $this->model->with('requestCollection')
+            ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+                'district', 'street', 'created_at')
+            ->where('driver_id', $driverId)->get();
     }
 }

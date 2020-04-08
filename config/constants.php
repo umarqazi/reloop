@@ -66,6 +66,8 @@ return[
     'ORDER_ASSIGNMENT_FAIL'                 => 'Something went wrong in assigning order!',
     'ORDER_HISTORY_SUCCESS'                 => 'Order history shown as:',
 
+    'ASSIGNED_ORDER_LIST'                   => 'Assigned Orders list shown as:',
+
     'BILLING_HISTORY_SUCCESS'               => 'Billing history shown as:',
 
     'ADDRESS_UPDATE'                        => 'Address has updated!',

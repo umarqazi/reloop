@@ -43,4 +43,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('donation-categories', 'Api\DonationController@donationCategories');
     Route::post('donation-products', 'Api\DonationController@donationProducts');
     Route::post('donations', 'Api\DonationController@donations');
+
+    //Driver routes
+    Route::get('assigned-trips', 'Api\DriverController@driverAssignedTrips');
 });
