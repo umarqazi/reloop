@@ -68,7 +68,7 @@ class RequestService extends BaseService
      */
     public function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->model->find($id);
     }
 
     /**
@@ -210,5 +210,52 @@ class RequestService extends BaseService
             ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
                 'district', 'street', 'created_at', 'status')
             ->where('driver_id', $driverId)->get();
+    }
+
+    /**
+     * Method: additionalComments
+     *
+     * @param $data
+     *
+     * @return void
+     */
+    public function additionalComments($data)
+    {
+        $additionalComments = $this->findById($data->request_id);
+        if($additionalComments){
+
+            $additionalComments->additional_comments = $data->additional_comments;
+            $additionalComments->update();
+        }
+    }
+
+    /**
+     * Method: updateRequestStatus
+     *
+     * @param $requestId
+     *
+     * @return array
+     */
+    public function updateRequestStatus($requestId)
+    {
+        $findRequest = $this->findById($requestId);
+        if($findRequest){
+
+            $findRequest->status = IOrderStaus::DRIVER_DISPATCHED;
+            $findRequest->update();
+
+            return ResponseHelper::responseData(
+                Config::get('constants.TRIP_INITIATED_SUCCESS'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                null
+            );
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.TRIP_INITIATED_FAIL'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
     }
 }

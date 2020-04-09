@@ -50,7 +50,7 @@ class OrderService extends BaseService
      */
     public function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->model->find($id);
     }
 
     /**
@@ -160,5 +160,35 @@ class OrderService extends BaseService
             }
         ])->select('id', 'order_number', 'total', 'status', 'created_at')
             ->where('driver_id', $driverId)->get();
+    }
+
+    /**
+     * Method: updateOrderStatus
+     *
+     * @param $orderId
+     *
+     * @return array
+     */
+    public function updateOrderStatus($orderId)
+    {
+        $findOrder = $this->findById($orderId);
+        if($findOrder){
+
+            $findOrder->status = IOrderStaus::DRIVER_DISPATCHED;
+            $findOrder->update();
+
+            return ResponseHelper::responseData(
+                Config::get('constants.TRIP_INITIATED_SUCCESS'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                null
+            );
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.TRIP_INITIATED_FAIL'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
     }
 }

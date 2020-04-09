@@ -67,11 +67,12 @@ class OrderItemService extends BaseService
         $count = 0;
         foreach ($data['product_details'] as $product){
 
+            $price = (int)$data['request_data']->products[$count]['qty'] * $product->price;
             $orderItems[] = [
                 'user_id'    => $data['user_id'],
                 'order_id'   => $orderService->id,
                 'product_id' => $product->id,
-                'price'      => $product->price,
+                'price'      => $price,
                 'quantity'   => (int)$data['request_data']->products[$count]['qty']
             ];
             $count++;

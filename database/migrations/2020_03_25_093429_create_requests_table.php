@@ -43,6 +43,7 @@ class CreateRequestsTable extends Migration
             $table->string('answer_1');
             $table->string('question_2');
             $table->string('answer_2');
+            $table->text('additional_comments')->nullable();
             $table->timestamps();
         });
     }
