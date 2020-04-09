@@ -46,4 +46,6 @@ Route::middleware('auth:api')->group(function () {
 
     //Driver routes
     Route::get('assigned-trips', 'Api\DriverController@driverAssignedTrips');
+    Route::post('trip-initiated', 'Api\DriverController@tripInitiated');
+    Route::post('record-weight', 'Api\DriverController@recordWeight');
 });

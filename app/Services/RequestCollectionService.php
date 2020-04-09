@@ -5,7 +5,11 @@ namespace App\Services;
 
 
 use App\Forms\IForm;
+use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use App\RequestCollection;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -45,7 +49,7 @@ class RequestCollectionService extends BaseService
      */
     public function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->model->find($id);
     }
 
     /**
@@ -74,5 +78,46 @@ class RequestCollectionService extends BaseService
                 'category_name' => $material_category->name
             ]);
         }
+    }
+
+    /**
+     * Method: recordWeight
+     *
+     * @param IForm $recordWeightCategories
+     *
+     * @return array
+     */
+    public function recordWeight(IForm $recordWeightCategories)
+    {
+        if($recordWeightCategories->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $recordWeightCategories->errors()
+            );
+        }
+        foreach ($recordWeightCategories->request_collection as $recordWeightCategory){
+
+            $findCategory = $this->findById($recordWeightCategory['id']);
+            if($findCategory){
+
+                $findCategory->weight = $recordWeightCategory['weight'];
+                $findCategory->update();
+            }
+        }
+
+        if($recordWeightCategories->additional_comments){
+
+            $requestService = App::make(RequestService::class)->additionalComments($recordWeightCategories);
+        }
+
+        return ResponseHelper::responseData(
+            Config::get('constants.WEIGHT_RECORDED'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            $recordWeightCategories->errors()
+        );
     }
 }
