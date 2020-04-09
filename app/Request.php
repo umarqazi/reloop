@@ -29,4 +29,12 @@ class Request extends Model
     {
         return $this->hasMany(RequestCollection::class);
     }
+
+    /**
+     * Method: user
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

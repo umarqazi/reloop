@@ -38,6 +38,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('questions', 'Admin\QuestionController');
     Route::resource('cities', 'Admin\CityController');
     Route::resource('districts', 'Admin\DistrictController');
+    Route::resource('contact-us', 'Admin\ContactUsController');
+    Route::resource('collection-requests', 'Admin\CollectionRequestController');
     Route::get('get-cities', 'Admin\CityController@getCities')->name('getCities');
     Route::get('district-create/{city_id}', 'Admin\DistrictController@districtCreate')->name('districtCreate');
     Route::resource('donation-products', 'Admin\DonationProductController');
@@ -51,5 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/show-order/{id}', 'Supervisor\OrderController@show')->name('supervisor.order.show');
     Route::put('/assign-order/{id}', 'Supervisor\OrderController@assignOrder')->name('supervisor.assign.order');
     Route::get('/drivers-availability/{date}/{order}', 'Supervisor\OrderController@availableDrivers')->name('drivers.availability');
+    Route::get('/contact-Admin-form', 'Admin\SupervisorController@contactAdminForm')->name('contact-admin-form');
+    Route::get('/contact-admin', 'Admin\SupervisorController@contactAdmin')->name('contact-admin');
 
 });

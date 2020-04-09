@@ -120,4 +120,6 @@ return[
     'DISTRICT_DELETE_SUCCESS'               => 'District deleted successfully',
     'DISTRICT_DELETE_ERROR'                 => 'Error Occurred while deleting District',
 
+    'CONTACT_US_ERROR'                      => 'Error Occurred while Sending Message',
+
 ];

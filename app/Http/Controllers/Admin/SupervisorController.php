@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContactAdmin\ContactAdmin;
 use App\Http\Requests\Supervisor\CreateRequest;
 use App\Http\Requests\Supervisor\UpdateRequest;
 use App\Services\Admin\CityService;
@@ -10,6 +11,7 @@ use App\Services\Admin\DistrictService;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 class SupervisorController extends Controller
 {
@@ -138,6 +140,30 @@ class SupervisorController extends Controller
             return redirect()->back()->with('success','Supervisor Deleted Successfully');
         } else {
             return redirect()->back()->with('error','Error While Deleting The Supervisor');
+        }
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function contactAdminForm(){
+
+        return view('users.contact-admin');
+
+    }
+
+    /**
+     * @param ContactAdmin $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function contactAdmin(ContactAdmin $request){
+        $data = $request->except('_token') ;
+        $contactAdmin = $this->userService->contactAdmin($data);
+        if($contactAdmin){
+            return redirect()->back()->with('success', Config::get('constants.CONTACT_US_SUCCESS'));
+        }
+        else{
+            return redirect()->back()->with('success', Config::get('constants.CONTACT_US_ERROR'));
         }
     }
 }
