@@ -66,6 +66,11 @@ return[
     'ORDER_ASSIGNMENT_FAIL'                 => 'Something went wrong in assigning order!',
     'ORDER_HISTORY_SUCCESS'                 => 'Order history shown as:',
 
+    'ASSIGNED_ORDER_LIST'                   => 'Assigned Orders list shown as:',
+    'TRIP_INITIATED_SUCCESS'                => 'You trip has initiated now!',
+    'TRIP_INITIATED_FAIL'                   => 'Invalid order id!',
+    'WEIGHT_RECORDED'                       => 'Weight has recorded successfully!',
+
     'BILLING_HISTORY_SUCCESS'               => 'Billing history shown as:',
 
     'ADDRESS_UPDATE'                        => 'Address has updated!',

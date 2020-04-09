@@ -64,6 +64,7 @@ class UserService extends BaseService
             'password'        => Hash::make($data['password']),
             'status'          => $data['status'],
             'user_type'       => $data['user_type'],
+            'api_token'       => str_random(60),
         );
         //check that avatar exists or not
         if(array_key_exists('avatar', $data) && $data['avatar'] != null){

@@ -64,7 +64,7 @@ class DriverController extends Controller
         if(!empty($request)){
             $user = $this->userService->insert($request);
             if($user){
-                $user->assignRole('user');
+                $user->assignRole('driver');
                 return redirect()->back()->with('success','Driver Created Successfully');
             } else {
                 return redirect()->back()->with('error','Error While Creating Driver');
