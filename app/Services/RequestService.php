@@ -193,7 +193,7 @@ class RequestService extends BaseService
     {
         return $this->model->with('requestCollection')
             ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
-                'district', 'street', 'created_at')
+                'district', 'street', 'created_at', 'status')
             ->where('user_id', auth()->id())->get();
     }
 
@@ -204,11 +204,11 @@ class RequestService extends BaseService
      *
      * @return Request[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function assignedrequests($driverId)
+    public function assignedRequests($driverId)
     {
         return $this->model->with('requestCollection')
             ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
-                'district', 'street', 'created_at')
+                'district', 'street', 'created_at', 'status')
             ->where('driver_id', $driverId)->get();
     }
 }
