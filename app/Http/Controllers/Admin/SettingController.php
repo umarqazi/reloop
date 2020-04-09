@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Setting\CreateRequest;
 use App\Http\Requests\Setting\UpdateRequest;
 use App\Services\Admin\SettingService;
 use Illuminate\Support\Facades\Config;
@@ -38,6 +39,7 @@ class SettingController extends Controller
      */
     public function create()
     {
+        return view('settings.create');
     }
 
     /**
@@ -46,8 +48,17 @@ class SettingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(CreateRequest $request)
     {
+        $data = $request->except('_token') ;
+        $setting = $this->settingService->create($data);
+
+        if ($setting) {
+            return redirect()->back()->with('success', Config::get('constants.SETTING_CREATION_SUCCESS'));
+        } else {
+            return redirect()->back()->with('error', Config::get('constants.SETTING_CREATION_ERROR'));
+        }
+
     }
 
     /**

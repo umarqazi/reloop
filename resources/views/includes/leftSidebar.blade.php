@@ -152,6 +152,12 @@
                         <span class="nav-text">Settings</span>
                     </a>
                 </li>
+                <li class="bold">
+                    <a href="{{ route('getCities') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">City</span>
+                    </a>
+                </li>
 
                 <li class="bold">
                     {{ Form::open(['url' => route('logout'),

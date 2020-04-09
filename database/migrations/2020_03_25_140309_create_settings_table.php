@@ -15,8 +15,8 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->tinyInteger('per_day_max_orders_for_drivers');
-            $table->float('points_matrix');
+            $table->string('keys');
+            $table->string('values');
             $table->timestamps();
         });
     }

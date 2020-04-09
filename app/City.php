@@ -11,7 +11,7 @@ class City extends Model
      *
      * @var array
      */
-    protected $fillable = ['city' ];
+    protected $fillable = ['name','status' ];
 
     /**
      * Method: addresses
@@ -33,4 +33,14 @@ class City extends Model
         return $this->hasMany(Order::class);
     }
 
+
+    /**
+     * Method: districts
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function districts()
+    {
+        return $this->hasMany(District::class);
+    }
 }

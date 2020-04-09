@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Admin\CityRepo;
-use Illuminate\Http\Request;
+use App\Http\Requests\City\CreateRequest;
+use App\Http\Requests\City\UpdateRequest;
+use App\Services\Admin\CityService;
+use Illuminate\Support\Facades\Config;
 
-    class CityController extends Controller
+class CityController extends Controller
 {
-    private $cityRepo ;
+    private $cityService ;
 
     /**
      * CityController constructor.
      */
-    public function __construct(CityRepo $cityRepo) {
-        $this->cityRepo      =  $cityRepo;
+    public function __construct(CityService $cityService) {
+        $this->cityService   =  $cityService;
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +25,7 @@ use Illuminate\Http\Request;
      */
     public function index()
     {
-        return $this->cityRepo->all()->pluck('name', 'id')->toArray();
+        return $this->cityService->all()->pluck('name', 'id')->toArray();
     }
 
     /**
@@ -33,7 +35,7 @@ use Illuminate\Http\Request;
      */
     public function create()
     {
-        //
+        return view('cities.create');
     }
 
     /**
@@ -42,9 +44,16 @@ use Illuminate\Http\Request;
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
+        $data = $request->except('_token') ;
+        $city = $this->cityService->create($data);
+
+        if ($city) {
+            return redirect()->back()->with('success', Config::get('constants.CITY_CREATION_SUCCESS'));
+        } else {
+            return redirect()->back()->with('error', Config::get('constants.CITY_CREATION_ERROR'));
+        }
     }
 
     /**
@@ -66,7 +75,12 @@ use Illuminate\Http\Request;
      */
     public function edit($id)
     {
-        //
+        $city = $this->cityService->findById($id);
+        if ($city) {
+            return view('cities.edit', compact('city'));
+        } else {
+            return view('cities.edit')->with('error', Config::get('constants.ERROR'));
+        }
     }
 
     /**
@@ -76,9 +90,15 @@ use Illuminate\Http\Request;
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $data = $request->except('_token','_method') ;
+        $city = $this->cityService->update($id,$data);
+        if ($city) {
+            return redirect()->back()->with('success', Config::get('constants.CITY_UPDATE_SUCCESS'));
+        } else {
+            return redirect()->back()->with('error', Config::get('constants.CITY_UPDATE_ERROR'));
+        }
     }
 
     /**
@@ -89,6 +109,22 @@ use Illuminate\Http\Request;
      */
     public function destroy($id)
     {
-        //
+        $city = $this->cityService->destroy($id);
+        if($city){
+            return redirect()->back()->with('success',Config::get('constants.CITY_DELETE_SUCCESS'));
+        }
+        else {
+            return redirect()->back()->with('error',Config::get('constants.CITY_DELETE_ERROR'));
+        }
+    }
+
+        /**
+         * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+         */
+    public function getCities(){
+
+        $cities = $this->cityService->all();
+        return view('cities.index', compact('cities'));
+
     }
 }

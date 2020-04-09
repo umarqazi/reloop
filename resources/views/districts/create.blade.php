@@ -2,20 +2,19 @@
 @section('content')
 
     <div id="breadcrumbs-wrapper">
-        <!-- Search for small screen -->
         <div class="header-search-wrapper grey lighten-2 hide-on-large-only">
             <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize">
         </div>
         <div class="container">
             <div class="row">
                 <div class="col s10 m6 l6">
-                    <h5 class="breadcrumbs-title">Update Settings</h5>
+                    <h5 class="breadcrumbs-title">Create Related District</h5>
                     <ol class="breadcrumbs">
                         <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
-                        <li><a href="{{route('settings.index')}}">Settings</a>
+                        <li><a href="{{route('getCities')}}">Cities</a>
                         </li>
-                        <li class="active">Update</li>
+                        <li class="active">Create Related District</li>
                     </ol>
                 </div>
             </div>
@@ -47,32 +46,37 @@
     <div class="container">
         <div class="section">
             <br>
-            {{ Form::open(['url' => route('settings.update',$setting->id),'method' => 'PUT', 'class' => 'row']) }}
+            {{ Form::open(['url' => route('districts.store'),
+                           'class' => 'row']) }}
+
+            <input id="city_id" type="text" name="city_id" value="{{$city_id}}" hidden>
             <div class="col s12">
-                <div class="input-field col s12">
-                    <input id="keys" type="text" name="keys" value="{{$setting->keys}}" required>
-                    <label for="name">Key</label>
-                    @if ($errors->has('keys'))
+                <div class="input-field col s6">
+                    <input id="name" type="text" name="name" required>
+                    <label for="name">Name</label>
+                    @if ($errors->has('name'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('keys') }}</strong>
+                        <strong class="red-text">{{ $errors->first('name') }}</strong>
+                    </span>
+                    @endif
+                </div>
+                <div class="input-field col s6">
+                    <select name="status" id="status" required>
+                        <option value="" disabled selected>Choose District Status</option>
+                        <option value="0">Inactive</option>
+                        <option value="1">Active</option>
+                    </select>
+                    <label>Product Status</label>
+                    @if ($errors->has('status'))
+                        <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('status') }}</strong>
                     </span>
                     @endif
                 </div>
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
-                    <input id="values" type="text" name="values" value="{{$setting->values}}" required>
-                    <label for="name">Value</label>
-                    @if ($errors->has('values'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('values') }}</strong>
-                    </span>
-                    @endif
-                </div>
-            </div>
-            <div class="col s12">
-                <div class="input-field col s12">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </div>
             {{ Form::close() }}

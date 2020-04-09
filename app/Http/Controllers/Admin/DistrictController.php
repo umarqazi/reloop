@@ -3,18 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\District\CreateRequest;
+use App\Http\Requests\District\UpdateRequest;
 use App\Repositories\Admin\DistrictRepo;
+use App\Services\Admin\DistrictService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
-    class DistrictController extends Controller
+class DistrictController extends Controller
 {
-    private $districtRepo ;
+    private $districtService ;
 
     /**
      * DistrictController constructor.
      */
-    public function __construct(DistrictRepo $districtRepo) {
-        $this->districtRepo      =  $districtRepo;
+    public function __construct(DistrictService $districtService) {
+        $this->districtService   =  $districtService;
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +27,7 @@ use Illuminate\Http\Request;
      */
     public function index()
     {
-        return $this->districtRepo->all()->pluck('name', 'id')->toArray();
+        return $this->districtService->all()->pluck('name', 'id')->toArray();
     }
 
     /**
@@ -42,9 +46,16 @@ use Illuminate\Http\Request;
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
+        $data = $request->except('_token') ;
+        $district = $this->districtService->create($data);
+
+        if ($district) {
+            return redirect()->back()->with('success', Config::get('constants.DISTRICT_CREATION_SUCCESS'));
+        } else {
+            return redirect()->back()->with('error', Config::get('constants.DISTRICT_CREATION_ERROR'));
+        }
     }
 
     /**
@@ -66,7 +77,12 @@ use Illuminate\Http\Request;
      */
     public function edit($id)
     {
-        //
+        $district = $this->districtService->findById($id);
+        if ($district) {
+            return view('districts.edit', compact('district'));
+        } else {
+            return view('districts.edit')->with('error', Config::get('constants.ERROR'));
+        }
     }
 
     /**
@@ -76,9 +92,15 @@ use Illuminate\Http\Request;
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
+        $data = $request->except('_token','_method') ;
+        $district = $this->districtService->update($id,$data);
+        if ($district) {
+            return redirect()->back()->with('success', Config::get('constants.DISTRICT_UPDATE_SUCCESS'));
+        } else {
+            return redirect()->back()->with('error', Config::get('constants.DISTRICT_UPDATE_ERROR'));
+        }
     }
 
     /**
@@ -89,6 +111,21 @@ use Illuminate\Http\Request;
      */
     public function destroy($id)
     {
-        //
+        $district = $this->districtService->destroy($id);
+        if($district){
+            return redirect()->back()->with('success',Config::get('constants.DISTRICT_DELETE_SUCCESS'));
+        }
+        else {
+            return redirect()->back()->with('error',Config::get('constants.DISTRICT_DELETE_ERROR'));
+        }
     }
+
+        /**
+         * @param $city_id
+         * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+         */
+    public function districtCreate($city_id){
+        return view('districts.create',compact('city_id'));
+    }
+
 }

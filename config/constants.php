@@ -84,6 +84,8 @@ return[
     'PAGE_CONTENT_SUCCESS'                  => 'Page content shown as:',
     'CONTACT_US_SUCCESS'                    => 'Thank you for your message!',
 
+    'SETTING_CREATION_SUCCESS'              => 'Setting created successfully',
+    'SETTING_CREATION_ERROR'                => 'Error Occurred while creating Setting',
     'SETTING_UPDATE_SUCCESS'                => 'Settings updated successfully',
     'SETTING_UPDATE_ERROR'                  => 'Error while updating Settings',
 
@@ -108,5 +110,19 @@ return[
     'INVALID_DONATION_PRODUCT'              => 'Invalid donation product id!',
     'INVALID_DONATION_POINTS'               => 'You don\'t have enough points!',
     'INVALID_DONATION_SUCCESS'              => 'Your donation has successfully received!',
+
+    'CITY_CREATION_SUCCESS'                 => 'City created successfully',
+    'CITY_CREATION_ERROR'                   => 'Error Occurred while creating City',
+    'CITY_UPDATE_SUCCESS'                   => 'City updated successfully',
+    'CITY_UPDATE_ERROR'                     => 'Error Occurred while updating City',
+    'CITY_DELETE_SUCCESS'                   => 'City deleted successfully',
+    'CITY_DELETE_ERROR'                     => 'Error Occurred while deleting City',
+
+    'DISTRICT_CREATION_SUCCESS'             => 'District created successfully',
+    'DISTRICT_CREATION_ERROR'               => 'Error Occurred while creating District',
+    'DISTRICT_UPDATE_SUCCESS'               => 'District updated successfully',
+    'DISTRICT_UPDATE_ERROR'                 => 'Error Occurred while updating District',
+    'DISTRICT_DELETE_SUCCESS'               => 'District deleted successfully',
+    'DISTRICT_DELETE_ERROR'                 => 'Error Occurred while deleting District',
 
 ];
