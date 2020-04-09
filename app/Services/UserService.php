@@ -656,7 +656,7 @@ class UserService extends BaseService
     public function driverAssignedTrips()
     {
         $assignedOrders = $this->orderService->assignedOrders(auth()->id());
-        $assignedRequests = $this->requestService->assignedrequests(auth()->id());
+        $assignedRequests = $this->requestService->assignedRequests(auth()->id());
 
         $data = [
             'assignedOrders'   => $assignedOrders,
