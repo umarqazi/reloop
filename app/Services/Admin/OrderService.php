@@ -57,7 +57,7 @@ class OrderService extends BaseService
         $order = array(
             'driver_id'        => $request['driver_id'],
             'delivery_date'    => $request['delivery_date'],
-            'status'           => IOrderStaus::ASSIGNED,
+            'status'           => IOrderStaus::DRIVER_ASSIGNED,
         );
 
         $orderAssignment =  parent::update($id, $order);

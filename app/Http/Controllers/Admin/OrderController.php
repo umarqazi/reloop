@@ -62,9 +62,11 @@ class OrderController extends Controller
 
         if($order->driver_id != null){
             $drivers = $this->availableDrivers($order->delivery_date, $id);
+            return  view('orders.view', compact('order','drivers'));
         }
 
-        return  view('orders.view', compact('order','drivers'));
+        return  view('orders.view', compact('order'));
+
     }
 
     /**
