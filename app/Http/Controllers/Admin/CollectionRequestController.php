@@ -64,7 +64,7 @@ class CollectionRequestController extends Controller
             $drivers = $this->availableDrivers($order->delivery_date, $id);
         }*/
 
-        return  view('requests.view', compact('request',));
+        return  view('requests.view', compact('request'));
     }
 
     /**
