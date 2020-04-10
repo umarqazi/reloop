@@ -68,10 +68,10 @@
                                 <td>{{ $request->id }}</td>
                                 <td>{{ $request->request_number  }}</td>
                                 <td>{{ $request->user->email }}</td>
-                                <td>@if($request->status == \App\Services\IOrderStaus::NOT_ASSIGNED) Not Assigned @endif
-                                    @if($request->status == \App\Services\IOrderStaus::ASSIGNED) Assigned @endif
-                                    @if($request->status == \App\Services\IOrderStaus::TRIP_INITIATED) Trip Initiated @endif
-                                    @if($request->status == \App\Services\IOrderStaus::COMPLETED) Completed @endif</td>
+                                <td>@if($request->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Request Confirmed @endif
+                                    @if($request->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
+                                    @if($request->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Driver Dispatched @endif
+                                    @if($request->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Request Completed @endif</td>
                                 <td><a href="{{ route('collection-requests.show', $request->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
                             </tr>
                             @endforeach
