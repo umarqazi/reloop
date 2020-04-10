@@ -49,4 +49,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('trip-initiated', 'Api\DriverController@tripInitiated');
     Route::post('record-weight', 'Api\DriverController@recordWeight');
     Route::get('feedback-questions', 'Api\DriverController@feedbackQuestions');
+    Route::post('feedback', 'Api\DriverController@feedback');
 });
