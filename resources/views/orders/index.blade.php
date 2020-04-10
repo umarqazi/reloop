@@ -74,10 +74,10 @@
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->order_number  }}</td>
                                 <td>{{ $order->email }}</td>
-                                <td>@if($order->status == \App\Services\IOrderStaus::NOT_ASSIGNED) Not Assigned @endif
-                                    @if($order->status == \App\Services\IOrderStaus::ASSIGNED) Assigned @endif
-                                    @if($order->status == \App\Services\IOrderStaus::TRIP_INITIATED) Trip Initiated @endif
-                                    @if($order->status == \App\Services\IOrderStaus::COMPLETED) Completed @endif</td>
+                                <td>@if($order->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Order Confirmed @endif
+                                    @if($order->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
+                                    @if($order->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Order Dispatched @endif
+                                    @if($order->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Order Completed @endif</td>
                                 <td>{{ $order->total }}</td>
                                 <td><a href="{{ route('orders.show', $order->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
                             </tr>
