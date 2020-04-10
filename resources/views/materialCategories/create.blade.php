@@ -82,6 +82,11 @@
                         <h6 class="custom-label">Avatar</h6>
                         <input id="avatar" name="avatar" type="file" class="attach-file">
                     </div>
+                    @if ($errors->has('avatar'))
+                        <span class="help-block">
+                                <strong class="red-text">{{ $errors->first('avatar') }}</strong>
+                            </span>
+                    @endif
                 </div>
                 <div id="input_fields_wrap" class="col s12 mt-5">
                     <div class="adrs-title col s12">

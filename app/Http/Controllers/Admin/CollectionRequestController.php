@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Services\Admin\OrderService;
+use App\Services\Admin\CollectionRequestService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class OrderController extends Controller
+class CollectionRequestController extends Controller
 {
 
-    private $orderService ;
+    private $collectionRequestService ;
 
     /**
-     * OrderController constructor.
+     * CollectionRequestController constructor.
      */
-    public function __construct(OrderService $orderService) {
-        $this->orderService   =  $orderService;
+    public function __construct(CollectionRequestService $collectionRequestService) {
+        $this->collectionRequestService   =  $collectionRequestService;
     }
 
     /**
@@ -25,8 +25,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = $this->orderService->all();
-        return view('orders.index', compact('orders'));
+        $requests = $this->collectionRequestService->all();
+        return view('requests.index', compact('requests'));
     }
 
     /**
@@ -58,15 +58,13 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = $this->orderService->findById($id);
+        $request = $this->collectionRequestService->findById($id);
 
-        if($order->driver_id != null){
+        /*if($order->driver_id != null){
             $drivers = $this->availableDrivers($order->delivery_date, $id);
-            return  view('orders.view', compact('order','drivers'));
-        }
+        }*/
 
-        return  view('orders.view', compact('order'));
-
+        return  view('requests.view', compact('request'));
     }
 
     /**

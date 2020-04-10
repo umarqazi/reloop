@@ -5,6 +5,7 @@ namespace App\Services\Admin;
 
 
 use App\Repositories\Admin\CityRepo;
+use App\Repositories\Admin\CollectionRequestRepo;
 use App\Repositories\Admin\DistrictRepo;
 use App\Repositories\Admin\UserRepo;
 use App\Repositories\Admin\OrderRepo;
@@ -15,23 +16,23 @@ use App\Services\IUserType;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Parent_;
 
-class OrderService extends BaseService
+class CollectionRequestService extends BaseService
 {
 
-    private $orderRepo;
+    private $collectionRequestRepo;
     private $userRepo;
     private $cityRepo;
     private $districtRepo;
     private $emailNotificationService;
 
     /**
-     * OrderService constructor.
+     * CollectionRequestService constructor.
      */
 
     public function __construct(UserRepo $userRepo,CityRepo $cityRepo,DistrictRepo $districtRepo,EmailNotificationService $emailNotificationService)
     {
-        $orderRepo =  $this->getRepo(OrderRepo::class);
-        $this->orderRepo                = new $orderRepo;
+        $collectionRequestRepo          =  $this->getRepo(CollectionRequestRepo::class);
+        $this->collectionRequestRepo                = new $collectionRequestRepo;
         $this->userRepo                 = $userRepo;
         $this->cityRepo                 = $cityRepo;
         $this->districtRepo             = $districtRepo;
@@ -57,7 +58,7 @@ class OrderService extends BaseService
         $order = array(
             'driver_id'        => $request['driver_id'],
             'delivery_date'    => $request['delivery_date'],
-            'status'           => IOrderStaus::DRIVER_ASSIGNED,
+            'status'           => IOrderStaus::ASSIGNED,
         );
 
         $orderAssignment =  parent::update($id, $order);

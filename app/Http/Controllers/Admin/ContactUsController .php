@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Services\Admin\OrderService;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Admin\ContactUsService;
 
-class OrderController extends Controller
+class ContactUsController extends Controller
 {
 
-    private $orderService ;
+    private $categoryService ;
 
     /**
-     * OrderController constructor.
+     * ContactUsController constructor.
      */
-    public function __construct(OrderService $orderService) {
-        $this->orderService   =  $orderService;
+    public function __construct(ContactUsService $contactUsService) {
+        $this->contactUsService    =  $contactUsService ;
     }
+
 
     /**
      * Display a listing of the resource.
@@ -25,8 +25,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = $this->orderService->all();
-        return view('orders.index', compact('orders'));
+        $contactUs = $this->contactUsService->all();
+        return view('contact-us.index',compact('contactUs'));
     }
 
     /**
@@ -36,7 +36,6 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -45,9 +44,8 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
     }
 
     /**
@@ -58,15 +56,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = $this->orderService->findById($id);
-
-        if($order->driver_id != null){
-            $drivers = $this->availableDrivers($order->delivery_date, $id);
-            return  view('orders.view', compact('order','drivers'));
-        }
-
-        return  view('orders.view', compact('order'));
-
+        $contactUs = $this->contactUsService->findById($id);
+        return view('contact-us.view',compact('contactUs'));
     }
 
     /**
@@ -77,7 +68,6 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        //
     }
 
     /**
@@ -87,9 +77,8 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
-        //
     }
 
     /**
@@ -100,16 +89,6 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
 
-    /**
-     * @param $date
-     * @param $order_id
-     * @return mixed
-     */
-    public function availableDrivers($date,$order_id){
-        $availableDrivers = $this->orderService->availableDrivers($date,$order_id)->pluck('first_name', 'id')->toArray();
-        return $availableDrivers;
     }
 }

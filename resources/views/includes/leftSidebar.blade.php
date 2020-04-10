@@ -73,6 +73,12 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li class="bold">
+                    <a href="{{ route('collection-requests.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Collection Requests</span>
+                    </a>
                 </li><li class="bold">
                     <a href="{{ route('material-category.index') }}">
                         <i class="material-icons">account_circle</i>
@@ -153,6 +159,12 @@
                     </a>
                 </li>
                 <li class="bold">
+                    <a href="{{ route('contact-us.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Contact Us</span>
+                    </a>
+                </li>
+                <li class="bold">
                     <a href="{{ route('getCities') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">City</span>
@@ -196,7 +208,7 @@
                         </div>
                     </li>
                     <li class="bold">
-                        <a href="">
+                        <a href="{{ route('contact-admin-form') }}">
                             <i class="material-icons">account_circle</i>
                             <span class="nav-text">Contact Admin</span>
                         </a>

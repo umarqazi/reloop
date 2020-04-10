@@ -29,6 +29,19 @@ class CreateRequest extends FormRequest
             'quantity'      => 'required',
             'unit'          => 'required',
             'reward_points' => 'required',
+            'avatar'        => 'required',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'avatar.required'  => 'Avatar is required.',
         ];
     }
 }

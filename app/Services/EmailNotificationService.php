@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Mail\admin\ContactUsNotification;
 use App\Mail\admin\OrderAssignmentNotification;
 use App\Mail\admin\OrganizationSignUpRequestNotification;
 use App\Mail\admin\PasswordResetNotification;
@@ -154,6 +155,17 @@ class EmailNotificationService
         Mail::to($this->getAdminEmail())->queue(new OrderAssignmentNotification($data));
     }
 
+    /**
+     * Method: contactUsNotification
+     *
+     * @param $data
+     *
+     * @return void
+     */
+
+    public function contactUsNotification($data){
+        Mail::to($this->getAdminEmail())->queue(new ContactUsNotification($data));
+    }
     /**
      * Method: getAdminEmail
      *

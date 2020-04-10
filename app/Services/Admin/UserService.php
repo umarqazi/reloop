@@ -5,6 +5,7 @@ namespace App\Services\Admin;
 
 
 use App\Repositories\Admin\AddressRepo;
+use App\Repositories\Admin\ContactUsRepo;
 use App\Repositories\Admin\UserRepo;
 use App\Services\EmailNotificationService;
 use App\Services\IUserStatus;
@@ -18,6 +19,7 @@ class UserService extends BaseService
 {
     private $userRepo;
     private $addressRepo;
+    private $contactUsRepo;
     /**
      * Property: emailNotificationService
      *
@@ -26,12 +28,13 @@ class UserService extends BaseService
     private $emailNotificationService;
 
 
-    public function __construct(EmailNotificationService $emailNotificationService,AddressRepo $addressRepo)
+    public function __construct(EmailNotificationService $emailNotificationService,AddressRepo $addressRepo,ContactUsRepo $contactUsRepo)
     {
         $userRepo = $this->getRepo(UserRepo::class);
         $this->userRepo = new $userRepo;
         $this->addressRepo  = $addressRepo;
         $this->emailNotificationService = $emailNotificationService;
+        $this->contactUsRepo = $contactUsRepo;
     }
 
     /**
@@ -224,5 +227,20 @@ class UserService extends BaseService
             );
         }
         return parent::update($id, $data);
+    }
+
+    /**
+     * @param $data
+     * @return bool
+     */
+    public function contactAdmin($data){
+        $contactUs = $this->contactUsRepo->create($data);
+        if($contactUs){
+          $this->emailNotificationService->contactUsNotification($contactUs);
+          return true;
+        }
+        else{
+          return false ;
+        }
     }
 }
