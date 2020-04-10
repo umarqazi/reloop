@@ -117,7 +117,11 @@ class DonationService extends BaseService
                     Config::get('constants.INVALID_DONATION_POINTS'),
                     IResponseHelperInterface::FAIL_RESPONSE,
                     false,
-                    null
+                    [
+                        "invalid_points" => [
+                            Config::get('constants.INVALID_DONATION_POINTS')
+                        ]
+                    ]
                 );
             }
         }
@@ -126,7 +130,11 @@ class DonationService extends BaseService
             Config::get('constants.INVALID_DONATION_PRODUCT'),
             IResponseHelperInterface::FAIL_RESPONSE,
             false,
-            null
+            [
+                "invalid_product_id" => [
+                    Config::get('constants.INVALID_DONATION_PRODUCT')
+                ]
+            ]
         );
     }
 }
