@@ -39,6 +39,7 @@ class CreateForm extends BaseForm
     public $district_id;
     public $latitude;
     public $longitude;
+    public $hh_organization_name;
 
     /**
      * CreateForm constructor.
@@ -66,6 +67,7 @@ class CreateForm extends BaseForm
             'password'               => $this->password,
             'password_confirmation'  => $this->password_confirmation,
             'phone_number'           => $this->phone_number,
+            'hh_organization_name'   => $this->hh_organization_name,
             'birth_date'             => $this->birth_date,
             'avatar'                 => $this->avatar,
             'location'               => $this->location,

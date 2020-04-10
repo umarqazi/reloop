@@ -460,6 +460,7 @@ class UserService extends BaseService
         $authUser->first_name = $updateUserProfileForm->first_name ?? $authUser->first_name;
         $authUser->last_name = $updateUserProfileForm->last_name ?? $authUser->last_name;
         $authUser->phone_number = $updateUserProfileForm->phone_number ?? $authUser->phone_number;
+        $authUser->hh_organization_name = $updateUserProfileForm->hh_organization_name ?? $authUser->hh_organization_name;
 
         $organization = $this->organizationService->findById($updateUserProfileForm->organization_id);
         if($organization){

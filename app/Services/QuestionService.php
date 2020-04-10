@@ -44,7 +44,7 @@ class QuestionService extends BaseService
      */
     public function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->model->find($id);
     }
 
     /**

@@ -71,6 +71,9 @@ return[
     'TRIP_INITIATED_FAIL'                   => 'Invalid order id!',
     'WEIGHT_RECORDED'                       => 'Weight has recorded successfully!',
     'FEEDBACK_QUESTIONS'                    => 'Feedback questions shown as:',
+    'INVALID_REQUEST_ID'                    => 'You have requested for invalid request id!',
+    'INVALID_ORDER_ID'                      => 'You have requested for invalid order id!',
+    'RECORD_FEEDBACK'                       => 'Your feedback have been saved successfully!',
 
     'BILLING_HISTORY_SUCCESS'               => 'Billing history shown as:',
 
