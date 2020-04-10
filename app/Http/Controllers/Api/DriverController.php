@@ -7,11 +7,13 @@ use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\IOrderType;
 use App\Services\OrderService;
+use App\Services\QuestionService;
 use App\Services\RequestCollectionService;
 use App\Services\RequestService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
 /**
@@ -140,6 +142,23 @@ class DriverController extends Controller
             $recordWeight['code'],
             $recordWeight['status'],
             $recordWeight['data']
+        );
+    }
+
+    /**
+     * Method: feedbackQuestions
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function feedbackQuestions()
+    {
+        $feedbackQuestions = App::make(QuestionService::class)->getAll();
+
+        return ResponseHelper::jsonResponse(
+            Config::get('constants.FEEDBACK_QUESTIONS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $feedbackQuestions
         );
     }
 }
