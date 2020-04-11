@@ -79,7 +79,7 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
-                    <input id="no_of_employees" type="number" name="no_of_employees" value="{{$organization->no_of_employees}}" required>
+                    <input id="no_of_employees" type="text" name="no_of_employees" value="{{$organization->no_of_employees}}" required>
                     <label for="no_of_employees">Number of employees</label>
                     @if ($errors->has('no_of_employees'))
                         <span class="help-block">
@@ -90,7 +90,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="no_of_branches" type="number"  name="no_of_branches"  value="{{$organization->no_of_branches}}" required>
+                    <input id="no_of_branches" type="text"  name="no_of_branches"  value="{{$organization->no_of_branches}}" required>
                     <label for="no_of_branches">Number of branches</label>
                     @if ($errors->has('no_of_branches'))
                         <span class="help-block">
