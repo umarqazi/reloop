@@ -67,7 +67,7 @@ return[
     'ORDER_HISTORY_SUCCESS'                 => 'Order history shown as:',
 
     'ASSIGNED_ORDER_LIST'                   => 'Assigned Orders list shown as:',
-    'TRIP_INITIATED_SUCCESS'                => 'You trip has initiated now!',
+    'TRIP_STATUS_UPDATED'                   => 'You trip status has updated!',
     'TRIP_INITIATED_FAIL'                   => 'Invalid order id!',
     'WEIGHT_RECORDED'                       => 'Weight has recorded successfully!',
     'FEEDBACK_QUESTIONS'                    => 'Feedback questions shown as:',
