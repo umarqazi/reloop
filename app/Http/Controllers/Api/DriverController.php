@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+use App\Forms\Collection\FeedbackForm;
 use App\Forms\Collection\RecordWeightForm;
 use App\Forms\Collection\TripInitiatedForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
+use App\Services\FeedbackService;
 use App\Services\IOrderType;
 use App\Services\OrderService;
 use App\Services\QuestionService;
@@ -159,6 +161,27 @@ class DriverController extends Controller
             IResponseHelperInterface::SUCCESS_RESPONSE,
             true,
             $feedbackQuestions
+        );
+    }
+
+    /**
+     * Method: feedback
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function feedback(Request $request)
+    {
+        $feedbackForm = new FeedbackForm();
+        $feedbackForm->loadFromArray($request->all());
+        $feedbackService = App::make(FeedbackService::class)->create($feedbackForm);
+
+        return ResponseHelper::jsonResponse(
+            $feedbackService['message'],
+            $feedbackService['code'],
+            $feedbackService['status'],
+            $feedbackService['data']
         );
     }
 }

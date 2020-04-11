@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOrganizationsTable extends Migration
+class CreateFeedbackTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateOrganizationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('organizations', function (Blueprint $table) {
+        Schema::create('feedback', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('no_of_employees');
-            $table->string('no_of_branches');
+            $table->integer('orderable_id');
+            $table->string('orderable_type');
+            $table->string('question');
+            $table->string('answer');
+            $table->text('additional_comments')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateOrganizationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organizations');
+        Schema::dropIfExists('feedback');
     }
 }

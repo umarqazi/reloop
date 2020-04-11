@@ -19,6 +19,7 @@ class UpdateProfileForm extends BaseForm
     public $last_name;
     public $organization_id;
     public $organization_name;
+    public $hh_organization_name;
     public $phone_number;
     public $profile_pic;
     public $no_of_employees;
@@ -31,15 +32,16 @@ class UpdateProfileForm extends BaseForm
     public function toArray()
     {
         return [
-            'first_name'        => $this->first_name,
-            'last_name'         => $this->last_name,
-            'organization_id'   => $this->organization_id,
-            'organization_name' => $this->organization_name,
-            'phone_number'      => $this->phone_number,
-            'profile_pic'       => $this->profile_pic,
-            'no_of_employees'   => $this->no_of_employees,
-            'no_of_branches'    => $this->no_of_branches,
-            'sector_id'         => $this->sector_id,
+            'first_name'            => $this->first_name,
+            'last_name'             => $this->last_name,
+            'organization_id'       => $this->organization_id,
+            'organization_name'     => $this->organization_name,
+            'hh_organization_name'  => $this->hh_organization_name,
+            'phone_number'          => $this->phone_number,
+            'profile_pic'           => $this->profile_pic,
+            'no_of_employees'       => $this->no_of_employees,
+            'no_of_branches'        => $this->no_of_branches,
+            'sector_id'             => $this->sector_id,
         ];
     }
 
