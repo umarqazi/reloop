@@ -71,17 +71,14 @@ class PageService extends BaseService
         $routeName = Route::currentRouteName();
 
         switch ($routeName){
-            case ('privacy-policy'):
+            case ('terms-and-conditions'):
                 $id = 1;
                 break;
-            case ('terms-and-conditions'):
+            case ('about-us'):
                 $id = 2;
                 break;
-            case ('about-us'):
-                $id = 3;
-                break;
             default:
-                $id = 3;
+                $id = 2;
         }
         $pageData = $this->findById($id);
         if($pageData){
