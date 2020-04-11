@@ -121,6 +121,74 @@
                     </div>
                 </div>
 
+                <div id="input_fields_wrap" class="col s12">
+                    <div class="adrs-title">
+                        <h5>Environmental Stats</h5>
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="co2_emission_reduced" type="number" name="co2_emission_reduced" step="any" required>
+                        <label for="co2_emission_reduced">CO2 emission reduced (kg)</label>
+                        @if ($errors->has('co2_emission_reduced'))
+                            <span class="help-block">
+                              <strong class="red-text">{{ $errors->first('co2_emission_reduced') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="trees_saved" type="number" name="trees_saved" required>
+                        <label for="trees_saved">Trees saved (trees)</label>
+                        @if ($errors->has('trees_saved'))
+                            <span class="help-block">
+                              <strong class="red-text">{{ $errors->first('trees_saved') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="oil_saved" type="number" name="oil_saved" step="any" required>
+                        <label for="oil_saved">Oiled saved (ltrs)</label>
+                        @if ($errors->has('oil_saved'))
+                            <span class="help-block">
+                              <strong class="red-text">{{ $errors->first('oil_saved ') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="electricity_saved" type="number" name="electricity_saved" step="any" required>
+                        <label for="electricity_saved">Electricity saved (kwh)</label>
+                        @if ($errors->has('electricity_saved'))
+                            <span class="help-block">
+                              <strong class="red-text">{{ $errors->first('electricity_saved') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="natural_ores_saved" type="number" name="natural_ores_saved" step="any" required>
+                        <label for="natural_ores_saved">Natural Ores saved (kg)</label>
+                        @if ($errors->has('natural_ores_saved'))
+                            <span class="help-block">
+                              <strong class="red-text">{{ $errors->first('natural_ores_saved') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="water_saved" type="number" name="water_saved" step="any" required>
+                        <label for="trees_saved">Water saved (ltrs)</label>
+                        @if ($errors->has('water_saved'))
+                            <span class="help-block">
+                              <strong class="red-text">{{ $errors->first('water_saved') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="landfill_space_saved" type="number" name="landfill_space_saved" step="any" required>
+                        <label for="landfill_space_saved">Landfill space saved (ft<sup>3</sup>)</label>
+                        @if ($errors->has('water_saved'))
+                            <span class="help-block">
+                              <strong class="red-text">{{ $errors->first('landfill_space_saved') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
                 <div class="col s12">
                     <div class="input-field col s12">
                         <button type="submit" class="btn btn-primary">Create</button>
