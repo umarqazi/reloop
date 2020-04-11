@@ -70,7 +70,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="phone_number" type="number" name="phone_number"  value="{{$organization->users->first()->phone_number}}" readonly required>
+                    <input id="phone_number" type="text" name="phone_number"  value="{{$organization->users->first()->phone_number}}" readonly required>
                     <label for="phone_number">Phone Number</label>
                     @if ($errors->has('phone_number'))
                         <span class="help-block">
