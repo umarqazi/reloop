@@ -23,6 +23,7 @@ class CreateRequestsTable extends Migration
             $table->foreign('driver_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
 
             $table->string('request_number');
+            $table->boolean('confirm')->default('0');
             $table->date('collection_date');
             $table->tinyInteger('collection_type')->nullable();
             $table->double('reward_points')->nullable();

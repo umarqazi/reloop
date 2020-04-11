@@ -128,4 +128,10 @@ return[
 
     'CONTACT_US_ERROR'                      => 'Error Occurred while Sending Message',
 
+    'COLLECTION_REQUEST_ASSIGNED'           => 'Collection Request assigned successfully!',
+    'COLLECTION_REQUEST_ASSIGNMENT_FAIL'    => 'Something went wrong in assigning Collection Request!',
+
+    'CONFIRM_REQUEST_ASSIGNED'              => 'Collection Request confirmed successfully!',
+    'CONFIRM_REQUEST_ASSIGNED_FAIL'         => 'Something went wrong in confirming Collection Request!',
+
 ];

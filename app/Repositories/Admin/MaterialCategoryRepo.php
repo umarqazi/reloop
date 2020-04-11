@@ -18,4 +18,13 @@ class MaterialCategoryRepo extends BaseRepo
         $getModel = $this->getModel(MaterialCategory::class);
         $this->getModel = new $getModel;
     }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function findByName(string $name)
+    {
+        return $this->all()->where('name',$name)->first();
+    }
 }
