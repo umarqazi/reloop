@@ -74,7 +74,7 @@
                     <div class="col s4">
                         <div class="order-user-detail">
                             @if($request->confirm != 1)
-                            @if($request->status =  \App\Services\IOrderStaus::ORDER_COMPLETED)
+                            @if($request->status ==  \App\Services\IOrderStaus::ORDER_COMPLETED)
                             <h5>Confirm Order</h5>
                             {{ Form::open(['url' => route('confirm.request', $request->id), 'method' => 'PUT', 'class' => 'row','id' => $request->id]) }}
                             @else
@@ -95,7 +95,7 @@
                             </div>
                             <div class="input-field">
                                 @if($request->confirm != 1)
-                                @if($request->status =  \App\Services\IOrderStaus::ORDER_COMPLETED)
+                                @if($request->status ==  \App\Services\IOrderStaus::ORDER_COMPLETED)
                                     <button type="submit" class="btn btn-primary">Confirm</button>
                                 @else
                                 <button type="submit" class="btn btn-primary">Assign</button>

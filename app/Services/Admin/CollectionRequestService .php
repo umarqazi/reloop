@@ -15,6 +15,7 @@ use App\Services\EmailNotificationService;
 use App\Services\IOrderStaus;
 use App\Services\IUserType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Parent_;
 
 class CollectionRequestService extends BaseService
@@ -47,7 +48,7 @@ class CollectionRequestService extends BaseService
      */
     public function getOrders($city,$district)
     {
-        $orders = $this->orderRepo->getOrders($city,$district);
+        $orders = $this->collectionRequestRepo->getOrders($city,$district);
         return $orders;
     }
 
@@ -145,11 +146,38 @@ class CollectionRequestService extends BaseService
             $driverPoints = $this->userRepo->update($driver->id,$driverData) ;
         }
 
-        if($requestUpdate && $userPoints && $driverPoints){
+        if(Auth::user()->hasRole('supervisor')){
+            $supervisorData = array(
+                'reward_points'  => $rewardPoints,
+            );
+
+            if(Auth::user()->reward_points == null){
+                $supervisorPoints = $this->userRepo->update(Auth::user()->id,$supervisorData) ;
+            }
+            else {
+                $supervisorData = array(
+                    'reward_points' => $rewardPoints + $this->userRepo->findById(Auth::user()->id)->reward_points,
+                );
+                $supervisorPoints = $this->userRepo->update(Auth::user()->id,$supervisorData) ;
+            }
+        }
+
+        if(Auth::user()->hasRole('supervisor')){
+
+        if($requestUpdate && $userPoints && $driverPoints && $supervisorPoints){
             return true ;
         }
         else {
             return false ;
+        }
+        }
+        else{
+            if($requestUpdate && $userPoints && $driverPoints){
+                return true ;
+            }
+            else {
+                return false ;
+            }
         }
 
     }

@@ -57,5 +57,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/drivers-availability/{date}/{order}', 'Supervisor\OrderController@availableDrivers')->name('drivers.availability');
     Route::get('/contact-Admin-form', 'Admin\SupervisorController@contactAdminForm')->name('contact-admin-form');
     Route::get('/contact-admin', 'Admin\SupervisorController@contactAdmin')->name('contact-admin');
+    Route::get('/get-requests', 'Supervisor\CollectionRequestController@index')->name('get-requests');
 
 });
