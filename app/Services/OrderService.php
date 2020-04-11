@@ -169,16 +169,22 @@ class OrderService extends BaseService
      *
      * @return array
      */
-    public function updateOrderStatus($orderId)
+    public function updateOrderStatus($orderId, $statusType)
     {
         $findOrder = $this->findById($orderId);
         if($findOrder){
 
-            $findOrder->status = IOrderStaus::DRIVER_DISPATCHED;
+            if($statusType == IOrderStatusType::TRIP_INITIATED){
+
+                $findOrder->status = IOrderStaus::DRIVER_DISPATCHED;
+            } elseif ($statusType == IOrderStatusType::TRIP_COMPLETED){
+
+                $findOrder->status = IOrderStaus::ORDER_COMPLETED;
+            }
             $findOrder->update();
 
             return ResponseHelper::responseData(
-                Config::get('constants.TRIP_INITIATED_SUCCESS'),
+                Config::get('constants.TRIP_STATUS_UPDATED'),
                 IResponseHelperInterface::SUCCESS_RESPONSE,
                 true,
                 null

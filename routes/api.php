@@ -46,7 +46,7 @@ Route::middleware('auth:api')->group(function () {
 
     //Driver routes
     Route::get('assigned-trips', 'Api\DriverController@driverAssignedTrips');
-    Route::post('trip-initiated', 'Api\DriverController@tripInitiated');
+    Route::post('trip-status', 'Api\DriverController@tripStatusUpdate');
     Route::post('record-weight', 'Api\DriverController@recordWeight');
     Route::get('feedback-questions', 'Api\DriverController@feedbackQuestions');
     Route::post('feedback', 'Api\DriverController@feedback');

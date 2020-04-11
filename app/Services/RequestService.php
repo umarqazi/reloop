@@ -236,16 +236,22 @@ class RequestService extends BaseService
      *
      * @return array
      */
-    public function updateRequestStatus($requestId)
+    public function updateRequestStatus($requestId, $statusType)
     {
         $findRequest = $this->findById($requestId);
         if($findRequest){
 
-            $findRequest->status = IOrderStaus::DRIVER_DISPATCHED;
+            if($statusType == IOrderStatusType::TRIP_INITIATED){
+
+                $findRequest->status = IOrderStaus::DRIVER_DISPATCHED;
+            } elseif ($statusType == IOrderStatusType::TRIP_COMPLETED){
+
+                $findRequest->status = IOrderStaus::ORDER_COMPLETED;
+            }
             $findRequest->update();
 
             return ResponseHelper::responseData(
-                Config::get('constants.TRIP_INITIATED_SUCCESS'),
+                Config::get('constants.TRIP_STATUS_UPDATED'),
                 IResponseHelperInterface::SUCCESS_RESPONSE,
                 true,
                 null

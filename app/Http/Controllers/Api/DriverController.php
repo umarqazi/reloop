@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 use App\Forms\Collection\FeedbackForm;
 use App\Forms\Collection\RecordWeightForm;
-use App\Forms\Collection\TripInitiatedForm;
+use App\Forms\Collection\TripStatusForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\FeedbackService;
@@ -94,34 +94,34 @@ class DriverController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function tripInitiated(Request $request)
+    public function tripStatusUpdate(Request $request)
     {
-        $tripInitiatedForm = new TripInitiatedForm();
-        $tripInitiatedForm->loadFromArray($request->all());
+        $tripStatusForm = new TripStatusForm();
+        $tripStatusForm->loadFromArray($request->all());
 
-        if($tripInitiatedForm->fails()){
+        if($tripStatusForm->fails()){
 
             return ResponseHelper::jsonResponse(
                 Config::get('constants.INVALID_OPERATION'),
                 IResponseHelperInterface::FAIL_RESPONSE,
                 false,
-                $tripInitiatedForm->errors()
+                $tripStatusForm->errors()
             );
         }
 
-        if($tripInitiatedForm->order_type == IOrderType::COLLECTION_REQUEST){
+        if($tripStatusForm->order_type == IOrderType::COLLECTION_REQUEST){
 
-            $tripInitiated = $this->requestService->updateRequestStatus($tripInitiatedForm->order_id);
-        } elseif($tripInitiatedForm->order_type == IOrderType::DELIEVERY_ORDER) {
+            $tripStatusUpdate = $this->requestService->updateRequestStatus($tripStatusForm->order_id, $tripStatusForm->status_type);
+        } elseif($tripStatusForm->order_type == IOrderType::DELIEVERY_ORDER) {
 
-            $tripInitiated = $this->orderService->updateOrderStatus($tripInitiatedForm->order_id);
+            $tripStatusUpdate = $this->orderService->updateOrderStatus($tripStatusForm->order_id, $tripStatusForm->status_type);
         }
 
         return ResponseHelper::jsonResponse(
-            $tripInitiated['message'],
-            $tripInitiated['code'],
-            $tripInitiated['status'],
-            $tripInitiated['data']
+            $tripStatusUpdate['message'],
+            $tripStatusUpdate['code'],
+            $tripStatusUpdate['status'],
+            $tripStatusUpdate['data']
         );
     }
 
