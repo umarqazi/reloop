@@ -1,22 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Supervisor;
 
+use App\Services\Admin\CityService;
 use App\Services\Admin\CollectionRequestService;
+use App\Services\Admin\DistrictService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
 class CollectionRequestController extends Controller
 {
 
     private $collectionRequestService ;
+    private $cityService ;
+    private $districtService ;
 
     /**
      * CollectionRequestController constructor.
      */
-    public function __construct(CollectionRequestService $collectionRequestService) {
+    public function __construct(CollectionRequestService $collectionRequestService, CityService $cityService, DistrictService $districtService) {
         $this->collectionRequestService   =  $collectionRequestService;
+        $this->cityService = $cityService;
+        $this->districtService = $districtService;
     }
 
     /**
@@ -26,7 +33,17 @@ class CollectionRequestController extends Controller
      */
     public function index()
     {
-        $requests = $this->collectionRequestService->all();
+        //get city_id and district_id of current supervisor
+        $city_id = Auth::user()->addresses->first()->city_id ;
+        $district_id = Auth::user()->addresses->first()->district_id ;
+
+        //get name of city and district of current supervisor
+        $city = $this->cityService->findById($city_id)->name ;
+        $district = $this->districtService->findById($district_id)->name ;
+
+        //get orders of supervisor's city and district
+        $requests = $this->collectionRequestService->getOrders($city,$district);
+
         return view('requests.index', compact('requests'));
     }
 
@@ -59,10 +76,6 @@ class CollectionRequestController extends Controller
      */
     public function show($id)
     {
-        $request = $this->collectionRequestService->findById($id);
-
-        $drivers = $this->availableDrivers($request->collection_date, $id);
-        return  view('requests.view', compact('request','drivers'));
     }
 
     /**
@@ -99,41 +112,4 @@ class CollectionRequestController extends Controller
         //
     }
 
-    /**
-     * @param Request $request
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function assignOrder(Request $request,$id){
-        $order = $this->collectionRequestService->upgrade($request,$id);
-        if($order){
-            return redirect()->back()->with('success',Config::get('constants.COLLECTION_REQUEST_ASSIGNED'));
-        }
-        else {
-            return redirect()->back()->with('error',Config::get('constants.COLLECTION_REQUEST_ASSIGNMENT_FAIL'));
-        }
-    }
-
-    /**
-     * @param $date
-     * @param $order_id
-     * @return mixed
-     */
-    public function availableDrivers($date,$order_id){
-        $availableDrivers = $this->collectionRequestService->availableDrivers($date,$order_id)->pluck('first_name', 'id')->toArray();
-        return $availableDrivers;
-    }
-
-    public function confirmRequest($id){
-
-       $confirm = $this->collectionRequestService->confirmRequest($id);
-
-       if($confirm){
-           return redirect()->back()->with('success',Config::get('constants.CONFIRM_REQUEST_ASSIGNED'));
-       }
-       else{
-           return redirect()->back()->with('error',Config::get('constants.CONFIRM_REQUEST_ASSIGNMENT_FAIL'));
-       }
-
-    }
 }

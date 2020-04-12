@@ -4,10 +4,6 @@
     <div class="container">
         <div class="section">
             <div id="breadcrumbs-wrapper">
-                <!-- Search for small screen -->
-                <div class="header-search-wrapper grey lighten-2 hide-on-large-only">
-                    <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize">
-                </div>
                 <div class="container">
                     <div class="row">
                         <div class="col s10 m6 l6">
@@ -54,7 +50,7 @@
                             <ul>
                                 <li><strong>Id :</strong><span>{{$request->id}}</span></li>
                                 <li><strong>Number :</strong><span>{{$request->request_number}}</span></li>
-                                <li><strong>Date :</strong><span>{{$request->created_at->format('Y-m-d')}}</span></li>
+                                <li><strong>Date :</strong><span>{{$request->collection_date}}</span></li>
                                 <li><strong>Status :</strong><span>@if($request->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Request Confirmed @endif
                                         @if($request->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
                                         @if($request->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Driver Dispatched @endif
@@ -77,15 +73,34 @@
                     </div>
                     <div class="col s4">
                         <div class="order-user-detail">
+                            @if($request->confirm != 1)
+                            @if($request->status ==  \App\Services\IOrderStaus::ORDER_COMPLETED)
+                            <h5>Confirm Order</h5>
+                            {{ Form::open(['url' => route('confirm.request', $request->id), 'method' => 'PUT', 'class' => 'row','id' => $request->id]) }}
+                            @else
                             <h5>Assign Driver</h5>
-                            {{ Form::open(['url' => route('supervisor.assign.order', $request->id), 'method' => 'PUT', 'class' => 'row','id' => $request->id]) }}
-
+                            {{ Form::open(['url' => route('assign.request', $request->id), 'method' => 'PUT', 'class' => 'row','id' => $request->id]) }}
+                            @endif
+                            @else
+                                <h5>Order Confirmed</h5>
+                            @endif
                             <div class="input-field">
-                                 {{--   {{ Form::select('driver_id', (['' => 'Choose Driver'] + $drivers), $request->driver_id, ['id' => 'driver_id','required' => 'required']) }}
-                                 --}}   <label>Driver</label>
+                                @if($request->driver_id != NULL)
+                                    {{ Form::select('driver_id', (['' => 'Choose Driver'] + $drivers), $request->driver_id, ['id' => 'driver_id','required' => 'required']) }}
+                                    <label>Driver</label>
+                                @else
+                                    {{ Form::select('driver_id', (['' => 'Choose Driver'] + $drivers), null, ['id' => 'driver_id','required' => 'required']) }}
+                                    <label>Driver</label>
+                                @endif
                             </div>
                             <div class="input-field">
+                                @if($request->confirm != 1)
+                                @if($request->status ==  \App\Services\IOrderStaus::ORDER_COMPLETED)
+                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                @else
                                 <button type="submit" class="btn btn-primary">Assign</button>
+                                @endif
+                                @endif
                             </div>
                             {{ Form::close() }}
                         </div>

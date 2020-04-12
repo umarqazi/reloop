@@ -208,6 +208,12 @@
                         </div>
                     </li>
                     <li class="bold">
+                        <a href="{{ route('get-requests') }}">
+                            <i class="material-icons">account_circle</i>
+                            <span class="nav-text">Collection Requests</span>
+                        </a>
+                    </li>
+                    <li class="bold">
                         <a href="{{ route('contact-admin-form') }}">
                             <i class="material-icons">account_circle</i>
                             <span class="nav-text">Contact Admin</span>

@@ -47,6 +47,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/get-user/{id}', 'Admin\RewardPointController@getUser')->name('get-user');
     Route::put('/update-user', 'Admin\RewardPointController@updateRewardPoints')->name('update-user');
     Route::get('/user-subscription', 'Admin\UserController@userSubscription')->name('user-subscription');
+    Route::put('/assign-request/{id}', 'Admin\CollectionRequestController@assignOrder')->name('assign.request');
+    Route::put('/confirm-request/{id}', 'Admin\CollectionRequestController@confirmRequest')->name('confirm.request');
 
     //supervisor routes
     Route::get('/get-orders', 'Supervisor\OrderController@index')->name('get-orders');
@@ -55,5 +57,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/drivers-availability/{date}/{order}', 'Supervisor\OrderController@availableDrivers')->name('drivers.availability');
     Route::get('/contact-Admin-form', 'Admin\SupervisorController@contactAdminForm')->name('contact-admin-form');
     Route::get('/contact-admin', 'Admin\SupervisorController@contactAdmin')->name('contact-admin');
+    Route::get('/get-requests', 'Supervisor\CollectionRequestController@index')->name('get-requests');
 
 });

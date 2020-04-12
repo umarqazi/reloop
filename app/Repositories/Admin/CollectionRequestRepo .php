@@ -14,12 +14,14 @@ use PHPUnit\Framework\Constraint\Count;
 
 class CollectionRequestRepo extends BaseRepo
 {
+    private $order ;
     /**
      * OrderRepo constructor.
      */
     public function __construct()
     {
         $this->getModel(Request::class);
+        $this->order = new Order();
     }
 
     /**
@@ -54,8 +56,9 @@ class CollectionRequestRepo extends BaseRepo
      * @return bool
      */
     public function checkDriver($id,$date){
-        $check = $this->all()->where('driver_id',$id)->where('delivery_date',$date);
-        $count = Count($check);
+        $checkRequests = $this->all()->where('driver_id',$id)->where('delivery_date',$date);
+        $checkOrders = $this->order->all()->where('driver_id',$id)->where('delivery_date',$date) ;
+        $count = Count($checkOrders) + Count($checkOrders);
         if($count < 4){
             return true ;
         }
