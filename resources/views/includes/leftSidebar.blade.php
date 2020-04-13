@@ -54,6 +54,12 @@
                     </a>
                 </li>
                 <li class="bold">
+                    <a href="{{ route('user-donation') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">User Donations</span>
+                    </a>
+                </li>
+                <li class="bold">
                     <a href="{{ route('organization.index') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Organizations</span>
