@@ -50,4 +50,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('record-weight', 'Api\DriverController@recordWeight');
     Route::get('feedback-questions', 'Api\DriverController@feedbackQuestions');
     Route::post('feedback', 'Api\DriverController@feedback');
+    Route::post('password-change-request', 'Api\DriverController@passwordChangeRequest');
 });

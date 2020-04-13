@@ -8,6 +8,7 @@ use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Services\Admin\CityService;
 use App\Services\Admin\DistrictService;
+use App\Services\Admin\UserDonationService;
 use App\Services\Admin\UserSubscriptionService;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
@@ -19,13 +20,15 @@ class UserController extends Controller
     private $cityService;
     private $districtService;
     private $userSubscriptionService;
+    private $userDonationService;
 
-    public function __construct(UserService $userService,CityService $cityService,DistrictService $districtService,UserSubscriptionService $userSubscriptionService)
+    public function __construct(UserService $userService,CityService $cityService,DistrictService $districtService,UserSubscriptionService $userSubscriptionService, UserDonationService $userDonationService)
     {
         $this->userService             = $userService;
         $this->cityService             = $cityService;
         $this->districtService         = $districtService;
         $this->userSubscriptionService = $userSubscriptionService;
+        $this->userDonationService     = $userDonationService;
     }
 
     /**
@@ -150,5 +153,14 @@ class UserController extends Controller
     {
         $userSubscriptions = $this->userSubscriptionService->all();
         return view('users.user-subscription',compact('userSubscriptions'));
+    }
+
+    /**
+     * get all users with their donations
+     */
+    public function userDonation()
+    {
+        $userDonations = $this->userDonationService->all();
+        return view('users.user-donation',compact('userDonations'));
     }
 }
