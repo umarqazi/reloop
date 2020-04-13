@@ -208,7 +208,7 @@ class RequestService extends BaseService
     {
         return $this->model->with('requestCollection')
             ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
-                'district', 'street', 'created_at', 'status')
+                'district', 'street', 'created_at', 'status', 'phone_number')
             ->where('driver_id', $driverId)->get();
     }
 
