@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 use App\Forms\Collection\FeedbackForm;
 use App\Forms\Collection\RecordWeightForm;
 use App\Forms\Collection\TripStatusForm;
+use App\Forms\User\PasswordChangeRequestForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\FeedbackService;
 use App\Services\IOrderType;
 use App\Services\OrderService;
+use App\Services\PasswordChangeRequestService;
 use App\Services\QuestionService;
 use App\Services\RequestCollectionService;
 use App\Services\RequestService;
@@ -182,6 +184,27 @@ class DriverController extends Controller
             $feedbackService['code'],
             $feedbackService['status'],
             $feedbackService['data']
+        );
+    }
+
+    /**
+     * Method: passwordChangeRequest
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function passwordChangeRequest(Request $request)
+    {
+        $passwordChangeRequestForm = new PasswordChangeRequestForm();
+        $passwordChangeRequestForm->loadFromArray($request->all());
+        $passwordChangeRequest = App::make(PasswordChangeRequestService::class)->store($passwordChangeRequestForm);
+
+        return ResponseHelper::jsonResponse(
+            $passwordChangeRequest['message'],
+            $passwordChangeRequest['code'],
+            $passwordChangeRequest['status'],
+            $passwordChangeRequest['data']
         );
     }
 }
