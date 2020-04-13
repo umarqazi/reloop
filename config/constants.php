@@ -8,7 +8,7 @@ return[
     'USER_EXISTS'                           => 'Email already exists as a user!',
     'DISABLED_USER_EXISTS'                  => 'Email already exists as a disabled user!',
 
-    'USER_CREATION_SUCCESS'                 => 'User created successfully',
+    'USER_CREATION_SUCCESS'                 => 'Verification Link sent to your email',
     'PROFILE_UPDATE_SUCCESS'                => 'Profile updated successfully',
     'USER_PROFILE'                          => 'User Profile shown as',
     'USER_UPDATE_SUCCESS'                   => 'User updated successfully',
