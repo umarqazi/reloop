@@ -139,4 +139,7 @@ return[
     'CONFIRM_REQUEST_ASSIGNED'              => 'Collection Request confirmed successfully!',
     'CONFIRM_REQUEST_ASSIGNED_FAIL'         => 'Something went wrong in confirming Collection Request!',
 
+    'WEIGHT_UPDATE_SUCCESS'                 => 'Weight updated successfully',
+    'WEIGHT_UPDATE_ERROR'                   => 'Error Occurred while updating Weight',
+
 ];

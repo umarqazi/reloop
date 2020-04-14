@@ -13,7 +13,7 @@
                                 </li>
                                 <li><a href="{{route('collection-requests.index')}}">Collection Requests</a>
                                 </li>
-                                <li class="active">Collection Request Details</li>
+                                <li class="active">Request Details</li>
                             </ol>
                         </div>
                     </div>
@@ -120,6 +120,9 @@
                                 <th>Product Id</th>
                                 <th>Product Category</th>
                                 <th>Product Quantity/Weight</th>
+                                @if($request->confirm == 0)
+                                <th>Action</th>
+                                @endif
                             </tr>
                             </thead>
                             <tfoot>
@@ -127,6 +130,9 @@
                                 <th>Product Id</th>
                                 <th>Product Category</th>
                                 <th>Product Quantity/Weight</th>
+                                @if($request->confirm == 0)
+                                <th>Action</th>
+                                @endif
                             </tr>
                             </tfoot>
                             <tbody>
@@ -135,6 +141,9 @@
                                     <td>{{ $requestItem->id }}</td>
                                     <td>{{ $requestItem->category_name }}</td>
                                     <td>{{ $requestItem->weight }}</td>
+                                    @if($request->confirm == 0)
+                                    <td><a href="{{ route('request-collections.edit', $requestItem->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a></td>
+                                    @endif
                                 </tr>
                             @endforeach
                             </tbody>
