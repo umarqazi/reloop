@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('districts', 'Admin\DistrictController');
     Route::resource('contact-us', 'Admin\ContactUsController');
     Route::resource('collection-requests', 'Admin\CollectionRequestController');
+    Route::resource('password-requests', 'Admin\PasswordResetController');
     Route::get('get-cities', 'Admin\CityController@getCities')->name('getCities');
     Route::get('district-create/{city_id}', 'Admin\DistrictController@districtCreate')->name('districtCreate');
     Route::resource('donation-products', 'Admin\DonationProductController');
