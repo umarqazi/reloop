@@ -139,4 +139,7 @@ return[
     'CONFIRM_REQUEST_ASSIGNED'              => 'Collection Request confirmed successfully!',
     'CONFIRM_REQUEST_ASSIGNED_FAIL'         => 'Something went wrong in confirming Collection Request!',
 
+    'PASSWORD_UPDATED_SUCCESSFULLY'         => 'Password updated successfully!',
+    'PASSWORD_UPDATE_ERROR'                 => 'Something went wrong in updating password!',
+
 ];
