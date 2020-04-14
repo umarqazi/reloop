@@ -142,4 +142,7 @@ return[
     'WEIGHT_UPDATE_SUCCESS'                 => 'Weight updated successfully',
     'WEIGHT_UPDATE_ERROR'                   => 'Error Occurred while updating Weight',
 
+    'PASSWORD_UPDATED_SUCCESSFULLY'         => 'Password updated successfully!',
+    'PASSWORD_UPDATE_ERROR'                 => 'Something went wrong in updating password!',
+
 ];
