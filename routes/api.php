@@ -27,6 +27,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('change-password', 'Api\LoginController@changePassword');
     Route::get('user-profile', 'UserController@userProfile');
     Route::post('update-address', 'UserController@updateAddress');
+    Route::post('user-location', 'UserController@userLocation');
     Route::post('update-user-profile', 'UserController@updateUserProfile');
     Route::get('material-categories', 'Api\RequestController@materialCategories');
     Route::get('get-plan', 'UserController@getUserPlans');

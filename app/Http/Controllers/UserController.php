@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Forms\User\DefaultAddressForm;
 use App\Forms\User\DeleteAddressForm;
 use App\Forms\User\UpdateAddressForm;
+use App\Forms\User\UpdateLocationForm;
 use App\Forms\User\UpdateProfileForm;
 use App\Helpers\ResponseHelper;
 use App\Services\UserService;
@@ -81,6 +82,27 @@ class UserController extends Controller
             $updateAddress['code'],
             $updateAddress['status'],
             $updateAddress['data']
+        );
+    }
+
+    /**
+     * Method: userLocation
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function userLocation(Request $request)
+    {
+        $updateLocationForm = new UpdateLocationForm();
+        $updateLocationForm->loadFromArray($request->all());
+        $updateLocation = $this->userService->updateAddress($updateLocationForm);
+
+        return ResponseHelper::jsonResponse(
+            $updateLocation['message'],
+            $updateLocation['code'],
+            $updateLocation['status'],
+            $updateLocation['data']
         );
     }
 
