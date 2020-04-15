@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class RequestCollection extends Model
 {
     protected $fillable = [
-        'request_id', 'category_name', 'weight'
+        'user_id', 'request_id', 'material_category_id', 'category_name', 'weight'
     ];
 
     /**
@@ -26,5 +26,10 @@ class RequestCollection extends Model
     public function requests()
     {
         return $this->hasMany(Request::class);
+    }
+
+    public function materialCategory()
+    {
+        return $this->belongsTo(MaterialCategory::class);
     }
 }
