@@ -8,7 +8,7 @@ return[
     'USER_EXISTS'                           => 'Email already exists as a user!',
     'DISABLED_USER_EXISTS'                  => 'Email already exists as a disabled user!',
 
-    'USER_CREATION_SUCCESS'                 => 'User created successfully',
+    'USER_CREATION_SUCCESS'                 => 'Verification Link sent to your email',
     'PROFILE_UPDATE_SUCCESS'                => 'Profile updated successfully',
     'USER_PROFILE'                          => 'User Profile shown as',
     'USER_UPDATE_SUCCESS'                   => 'User updated successfully',
@@ -138,5 +138,8 @@ return[
 
     'CONFIRM_REQUEST_ASSIGNED'              => 'Collection Request confirmed successfully!',
     'CONFIRM_REQUEST_ASSIGNED_FAIL'         => 'Something went wrong in confirming Collection Request!',
+
+    'PASSWORD_UPDATED_SUCCESSFULLY'         => 'Password updated successfully!',
+    'PASSWORD_UPDATE_ERROR'                 => 'Something went wrong in updating password!',
 
 ];

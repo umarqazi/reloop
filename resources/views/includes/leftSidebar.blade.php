@@ -48,6 +48,12 @@
                     </div>
                 </li>
                 <li class="bold">
+                    <a href="{{ route('password-requests.index') }}">
+                        <i class="material-icons">account_circle</i>
+                        <span class="nav-text">Password Reset Requests</span>
+                    </a>
+                </li>
+                <li class="bold">
                     <a href="{{ route('user-subscription') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">User Subscription</span>

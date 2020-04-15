@@ -5,20 +5,41 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\DashboardService;
 use Illuminate\Support\Facades\App;
+use App\Services\Admin\CollectionRequestService;
+use App\Services\Admin\MaterialCategoryService;
+use App\Services\Admin\OrderService;
+use App\Services\Admin\OrganizationService;
+use App\Services\Admin\ProductService;
+use App\Services\Admin\UserService;
+use App\Services\IUserType;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Constraint\Count;
 
 class HomeController extends Controller
 {
+    private $organizationService ;
+    private $userService ;
+    private $materialCategoryService ;
+    private $productService ;
+    private $collectionRequestService ;
+    private $orderService ;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(OrganizationService $organizationService, UserService $userService, MaterialCategoryService $materialCategoryService, ProductService $productService, CollectionRequestService $collectionRequestService,OrderService $orderService)
     {
         $this->middleware('auth');
+        $this->organizationService       = $organizationService;
+        $this->userService               = $userService;
+        $this->materialCategoryService   = $materialCategoryService;
+        $this->productService            = $productService;
+        $this->collectionRequestService  = $collectionRequestService;
+        $this->orderService              = $orderService;
     }
 
     /**
@@ -28,7 +49,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $organizations      = count($this->organizationService->all()) ;
+        $users              = count($this->userService->getSelected(IUserType::HOUSE_HOLD)) ;
+        $materialCategories = count($this->materialCategoryService->all()) ;
+        $products           = count($this->productService->all()) ;
+        $collectionRequest  = count($this->collectionRequestService->all()) ;
+        $orders             = count($this->orderService->all()) ;
         $dashboard = App::make(DashboardService::class)->dashboard();
-        return view('index', compact('dashboard'));
+        return view('index',compact(
+            'organizations','users','materialCategories','products','collectionRequest','orders','dashboard'
+        ));
     }
 }
