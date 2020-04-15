@@ -82,7 +82,8 @@ class DriverController extends Controller
      */
     public function show($id)
     {
-        //
+        $driver = $this->userService->findById($id) ;
+        return view('users.view',compact('driver'));
     }
 
     /**
