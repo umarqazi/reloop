@@ -68,17 +68,7 @@ class UserStatService extends BaseService
      */
     public function userStats($data)
     {
-        $userStats = $this->model->create([
-            'user_id'                 => $data->user_id,
-            'request_collection_id'   => $data->id,
-            'co2_emission_reduced'    => $data->weight * $data->materialCategory->co2_emission_reduced,
-            'trees_saved'             => $data->weight * $data->materialCategory->trees_saved,
-            'oil_saved'               => $data->weight * $data->materialCategory->oil_saved,
-            'electricity_saved'       => $data->weight * $data->materialCategory->electricity_saved,
-            'natural_ores_saved'      => $data->weight * $data->materialCategory->natural_ores_saved,
-            'water_saved'             => $data->weight * $data->materialCategory->water_saved,
-            'landfill_space_saved'    => $data->weight * $data->materialCategory->landfill_space_saved
-        ]);
+        $userStats = $this->model->insert($data);
     }
 
     /**
@@ -88,9 +78,9 @@ class UserStatService extends BaseService
      *
      * @return mixed
      */
-    public function userTotalStats($userId)
+    public function userTotalStats()
     {
-        $userTotalStats = $this->model->select([
+        $userTotalStats = $this->model->select(['user_id',
             DB::raw("SUM(co2_emission_reduced) as total_co2_emission_reduced"),
             DB::raw("SUM(trees_saved) as total_trees_saved"),
             DB::raw("SUM(oil_saved) as total_oil_saved"),
@@ -99,7 +89,7 @@ class UserStatService extends BaseService
             DB::raw("SUM(water_saved) as total_water_saved"),
             DB::raw("SUM(landfill_space_saved) as total_landfill_space_saved"),
         ])
-            ->where('user_id', $userId)->first();
+            ->groupBy('user_id')->get();
         return $userTotalStats;
     }
 }

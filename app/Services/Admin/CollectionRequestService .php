@@ -4,6 +4,7 @@
 namespace App\Services\Admin;
 
 
+use App\Helpers\SettingsHelper;
 use App\Repositories\Admin\CityRepo;
 use App\Repositories\Admin\CollectionRequestRepo;
 use App\Repositories\Admin\DistrictRepo;
@@ -16,6 +17,7 @@ use App\Services\EnvironmentalStatService;
 use App\Services\IOrderStaus;
 use App\Services\IUserType;
 use App\Services\UserStatService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -111,10 +113,34 @@ class CollectionRequestService extends BaseService
 
             $materialCategoryPoints = $this->materialCategoryRepo->findByName($collection->category_name)->reward_points;
             $rewardPoints += $materialCategoryPoints * $collection->weight;
-            $userStats = App::make(UserStatService::class)->userStats($collection);
+
+            $currentData = [
+                'request_collection_id'   => $collection->id,
+                'co2_emission_reduced'    => $collection->weight * $collection->materialCategory->co2_emission_reduced,
+                'trees_saved'             => $collection->weight * $collection->materialCategory->trees_saved,
+                'oil_saved'               => $collection->weight * $collection->materialCategory->oil_saved,
+                'electricity_saved'       => $collection->weight * $collection->materialCategory->electricity_saved,
+                'natural_ores_saved'      => $collection->weight * $collection->materialCategory->natural_ores_saved,
+                'water_saved'             => $collection->weight * $collection->materialCategory->water_saved,
+                'landfill_space_saved'    => $collection->weight * $collection->materialCategory->landfill_space_saved,
+                'created_at'              => Carbon::now(),
+                'updated_at'              => Carbon::now()
+            ];
+            // Data for user
+            $userStatsData[] = ['user_id' => $collection->user_id] + $currentData;
+
+            // Data for driver
+            $userStatsData[] = ['user_id' => $collection->request->driver_id] + $currentData;
+
+            if(Auth::user()->hasRole('supervisor')){
+
+                // Data for supervisor
+                $userStatsData[] = ['user_id' => Auth::user()->id] + $currentData;
+            }
         }
-        $userTotalStats = App::make(UserStatService::class)->userTotalStats($request->requestCollection->first()->user_id);
-        $environmentalStats = App::make(EnvironmentalStatService::class)->environmentalStats($request->requestCollection->first()->user_id, $userTotalStats);
+        $userStats = App::make(UserStatService::class)->userStats($userStatsData);
+        $userTotalStats = App::make(UserStatService::class)->userTotalStats();
+        $environmentalStats = App::make(EnvironmentalStatService::class)->environmentalStats($userTotalStats);
         $confirm = array(
             'confirm' => 1,
             'reward_points' => $rewardPoints,

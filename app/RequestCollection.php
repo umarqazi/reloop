@@ -28,6 +28,15 @@ class RequestCollection extends Model
         return $this->hasMany(Request::class);
     }
 
+    /**
+     * Method: request
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
+    }
+
     public function materialCategory()
     {
         return $this->belongsTo(MaterialCategory::class);

@@ -80,31 +80,34 @@ class EnvironmentalStatService extends BaseService
      *
      * @return void
      */
-    public function environmentalStats($userId, $data)
+    public function environmentalStats($totalStats)
     {
-        $findUser = $this->findByUserId($userId);
-        if($findUser) {
+        foreach ($totalStats as $totalStat){
 
-            $findUser->co2_emission_reduced    = $data->total_co2_emission_reduced;
-            $findUser->trees_saved             = $data->total_trees_saved;
-            $findUser->oil_saved               = $data->total_oil_saved;
-            $findUser->electricity_saved       = $data->total_electricity_saved;
-            $findUser->natural_ores_saved      = $data->total_natural_ores_saved;
-            $findUser->water_saved             = $data->total_water_saved;
-            $findUser->landfill_space_saved    = $data->total_landfill_space_saved;
-            $findUser->update();
-        } else{
+            $findUser = $this->findByUserId($totalStat->user_id);
+            if($findUser) {
 
-            $this->model->create([
-                'user_id'                 => $userId,
-                'co2_emission_reduced'    => $data->total_co2_emission_reduced,
-                'trees_saved'             => $data->total_trees_saved,
-                'oil_saved'               => $data->total_oil_saved,
-                'electricity_saved'       => $data->total_electricity_saved,
-                'natural_ores_saved'      => $data->total_natural_ores_saved,
-                'water_saved'             => $data->total_water_saved,
-                'landfill_space_saved'    => $data->total_landfill_space_saved,
-            ]);
+                $findUser->co2_emission_reduced    = $totalStat->total_co2_emission_reduced;
+                $findUser->trees_saved             = $totalStat->total_trees_saved;
+                $findUser->oil_saved               = $totalStat->total_oil_saved;
+                $findUser->electricity_saved       = $totalStat->total_electricity_saved;
+                $findUser->natural_ores_saved      = $totalStat->total_natural_ores_saved;
+                $findUser->water_saved             = $totalStat->total_water_saved;
+                $findUser->landfill_space_saved    = $totalStat->total_landfill_space_saved;
+                $findUser->update();
+            } else{
+
+                $this->model->create([
+                    'user_id'                 => $totalStat->user_id,
+                    'co2_emission_reduced'    => $totalStat->total_co2_emission_reduced,
+                    'trees_saved'             => $totalStat->total_trees_saved,
+                    'oil_saved'               => $totalStat->total_oil_saved,
+                    'electricity_saved'       => $totalStat->total_electricity_saved,
+                    'natural_ores_saved'      => $totalStat->total_natural_ores_saved,
+                    'water_saved'             => $totalStat->total_water_saved,
+                    'landfill_space_saved'    => $totalStat->total_landfill_space_saved,
+                ]);
+            }
         }
     }
 

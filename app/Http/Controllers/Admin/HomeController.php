@@ -55,7 +55,7 @@ class HomeController extends Controller
         $products           = count($this->productService->all()) ;
         $collectionRequest  = count($this->collectionRequestService->all()) ;
         $orders             = count($this->orderService->all()) ;
-        $dashboard = App::make(DashboardService::class)->dashboard();
+        $dashboard          = App::make(DashboardService::class)->dashboard();
         return view('index',compact(
             'organizations','users','materialCategories','products','collectionRequest','orders','dashboard'
         ));
