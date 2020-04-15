@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRequestCollectionsTable extends Migration
+class CreateUserStatsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,24 @@ class CreateRequestCollectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('request_collections', function (Blueprint $table) {
+        Schema::create('user_stats', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->unsignedBigInteger('request_id');
-            $table->foreign('request_id')->references('id')->on('requests')->onUpdate('cascade')->onDelete('cascade');
-
-            $table->unsignedBigInteger('material_category_id');
-            $table->foreign('material_category_id')->references('id')->on('material_categories')->onUpdate('cascade')
+            $table->unsignedBigInteger('request_collection_id');
+            $table->foreign('request_collection_id')->references('id')->on('request_collections')->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->string('category_name');
-            $table->double('weight')->nullable();
+            $table->double('co2_emission_reduced');
+            $table->double('trees_saved');
+            $table->double('oil_saved');
+            $table->double('electricity_saved');
+            $table->double('natural_ores_saved');
+            $table->double('water_saved');
+            $table->double('landfill_space_saved');
             $table->timestamps();
         });
     }
@@ -40,6 +42,6 @@ class CreateRequestCollectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('request_collections');
+        Schema::dropIfExists('user_stats');
     }
 }

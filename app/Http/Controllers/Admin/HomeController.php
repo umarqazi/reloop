@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\DashboardService;
+use Illuminate\Support\Facades\App;
 use App\Services\Admin\CollectionRequestService;
 use App\Services\Admin\MaterialCategoryService;
 use App\Services\Admin\OrderService;
@@ -53,6 +55,9 @@ class HomeController extends Controller
         $products           = count($this->productService->all()) ;
         $collectionRequest  = count($this->collectionRequestService->all()) ;
         $orders             = count($this->orderService->all()) ;
-        return view('index',compact('organizations','users','materialCategories','products','collectionRequest','orders'));
+        $dashboard          = App::make(DashboardService::class)->dashboard();
+        return view('index',compact(
+            'organizations','users','materialCategories','products','collectionRequest','orders','dashboard'
+        ));
     }
 }
