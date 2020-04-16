@@ -76,6 +76,7 @@ return[
     'INVALID_ORDER_ID'                      => 'You have requested for invalid order id!',
     'RECORD_FEEDBACK'                       => 'Your feedback have been saved successfully!',
     'PASSWORD_CHANGE_REQUEST'               => 'Your password change request has been submitted to admin!',
+    'INVALID_EMAIL'                         => 'You\'ve entered an invalid email!',
 
     'BILLING_HISTORY_SUCCESS'               => 'Billing history shown as:',
 

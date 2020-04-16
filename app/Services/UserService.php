@@ -84,6 +84,17 @@ class UserService extends BaseService
     }
 
     /**
+     * Method: findByEmail
+     * @param $email
+     *
+     * @return mixed
+     */
+    public function findByEmail($email)
+    {
+        return $this->model->where('email', $email)->first();
+    }
+
+    /**
      * Method: updateTrips
      *
      * @param $data
