@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 use App\Forms\Collection\FeedbackForm;
 use App\Forms\Collection\RecordWeightForm;
 use App\Forms\Collection\TripStatusForm;
+use App\Forms\Driver\DriverLocationForm;
 use App\Forms\User\PasswordChangeRequestForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
+use App\Services\DriverLocationService;
 use App\Services\FeedbackService;
 use App\Services\IOrderType;
 use App\Services\OrderService;
@@ -55,6 +57,12 @@ class DriverController extends Controller
      * @var OrderService
      */
     private $orderService;
+    /**
+     * Property: driverLocationService
+     *
+     * @var DriverLocationService
+     */
+    private $driverLocationService;
 
     /**
      * DriverController constructor.
@@ -62,6 +70,7 @@ class DriverController extends Controller
      */
     public function __construct(UserService $userService, OrderService $orderService,
                                 RequestService $requestService,
+                                DriverLocationService $driverLocationService,
                                 RequestCollectionService $requestCollectionService
     )
     {
@@ -69,6 +78,7 @@ class DriverController extends Controller
         $this->requestCollectionService = $requestCollectionService;
         $this->requestService = $requestService;
         $this->orderService = $orderService;
+        $this->driverLocationService = $driverLocationService;
     }
 
     /**
@@ -205,6 +215,27 @@ class DriverController extends Controller
             $passwordChangeRequest['code'],
             $passwordChangeRequest['status'],
             $passwordChangeRequest['data']
+        );
+    }
+
+    /**
+     * Method: driverLocation
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function driverLocation(Request $request)
+    {
+        $driverLocationForm = new DriverLocationForm();
+        $driverLocationForm->loadFromArray($request->all());
+        $driverLocation = $this->driverLocationService->store($driverLocationForm);
+
+        return ResponseHelper::jsonResponse(
+            $driverLocation['message'],
+            $driverLocation['code'],
+            $driverLocation['status'],
+            $driverLocation['data']
         );
     }
 }
