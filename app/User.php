@@ -99,4 +99,13 @@ class User extends Authenticatable
             return env('APP_URL').'/storage/uploads/images/profile-pictures/' . $value;
         }
     }
+
+    /**
+     * Method: currentLocation
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function currentLocation()
+    {
+        return $this->hasOne(DriverCurrentLocation::class, 'driver_id', 'id');
+    }
 }

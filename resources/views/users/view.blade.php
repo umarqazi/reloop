@@ -44,24 +44,31 @@
                 </div>
             @endif
 
-                    <div class="col s12">
-                        <div class="input-field col s12">
-                            <input id="location" type="text" name="location" value="{{ $driver->addresses->first()->location }}" required>
-                            <label for="address" >Location</label>
-                        </div>
-                    </div>
-                    <div class="col s12">
+            @if(!empty($driver->currentLocation))
+                {{--<div class="col s12">
                     <div class="input-field col s12">
-                        <input id="updated_at" type="text" name="updated_at" value="{{ $driver->addresses->first()->updated_at }}" required>
-                        <label for="address" >Updated At</label>
+                        <input id="location" type="text" name="location" value="{{ $driver->currentLocation->latitude }}" required readonly>
+                        <label for="address" >Location</label>
                     </div>
-                   </div>
-                    <div class="col s12">
-                        <div class="input-field col s12">
-                            <button type="submit" class="btn btn-primary"><a href="http://www.google.com/maps/place/{{ $driver->addresses->first()->latitude }},{{ $driver->addresses->first()->longitude }}" target="_blank" style="color: white">View Map</a></button>
-                        </div>
+                </div>--}}
+                <div class="col s12">
+                    <div class="input-field col s12">
+                        <input id="updated_at" type="text" name="updated_at" value="{{ $driver->currentLocation->updated_at }}" required readonly>
+                        <label for="address" >Last Updated At</label>
                     </div>
-
+               </div>
+                <div class="col s12">
+                    <div class="input-field col s12">
+                        <a href="http://www.google.com/maps/place/{{ $driver->currentLocation->latitude }},{{ $driver->currentLocation->latitude }}" target="_blank" style="color: white"><button type="submit" class="btn btn-primary">View on Map</button></a>
+                    </div>
+                </div>
+            @else
+                <div class="col s12">
+                    <div class="input-field col s12">
+                        <label for="address" >No location found for this driver.</label>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection
