@@ -28,11 +28,18 @@ class PasswordChangeRequestService extends BaseService
      * @var PasswordChangeRequest
      */
     private $model;
+    /**
+     * Property: userService
+     *
+     * @var UserService
+     */
+    private $userService;
 
-    public function __construct(PasswordChangeRequest $model)
+    public function __construct(PasswordChangeRequest $model, UserService $userService)
     {
         parent::__construct();
         $this->model = $model;
+        $this->userService = $userService;
     }
 
     /**
@@ -53,14 +60,25 @@ class PasswordChangeRequestService extends BaseService
                 $form->errors()
             );
         }
-        $this->model->create([
-            'user_id' => auth()->id(),
-            'email' => $form->email
-        ]);
+        $findUser = $this->userService->findByEmail($form->email);
+        if($findUser){
+
+            $this->model->create([
+                'user_id' => $findUser->id,
+                'email' => $form->email
+            ]);
+
+            return ResponseHelper::responseData(
+                Config::get('constants.PASSWORD_CHANGE_REQUEST'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                null
+            );
+        }
         return ResponseHelper::responseData(
-            Config::get('constants.PASSWORD_CHANGE_REQUEST'),
-            IResponseHelperInterface::SUCCESS_RESPONSE,
-            true,
+            Config::get('constants.INVALID_EMAIL'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
             null
         );
     }
