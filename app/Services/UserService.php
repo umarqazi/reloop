@@ -443,6 +443,31 @@ class UserService extends BaseService
     }
 
     /**
+     * Method: updateLocation
+     *
+     * @param IForm $updateAddressForm
+     *
+     * @return array
+     */
+    public function updateLocation(IForm $updateLocationForm)
+    {
+        if($updateLocationForm->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $updateLocationForm->errors()
+            );
+        } else {
+
+            $data = $updateLocationForm;
+            $updateLocation = $this->addressService->updateOrCreate($data);
+            return $updateLocation;
+        }
+    }
+
+    /**
      * Method: updateUserProfile
      *
      * @param IForm $updateUserProfileForm
