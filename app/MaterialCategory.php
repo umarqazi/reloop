@@ -26,4 +26,9 @@ class MaterialCategory extends Model
             return env('APP_URL').'/storage/uploads/images/material-category/' . $value;
         }
     }
+
+    public function requestCollections()
+    {
+        return $this->hasMany(RequestCollection::class);
+    }
 }
