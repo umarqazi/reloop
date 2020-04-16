@@ -77,6 +77,7 @@ return[
     'RECORD_FEEDBACK'                       => 'Your feedback have been saved successfully!',
     'PASSWORD_CHANGE_REQUEST'               => 'Your password change request has been submitted to admin!',
     'INVALID_EMAIL'                         => 'You\'ve entered an invalid email!',
+    'DRIVER_LOCATION'                       => 'Your location has sent to admin successfully!',
 
     'BILLING_HISTORY_SUCCESS'               => 'Billing history shown as:',
 
