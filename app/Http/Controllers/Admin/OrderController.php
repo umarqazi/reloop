@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -111,5 +112,29 @@ class OrderController extends Controller
     public function availableDrivers($date,$order_id){
         $availableDrivers = $this->orderService->availableDrivers($date,$order_id)->pluck('first_name', 'id')->toArray();
         return $availableDrivers;
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('orders', function($excel) {
+            $excel->sheet('orders', function($sheet) {
+                $orders = $this->orderService->all();
+
+                foreach($orders as $order){
+                    $print[] = array( 'Id'                  => $organization->id,
+                                      'Order Number'                => $organization->name,
+                                      'Email'               => $organization->users->first()->email ,
+                                      'Order Status'        => $organization->users->first()->phone_number,
+                                      'Total'  => $organization->no_of_branches,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

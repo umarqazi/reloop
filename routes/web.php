@@ -52,6 +52,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/assign-request/{id}', 'Admin\CollectionRequestController@assignOrder')->name('assign.request');
     Route::put('/confirm-request/{id}', 'Admin\CollectionRequestController@confirmRequest')->name('confirm.request');
 
+    //export list routes
+    Route::get('/users/export', 'Admin\UserController@export')->name('user.export');
+    Route::get('/supervisors/export', 'Admin\SupervisorController@export')->name('supervisor.export');
+    Route::get('/drivers/export', 'Admin\DriverController@export')->name('driver.export');
+    Route::get('/password-requests/export', 'Admin\PasswordResetController@export')->name('password-requests.export');
+    Route::get('/user-subscriptions/export', 'Admin\UserController@userSubscriptionExport')->name('user-subscriptions.export');
+    Route::get('/user-donations/export', 'Admin\UserController@userDonationExport')->name('user-donations.export');
+    Route::get('/organizations/export', 'Admin\OrganizationController@export')->name('organizations.export');
+    Route::get('/orders/export', 'Admin\OrderController@export')->name('orders.export');
+
+
+
     //supervisor routes
     Route::get('/get-orders', 'Supervisor\OrderController@index')->name('get-orders');
     Route::get('/show-order/{id}', 'Supervisor\OrderController@show')->name('supervisor.order.show');

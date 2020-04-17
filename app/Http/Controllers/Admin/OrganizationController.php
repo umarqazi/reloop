@@ -10,7 +10,9 @@ use App\Repositories\Admin\DistrictRepo;
 use App\Repositories\Admin\SectorRepo;
 use App\Services\Admin\OrganizationService;
 use App\Services\ICategoryType;
+use App\Services\IUserStatus;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrganizationController extends Controller
 {
@@ -142,5 +144,31 @@ class OrganizationController extends Controller
             return redirect()->route('organization.index')->with('error','Something went wrong');
         }
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('organizations', function($excel) {
+            $excel->sheet('organizations', function($sheet) {
+                $organizations = $this->organizationService->all();
+
+                foreach($organizations as $organization){
+                    $print[] = array('Id'                  => $organization->id,
+                                     'name'                => $organization->name,
+                                     'email'               => $organization->users->first()->email ,
+                                     'phone number'        => $organization->users->first()->phone_number,
+                                     'Number of branches'  => $organization->no_of_branches,
+                                     'Number of employees' => $organization->no_of_employees,
+                                     'Status'              => $organization->users->first()->status == IUserStatus::ACTIVE ? 'Active' : 'Inactive',
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

@@ -13,6 +13,7 @@ use App\Services\Admin\UserSubscriptionService;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -162,5 +163,77 @@ class UserController extends Controller
     {
         $userDonations = $this->userDonationService->all();
         return view('users.user-donation',compact('userDonations'));
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('users', function($excel) {
+            $excel->sheet('users', function($sheet) {
+                $users = $this->userService->getSelected(IUserType::HOUSE_HOLD) ;
+
+                foreach($users as $user){
+                    $print[] = array( 'User ID'        => $user->id,
+                                      'User Email'     => $user->email,
+                                      'User Type'      => ($user->user_type == IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == IUserType::DRIVER) ? 'Driver' : (($user->user_type == IUserType::SUPERVISOR) ? 'Supervisor' : '')) ,
+                                      'Rewards Points' => $user->reward_points ?? '0',
+                                      'User Status'    => ($user->status == 1) ? 'Active' : 'Inactive',
+                        ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
+    }
+
+    /**
+     * export list
+     */
+    public function userSubscriptionExport(){
+        Excel::create('userSubscriptions', function($excel) {
+            $excel->sheet('userSubscriptions', function($sheet) {
+                $userSubscriptions = $this->userSubscriptionService->all();
+
+                foreach($userSubscriptions as $userSubscription){
+                    $print[] = array( 'User ID'        => $userSubscription->user->id,
+                                      'User Email'     => $userSubscription->user->email,
+                                      'User Type'      => $userSubscription->user->user_type == IUserType::HOUSE_HOLD ? 'House Hold' : 'Organization' ,
+                                      'Subscription'   => $userSubscription->subscription->name,
+                                      'Trip(s)'        => $userSubscription->trips,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
+    }
+
+    /**
+     * export list
+     */
+    public function userDonationExport(){
+        Excel::create('userDonations', function($excel) {
+            $excel->sheet('userDonations', function($sheet) {
+                $userDonations = $this->userDonationService->all();;
+
+                foreach($userDonations as $userDonation){
+                    $print[] = array( 'User ID'               => $userDonation->user->id,
+                                      'User Email'            => $userDonation->user->email,
+                                      'Donation Product'      => $userDonation->donationProduct->name ,
+                                      'Donation Product Type' => ($userDonation->donationProduct->category_id == 1) ? 'Plant a Tree' : 'Charity',
+                                      'Redeem Points'         => $userDonation->donationProduct->redeem_points,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }
