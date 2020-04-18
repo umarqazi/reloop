@@ -7,6 +7,7 @@ use App\Http\Requests\Question\CreateRequest;
 use App\Http\Requests\Question\UpdateRequest;
 use App\Services\Admin\QuestionService;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class QuestionController extends Controller
 {
@@ -123,5 +124,26 @@ class QuestionController extends Controller
             return redirect()->route('questions.index')->with('error',Config::get('constants.QUESTION_DELETE_ERROR'));
         }
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('questions', function($excel) {
+            $excel->sheet('questions', function($sheet) {
+                $questions = $this->questionService->all();
+
+                foreach($questions as $question){
+                    $print[] = array( 'Id'        => $question->id,
+                                      'Question'  => $question->question,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Coupon\CreateRequest;
 use App\Http\Requests\Coupon\UpdateRequest;
 use App\Services\Admin\CouponService;
+use App\Services\ICouponType;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CouponController extends Controller
 {
@@ -125,5 +127,28 @@ class CouponController extends Controller
             return redirect()->route('coupon.index')->with('error','Error While Deleting Coupon');
         }
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('coupons', function($excel) {
+            $excel->sheet('coupons', function($sheet) {
+                $coupons = $this->couponService->all();
+
+                foreach($coupons as $coupon){
+                    $print[] = array( 'Id'      => $coupon->id,
+                                      'Code'    => $coupon->code,
+                                      'Type'    => $coupon->type == ICouponType::FIXED ? 'Fixed' : 'Percentage',
+                                      'Amount'  => $coupon->amount,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

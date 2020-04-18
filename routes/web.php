@@ -56,12 +56,22 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/users/export', 'Admin\UserController@export')->name('user.export');
     Route::get('/supervisors/export', 'Admin\SupervisorController@export')->name('supervisor.export');
     Route::get('/drivers/export', 'Admin\DriverController@export')->name('driver.export');
-    Route::get('/password-requests/export', 'Admin\PasswordResetController@export')->name('password-requests.export');
+    Route::get('/passwordRequests/export', 'Admin\PasswordResetController@export')->name('password-requests.export');
     Route::get('/user-subscriptions/export', 'Admin\UserController@userSubscriptionExport')->name('user-subscriptions.export');
     Route::get('/user-donations/export', 'Admin\UserController@userDonationExport')->name('user-donations.export');
     Route::get('/organizations/export', 'Admin\OrganizationController@export')->name('organizations.export');
-    Route::get('/orders/export', 'Admin\OrderController@export')->name('orders.export');
-
+    Route::get('/order/export', 'Admin\OrderController@export')->name('userOrders.export');
+    Route::get('/requests/export', 'Admin\CollectionRequestController@export')->name('requests.export');
+    Route::get('/material-categories/export', 'Admin\MaterialCategoryController@export')->name('material-categories.export');
+    Route::get('/products/export', 'Admin\ProductController@export')->name('products.export');
+    Route::get('/subscriptions/export', 'Admin\SubscriptionController@export')->name('subscriptions.export');
+    Route::get('/coupons/export', 'Admin\CouponController@export')->name('coupons.export');
+    Route::get('/all-users/export', 'Admin\RewardPointController@export')->name('all-users.export');
+    Route::get('/all-questions/export', 'Admin\QuestionController@export')->name('questions.export');
+    Route::get('/donationProducts/export', 'Admin\DonationProductController@export')->name('questions.export');
+    Route::get('/all-settings/export', 'Admin\SettingController@export')->name('settings.export');
+    Route::get('/contactUs/export', 'Admin\ContactUsController@export')->name('contact-us.export');
+    Route::get('/city/export', 'Admin\CityController@export')->name('cities.export');
 
 
     //supervisor routes

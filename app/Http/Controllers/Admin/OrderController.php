@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Services\Admin\OrderService;
+use App\Services\IOrderStaus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -123,11 +124,14 @@ class OrderController extends Controller
                 $orders = $this->orderService->all();
 
                 foreach($orders as $order){
-                    $print[] = array( 'Id'                  => $organization->id,
-                                      'Order Number'                => $organization->name,
-                                      'Email'               => $organization->users->first()->email ,
-                                      'Order Status'        => $organization->users->first()->phone_number,
-                                      'Total'  => $organization->no_of_branches,
+                    $print[] = array( 'Id'                  => $order->id,
+                                      'Order Number'        => $order->order_number,
+                                      'Email'               => $order->email,
+                                      'Order Status'        => $order->status == IOrderStaus::ORDER_CONFIRMED ?
+                                                               'Order Confirmed'  : ($order->status == IOrderStaus::DRIVER_ASSIGNED ?
+                                                               'Driver Assigned'  : ($order->status == IOrderStaus::DRIVER_DISPATCHED)?
+                                                               'Order Dispatched' : 'Order Completed' ) ,
+                                      'Total'               => $order->total,
                     ) ;
                 }
 

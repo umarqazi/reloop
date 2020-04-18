@@ -104,13 +104,13 @@ class passwordResetController extends Controller
      */
     public function destroy($id)
     {
-        dd('test');
+
     }
 
     /**
      * export list
      */
-    public function export(){dd('sadsas');
+    public function export(){
         Excel::create('passwordResetRequests', function($excel) {
             $excel->sheet('passwordResetRequests', function($sheet) {
                 $requests = $this->passwordResetService->all() ;

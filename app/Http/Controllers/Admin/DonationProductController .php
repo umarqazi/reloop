@@ -8,6 +8,7 @@ use App\Http\Requests\DonationProduct\UpdateRequest;
 use App\Services\Admin\DonationProductCategoryService;
 use App\Services\Admin\DonationProductService;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DonationProductController extends Controller
 {
@@ -129,5 +130,30 @@ class DonationProductController extends Controller
             return redirect()->route('donation-products.index')->with('error',Config::get('constants.DONATION_PRODUCT_UPDATE_ERROR'));
         }
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('donationProducts', function($excel) {
+            $excel->sheet('donationProducts', function($sheet) {
+                $products = $this->donationProductService->all();
+
+                foreach($products as $product){
+                    $print[] = array( 'Id'            => $product->id,
+                                      'Category'      => $product->category->name,
+                                      'name'          => $product->name,
+                                      'Redeem Points' => $product->redeem_points,
+                                      'Description'   => $product->description,
+                                      'Status'        => $product->status == 0 ? 'Inactive' : 'Active',
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }
