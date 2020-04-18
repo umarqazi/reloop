@@ -4,42 +4,35 @@
 namespace App\Services;
 
 
+use App\DriverCurrentLocation;
 use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
-use App\PasswordChangeRequest;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Class PasswordChangeRequestService
+ * Class DriverLocationService
  *
  * @package   App\Services
  * @author    Faisal Raza <faisal.raza@gems.techverx.com>
  * @copyright 2020 Techverx.com All rights reserved.
- * @since     Apr 13, 2020
+ * @since     Apr 17, 2020
  * @project   reloop
  */
-class PasswordChangeRequestService extends BaseService
+class DriverLocationService extends BaseService
 {
     /**
      * Property: model
      *
-     * @var PasswordChangeRequest
+     * @var DriverCurrentLocation
      */
     private $model;
-    /**
-     * Property: userService
-     *
-     * @var UserService
-     */
-    private $userService;
 
-    public function __construct(PasswordChangeRequest $model, UserService $userService)
+    public function __construct(DriverCurrentLocation $model)
     {
         parent::__construct();
         $this->model = $model;
-        $this->userService = $userService;
     }
 
     /**
@@ -51,8 +44,8 @@ class PasswordChangeRequestService extends BaseService
      */
     public function store(IForm $form)
     {
-        if($form->fails()){
-
+        if($form->fails())
+        {
             return ResponseHelper::responseData(
                 Config::get('constants.INVALID_OPERATION'),
                 IResponseHelperInterface::FAIL_RESPONSE,
@@ -60,42 +53,37 @@ class PasswordChangeRequestService extends BaseService
                 $form->errors()
             );
         }
-        $findUser = $this->userService->findByEmail($form->email);
-        if($findUser){
+        $driverId = auth()->id();
+        $updateDriverLocation = $this->model->where('driver_id', $driverId)->first();
+        if($updateDriverLocation){
+
+            $updateDriverLocation->latitude   = $form->latitude;
+            $updateDriverLocation->longitude  = $form->longitude;
+            $updateDriverLocation->update();
+        } else {
 
             $this->model->create([
-                'user_id' => $findUser->id,
-                'email' => $form->email
+                'driver_id'  => $driverId,
+                'latitude'   => $form->latitude,
+                'longitude'  => $form->longitude,
             ]);
-
-            return ResponseHelper::responseData(
-                Config::get('constants.PASSWORD_CHANGE_REQUEST'),
-                IResponseHelperInterface::SUCCESS_RESPONSE,
-                true,
-                null
-            );
         }
         return ResponseHelper::responseData(
-            Config::get('constants.INVALID_EMAIL'),
-            IResponseHelperInterface::FAIL_RESPONSE,
-            false,
+            Config::get('constants.DRIVER_LOCATION'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
             null
         );
     }
 
-    /**
-     * @inheritDoc
-     */
     public function findById($id)
     {
         // TODO: Implement findById() method.
     }
 
-    /**
-     * @inheritDoc
-     */
     public function remove($id)
     {
         // TODO: Implement remove() method.
     }
+
 }

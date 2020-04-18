@@ -76,6 +76,8 @@ return[
     'INVALID_ORDER_ID'                      => 'You have requested for invalid order id!',
     'RECORD_FEEDBACK'                       => 'Your feedback have been saved successfully!',
     'PASSWORD_CHANGE_REQUEST'               => 'Your password change request has been submitted to admin!',
+    'INVALID_EMAIL'                         => 'You\'ve entered an invalid email!',
+    'DRIVER_LOCATION'                       => 'Your location has sent to admin successfully!',
 
     'BILLING_HISTORY_SUCCESS'               => 'Billing history shown as:',
 
@@ -138,6 +140,9 @@ return[
 
     'CONFIRM_REQUEST_ASSIGNED'              => 'Collection Request confirmed successfully!',
     'CONFIRM_REQUEST_ASSIGNED_FAIL'         => 'Something went wrong in confirming Collection Request!',
+
+    'WEIGHT_UPDATE_SUCCESS'                 => 'Weight updated successfully',
+    'WEIGHT_UPDATE_ERROR'                   => 'Error Occurred while updating Weight',
 
     'PASSWORD_UPDATED_SUCCESSFULLY'         => 'Password updated successfully!',
     'PASSWORD_UPDATE_ERROR'                 => 'Something went wrong in updating password!',

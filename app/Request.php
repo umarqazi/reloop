@@ -37,4 +37,13 @@ class Request extends Model
     public function user() {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Method: driver
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function driver()
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
 }

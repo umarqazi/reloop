@@ -74,7 +74,9 @@ class RequestCollectionService extends BaseService
         foreach ($data['material_category_details'] as $material_category){
 
             $model->create([
+                'user_id' => $data['user_id'],
                 'request_id' => $requestId,
+                'material_category_id' => $material_category->id,
                 'category_name' => $material_category->name
             ]);
         }

@@ -86,6 +86,9 @@
                                             <td>{{ ($user->status == 1) ? 'Active' : 'Inactive' }}</td>
                                             @if($route != '')
                                                 <td>
+                                                    @if($type ==\App\Services\IUserType::DRIVER)
+                                                        <a href="{{ route($route.'.show', $user->id) }}" class="btn waves-effect waves-light blue accent-2">View</a>
+                                                    @endif
                                                     <a href="{{ route($route.'.edit', $user->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
                                                     {{ Form::open(['url' => route($route.'.destroy', $user->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
                                                     <button type="submit" class="btn btn-danger red"><i class="fa fa-trash "></i></button>
