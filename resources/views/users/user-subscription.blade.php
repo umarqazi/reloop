@@ -72,15 +72,6 @@
                             @endforeach
 
                             </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
-                                <th>User Type</th>
-                                <th>Subscription</th>
-                                <th>Trip(s)</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             </tbody>
                         </table>

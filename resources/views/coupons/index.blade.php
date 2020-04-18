@@ -61,15 +61,6 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Code</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($coupons as $coupon)
                             <tr>

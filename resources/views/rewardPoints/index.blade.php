@@ -61,15 +61,6 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Min (Kg)</th>
-                                <th>Max (Kg)</th>
-                                <th>Points</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($rewardPoints as $rewardPoint)
                             <tr>
