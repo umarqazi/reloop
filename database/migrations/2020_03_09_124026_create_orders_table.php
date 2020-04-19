@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
 
             $table->unsignedBigInteger('driver_id')->nullable();
             $table->foreign('driver_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-
+            $table->tinyInteger('driver_trip_status')->default('1');
             $table->string('order_number');
             $table->double('subtotal');
             $table->double('redeem_points')->nullable();
