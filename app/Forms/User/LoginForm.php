@@ -19,10 +19,14 @@ class LoginForm extends BaseForm
     public $email;
     public $password;
     public $login_type;
+    public $status;
+    public $reports;
+    public $api_token;
 
     public function __construct()
     {
         $this->status = 1;
+        $this->reports = 1;
         $this->api_token = str_random(60);
     }
     /**
