@@ -53,15 +53,6 @@
                                 <th>Detail</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Order Number</th>
-                                <th>Email</th>
-                                <th>Order Status</th>
-                                <th>Detail</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($requests as $request)
                             <tr>

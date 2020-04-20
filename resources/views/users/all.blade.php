@@ -63,16 +63,6 @@
                                 @endforeach
                                 </tbody>
                             @endif
-                            <tfoot>
-                                <tr>
-                                    <th>User ID</th>
-                                    <th>User Email</th>
-                                    <th>User Type</th>
-                                    <th width="20%">Reward Point(s)</th>
-                                    <th>Action</th>
-
-                                </tr>
-                            </tfoot>
                             <tbody>
                             </tbody>
                         </table>

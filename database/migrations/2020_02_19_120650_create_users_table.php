@@ -34,6 +34,7 @@ class CreateUsersTable extends Migration
             $table->integer('trips')->nullable();
             $table->integer('reward_points')->nullable();
             $table->boolean('status')->default(false);
+            $table->boolean('reports');
             $table->timestamp('verified_at')->nullable();
             $table->string('signup_token')->nullable();
             $table->string('api_token')->nullable();

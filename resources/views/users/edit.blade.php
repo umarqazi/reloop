@@ -137,6 +137,15 @@
                     </div>
                     @endif
                     <div class="col s12">
+                        <div class="input-field col s12">
+                            <select  id="reports" name="reports" required>
+                                <option value="0" {{ ($user->reports == \App\Services\IUserReports::DISABLE) ?  'selected' : ''}} >Disable</option>
+                                <option value="1"  {{ ($user->reports == \App\Services\IUserReports::ENABLE) ?  'selected' : ''}} >Enable</option>
+                            </select>
+                            <label for="reports" >Reports</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
                         <div class="col s6 box-image">
                             <img src="{{ $user->avatar }}">
                         </div>
