@@ -98,6 +98,7 @@ class RequestService extends BaseService
             );
         }
 
+        $extraCharge = false;
         if(!empty($collectionRequestForm->card_number)){
 
             $stripeService = new StripeService();
@@ -111,6 +112,7 @@ class RequestService extends BaseService
                     $makePayment
                 );
             }
+            $extraCharge = true;
         }
 
         $material_categories = App::make(MaterialCategoryService::class)->findMaterialCategoryById($collectionRequestForm->material_categories);
@@ -120,6 +122,10 @@ class RequestService extends BaseService
             'user_id' => auth()->id(),
             'request_number' => $this->request_number
         ];
+        if($extraCharge){
+
+            $saveData['extra_charge'] = $collectionRequestForm->total;
+        }
         SaveCollectionRequestDetailsJob::dispatch($saveData);
 
         return ResponseHelper::responseData(
@@ -146,6 +152,10 @@ class RequestService extends BaseService
         $updateTrips = App::make(UserSubscriptionService::class)->updateTrips($data);
         if($updateTrips){
 
+            if(array_key_exists('extra_charge', $data)){
+
+                $extraCharge = App::make(TransactionService::class)->extraCharge($data);
+            }
             $updateTripsAfterRequest = App::make(UserService::class)->updateTripsAfterRequest($data);
             $saveRequestDetails = $this->create($data);
             $saveRequestCollectionDetails = App::make(RequestCollectionService::class)->create($data, $saveRequestDetails->id);

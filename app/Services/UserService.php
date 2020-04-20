@@ -663,7 +663,13 @@ class UserService extends BaseService
 
         foreach ($userBillings as $userBilling){
 
-            if ($userBilling->transactionable_type == UserSubscription::class){
+            if(empty($userBilling->transactionable_type && $userBilling->transactionable_id)) {
+                $userSubscriptionsList[] = [
+
+                    'total'      => $userBilling->total,
+                    'created_at' => $userBilling->created_at->toDateTimeString(),
+                ];
+            } elseif ($userBilling->transactionable_type == UserSubscription::class){
 
                 $userSubscriptions = $this->userSubscriptionService->userSubscriptionsBilling($userBilling->transactionable_id);
                 if($userSubscriptions){
