@@ -12,11 +12,11 @@ class SettingSeeder extends Seeder
     public function run()
     {
         Setting::create([
-            'keys'      => 'per day maximum orders for driver',
+            'keys'      => 'per_day_maximum_orders_for_driver',
             'values'    =>  '4',
         ]);
         Setting::create([
-            'keys'      => '1 AED',
+            'keys'      => '1_AED',
             'values'    => '10 reward points',
         ]);
     }

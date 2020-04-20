@@ -24,11 +24,11 @@ class CreateRequestsTable extends Migration
 
             $table->string('request_number');
             $table->boolean('confirm')->default('0');
-            $table->tinyInteger('driver_trip_status')->default(0);
             $table->date('collection_date');
             $table->tinyInteger('collection_type')->nullable();
             $table->double('reward_points')->nullable();
             $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('driver_trip_status')->default(0);
 
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
