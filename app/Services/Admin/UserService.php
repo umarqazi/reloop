@@ -64,6 +64,7 @@ class UserService extends BaseService
             'password'        => Hash::make($data['password']),
             'status'          => $data['status'],
             'user_type'       => $data['user_type'],
+            'login_type'      => 1,
             'api_token'       => str_random(60),
             'reports'         => $data['reports'],
         );
