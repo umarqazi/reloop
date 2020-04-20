@@ -9,6 +9,7 @@ use App\Services\Admin\CategoryService;
 use App\Services\Admin\ProductService;
 use App\Services\ICategoryType;
 use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -131,5 +132,30 @@ class ProductController extends Controller
             return redirect()->route('product.index')->with('error','Something went wrong');
         }
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('products', function($excel) {
+            $excel->sheet('products', function($sheet) {
+                $products = $this->productService->all();
+
+                foreach($products as $product){
+                    $print[] = array( 'Id'          => $product->id,
+                                      'Category'    => $product->category->name,
+                                      'name'        => $product->name,
+                                      'price'       => $product->price,
+                                      'Description' => $product->description,
+                                      'Status'      => $product->status == 0 ? 'Inactive' : 'Active',
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

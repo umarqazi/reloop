@@ -45,6 +45,7 @@
                     <div class="col s12">
                         <a class="btn waves-effect waves-light primary-btn-bgcolor"
                            href="{{ route('settings.create') }}">Create</a>
+                        <a class="btn btn-primary" href="{{ route('settings.export') }}">Export</a>
                     </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">

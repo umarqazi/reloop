@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Services\Admin\OrderService;
+use App\Services\IOrderStaus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -111,5 +113,32 @@ class OrderController extends Controller
     public function availableDrivers($date,$order_id){
         $availableDrivers = $this->orderService->availableDrivers($date,$order_id)->pluck('first_name', 'id')->toArray();
         return $availableDrivers;
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('orders', function($excel) {
+            $excel->sheet('orders', function($sheet) {
+                $orders = $this->orderService->all();
+
+                foreach($orders as $order){
+                    $print[] = array( 'Id'                  => $order->id,
+                                      'Order Number'        => $order->order_number,
+                                      'Email'               => $order->email,
+                                      'Order Status'        => $order->status == IOrderStaus::ORDER_CONFIRMED ?
+                                                               'Order Confirmed'  : ($order->status == IOrderStaus::DRIVER_ASSIGNED ?
+                                                               'Driver Assigned'  : ($order->status == IOrderStaus::DRIVER_DISPATCHED)?
+                                                               'Order Dispatched' : 'Order Completed' ) ,
+                                      'Total'               => $order->total,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\Setting\CreateRequest;
 use App\Http\Requests\Setting\UpdateRequest;
 use App\Services\Admin\SettingService;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SettingController extends Controller
 {
@@ -117,5 +118,27 @@ class SettingController extends Controller
     public function destroy($id)
     {
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('settings', function($excel) {
+            $excel->sheet('settings', function($sheet) {
+                $settings = $this->settingService->all();
+
+                foreach($settings as $setting){
+                    $print[] = array( 'Id'        => $setting->id,
+                                      'Keys'      => $setting->keys,
+                                      'Values'    => $setting->values,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

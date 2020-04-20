@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Services\Admin\CollectionRequestService;
+use App\Services\IOrderStaus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CollectionRequestController extends Controller
 {
@@ -135,5 +137,31 @@ class CollectionRequestController extends Controller
            return redirect()->back()->with('error',Config::get('constants.CONFIRM_REQUEST_ASSIGNMENT_FAIL'));
        }
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('collectionRequests', function($excel) {
+            $excel->sheet('collectionRequests', function($sheet) {
+                $requests = $this->collectionRequestService->all();
+
+                foreach($requests as $request){
+                    $print[] = array( 'Id'              => $request->id,
+                                      'Request Number'  => $request->request_number,
+                                      'Email'           => $request->user->email,
+                                      'Request Status'  => $request->status == IOrderStaus::ORDER_CONFIRMED ?
+                                                           'Request Confirmed'  : ($request->status == IOrderStaus::DRIVER_ASSIGNED ?
+                                                           'Driver Assigned'  : ($request->status == IOrderStaus::DRIVER_DISPATCHED)?
+                                                           'Request Dispatched' : 'Request Completed' )
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

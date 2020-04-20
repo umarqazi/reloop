@@ -7,7 +7,9 @@ use App\Http\Requests\RewardPoint\CreateRequest;
 use App\Http\Requests\RewardPoint\UpdateRequest;
 use App\Services\Admin\RewardPointService;
 use App\Services\Admin\UserService;
+use App\Services\IUserType;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class RewardPointController extends Controller
@@ -152,5 +154,28 @@ class RewardPointController extends Controller
             $result = $this->userService->findById($data['id']);
             return response()->json(['result' => $result]);
         }
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('users', function($excel) {
+            $excel->sheet('users', function($sheet) {
+                $users = $this->userService->all();
+
+                foreach($users as $user){
+                    $print[] = array( 'User ID'          => $user->id,
+                                      'User Email'       => $user->email,
+                                      'User Type'        => ($user->user_type == IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == IUserType::DRIVER) ? 'Driver' : (($user->user_type == IUserType::SUPERVISOR) ? 'Supervisor' : '')),
+                                      'Rewards Point(s)' => $user->reward_points ?? '0',
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

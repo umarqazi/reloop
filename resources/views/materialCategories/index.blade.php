@@ -49,13 +49,14 @@
                 <div class="row">
                     <p class="col s12">
                         <a class="btn btn-primary" href="{{ route('material-category.create') }}">Create</a>
+                        <a class="btn btn-primary" href="{{ route('material-categories.export') }}">Export</a>
                     </p>
                     <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>User ID</th>
-                                <th>User Name</th>
+                                <th> ID</th>
+                                <th> Name</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>

@@ -42,6 +42,9 @@
 
             <div id="table-datatables">
                 <div class="row">
+                    <div class="col s12">
+                        <a class="btn btn-primary" href="{{ route('contact-us.export') }}">Export</a>
+                    </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
