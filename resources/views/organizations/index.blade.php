@@ -64,18 +64,6 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>name</th>
-                                <th>email</th>
-                                <th>phone number</th>
-                                <th>Number of branches</th>
-                                <th>Number of employees</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($organizations as $organization)
                             <tr>
