@@ -9,6 +9,7 @@ return[
     'DISABLED_USER_EXISTS'                  => 'Email already exists as a disabled user!',
 
     'USER_CREATION_SUCCESS'                 => 'Verification Link sent to your email',
+    'ORGANIZATION_CREATION_SUCCESS'         => 'Your signup request has submitted to admin!',
     'PROFILE_UPDATE_SUCCESS'                => 'Profile updated successfully',
     'USER_PROFILE'                          => 'User Profile shown as',
     'USER_UPDATE_SUCCESS'                   => 'User updated successfully',

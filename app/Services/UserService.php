@@ -197,9 +197,11 @@ class UserService extends BaseService
 
             if ( $form->user_type == IUserType::HOUSE_HOLD ){
 
+                $signUpSuccess = Config::get('constants.USER_CREATION_SUCCESS');
                 $this->emailNotificationService->userSignUpEmail($model);
             } elseif ($form->user_type == IUserType::ORGANIZATION) {
 
+                $signUpSuccess = Config::get('constants.ORGANIZATION_CREATION_SUCCESS');
                 $this->emailNotificationService->organizationSignUpEmail($model);
             }
 
@@ -208,7 +210,7 @@ class UserService extends BaseService
             DB::rollback();
         }
         return ResponseHelper::responseData(
-            Config::get('constants.USER_CREATION_SUCCESS'),
+            $signUpSuccess,
             IResponseHelperInterface::SUCCESS_RESPONSE,
             true,
             $model
