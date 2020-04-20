@@ -206,9 +206,16 @@ class RequestService extends BaseService
      */
     public function assignedRequests($driverId)
     {
-        return $this->model->with('requestCollection')
-            ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
-                'district', 'street', 'created_at', 'status', 'phone_number')
+        return $this->model->with([
+            'requestCollection' => function ($query){
+                return $query->with([
+                    'materialCategory' => function($subQuery){
+                        return $subQuery->select('id', 'name', 'unit');
+                    }
+                ]);
+            }
+        ])->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+            'district', 'street', 'created_at', 'status', 'phone_number')
             ->where('driver_id', $driverId)->get();
     }
 
