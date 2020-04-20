@@ -78,14 +78,6 @@
                                     @endforeach
                                 </tbody>
                             @endif
-                            <tfoot>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             </tbody>
                         </table>

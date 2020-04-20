@@ -55,14 +55,6 @@
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Email</th>
-                                <th>Subject</th>
-                                <th>Action</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($contactUs as $contact)
                             <tr>

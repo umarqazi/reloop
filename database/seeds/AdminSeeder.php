@@ -17,7 +17,8 @@ class AdminSeeder extends Seeder
             'email'         => 'admin@reloop.com',
             'phone_number'  => '123456123',
             'password'      => Hash::make('admin@321'),
-            'status'        => 1
+            'status'        => 1,
+            'reports'       => 1
         ]);
         $user->assignRole('admin');
 

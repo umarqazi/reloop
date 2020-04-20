@@ -197,9 +197,11 @@ class UserService extends BaseService
 
             if ( $form->user_type == IUserType::HOUSE_HOLD ){
 
+                $signUpSuccess = Config::get('constants.USER_CREATION_SUCCESS');
                 $this->emailNotificationService->userSignUpEmail($model);
             } elseif ($form->user_type == IUserType::ORGANIZATION) {
 
+                $signUpSuccess = Config::get('constants.ORGANIZATION_CREATION_SUCCESS');
                 $this->emailNotificationService->organizationSignUpEmail($model);
             }
 
@@ -208,7 +210,7 @@ class UserService extends BaseService
             DB::rollback();
         }
         return ResponseHelper::responseData(
-            Config::get('constants.USER_CREATION_SUCCESS'),
+            $signUpSuccess,
             IResponseHelperInterface::SUCCESS_RESPONSE,
             true,
             $model
@@ -258,7 +260,7 @@ class UserService extends BaseService
      *
      * @param IForm $loginForm
      *
-     * @return bool|\Illuminate\Contracts\Auth\Authenticatable|mixed|null
+     * @return array
      */
     public function authenticate(IForm $loginForm)
     {
@@ -272,47 +274,81 @@ class UserService extends BaseService
                 $loginForm->errors()
             );
         }
-        $credentials = [
-            'email' => $loginForm->email,
-            'password' => $loginForm->password
-        ];
+        if($loginForm->login_type == ILoginType::APP_LOGIN) {
+            $credentials = [
+                'email' => $loginForm->email,
+                'password' => $loginForm->password
+            ];
 
-        if(Auth::attempt($credentials)) {
+            if (Auth::attempt($credentials)) {
 
-            $authUser = auth()->user();
-            if ($authUser->status == true) {
+                $authUser = auth()->user();
+                if ($authUser->status == true) {
 
-                $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization', 'roles')->first();
+                    $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization', 'roles')->first();
+                    return ResponseHelper::responseData(
+                        Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
+                        IResponseHelperInterface::SUCCESS_RESPONSE,
+                        true,
+                        $userProfile
+                    );
+                } else {
+
+                    return ResponseHelper::responseData(
+                        Config::get('constants.INVALID_OPERATION'),
+                        IResponseHelperInterface::FAIL_RESPONSE,
+                        false,
+                        [
+                            "email_not_verified" => [
+                                Config::get('constants.USER_LOGIN_FAILED')
+                            ]
+                        ]
+                    );
+                }
+            }
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                [
+                    "credentials" => [
+                        Config::get('constants.INVALID_CREDENTIALS')
+                    ]
+                ]
+            );
+        } else {
+
+            $authUser = $this->findByEmail($loginForm->email);
+            if($authUser && $authUser->login_type != ILoginType::APP_LOGIN){
+
+                $authUser = $authUser->load('addresses', 'organization', 'roles');
                 return ResponseHelper::responseData(
                     Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
                     IResponseHelperInterface::SUCCESS_RESPONSE,
                     true,
-                    $userProfile
+                    $authUser
                 );
             } else {
 
-                return ResponseHelper::responseData(
-                    Config::get('constants.INVALID_OPERATION'),
-                    IResponseHelperInterface::FAIL_RESPONSE,
-                    false,
-                    [
-                        "email_not_verified" => [
-                            Config::get('constants.USER_LOGIN_FAILED')
-                        ]
-                    ]
-                );
+                $stripeCustomerId = $this->stripeService->createCustomer($loginForm);
+                if($stripeCustomerId) {
+
+                    $model = $this->model;
+                    $loginForm->loadToModel($model);
+                    $model->assignRole('user');
+                    $model->stripe_customer_id = $stripeCustomerId;
+                    $model->save();
+                    $model->load('organization', 'addresses');
+
+                    return ResponseHelper::responseData(
+                        Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
+                        IResponseHelperInterface::SUCCESS_RESPONSE,
+                        true,
+                        $model
+                    );
+                }
             }
         }
-        return ResponseHelper::responseData(
-            Config::get('constants.INVALID_OPERATION'),
-            IResponseHelperInterface::FAIL_RESPONSE,
-            false,
-            [
-                "credentials" => [
-                    Config::get('constants.INVALID_CREDENTIALS')
-                ]
-            ]
-        );
     }
 
     /**
@@ -627,7 +663,13 @@ class UserService extends BaseService
 
         foreach ($userBillings as $userBilling){
 
-            if ($userBilling->transactionable_type == UserSubscription::class){
+            if(empty($userBilling->transactionable_type && $userBilling->transactionable_id)) {
+                $userSubscriptionsList[] = [
+
+                    'total'      => $userBilling->total,
+                    'created_at' => $userBilling->created_at->toDateTimeString(),
+                ];
+            } elseif ($userBilling->transactionable_type == UserSubscription::class){
 
                 $userSubscriptions = $this->userSubscriptionService->userSubscriptionsBilling($userBilling->transactionable_id);
                 if($userSubscriptions){

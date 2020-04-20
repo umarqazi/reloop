@@ -57,14 +57,6 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Keys</th>
-                                <th>Values</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($settings as $setting)
                             <tr>

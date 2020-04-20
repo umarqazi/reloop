@@ -70,15 +70,6 @@
                             @endforeach
 
                             </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
-                                <th>Donation Product</th>
-                                <th>Donation Product Type</th>
-                                <th>Redeem Points</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             </tbody>
                         </table>

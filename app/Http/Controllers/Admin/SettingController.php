@@ -52,6 +52,8 @@ class SettingController extends Controller
     public function store(CreateRequest $request)
     {
         $data = $request->except('_token') ;
+        $data['keys'] = str_replace(' ', '_', $data['keys'])  ;
+
         $setting = $this->settingService->create($data);
 
         if ($setting) {

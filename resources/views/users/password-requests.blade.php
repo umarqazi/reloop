@@ -66,14 +66,6 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
-                                <th>Request Status</th>
-                                <th>Action</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             </tbody>
                         </table>

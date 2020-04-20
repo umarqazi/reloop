@@ -99,20 +99,6 @@
                                     @endforeach
                                 </tbody>
                             @endif
-                            <tfoot>
-                            <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
-                                <th>User Type</th>
-                                <th>Rewards Points</th>
-                                <th>User status</th>
-                                {{--<th>Total Orders</th>
-                                <th>Last Activity</th>--}}
-                                @if($route != '')
-                                    <th>Action</th>
-                                @endif
-                            </tr>
-                            </tfoot>
                             <tbody>
                             </tbody>
                         </table>

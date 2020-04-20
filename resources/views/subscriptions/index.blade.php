@@ -65,18 +65,6 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Category</th>
-                                <th>name</th>
-                                <th>price</th>
-                                <th>Description</th>
-                                <th>Request(s) Allowed</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($subscriptions as $subscription)
                             <tr>

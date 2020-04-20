@@ -61,16 +61,6 @@
                                 <th>Detail</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Order Number</th>
-                                <th>Email</th>
-                                <th>Order Status</th>
-                                <th>Total</th>
-                                <th>Detail</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($orders as $order)
                             <tr>

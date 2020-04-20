@@ -145,6 +145,15 @@
                         <label for="status" >Status</label>
                     </div>
                     <div class="input-field col s6">
+                        <select  id="reports" name="reports" required>
+                            <option value="0">Enable</option>
+                            <option value="1">Disable</option>
+                        </select>
+                        <label for="status" >Reports</label>
+                    </div>
+                </div>
+                <div class="col s12">
+                    <div class="input-field col s6">
                         <h6 class="custom-label">Avatar</h6>
                         <input type="file" class="form-control-file" name="avatar" id="avatar">
                     </div>

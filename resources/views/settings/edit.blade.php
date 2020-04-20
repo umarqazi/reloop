@@ -50,7 +50,7 @@
             {{ Form::open(['url' => route('settings.update',$setting->id),'method' => 'PUT', 'class' => 'row']) }}
             <div class="col s12">
                 <div class="input-field col s12">
-                    <input id="keys" type="text" name="keys" value="{{$setting->keys}}" required>
+                    <input id="keys" type="text" name="keys" value="{{$setting->keys}}" required readonly>
                     <label for="name">Key</label>
                     @if ($errors->has('keys'))
                         <span class="help-block">
