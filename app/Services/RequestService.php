@@ -261,9 +261,11 @@ class RequestService extends BaseService
             if($statusType == IOrderStatusType::TRIP_INITIATED){
 
                 $findRequest->status = IOrderStaus::DRIVER_DISPATCHED;
+                $findRequest->driver_trip_status = IDriverTripStatus::TRIP_INITIATED;
             } elseif ($statusType == IOrderStatusType::TRIP_COMPLETED){
 
                 $findRequest->status = IOrderStaus::ORDER_COMPLETED;
+                $findRequest->driver_trip_status = IDriverTripStatus::TRIP_COMPLETED;
             }
             $findRequest->update();
 
