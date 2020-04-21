@@ -7,8 +7,10 @@ use App\Forms\User\DeleteAddressForm;
 use App\Forms\User\UpdateAddressForm;
 use App\Forms\User\UpdateProfileForm;
 use App\Helpers\ResponseHelper;
+use App\Services\DashboardService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 /**
  * Class UserController
@@ -31,6 +33,22 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
+    /**
+     * Method: dashboard
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function dashboard()
+    {
+        $userDashboard = App::make(DashboardService::class)->userDashboard(auth()->id());
+
+        return ResponseHelper::jsonResponse(
+            $userDashboard['message'],
+            $userDashboard['code'],
+            $userDashboard['status'],
+            $userDashboard['data']
+        );
+    }
     /**
      * Method: accountVerification
      *
