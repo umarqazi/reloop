@@ -727,21 +727,30 @@ class UserService extends BaseService
     /**
      * Method: redeemPoints
      *
-     * @param $data
+     * @param IForm $redeemPointForm
      *
      * @return array
      */
-    public function redeemPoints($data)
+    public function redeemPoints(IForm $redeemPointForm)
     {
+        if($redeemPointForm->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $redeemPointForm->errors()
+            );
+        }
         $authUser = $this->findById(auth()->id());
         if($authUser){
 
-            if($authUser->reward_points >= $data['redeem_points']){
+            if($authUser->reward_points >= $redeemPointForm->redeem_points){
 
                 $pointsConversion = App::make(SettingService::class)->findByKey(ISettingKeys::ONE_AED);
                 if($pointsConversion){
 
-                    $discount = $data['redeem_points']/$pointsConversion->values;
+                    $discount = $redeemPointForm->redeem_points/$pointsConversion->values;
 
                     return ResponseHelper::responseData(
                         Config::get('constants.POINTS_DISCOUNT'),

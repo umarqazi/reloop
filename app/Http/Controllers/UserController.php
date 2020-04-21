@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms\Checkout\RedeemPointForm;
 use App\Forms\User\DefaultAddressForm;
 use App\Forms\User\DeleteAddressForm;
 use App\Forms\User\UpdateAddressForm;
@@ -224,7 +225,9 @@ class UserController extends Controller
      */
     public function redeemPoints(Request $request)
     {
-        $redeemPoints = $this->userService->redeemPoints($request->all());
+        $redeemPointForm = new RedeemPointForm();
+        $redeemPointForm->loadFromArray($request->all());
+        $redeemPoints = $this->userService->redeemPoints($redeemPointForm);
 
         return ResponseHelper::jsonResponse(
             $redeemPoints['message'],
