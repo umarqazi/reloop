@@ -225,7 +225,7 @@ class RequestService extends BaseService
                 ]);
             }
         ])->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
-            'district', 'street', 'created_at', 'status', 'phone_number')
+            'district', 'street', 'created_at', 'status', 'driver_trip_status', 'phone_number')
             ->where('driver_id', $driverId)->get();
     }
 
