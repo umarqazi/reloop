@@ -159,7 +159,7 @@ class OrderService extends BaseService
                 ]);
             }
         ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-            'city', 'district', 'phone_number')
+            'city', 'district', 'phone_number', 'driver_trip_status')
             ->where('driver_id', $driverId)->get();
     }
 
