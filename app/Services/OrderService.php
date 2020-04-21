@@ -178,9 +178,11 @@ class OrderService extends BaseService
             if($statusType == IOrderStatusType::TRIP_INITIATED){
 
                 $findOrder->status = IOrderStaus::DRIVER_DISPATCHED;
+                $findOrder->driver_trip_status = IDriverTripStatus::TRIP_INITIATED;
             } elseif ($statusType == IOrderStatusType::TRIP_COMPLETED){
 
                 $findOrder->status = IOrderStaus::ORDER_COMPLETED;
+                $findOrder->driver_trip_status = IDriverTripStatus::TRIP_COMPLETED;
             }
             $findOrder->update();
 

@@ -29,11 +29,18 @@ class RequestCollectionService extends BaseService
      * @var RequestCollection
      */
     private $model;
+    /**
+     * Property: requestService
+     *
+     * @var RequestService
+     */
+    private $requestService;
 
-    public function __construct(RequestCollection $model)
+    public function __construct(RequestCollection $model, RequestService $requestService)
     {
         parent::__construct();
         $this->model = $model;
+        $this->requestService = $requestService;
     }
 
     /**
@@ -109,6 +116,12 @@ class RequestCollectionService extends BaseService
                 $findCategory->update();
             }
         }
+        $findRequest = $this->requestService->findById($recordWeightCategories->request_id);
+        if($findRequest){
+
+            $findRequest->driver_trip_status = IDriverTripStatus::RECORD_WEIGHT;
+            $findRequest->update();
+        }
 
         if($recordWeightCategories->additional_comments){
 
@@ -117,9 +130,9 @@ class RequestCollectionService extends BaseService
 
         return ResponseHelper::responseData(
             Config::get('constants.WEIGHT_RECORDED'),
-            IResponseHelperInterface::FAIL_RESPONSE,
-            false,
-            $recordWeightCategories->errors()
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            null
         );
     }
 }
