@@ -215,4 +215,22 @@ class UserController extends Controller
             $userBilling['data']
         );
     }
+
+    /**
+     * Method: redeemPoints
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function redeemPoints(Request $request)
+    {
+        $redeemPoints = $this->userService->redeemPoints($request->all());
+
+        return ResponseHelper::jsonResponse(
+            $redeemPoints['message'],
+            $redeemPoints['code'],
+            $redeemPoints['status'],
+            $redeemPoints['data']
+        );
+    }
 }

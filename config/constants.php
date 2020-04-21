@@ -61,6 +61,7 @@ return[
 
     'COUPON_VERIFICATION'                   => 'Your coupon code has verified!',
     'COUPON_FAIL'                           => 'Invalid coupon!',
+    'POINTS_DISCOUNT'                       => 'You have successfully redeemed your points!',
 
     'ORDER_SUCCESSFUL'                      => 'Your order has been placed successfully!',
     'ORDER_FAIL'                            => 'Your order has failed!',

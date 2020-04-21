@@ -723,4 +723,46 @@ class UserService extends BaseService
             $data
         );
     }
+
+    /**
+     * Method: redeemPoints
+     *
+     * @param $data
+     *
+     * @return array
+     */
+    public function redeemPoints($data)
+    {
+        $authUser = $this->findById(auth()->id());
+        if($authUser){
+
+            if($authUser->reward_points >= $data['redeem_points']){
+
+                $pointsConversion = App::make(SettingService::class)->findByKey(ISettingKeys::ONE_AED);
+                if($pointsConversion){
+
+                    $discount = $data['redeem_points']/$pointsConversion->values;
+
+                    return ResponseHelper::responseData(
+                        Config::get('constants.POINTS_DISCOUNT'),
+                        IResponseHelperInterface::SUCCESS_RESPONSE,
+                        true,
+                        [
+                            "discount" => [
+                                $discount
+                            ]
+                        ]
+                    );
+                }
+            } else {
+
+                return ResponseHelper::responseData(
+                    Config::get('constants.INVALID_OPERATION'),
+                    IResponseHelperInterface::FAIL_RESPONSE,
+                    false,
+                    null
+                );
+            }
+        }
+    }
 }
