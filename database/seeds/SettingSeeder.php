@@ -16,8 +16,8 @@ class SettingSeeder extends Seeder
             'values'    =>  '4',
         ]);
         Setting::create([
-            'keys'      => '1_AED',
-            'values'    => '10 reward points',
+            'keys'      => 'one_AED',
+            'values'    => '10',
         ]);
     }
 }
