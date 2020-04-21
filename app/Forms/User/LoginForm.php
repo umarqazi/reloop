@@ -22,11 +22,13 @@ class LoginForm extends BaseForm
     public $status;
     public $reports;
     public $api_token;
+    public $user_type;
 
     public function __construct()
     {
         $this->status = 1;
         $this->reports = 1;
+        $this->user_type = 1;
         $this->api_token = str_random(60);
     }
     /**
