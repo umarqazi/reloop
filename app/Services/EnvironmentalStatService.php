@@ -129,4 +129,16 @@ class EnvironmentalStatService extends BaseService
         ])->first();
         return $totalStats;
     }
+
+    /**
+     * Method: userEnvironmentalStats
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function userEnvironmentalStats($userId)
+    {
+        return $this->model->where('user_id', $userId)->first();
+    }
 }

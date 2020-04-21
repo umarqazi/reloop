@@ -3,7 +3,10 @@
 
 namespace App\Services;
 use App\Forms\IForm;
+use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -68,5 +71,28 @@ class DashboardService extends BaseService
     {
         $totalEnvironmentalStats = App::make(EnvironmentalStatService::class)->totalStats();
         return $totalEnvironmentalStats;
+    }
+
+    /**
+     * Method: userDashboard
+     *
+     * @param $userId
+     *
+     * @return array
+     */
+    public function userDashboard($userId)
+    {
+        $environmentalStats = App::make(EnvironmentalStatService::class)->userEnvironmentalStats($userId);
+
+        $userDashboard = [
+            'environmentalStats' => $environmentalStats
+        ];
+
+        return ResponseHelper::responseData(
+            Config::get('constants.USER_DASHBOARD'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $userDashboard
+        );
     }
 }

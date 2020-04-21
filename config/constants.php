@@ -19,6 +19,7 @@ return[
 
     'USER_LOGIN_SUCCESSFULLY'               => 'User has successfully logged in!',
     'USER_LOGIN_FAILED'                     => 'Email not verified!',
+    'USER_DASHBOARD'                        => 'User stats shown as:',
 
     'SIGN_UP_COMPLETION'                    => 'SignUp process completed successfully! You may login now.',
 

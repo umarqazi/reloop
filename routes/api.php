@@ -20,6 +20,7 @@ Route::post('forgot-password', 'Api\LoginController@forgotPassword');
 Route::post('password-change-request', 'Api\DriverController@passwordChangeRequest');
 Route::middleware('auth:api')->group(function () {
 
+    Route::get('dashboard', 'UserController@dashboard');
     Route::get('categories', 'Api\ProductController@categories');
     Route::get('category/products', 'Api\ProductController@categoryProducts');
     Route::post('buy-plan', 'Api\PaymentController@buyPlan');
