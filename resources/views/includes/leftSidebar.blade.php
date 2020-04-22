@@ -118,7 +118,7 @@
                 <li class="bold">
                     <a href="{{ route('all-users') }}">
                         <i class="material-icons"><img src="/assets/images/icons/reward point.svg" alt="re loop logo"></i>
-                        <span class="nav-text">Users Reward Points</span>
+                        <span class="nav-text">Redeem User Points</span>
                     </a>
                 </li>
                 <li class="bold">

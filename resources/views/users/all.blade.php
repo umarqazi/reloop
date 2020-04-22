@@ -16,7 +16,7 @@
                                 <li>
                                     <a href="{{ route('home') }}">Dashboard</a>
                                 </li>
-                                <li class="active">Users Reward Points</li>
+                                <li class="active">Redeem User Points</li>
                             </ol>
                         </div>
                     </div>
@@ -56,11 +56,13 @@
                                     <tr>
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ ($user->user_type == \App\Services\IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == \App\Services\IUserType::DRIVER) ? 'Driver' : (($user->user_type == \App\Services\IUserType::SUPERVISOR) ? 'Supervisor' : '')) }}</td>
+                                        <td>{{ ($user->user_type == \App\Services\IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == \App\Services\IUserType::DRIVER) ? 'Driver' : (($user->user_type == \App\Services\IUserType::SUPERVISOR) ? 'Supervisor' : 'Organization')) }}</td>
                                         <td>{{ $user->reward_points ?? '0' }}</td>
                                         <td>
 {{--                                            <a href="" id="reward-update" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-refresh"></i></a>--}}
+                                           @if($user->reward_points > 0)
                                             <a href="javascript:void(0)" id="user-{{ $user->id }}" class="edit-user btn btn-primary float-left" data-action="{{ route('get-user', $user->id) }}"><i class="fa fa-edit"></i></a>
+                                           @endif
                                         </td>
                                     </tr>
                                 @endforeach
