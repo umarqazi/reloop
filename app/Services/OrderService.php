@@ -145,12 +145,13 @@ class OrderService extends BaseService
      * Method: assignedOrders
      *
      * @param $driverId
+     * @param null $date
      *
      * @return Order[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function assignedOrders($driverId)
+    public function assignedOrders($driverId, $date=null)
     {
-        return $this->model->with([
+        $assignedOrders = $this->model->with([
             'orderItems' => function ($query){
                 return $query->with([
                     'product' => function($subQuery){
@@ -158,7 +159,14 @@ class OrderService extends BaseService
                     }
                 ]);
             }
-        ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
+        ]);
+        if(!empty($date)){
+
+            return $assignedOrders->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
+                'city', 'district', 'phone_number', 'driver_trip_status')
+                ->where(['driver_id' => $driverId, 'delivery_date' => $date])->get();
+        }
+        return $assignedOrders->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
             'city', 'district', 'phone_number', 'driver_trip_status')
             ->where('driver_id', $driverId)->get();
     }

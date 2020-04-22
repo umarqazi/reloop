@@ -208,15 +208,16 @@ class RequestService extends BaseService
     }
 
     /**
-     * Method: assignedrequests
+     * Method: assignedRequests
      *
      * @param $driverId
+     * @param null $date
      *
      * @return Request[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function assignedRequests($driverId)
+    public function assignedRequests($driverId, $date=null)
     {
-        return $this->model->with([
+        $assignedTrips = $this->model->with([
             'requestCollection' => function ($query){
                 return $query->with([
                     'materialCategory' => function($subQuery){
@@ -224,7 +225,14 @@ class RequestService extends BaseService
                     }
                 ]);
             }
-        ])->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+        ]);
+        if(!empty($date)){
+
+            return $assignedTrips->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+                'district', 'street', 'created_at', 'status', 'driver_trip_status', 'phone_number')
+                ->where(['driver_id' => $driverId, 'collection_date' => $date])->get();
+        }
+        return $assignedTrips->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
             'district', 'street', 'created_at', 'status', 'driver_trip_status', 'phone_number')
             ->where('driver_id', $driverId)->get();
     }

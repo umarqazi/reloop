@@ -705,12 +705,14 @@ class UserService extends BaseService
     /**
      * Method: driverAssignedTrips
      *
+     * @param $assignedOrderForm
+     *
      * @return array
      */
-    public function driverAssignedTrips()
+    public function driverAssignedTrips($assignedOrderForm)
     {
-        $assignedOrders = $this->orderService->assignedOrders(auth()->id());
-        $assignedRequests = $this->requestService->assignedRequests(auth()->id());
+        $assignedOrders = $this->orderService->assignedOrders(auth()->id(), $assignedOrderForm->date);
+        $assignedRequests = $this->requestService->assignedRequests(auth()->id(), $assignedOrderForm->date);
 
         $data = [
             'assignedOrders'   => $assignedOrders,

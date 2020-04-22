@@ -48,7 +48,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('donations', 'Api\DonationController@donations');
 
     //Driver routes
-    Route::get('assigned-trips', 'Api\DriverController@driverAssignedTrips');
+    Route::post('assigned-trips', 'Api\DriverController@driverAssignedTrips');
     Route::post('trip-status', 'Api\DriverController@tripStatusUpdate');
     Route::post('record-weight', 'Api\DriverController@recordWeight');
     Route::get('feedback-questions', 'Api\DriverController@feedbackQuestions');

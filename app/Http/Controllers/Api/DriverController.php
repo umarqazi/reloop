@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Forms\Collection\FeedbackForm;
 use App\Forms\Collection\RecordWeightForm;
 use App\Forms\Collection\TripStatusForm;
+use App\Forms\Driver\AssignedOrderForm;
 use App\Forms\Driver\DriverLocationForm;
 use App\Forms\User\PasswordChangeRequestForm;
 use App\Helpers\IResponseHelperInterface;
@@ -84,11 +85,15 @@ class DriverController extends Controller
     /**
      * Method: driverAssignedTrips
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function driverAssignedTrips()
+    public function driverAssignedTrips(Request $request)
     {
-        $driverAssignedTrips = $this->userService->driverAssignedTrips();
+        $assignedOrderForm = new AssignedOrderForm();
+        $assignedOrderForm->loadFromArray($request->all());
+        $driverAssignedTrips = $this->userService->driverAssignedTrips($assignedOrderForm);
 
         return ResponseHelper::jsonResponse(
             $driverAssignedTrips['message'],
