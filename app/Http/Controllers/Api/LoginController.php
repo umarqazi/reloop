@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Forms\User\ChangePasswordForm;
 use App\Forms\User\LoginForm;
 use App\Forms\User\PasswordForgotForm;
+use App\Forms\User\PasswordResetForm;
 use App\Helpers\ResponseHelper;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -92,6 +93,27 @@ class LoginController extends Controller
             $forgotPassword['code'],
             $forgotPassword['status'],
             $forgotPassword['data']
+        );
+    }
+
+    /**
+     * Method: resetPassword
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resetPassword(Request $request)
+    {
+        $passwordResetForm = new PasswordResetForm();
+        $passwordResetForm->loadFromArray($request->all());
+        $passwordReset = $this->userService->resetPassword($passwordResetForm);
+
+        return ResponseHelper::jsonResponse(
+            $passwordReset['message'],
+            $passwordReset['code'],
+            $passwordReset['status'],
+            $passwordReset['data']
         );
     }
 }

@@ -17,6 +17,7 @@ Route::get('dependencies', 'Api\RegisterController@dependencies');
 Route::post('register', 'Api\RegisterController@signUp');
 Route::post('login', 'Api\LoginController@login');
 Route::post('forgot-password', 'Api\LoginController@forgotPassword');
+Route::post('reset-password', 'Api\LoginController@resetPassword');
 Route::post('password-change-request', 'Api\DriverController@passwordChangeRequest');
 Route::middleware('auth:api')->group(function () {
 

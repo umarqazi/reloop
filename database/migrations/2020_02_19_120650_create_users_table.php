@@ -36,6 +36,7 @@ class CreateUsersTable extends Migration
             $table->boolean('status')->default(false);
             $table->boolean('reports')->default(true);
             $table->timestamp('verified_at')->nullable();
+            $table->string('password_reset_token')->nullable();
             $table->string('signup_token')->nullable();
             $table->string('api_token')->nullable();
             $table->rememberToken();

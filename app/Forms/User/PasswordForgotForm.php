@@ -17,7 +17,6 @@ class PasswordForgotForm extends BaseForm
 {
 
     public $email;
-    public $token;
     /**
      * @inheritDoc
      */

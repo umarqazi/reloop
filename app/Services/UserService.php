@@ -229,10 +229,15 @@ class UserService extends BaseService
     {
         $model = $this->model;
         $getUser = $model->where(['id' => $id, 'signup_token' => $token])->first();
-        $getUser->status = true;
-        $getUser->verified_at = Carbon::now();
+        if($getUser){
 
-        return $getUser->update();
+            $getUser->status = true;
+            $getUser->verified_at = Carbon::now();
+            $getUser->signup_token = null;
+
+            return $getUser->update();
+        }
+        return false;
     }
 
     public function userProfile()
@@ -372,7 +377,16 @@ class UserService extends BaseService
         $model = $this->model->where('email', $forgotForm->email)->first();
         if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD)
         {
-            $this->emailNotificationService->passwordReset($forgotForm->toArray());
+            $domain = env('APP_URL');
+            $resetToken = str_random(30).strtotime('now');
+            $resetUrl = $domain.'?reset_token='.$resetToken;
+            $data = [
+                'resetUrl'   => $resetUrl,
+                'email' => $forgotForm->email
+            ];
+            $this->emailNotificationService->passwordReset($data);
+            $model->password_reset_token = $resetToken;
+            $model->update();
 
             return ResponseHelper::responseData(
                 Config::get('constants.CHANGE_PASSWORD_SUCCESS_EMAIL'),
@@ -392,6 +406,55 @@ class UserService extends BaseService
             [
                 "ResetEmail" => [
                     Config::get('constants.PASSWORD_RESET_EMAIL_NOT_SENT')
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Method: resetPassword
+     *
+     * @param IForm $passwordResetForm
+     *
+     * @return array
+     */
+    public function resetPassword(IForm $passwordResetForm)
+    {
+        if($passwordResetForm->fails())
+        {
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $passwordResetForm->errors()
+            );
+        }
+        $model = $this->model->where('password_reset_token', $passwordResetForm->reset_token)->first();
+        if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD)
+        {
+
+            $model->password = Hash::make($passwordResetForm->new_password);
+            $model->password_reset_token = null;
+            $model->update();
+
+            return ResponseHelper::responseData(
+                Config::get('constants.PASSWORD_RESET_SUCCESS'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                [
+                    "ResetPassword" => [
+                        Config::get('constants.PASSWORD_RESET_SUCCESS')
+                    ]
+                ]
+            );
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            [
+                "invalidToken" => [
+                    Config::get('constants.INVALID_RESET_TOKEN')
                 ]
             ]
         );
