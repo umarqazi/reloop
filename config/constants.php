@@ -57,6 +57,8 @@ return[
     'DEPENDENCIES_LIST'                     => 'Cities, Sectors and Organizations list shown as:',
     'PASSWORD_RESET_EMAIL_NOT_SENT'         => 'Password reset email didn\'t sent!',
     'PASSWORD_RESET_EMAIL_SENT'             => 'Password reset email sent!',
+    'PASSWORD_RESET_SUCCESS'                => 'Your Password has reset successfully!',
+    'INVALID_RESET_TOKEN'                   => 'Your reset password token is invalid!',
     'INVALID_CREDENTIALS'                   => 'These credentials do not match our records!',
 
     'COUPON_VERIFICATION'                   => 'Your coupon code has verified!',

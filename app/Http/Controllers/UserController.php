@@ -64,6 +64,7 @@ class UserController extends Controller
         if($activateAccount){
             return redirect('thankyou');
         }
+        return redirect('login');
     }
 
     /**
