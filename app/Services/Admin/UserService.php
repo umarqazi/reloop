@@ -64,7 +64,9 @@ class UserService extends BaseService
             'password'        => Hash::make($data['password']),
             'status'          => $data['status'],
             'user_type'       => $data['user_type'],
+            'login_type'      => 1,
             'api_token'       => str_random(60),
+            'reports'         => $data['reports'],
         );
         //check that avatar exists or not
         if(array_key_exists('avatar', $data) && $data['avatar'] != null){
@@ -122,6 +124,7 @@ class UserService extends BaseService
             'phone_number'    => $data['phone_number'],
             'status'          => $data['status'],
             'user_type'       => $data['user_type'],
+            'reports'         => $data['reports'],
         );
         if(array_key_exists('avatar', $data) && $data['avatar'] != null){
             $data = $this->uploadFile($data, $request, $id);

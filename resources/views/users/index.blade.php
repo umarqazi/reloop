@@ -57,6 +57,7 @@
                         @if($route != '' && $type != 1)
                             <a class="btn btn-primary" href="{{ route($route.'.create') }}">Create</a>
                         @endif
+                        <a class="btn btn-primary" href="{{ route($route.'.export') }}">Export</a>
                     </p>
                     <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
@@ -98,20 +99,6 @@
                                     @endforeach
                                 </tbody>
                             @endif
-                            <tfoot>
-                            <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
-                                <th>User Type</th>
-                                <th>Rewards Points</th>
-                                <th>User status</th>
-                                {{--<th>Total Orders</th>
-                                <th>Last Activity</th>--}}
-                                @if($route != '')
-                                    <th>Action</th>
-                                @endif
-                            </tr>
-                            </tfoot>
                             <tbody>
                             </tbody>
                         </table>

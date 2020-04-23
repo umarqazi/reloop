@@ -50,22 +50,22 @@
             {{ Form::open(['url' => route('settings.update',$setting->id),'method' => 'PUT', 'class' => 'row']) }}
             <div class="col s12">
                 <div class="input-field col s12">
-                    <input id="keys" type="text" name="keys" value="{{$setting->keys}}" required>
-                    <label for="name">Key</label>
-                    @if ($errors->has('keys'))
+                    <input id="name" type="text" name="name" value="{{$setting->name}}" required >
+                    <label for="name">Name</label>
+                    @if ($errors->has('name'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('keys') }}</strong>
+                        <strong class="red-text">{{ $errors->first('name') }}</strong>
                     </span>
                     @endif
                 </div>
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
-                    <input id="values" type="text" name="values" value="{{$setting->values}}" required>
+                    <input id="value" type="text" name="value" value="{{$setting->value}}" required>
                     <label for="name">Value</label>
-                    @if ($errors->has('values'))
+                    @if ($errors->has('value'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('values') }}</strong>
+                        <strong class="red-text">{{ $errors->first('value') }}</strong>
                     </span>
                     @endif
                 </div>

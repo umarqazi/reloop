@@ -43,6 +43,9 @@
 
             <div id="table-datatables">
                 <div class="row">
+                    <p class="col s12">
+                        <a class="btn btn-primary" href="{{ route('password-requests.export') }}">Export</a>
+                    </p>
                     <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
@@ -63,14 +66,6 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
-                                <th>Request Status</th>
-                                <th>Action</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             </tbody>
                         </table>

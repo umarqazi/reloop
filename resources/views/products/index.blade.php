@@ -49,6 +49,7 @@
                     <div class="col s12">
                         <a class="btn waves-effect waves-light primary-btn-bgcolor"
                            href="{{ route('product.create') }}">Create</a>
+                        <a class="btn btn-primary" href="{{ route('products.export') }}">Export</a>
                     </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
@@ -58,22 +59,10 @@
                                 <th>Category</th>
                                 <th>name</th>
                                 <th>price</th>
-                                <th>Description</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Category</th>
-                                <th>name</th>
-                                <th>price</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($products as $product)
                             <tr>
@@ -81,7 +70,6 @@
                                 <td>{{ $product->category->name }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->price }}</td>
-                                <td>{{ $product->description }}</td>
                                 <td>{{ $product->status == 0 ? 'Inactive' : 'Active'}}</td>
                                 <td>
                                     <a href="{{ route('product.edit', $product->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>

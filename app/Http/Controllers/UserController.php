@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Forms\Checkout\RedeemPointForm;
 use App\Forms\User\DefaultAddressForm;
 use App\Forms\User\DeleteAddressForm;
 use App\Forms\User\UpdateAddressForm;
 use App\Forms\User\UpdateProfileForm;
 use App\Helpers\ResponseHelper;
+use App\Services\DashboardService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 /**
  * Class UserController
@@ -32,6 +35,22 @@ class UserController extends Controller
     }
 
     /**
+     * Method: dashboard
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function dashboard()
+    {
+        $userDashboard = App::make(DashboardService::class)->userDashboard(auth()->id());
+
+        return ResponseHelper::jsonResponse(
+            $userDashboard['message'],
+            $userDashboard['code'],
+            $userDashboard['status'],
+            $userDashboard['data']
+        );
+    }
+    /**
      * Method: accountVerification
      *
      * @param $id
@@ -45,6 +64,7 @@ class UserController extends Controller
         if($activateAccount){
             return redirect('thankyou');
         }
+        return redirect('login');
     }
 
     /**
@@ -195,6 +215,26 @@ class UserController extends Controller
             $userBilling['code'],
             $userBilling['status'],
             $userBilling['data']
+        );
+    }
+
+    /**
+     * Method: redeemPoints
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function redeemPoints(Request $request)
+    {
+        $redeemPointForm = new RedeemPointForm();
+        $redeemPointForm->loadFromArray($request->all());
+        $redeemPoints = $this->userService->redeemPoints($redeemPointForm);
+
+        return ResponseHelper::jsonResponse(
+            $redeemPoints['message'],
+            $redeemPoints['code'],
+            $redeemPoints['status'],
+            $redeemPoints['data']
         );
     }
 }

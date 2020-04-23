@@ -19,6 +19,7 @@ return[
 
     'USER_LOGIN_SUCCESSFULLY'               => 'User has successfully logged in!',
     'USER_LOGIN_FAILED'                     => 'Email not verified!',
+    'USER_DASHBOARD'                        => 'User stats shown as:',
 
     'SIGN_UP_COMPLETION'                    => 'SignUp process completed successfully! You may login now.',
 
@@ -56,10 +57,13 @@ return[
     'DEPENDENCIES_LIST'                     => 'Cities, Sectors and Organizations list shown as:',
     'PASSWORD_RESET_EMAIL_NOT_SENT'         => 'Password reset email didn\'t sent!',
     'PASSWORD_RESET_EMAIL_SENT'             => 'Password reset email sent!',
+    'PASSWORD_RESET_SUCCESS'                => 'Your Password has reset successfully!',
+    'INVALID_RESET_TOKEN'                   => 'Your reset password token is invalid!',
     'INVALID_CREDENTIALS'                   => 'These credentials do not match our records!',
 
     'COUPON_VERIFICATION'                   => 'Your coupon code has verified!',
     'COUPON_FAIL'                           => 'Invalid coupon!',
+    'POINTS_DISCOUNT'                       => 'You have successfully redeemed your points!',
 
     'ORDER_SUCCESSFUL'                      => 'Your order has been placed successfully!',
     'ORDER_FAIL'                            => 'Your order has failed!',

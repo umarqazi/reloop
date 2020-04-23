@@ -7,6 +7,7 @@ use App\Http\Requests\PasswordReset\UpdateRequest;
 use App\Services\Admin\PasswordResetService;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class passwordResetController extends Controller
 {
@@ -103,5 +104,28 @@ class passwordResetController extends Controller
      */
     public function destroy($id)
     {
+
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('passwordResetRequests', function($excel) {
+            $excel->sheet('passwordResetRequests', function($sheet) {
+                $requests = $this->passwordResetService->all() ;
+
+                foreach($requests as $request){
+                    $print[] = array( 'Request ID'       => $request->id,
+                                      'User Email'       => $request->email,
+                                      'Request Status'   => ($request->status == 0) ? 'New' : 'Completed' ,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

@@ -21,7 +21,7 @@
                 </li>
                 <li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/user.svg" alt="re loop logo"></i>
                         <span class="nav-text">Users</span>
                     </a>
                     <div class="collapsible-body">
@@ -55,7 +55,7 @@
                 </li>
                 <li class="bold">
                     <a href="{{ route('user-subscription') }}">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/user subscription.svg" alt="re loop logo"></i>
                         <span class="nav-text">User Subscription</span>
                     </a>
                 </li>
@@ -67,24 +67,15 @@
                 </li>
                 <li class="bold">
                     <a href="{{ route('organization.index') }}">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/Organization.svg" alt="re loop logo"></i>
                         <span class="nav-text">Organizations</span>
                     </a>
-                </li><li class="bold">
-                    <a class="collapsible-header  waves-effect waves-cyan">
-                        <i class="material-icons">account_circle</i>
-                        <span class="nav-text">Orders</span>
+                </li>
+                <li class="bold">
+                    <a href="{{ route('orders.index') }}">
+                        <i class="material-icons"><img src="/assets/images/icons/orders.svg" alt="re loop logo"></i>
+                        <span>Orders</span>
                     </a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li>
-                                <a href="{{ route('orders.index') }}">
-                                    <i class="material-icons">keyboard_arrow_right</i>
-                                    <span>User Orders</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
                 <li class="bold">
                     <a href="{{ route('collection-requests.index') }}">
@@ -93,12 +84,12 @@
                     </a>
                 </li><li class="bold">
                     <a href="{{ route('material-category.index') }}">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/categories.svg" alt="re loop logo"></i>
                         <span class="nav-text">Material Categories</span>
                     </a>
                 </li><li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/add on product.svg" alt="re loop logo"></i>
                         <span class="nav-text">Add on Products</span>
                     </a>
                     <div class="collapsible-body">
@@ -120,19 +111,19 @@
                 </li>
                 <li class="bold">
                     <a href="{{ route('coupon.index') }}">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/coupon.svg" alt="re loop logo"></i>
                         <span class="nav-text">Coupons</span>
                     </a>
                 </li>
                 <li class="bold">
                     <a href="{{ route('all-users') }}">
-                        <i class="material-icons">account_circle</i>
-                        <span class="nav-text">Users Reward Points</span>
+                        <i class="material-icons"><img src="/assets/images/icons/reward point.svg" alt="re loop logo"></i>
+                        <span class="nav-text">Redeem User Points</span>
                     </a>
                 </li>
                 <li class="bold">
                     <a class="collapsible-header  waves-effect waves-cyan">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/pages.svg" alt="re loop logo"></i>
                         <span class="nav-text">Pages</span>
                     </a>
                     <div class="collapsible-body">
@@ -154,19 +145,19 @@
                 </li>
                  <li>
                     <a href="{{ route('questions.index') }}">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/questions.svg" alt="re loop logo"></i>
                         <span class="nav-text">Questions</span>
                     </a>
                  </li>
                 <li>
                     <a href="{{ route('donation-products.index') }}">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/donation.svg" alt="re loop logo"></i>
                         <span class="nav-text">Donation Products</span>
                     </a>
                 </li>
                 <li class="bold">
                     <a href="{{ route('settings.index') }}">
-                        <i class="material-icons">account_circle</i>
+                        <i class="material-icons"><img src="/assets/images/icons/settings.svg" alt="re loop logo"></i>
                         <span class="nav-text">Settings</span>
                     </a>
                 </li>
@@ -187,7 +178,7 @@
                     {{ Form::open(['url' => route('logout'),
                                    'method' => 'POST',]) }}
 
-                    <button type="submit" class="collapsible-header logout-btn  waves-effect waves-cyan"><i class="material-icons">account_circle</i>Logout</button>
+                    <button type="submit" class="collapsible-header logout-btn  waves-effect waves-cyan"><i class="material-icons"><img src="/assets/images/icons/logout.svg" alt="re loop logo"></i>Logout</button>
                     {{ Form::close() }}
                 </li>
             </ul>
@@ -204,20 +195,10 @@
                         </a>
                     </li>
                     <li class="bold">
-                        <a class="collapsible-header  waves-effect waves-cyan">
-                            <i class="material-icons">account_circle</i>
-                            <span class="nav-text">Orders</span>
+                        <a href="{{ route('get-orders') }}">
+                            <i class="material-icons"><img src="/assets/images/icons/orders.svg" alt="re loop logo"></i>
+                            <span>Orders</span>
                         </a>
-                        <div class="collapsible-body">
-                            <ul>
-                                <li>
-                                    <a href="{{ route('get-orders') }}">
-                                        <i class="material-icons">keyboard_arrow_right</i>
-                                        <span>Manage Orders</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                     <li class="bold">
                         <a href="{{ route('get-requests') }}">
@@ -235,7 +216,7 @@
                         {{ Form::open(['url' => route('logout'),
                                        'method' => 'POST',]) }}
 
-                        <button type="submit" class="collapsible-header logout-btn  waves-effect waves-cyan"><i class="material-icons">account_circle</i>Logout</button>
+                        <button type="submit" class="collapsible-header logout-btn  waves-effect waves-cyan"><i class="material-icons"><img src="/assets/images/icons/logout.svg" alt="re loop logo"></i>Logout</button>
                         {{ Form::close() }}
                     </li>
                 </ul>

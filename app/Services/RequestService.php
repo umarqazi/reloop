@@ -98,6 +98,7 @@ class RequestService extends BaseService
             );
         }
 
+        $extraCharge = false;
         if(!empty($collectionRequestForm->card_number)){
 
             $stripeService = new StripeService();
@@ -111,6 +112,7 @@ class RequestService extends BaseService
                     $makePayment
                 );
             }
+            $extraCharge = true;
         }
 
         $material_categories = App::make(MaterialCategoryService::class)->findMaterialCategoryById($collectionRequestForm->material_categories);
@@ -120,6 +122,10 @@ class RequestService extends BaseService
             'user_id' => auth()->id(),
             'request_number' => $this->request_number
         ];
+        if($extraCharge){
+
+            $saveData['extra_charge'] = $collectionRequestForm->total;
+        }
         SaveCollectionRequestDetailsJob::dispatch($saveData);
 
         return ResponseHelper::responseData(
@@ -146,6 +152,10 @@ class RequestService extends BaseService
         $updateTrips = App::make(UserSubscriptionService::class)->updateTrips($data);
         if($updateTrips){
 
+            if(array_key_exists('extra_charge', $data)){
+
+                $extraCharge = App::make(TransactionService::class)->extraCharge($data);
+            }
             $updateTripsAfterRequest = App::make(UserService::class)->updateTripsAfterRequest($data);
             $saveRequestDetails = $this->create($data);
             $saveRequestCollectionDetails = App::make(RequestCollectionService::class)->create($data, $saveRequestDetails->id);
@@ -198,15 +208,16 @@ class RequestService extends BaseService
     }
 
     /**
-     * Method: assignedrequests
+     * Method: assignedRequests
      *
      * @param $driverId
+     * @param null $date
      *
      * @return Request[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function assignedRequests($driverId)
+    public function assignedRequests($driverId, $date=null)
     {
-        return $this->model->with([
+        $assignedTrips = $this->model->with([
             'requestCollection' => function ($query){
                 return $query->with([
                     'materialCategory' => function($subQuery){
@@ -214,8 +225,15 @@ class RequestService extends BaseService
                     }
                 ]);
             }
-        ])->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
-            'district', 'street', 'created_at', 'status', 'phone_number')
+        ]);
+        if(!empty($date)){
+
+            return $assignedTrips->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+                'district', 'street', 'created_at', 'status', 'driver_trip_status', 'phone_number')
+                ->where(['driver_id' => $driverId, 'collection_date' => $date])->get();
+        }
+        return $assignedTrips->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+            'district', 'street', 'created_at', 'status', 'driver_trip_status', 'phone_number')
             ->where('driver_id', $driverId)->get();
     }
 
@@ -251,9 +269,11 @@ class RequestService extends BaseService
             if($statusType == IOrderStatusType::TRIP_INITIATED){
 
                 $findRequest->status = IOrderStaus::DRIVER_DISPATCHED;
+                $findRequest->driver_trip_status = IDriverTripStatus::TRIP_INITIATED;
             } elseif ($statusType == IOrderStatusType::TRIP_COMPLETED){
 
                 $findRequest->status = IOrderStaus::ORDER_COMPLETED;
+                $findRequest->driver_trip_status = IDriverTripStatus::TRIP_COMPLETED;
             }
             $findRequest->update();
 

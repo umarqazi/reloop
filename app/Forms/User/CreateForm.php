@@ -40,6 +40,8 @@ class CreateForm extends BaseForm
     public $latitude;
     public $longitude;
     public $hh_organization_name;
+    public $reports;
+    public $login_type;
 
     /**
      * CreateForm constructor.
@@ -48,6 +50,8 @@ class CreateForm extends BaseForm
     public function __construct()
     {
         $this->status = 0;
+        $this->reports = 1;
+        $this->login_type = 1;
         $this->api_token = str_random(60);
         $this->signup_token = str_random(30);
     }

@@ -229,10 +229,15 @@ class UserService extends BaseService
     {
         $model = $this->model;
         $getUser = $model->where(['id' => $id, 'signup_token' => $token])->first();
-        $getUser->status = true;
-        $getUser->verified_at = Carbon::now();
+        if($getUser){
 
-        return $getUser->update();
+            $getUser->status = true;
+            $getUser->verified_at = Carbon::now();
+            $getUser->signup_token = null;
+
+            return $getUser->update();
+        }
+        return false;
     }
 
     public function userProfile()
@@ -260,7 +265,7 @@ class UserService extends BaseService
      *
      * @param IForm $loginForm
      *
-     * @return bool|\Illuminate\Contracts\Auth\Authenticatable|mixed|null
+     * @return array
      */
     public function authenticate(IForm $loginForm)
     {
@@ -274,47 +279,82 @@ class UserService extends BaseService
                 $loginForm->errors()
             );
         }
-        $credentials = [
-            'email' => $loginForm->email,
-            'password' => $loginForm->password
-        ];
+        if($loginForm->login_type == ILoginType::APP_LOGIN) {
+            $credentials = [
+                'email' => $loginForm->email,
+                'password' => $loginForm->password
+            ];
 
-        if(Auth::attempt($credentials)) {
+            if (Auth::attempt($credentials)) {
 
-            $authUser = auth()->user();
-            if ($authUser->status == true) {
+                $authUser = auth()->user();
+                if ($authUser->status == true) {
 
-                $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization', 'roles')->first();
+                    $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization', 'roles')->first();
+                    return ResponseHelper::responseData(
+                        Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
+                        IResponseHelperInterface::SUCCESS_RESPONSE,
+                        true,
+                        $userProfile
+                    );
+                } else {
+
+                    return ResponseHelper::responseData(
+                        Config::get('constants.INVALID_OPERATION'),
+                        IResponseHelperInterface::FAIL_RESPONSE,
+                        false,
+                        [
+                            "email_not_verified" => [
+                                Config::get('constants.USER_LOGIN_FAILED')
+                            ]
+                        ]
+                    );
+                }
+            }
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                [
+                    "credentials" => [
+                        Config::get('constants.INVALID_CREDENTIALS')
+                    ]
+                ]
+            );
+        } else {
+
+            $authUser = $this->findByEmail($loginForm->email);
+            if($authUser && $authUser->login_type != ILoginType::APP_LOGIN){
+
+                $authUser = $authUser->load('addresses', 'organization', 'roles');
                 return ResponseHelper::responseData(
                     Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
                     IResponseHelperInterface::SUCCESS_RESPONSE,
                     true,
-                    $userProfile
+                    $authUser
                 );
             } else {
 
-                return ResponseHelper::responseData(
-                    Config::get('constants.INVALID_OPERATION'),
-                    IResponseHelperInterface::FAIL_RESPONSE,
-                    false,
-                    [
-                        "email_not_verified" => [
-                            Config::get('constants.USER_LOGIN_FAILED')
-                        ]
-                    ]
-                );
+                $stripeCustomerId = $this->stripeService->createCustomer($loginForm);
+                if($stripeCustomerId) {
+
+                    $model = $this->model;
+                    $loginForm->loadToModel($model);
+                    $model->assignRole('user');
+                    $model->stripe_customer_id = $stripeCustomerId;
+                    $model->login_type = intval($loginForm->login_type);
+                    $model->save();
+                    $model->load('organization', 'addresses');
+
+                    return ResponseHelper::responseData(
+                        Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
+                        IResponseHelperInterface::SUCCESS_RESPONSE,
+                        true,
+                        $model
+                    );
+                }
             }
         }
-        return ResponseHelper::responseData(
-            Config::get('constants.INVALID_OPERATION'),
-            IResponseHelperInterface::FAIL_RESPONSE,
-            false,
-            [
-                "credentials" => [
-                    Config::get('constants.INVALID_CREDENTIALS')
-                ]
-            ]
-        );
     }
 
     /**
@@ -338,7 +378,16 @@ class UserService extends BaseService
         $model = $this->model->where('email', $forgotForm->email)->first();
         if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD)
         {
-            $this->emailNotificationService->passwordReset($forgotForm->toArray());
+            $domain = env('APP_URL');
+            $resetToken = str_random(30).strtotime('now');
+            $resetUrl = $domain.'://reset_password?token='.$resetToken;
+            $data = [
+                'resetUrl'   => $resetUrl,
+                'email' => $forgotForm->email
+            ];
+            $this->emailNotificationService->passwordReset($data);
+            $model->password_reset_token = $resetToken;
+            $model->update();
 
             return ResponseHelper::responseData(
                 Config::get('constants.CHANGE_PASSWORD_SUCCESS_EMAIL'),
@@ -358,6 +407,55 @@ class UserService extends BaseService
             [
                 "ResetEmail" => [
                     Config::get('constants.PASSWORD_RESET_EMAIL_NOT_SENT')
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Method: resetPassword
+     *
+     * @param IForm $passwordResetForm
+     *
+     * @return array
+     */
+    public function resetPassword(IForm $passwordResetForm)
+    {
+        if($passwordResetForm->fails())
+        {
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $passwordResetForm->errors()
+            );
+        }
+        $model = $this->model->where('password_reset_token', $passwordResetForm->reset_token)->first();
+        if(!empty($model) && $model->user_type == IUserType::HOUSE_HOLD)
+        {
+
+            $model->password = Hash::make($passwordResetForm->new_password);
+            $model->password_reset_token = null;
+            $model->update();
+
+            return ResponseHelper::responseData(
+                Config::get('constants.PASSWORD_RESET_SUCCESS'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                [
+                    "ResetPassword" => [
+                        Config::get('constants.PASSWORD_RESET_SUCCESS')
+                    ]
+                ]
+            );
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            [
+                "invalidToken" => [
+                    Config::get('constants.INVALID_RESET_TOKEN')
                 ]
             ]
         );
@@ -629,7 +727,13 @@ class UserService extends BaseService
 
         foreach ($userBillings as $userBilling){
 
-            if ($userBilling->transactionable_type == UserSubscription::class){
+            if(empty($userBilling->transactionable_type && $userBilling->transactionable_id)) {
+                $userSubscriptionsList[] = [
+
+                    'total'      => $userBilling->total,
+                    'created_at' => $userBilling->created_at->toDateTimeString(),
+                ];
+            } elseif ($userBilling->transactionable_type == UserSubscription::class){
 
                 $userSubscriptions = $this->userSubscriptionService->userSubscriptionsBilling($userBilling->transactionable_id);
                 if($userSubscriptions){
@@ -665,12 +769,14 @@ class UserService extends BaseService
     /**
      * Method: driverAssignedTrips
      *
+     * @param $assignedOrderForm
+     *
      * @return array
      */
-    public function driverAssignedTrips()
+    public function driverAssignedTrips($assignedOrderForm)
     {
-        $assignedOrders = $this->orderService->assignedOrders(auth()->id());
-        $assignedRequests = $this->requestService->assignedRequests(auth()->id());
+        $assignedOrders = $this->orderService->assignedOrders(auth()->id(), $assignedOrderForm->date);
+        $assignedRequests = $this->requestService->assignedRequests(auth()->id(), $assignedOrderForm->date);
 
         $data = [
             'assignedOrders'   => $assignedOrders,
@@ -682,5 +788,56 @@ class UserService extends BaseService
             true,
             $data
         );
+    }
+
+    /**
+     * Method: redeemPoints
+     *
+     * @param IForm $redeemPointForm
+     *
+     * @return array
+     */
+    public function redeemPoints(IForm $redeemPointForm)
+    {
+        if($redeemPointForm->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $redeemPointForm->errors()
+            );
+        }
+        $authUser = $this->findById(auth()->id());
+        if($authUser){
+
+            if($authUser->reward_points >= $redeemPointForm->redeem_points){
+
+                $pointsConversion = App::make(SettingService::class)->findByKey(ISettingKeys::ONE_AED);
+                if($pointsConversion){
+
+                    $discount = $redeemPointForm->redeem_points/$pointsConversion->values;
+
+                    return ResponseHelper::responseData(
+                        Config::get('constants.POINTS_DISCOUNT'),
+                        IResponseHelperInterface::SUCCESS_RESPONSE,
+                        true,
+                        [
+                            "discount" => [
+                                $discount
+                            ]
+                        ]
+                    );
+                }
+            } else {
+
+                return ResponseHelper::responseData(
+                    Config::get('constants.INVALID_OPERATION'),
+                    IResponseHelperInterface::FAIL_RESPONSE,
+                    false,
+                    null
+                );
+            }
+        }
     }
 }

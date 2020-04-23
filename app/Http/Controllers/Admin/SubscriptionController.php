@@ -9,6 +9,7 @@ use App\Services\Admin\CategoryService;
 use App\Services\Admin\SubscriptionSerivce;
 use App\Services\ICategoryType;
 use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SubscriptionController extends Controller
 {
@@ -139,5 +140,31 @@ class SubscriptionController extends Controller
             return redirect()->route('subscription.index')->with('error','Something went wrong');
         }
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('subscriptions', function($excel) {
+            $excel->sheet('subscriptions', function($sheet) {
+                $subscriptions = $this->subscriptionService->all();
+
+                foreach($subscriptions as $subscription){
+                    $print[] = array( 'Id'                 => $subscription->id,
+                                      'Category'           => $subscription->category_id == 1 ? 'Renewable Subscriptions':'One Time Services',
+                                      'name'               => $subscription->name,
+                                      'price'              => $subscription->price,
+                                      'Description'        => $subscription->description,
+                                      'Request(s) Allowed' => $subscription->request_allowed,
+                                      'Status'             => $subscription->status == 1 ? 'Active':'InActive',
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

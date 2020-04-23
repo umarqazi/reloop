@@ -17,14 +17,17 @@ Route::get('dependencies', 'Api\RegisterController@dependencies');
 Route::post('register', 'Api\RegisterController@signUp');
 Route::post('login', 'Api\LoginController@login');
 Route::post('forgot-password', 'Api\LoginController@forgotPassword');
+Route::post('reset-password', 'Api\LoginController@resetPassword');
 Route::post('password-change-request', 'Api\DriverController@passwordChangeRequest');
 Route::middleware('auth:api')->group(function () {
 
+    Route::get('dashboard', 'UserController@dashboard');
     Route::get('categories', 'Api\ProductController@categories');
     Route::get('category/products', 'Api\ProductController@categoryProducts');
     Route::post('buy-plan', 'Api\PaymentController@buyPlan');
     Route::post('buy-product', 'Api\PaymentController@buyProduct');
     Route::post('coupon-verification', 'Api\CouponController@couponVerification');
+    Route::post('redeem-points', 'UserController@redeemPoints');
     Route::post('change-password', 'Api\LoginController@changePassword');
     Route::get('user-profile', 'UserController@userProfile');
     Route::post('update-address', 'UserController@updateAddress');
@@ -46,7 +49,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('donations', 'Api\DonationController@donations');
 
     //Driver routes
-    Route::get('assigned-trips', 'Api\DriverController@driverAssignedTrips');
+    Route::post('assigned-trips', 'Api\DriverController@driverAssignedTrips');
     Route::post('trip-status', 'Api\DriverController@tripStatusUpdate');
     Route::post('record-weight', 'Api\DriverController@recordWeight');
     Route::get('feedback-questions', 'Api\DriverController@feedbackQuestions');

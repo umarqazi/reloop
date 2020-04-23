@@ -129,4 +129,29 @@ class EnvironmentalStatService extends BaseService
         ])->first();
         return $totalStats;
     }
+
+    /**
+     * Method: userEnvironmentalStats
+     *
+     * @param $userId
+     *
+     * @return int[]
+     */
+    public function userEnvironmentalStats($userId)
+    {
+        $userEnvironmentalStats = $this->model->where('user_id', $userId)->first();
+        if($userEnvironmentalStats){
+
+            return $userEnvironmentalStats;
+        }
+        return [
+            'co2_emission_reduced'  => 0,
+            'trees_saved'           => 0,
+            'oil_saved'             => 0,
+            'electricity_saved'     => 0,
+            'natural_ores_saved'    => 0,
+            'water_saved'           => 0,
+            'landfill_space_saved'  => 0,
+        ];
+    }
 }

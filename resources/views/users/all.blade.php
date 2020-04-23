@@ -16,7 +16,7 @@
                                 <li>
                                     <a href="{{ route('home') }}">Dashboard</a>
                                 </li>
-                                <li class="active">Users Reward Points</li>
+                                <li class="active">Redeem User Points</li>
                             </ol>
                         </div>
                     </div>
@@ -37,6 +37,9 @@
             <div id="table-datatables">
                 <div class="row">
                     <div class="col s12">
+                        <a class="btn btn-primary" href="{{ route('all-users.export') }}">Export</a>
+                    </div>
+                    <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                                 <tr>
@@ -53,26 +56,18 @@
                                     <tr>
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ ($user->user_type == \App\Services\IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == \App\Services\IUserType::DRIVER) ? 'Driver' : (($user->user_type == \App\Services\IUserType::SUPERVISOR) ? 'Supervisor' : '')) }}</td>
+                                        <td>{{ ($user->user_type == \App\Services\IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == \App\Services\IUserType::DRIVER) ? 'Driver' : (($user->user_type == \App\Services\IUserType::SUPERVISOR) ? 'Supervisor' : 'Organization')) }}</td>
                                         <td>{{ $user->reward_points ?? '0' }}</td>
                                         <td>
 {{--                                            <a href="" id="reward-update" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-refresh"></i></a>--}}
+                                           @if($user->reward_points > 0)
                                             <a href="javascript:void(0)" id="user-{{ $user->id }}" class="edit-user btn btn-primary float-left" data-action="{{ route('get-user', $user->id) }}"><i class="fa fa-edit"></i></a>
+                                           @endif
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             @endif
-                            <tfoot>
-                                <tr>
-                                    <th>User ID</th>
-                                    <th>User Email</th>
-                                    <th>User Type</th>
-                                    <th width="20%">Reward Point(s)</th>
-                                    <th>Action</th>
-
-                                </tr>
-                            </tfoot>
                             <tbody>
                             </tbody>
                         </table>

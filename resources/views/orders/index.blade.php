@@ -47,6 +47,9 @@
             <div id="table-datatables">
                 <div class="row">
                         <div class="col s12">
+                            <p class="col s12">
+                                <a class="btn btn-primary" href="{{ route('userOrders.export') }}">Export</a>
+                            </p>
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
@@ -58,16 +61,6 @@
                                 <th>Detail</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Order Number</th>
-                                <th>Email</th>
-                                <th>Order Status</th>
-                                <th>Total</th>
-                                <th>Detail</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($orders as $order)
                             <tr>

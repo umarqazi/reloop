@@ -42,6 +42,9 @@
 
             <div id="table-datatables">
                 <div class="row">
+                    <div class="col s12">
+                        <a class="btn btn-primary" href="{{ route('contact-us.export') }}">Export</a>
+                    </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
@@ -52,14 +55,6 @@
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Email</th>
-                                <th>Subject</th>
-                                <th>Action</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($contactUs as $contact)
                             <tr>

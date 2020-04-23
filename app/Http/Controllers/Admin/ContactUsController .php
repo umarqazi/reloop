@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\Admin\ContactUsService;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContactUsController extends Controller
 {
@@ -90,5 +91,27 @@ class ContactUsController extends Controller
     public function destroy($id)
     {
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('contactUs', function($excel) {
+            $excel->sheet('contactUs', function($sheet) {
+                $contactUs = $this->contactUsService->all();
+
+                foreach($contactUs as $contact){
+                    $print[] = array( 'Id'         => $contact->id,
+                                      'Email'      => $contact->email,
+                                      'Subject'    => $contact->subject,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

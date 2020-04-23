@@ -18,14 +18,28 @@ class LoginForm extends BaseForm
 
     public $email;
     public $password;
+    public $login_type;
+    public $status;
+    public $reports;
+    public $api_token;
+    public $user_type;
+
+    public function __construct()
+    {
+        $this->status = 1;
+        $this->reports = 1;
+        $this->user_type = 1;
+        $this->api_token = str_random(60);
+    }
     /**
      * @inheritDoc
      */
     public function toArray()
     {
         return [
-            'email'     => $this->email,
-            'password'  => $this->password
+            'email'        => $this->email,
+            'password'     => $this->password,
+            'login_type'   => $this->login_type
         ];
     }
 
@@ -36,7 +50,8 @@ class LoginForm extends BaseForm
     {
         return [
             'email' => 'required|email',
-            'password' => 'required'
+            'login_type'   => 'required|between:1,3|integer',
+            'password' => 'required_if:login_type,==,1'
         ];
     }
 }

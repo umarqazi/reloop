@@ -7,6 +7,7 @@ use App\Http\Requests\Setting\CreateRequest;
 use App\Http\Requests\Setting\UpdateRequest;
 use App\Services\Admin\SettingService;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SettingController extends Controller
 {
@@ -51,6 +52,8 @@ class SettingController extends Controller
     public function store(CreateRequest $request)
     {
         $data = $request->except('_token') ;
+        $data['key'] = str_replace(' ', '_', $data['name'])  ;
+
         $setting = $this->settingService->create($data);
 
         if ($setting) {
@@ -98,6 +101,8 @@ class SettingController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $data = $request->except('_token', '_method');
+        $data['key'] = str_replace(' ', '_', $data['name'])  ;
+
         $setting = $this->settingService->update($id,$data);
             if ($setting) {
                 return redirect()->back()->with('success', Config::get('constants.SETTING_UPDATE_SUCCESS'));
@@ -115,5 +120,27 @@ class SettingController extends Controller
     public function destroy($id)
     {
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('settings', function($excel) {
+            $excel->sheet('settings', function($sheet) {
+                $settings = $this->settingService->all();
+
+                foreach($settings as $setting){
+                    $print[] = array( 'Id'        => $setting->id,
+                                      'Keys'      => $setting->keys,
+                                      'Values'    => $setting->values,
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

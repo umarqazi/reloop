@@ -49,6 +49,7 @@
                     <div class="col s12">
                         <a class="btn waves-effect waves-light primary-btn-bgcolor"
                            href="{{ route('questions.create') }}">Create</a>
+                        <a class="btn btn-primary" href="{{ route('questions.export') }}">Export</a>
                     </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
@@ -59,13 +60,6 @@
                                 <th>Actions</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Id</th>
-                                <th>Question</th>
-                                <th>Actions</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
                             @foreach($questions as $question)
                             <tr>

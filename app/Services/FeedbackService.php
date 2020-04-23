@@ -84,6 +84,8 @@ class FeedbackService extends BaseService
             if($findRequest){
 
                 $orderableType = $findRequest->getMorphClass();
+                $findRequest->driver_trip_status = IDriverTripStatus::RECORD_FEEDBACK;
+                $findRequest->update();
             } else {
 
                 return ResponseHelper::responseData(
@@ -100,6 +102,8 @@ class FeedbackService extends BaseService
             if($findOrder){
 
                 $orderableType = $findOrder->getMorphClass();
+                $findOrder->driver_trip_status = IDriverTripStatus::RECORD_FEEDBACK;
+                $findOrder->update();
             } else {
 
                 return ResponseHelper::responseData(

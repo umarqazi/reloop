@@ -78,6 +78,21 @@ class TransactionService extends BaseService
     }
 
     /**
+     * Method: extraCharge
+     *
+     * @param $data
+     *
+     * @return void
+     */
+    public function extraCharge($data)
+    {
+        $model = $this->model;
+        $model->user_id = $data['user_id'];
+        $model->total = $data['extra_charge'];
+        $model->save();
+    }
+
+    /**
      * Method: userBillings
      *
      * @param $userId

@@ -7,6 +7,7 @@ use App\Http\Requests\City\CreateRequest;
 use App\Http\Requests\City\UpdateRequest;
 use App\Services\Admin\CityService;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CityController extends Controller
 {
@@ -126,5 +127,27 @@ class CityController extends Controller
         $cities = $this->cityService->all();
         return view('cities.index', compact('cities'));
 
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('cities', function($excel) {
+            $excel->sheet('cities', function($sheet) {
+                $cities = $this->cityService->all();
+
+                foreach($cities as $city){
+                    $print[] = array( 'Id'        => $city->id,
+                                      'name'      => $city->name,
+                                      'status'    => $city->status == 0 ? 'Inactive' : 'Active',
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }

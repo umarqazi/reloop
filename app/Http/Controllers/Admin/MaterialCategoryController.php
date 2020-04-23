@@ -7,6 +7,7 @@ use App\Http\Requests\MaterialCategory\CreateRequest;
 use App\Http\Requests\MaterialCategory\UpdateRequest;
 use App\Services\Admin\MaterialCategoryService;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MaterialCategoryController extends Controller
 {
@@ -129,5 +130,27 @@ class MaterialCategoryController extends Controller
         } else {
             return redirect()->back()->with('error','Error While Deleting The Material Category');
         }
+    }
+
+    /**
+     * export list
+     */
+    public function export(){
+        Excel::create('materialCategories', function($excel) {
+            $excel->sheet('materialCategories', function($sheet) {
+                $materialCategories = $this->materialCategoryService->all();
+
+                foreach($materialCategories as $material){
+                    $print[] = array( 'ID'       => $material->id,
+                                     'Name'      => $material->name,
+                                     'Status'    => ($material->status == 1) ? 'Active' : 'Inactive',
+                    ) ;
+                }
+
+                $sheet->fromArray($print);
+
+            });
+
+        })->export('csv');
     }
 }
