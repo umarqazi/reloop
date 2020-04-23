@@ -1,0 +1,148 @@
+
+.chart-wrapper{
+    width: 100%;
+    padding:10px;
+}
+.chart-wrapper .nav-tabs{
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chart-wrapper .nav-tabs .nav-item .nav-link{
+    border: none;
+    background: transparent;
+    color: #cfcfcf;
+    border-radius: 30px;
+    padding: 2px 20px;
+}
+.chart-wrapper .nav-tabs .nav-link.active{
+    background: #158dcc;
+    color: white;
+}
+.chart-wrapper .canvasjs-chart-credit{
+    display: none;
+}
+.chart-wrapper .canvasjs-chart-toolbar{
+    display: none;
+}
+.canvasjs-chart-canvas{
+    width: 100% !important;
+    height: 290px;
+}
+.chart-wrapper .tab-content{
+    padding: 20px;
+}
+.charts-wrapper{
+    width: 100%;
+    height: 300px;
+}
+.btn-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+.btn-wrapper i{
+    color: grey;
+}
+.btn-wrapper h3{
+    margin: 0;
+}
+.month-slider h3{
+    margin: 10px 0 20px;
+    text-align: center;
+}
+.month-slider h3 span{
+    font-size: 20px;
+    margin-left: 5px;
+}
+.month-view-slider .owl-nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    top: 20px;
+    left: 0;
+}
+.month-view-slider .owl-nav .owl-prev:focus ,.month-view-slider .owl-nav .owl-next:focus{
+    outline: none;
+    box-shadow: none;
+}
+.charts-top-row{
+    background-color: white;
+    align-items: center;
+}
+
+.container {
+    width: 80%;
+    margin: 15px auto;
+}
+
+[class$="-legend"] {
+    list-style: none;
+    cursor: pointer;
+    padding-left: 0;
+}
+
+[class$="-legend"] li {
+    display: block;
+    padding: 0 5px;
+}
+
+[class$="-legend"] li.hidden {
+    text-decoration: line-through;
+}
+
+[class$="-legend"] li span {
+    display: inline-block;
+    height: 15px;
+    margin-right: 10px;
+    width: 15px;
+}
+.pie-chart-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pie-chart-wrapper #myChart{
+    max-width: 80% !important;
+    width: 100% !important;
+    height: 300px !important;
+    object-fit: contain;
+}
+
+.pie-chart-wrapper #legend{
+    width: 20%;
+}
+.inner-wrapper{
+    box-shadow: 0 6px 20px 0 rgba(38, 198, 218, 0.5);
+    border: none;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    padding: 20px 15px;
+    background-color: #19afd7;
+    color: white;
+}
+.cards-row{
+    padding-top: 12px;
+}
+.icon-wrapper span{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.18);
+    border-radius: 50%;
+    color: white;
+}
+.inner-wrapper h5{
+    text-align: right;
+
+}
+.inner-wrapper p{
+    margin: 15px 0;
+}
