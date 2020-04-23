@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\District\CreateRequest;
 use App\Http\Requests\District\UpdateRequest;
 use App\Repositories\Admin\DistrictRepo;
+use App\Services\Admin\CityService;
 use App\Services\Admin\DistrictService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -13,12 +14,14 @@ use Illuminate\Support\Facades\Config;
 class DistrictController extends Controller
 {
     private $districtService ;
+    private $cityService ;
 
     /**
      * DistrictController constructor.
      */
-    public function __construct(DistrictService $districtService) {
+    public function __construct(DistrictService $districtService, CityService $cityService) {
         $this->districtService   =  $districtService;
+        $this->cityService       =  $cityService;
     }
     /**
      * Display a listing of the resource.
@@ -125,7 +128,8 @@ class DistrictController extends Controller
          * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
          */
     public function districtCreate($city_id){
-        return view('districts.create',compact('city_id'));
+        $city = $this->cityService->findById(($city_id));
+        return view('districts.create',compact('city'));
     }
 
 }

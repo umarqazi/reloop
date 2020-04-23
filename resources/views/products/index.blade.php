@@ -59,7 +59,6 @@
                                 <th>Category</th>
                                 <th>name</th>
                                 <th>price</th>
-                                <th>Description</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -71,7 +70,6 @@
                                 <td>{{ $product->category->name }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->price }}</td>
-                                <td>{{ $product->description }}</td>
                                 <td>{{ $product->status == 0 ? 'Inactive' : 'Active'}}</td>
                                 <td>
                                     <a href="{{ route('product.edit', $product->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>

@@ -24,8 +24,8 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'keys'         =>   'required',
-            'values'       =>   'required',
+            'name'         =>   'required',
+            'value'        =>   'required',
         ];
     }
 }

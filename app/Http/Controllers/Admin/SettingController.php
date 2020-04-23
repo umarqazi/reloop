@@ -52,7 +52,7 @@ class SettingController extends Controller
     public function store(CreateRequest $request)
     {
         $data = $request->except('_token') ;
-        $data['keys'] = str_replace(' ', '_', $data['keys'])  ;
+        $data['key'] = str_replace(' ', '_', $data['name'])  ;
 
         $setting = $this->settingService->create($data);
 
@@ -101,6 +101,8 @@ class SettingController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $data = $request->except('_token', '_method');
+        $data['key'] = str_replace(' ', '_', $data['name'])  ;
+
         $setting = $this->settingService->update($id,$data);
             if ($setting) {
                 return redirect()->back()->with('success', Config::get('constants.SETTING_UPDATE_SUCCESS'));

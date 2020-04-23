@@ -14,6 +14,8 @@
                         </li>
                         <li><a href="{{route('getCities')}}">Cities</a>
                         </li>
+                        <li><a href="{{route('cities.edit', $city->id)}}">{{ $city->name }}</a>
+                        </li>
                         <li class="active">Create Related District</li>
                     </ol>
                 </div>
@@ -49,7 +51,7 @@
             {{ Form::open(['url' => route('districts.store'),
                            'class' => 'row']) }}
 
-            <input id="city_id" type="text" name="city_id" value="{{$city_id}}" hidden>
+            <input id="city_id" type="text" name="city_id" value="{{$city->id}}" hidden>
             <div class="col s12">
                 <div class="input-field col s6">
                     <input id="name" type="text" name="name" required>
