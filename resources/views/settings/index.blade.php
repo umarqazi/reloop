@@ -52,8 +52,8 @@
                             <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Keys</th>
-                                <th>Values</th>
+                                <th>Name</th>
+                                <th>Value</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -61,8 +61,8 @@
                             @foreach($settings as $setting)
                             <tr>
                                 <td>{{ $setting->id }}</td>
-                                <td>{{ $setting->keys }}</td>
-                                <td>{{ $setting->values }}</td>
+                                <td>{{ $setting->name }}</td>
+                                <td>{{ $setting->value }}</td>
                                 <td>
                                     <a href="{{ route('settings.edit', $setting->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
                                 </td>
