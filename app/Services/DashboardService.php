@@ -83,9 +83,11 @@ class DashboardService extends BaseService
     public function userDashboard($userId)
     {
         $environmentalStats = App::make(EnvironmentalStatService::class)->userEnvironmentalStats($userId);
+        $userService = App::make(UserService::class)->findById($userId);
 
         $userDashboard = [
-            'environmentalStats' => $environmentalStats
+            'environmentalStats' => $environmentalStats,
+            'rewardPoints' => ($userService->reward_points) ? $userService->reward_points : 0
         ];
 
         return ResponseHelper::responseData(

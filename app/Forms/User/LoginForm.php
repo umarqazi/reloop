@@ -50,7 +50,7 @@ class LoginForm extends BaseForm
     {
         return [
             'email' => 'required|email',
-            'login_type'   => 'required|between:1,3',
+            'login_type'   => 'required|between:1,3|integer',
             'password' => 'required_if:login_type,==,1'
         ];
     }
