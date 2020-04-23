@@ -87,7 +87,7 @@ class DashboardService extends BaseService
 
         $userDashboard = [
             'environmentalStats' => $environmentalStats,
-            'rewardPoitns' => ($userService->reward_points) ? $userService->reward_points : 0
+            'rewardPoints' => ($userService->reward_points) ? $userService->reward_points : 0
         ];
 
         return ResponseHelper::responseData(
