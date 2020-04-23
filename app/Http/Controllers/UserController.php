@@ -237,4 +237,21 @@ class UserController extends Controller
             $redeemPoints['data']
         );
     }
+
+    /**
+     * Method: currencyConversion
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function currencyConversion()
+    {
+        $currencyConversion = $this->userService->currencyConversion();
+
+        return ResponseHelper::jsonResponse(
+            $currencyConversion['message'],
+            $currencyConversion['code'],
+            $currencyConversion['status'],
+            $currencyConversion['data']
+        );
+    }
 }
