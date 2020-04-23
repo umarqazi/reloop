@@ -109,7 +109,9 @@ class DonationService extends BaseService
                     Config::get('constants.INVALID_DONATION_SUCCESS'),
                     IResponseHelperInterface::SUCCESS_RESPONSE,
                     true,
-                    null
+                    [
+                        'remainingPoints' => $authUser->reward_points
+                    ]
                 );
             } else{
 
