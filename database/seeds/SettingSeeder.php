@@ -13,12 +13,12 @@ class SettingSeeder extends Seeder
     {
         Setting::create([
             'name'     => 'Driver Order Listing',
-            'key'      => 'Driver_Order_Listing',
+            'key'      => 'per_day_maximum_orders_for_driver',
             'value'    =>  '4',
         ]);
         Setting::create([
             'name'     => 'Currency Conversion',
-            'key'      => 'Currency_Conversion',
+            'key'      => 'one_point',
             'value'    => '0.1',
         ]);
     }
