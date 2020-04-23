@@ -53,6 +53,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Name</th>
+                                <th>Key</th>
                                 <th>Value</th>
                                 <th>Actions</th>
                             </tr>
@@ -62,6 +63,7 @@
                             <tr>
                                 <td>{{ $setting->id }}</td>
                                 <td>{{ $setting->name }}</td>
+                                <td>{{ $setting->key }}</td>
                                 <td>{{ $setting->value }}</td>
                                 <td>
                                     <a href="{{ route('settings.edit', $setting->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>

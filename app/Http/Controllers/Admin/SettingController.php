@@ -101,7 +101,6 @@ class SettingController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $data = $request->except('_token', '_method');
-        $data['key'] = str_replace(' ', '_', $data['name'])  ;
 
         $setting = $this->settingService->update($id,$data);
             if ($setting) {
