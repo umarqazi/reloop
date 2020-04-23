@@ -342,6 +342,7 @@ class UserService extends BaseService
                     $loginForm->loadToModel($model);
                     $model->assignRole('user');
                     $model->stripe_customer_id = $stripeCustomerId;
+                    $model->login_type = intval($loginForm->login_type);
                     $model->save();
                     $model->load('organization', 'addresses');
 
@@ -379,7 +380,7 @@ class UserService extends BaseService
         {
             $domain = env('APP_URL');
             $resetToken = str_random(30).strtotime('now');
-            $resetUrl = $domain.'?reset_token='.$resetToken;
+            $resetUrl = $domain.'://reset_password?token='.$resetToken;
             $data = [
                 'resetUrl'   => $resetUrl,
                 'email' => $forgotForm->email
