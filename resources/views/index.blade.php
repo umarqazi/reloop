@@ -1,12 +1,5 @@
-@extends('layouts.master')
+@extends('layouts.dashboard')
 @section('content')
-    <head>
-        <link href="/assets/css/chart/bootstrap.min.css" type="text/css" rel="stylesheet">
-        <link href="/assets/css/chart/charts.css" type="text/css" rel="stylesheet">
-        <link href="/assets/css/chart/main.css" type="text/css" rel="stylesheet">
-        <link href="/assets/css/chart/owl.carousel.min.css" type="text/css" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    </head>
     <body>
     <div class="row m-0 cards-row">
         <div class="col-md-4 col-sm-6 col-12">
@@ -251,12 +244,5 @@
     </div>
 
     </body>
-    <script type="text/javascript" src="/assets/js/chart/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/assets/js/chart/owl.carousel.min.js"></script>
-    <script type="text/javascript" src="/assets/js/chart/chart.js"></script>
-    <script type="text/javascript" src="/assets/js/chart/custom.js"></script>
-    <script type="text/javascript" src="/assets/js/chart/wow.min.js"></script>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 @endsection
