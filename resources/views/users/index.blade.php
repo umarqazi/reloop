@@ -68,6 +68,9 @@
                                 <th>User Type</th>
                                 <th>Rewards Points</th>
                                 <th>User Status</th>
+                                <th>User City</th>
+                                <th>User District</th>
+                                <th>Created at</th>
                                 {{--<th>Total Orders</th>
                                 <th>Last Activity</th>--}}
                                 @if($route != '')
@@ -80,11 +83,14 @@
                                     @foreach($users as $user)
                                         <tr>
                                             <td>{{ $user->id }}</td>
-                                            <td>{{ $user->email }}</td>
+                                            <td>{{ Str::limit($user->email, 13) }}</td>
                                                 <td>{{ ($user->user_type == \App\Services\IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == \App\Services\IUserType::DRIVER) ? 'Driver' : (($user->user_type == \App\Services\IUserType::SUPERVISOR) ? 'Supervisor' : '')) }}</td>
                                             <td>{{ $user->reward_points ?? '0' }}</td>
                                             <td>{{ ($user->status == 1) ? 'Active' : 'Inactive' }}</td>
-                                            @if($route != '')
+                                            <td>{{ $user->addresses->first()->city->name }}</td>
+                                            <td>{{ $user->addresses->first()->district->name }}</td>
+                                            <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                                        @if($route != '')
                                                 <td>
                                                     @if($type ==\App\Services\IUserType::DRIVER)
                                                         <a href="{{ route($route.'.show', $user->id) }}" class="btn waves-effect waves-light blue accent-2">View</a>

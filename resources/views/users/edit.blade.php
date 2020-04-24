@@ -82,7 +82,7 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s6">
-                            <input id="phone_number" name="phone_number" type="number" value="{{ $user->phone_number }}" required >
+                            <input id="phone_number" name="phone_number" type="text" value="{{ $user->phone_number }}" required >
                             <label for="phone_number" >Phone Number</label>
                             @if ($errors->has('phone_number'))
                                 <span class="help-block">
