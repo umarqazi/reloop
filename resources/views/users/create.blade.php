@@ -77,7 +77,7 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s6">
-                        <input id="phone_number" name="phone_number" type="number" required >
+                        <input id="phone_number" name="phone_number" type="text" required >
                         <label for="phone_number" data-error="wrong" data-success="right">Phone Number</label>
                         @if ($errors->has('phone_number'))
                             <span class="help-block">

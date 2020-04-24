@@ -57,6 +57,9 @@
                                 <th>Order Number</th>
                                 <th>Email</th>
                                 <th>Order Status</th>
+                                <th>Order City</th>
+                                <th>Order District</th>
+                                <th>Order Created at</th>
                                 <th>Total</th>
                                 <th>Detail</th>
                             </tr>
@@ -71,6 +74,9 @@
                                     @if($order->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
                                     @if($order->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Order Dispatched @endif
                                     @if($order->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Order Completed @endif</td>
+                                <td>{{ $order->city }}</td>
+                                <td>{{ $order->district }}</td>
+                                <td>{{ $order->created_at->format('Y-m-d')}}</td>
                                 <td>{{ $order->total }}</td>
                                 <td><a href="{{ route('orders.show', $order->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
                             </tr>
