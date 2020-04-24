@@ -59,7 +59,7 @@
                </div>
                 <div class="col s12">
                     <div class="input-field col s12">
-                        <a href="http://www.google.com/maps/place/{{ $driver->currentLocation->latitude }},{{ $driver->currentLocation->latitude }}" target="_blank" style="color: white"><button type="submit" class="btn btn-primary">View on Map</button></a>
+                        <a href="http://www.google.com/maps/place/{{ $driver->currentLocation->latitude }},{{ $driver->currentLocation->longitude }}" target="_blank" style="color: white"><button type="submit" class="btn btn-primary">View on Map</button></a>
                     </div>
                 </div>
             @else
