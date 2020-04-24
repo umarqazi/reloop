@@ -7,12 +7,12 @@
                 <div class="container">
                     <div class="row">
                         <div class="col s10 m6 l6">
-                            <h5 class="breadcrumbs-title">User Subscription</h5>
+                            <h5 class="breadcrumbs-title">User Donations</h5>
                             <ol class="breadcrumbs">
                                 <li>
                                     <a href="{{ route('home') }}">Dashboard</a>
                                 </li>
-                                <li class="active">User Donation</li>
+                                <li class="active">User Donations</li>
                             </ol>
                         </div>
                     </div>

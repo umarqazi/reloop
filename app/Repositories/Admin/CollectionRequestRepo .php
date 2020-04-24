@@ -8,13 +8,16 @@ use App\Order;
 use App\Repositories\Admin\BaseRepo;
 use App\Repositories\Admin\UserRepo;
 use App\Request;
+use App\Services\ISettingKeys;
 use App\Services\IUserType;
+use App\Setting;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Constraint\Count;
 
 class CollectionRequestRepo extends BaseRepo
 {
     private $order ;
+    private $setting ;
     /**
      * OrderRepo constructor.
      */
@@ -22,6 +25,7 @@ class CollectionRequestRepo extends BaseRepo
     {
         $this->getModel(Request::class);
         $this->order = new Order();
+        $this->setting = new Setting();
     }
 
     /**
@@ -56,10 +60,11 @@ class CollectionRequestRepo extends BaseRepo
      * @return bool
      */
     public function checkDriver($id,$date){
-        $checkRequests = $this->all()->where('driver_id',$id)->where('delivery_date',$date);
+        $checkRequests = $this->all()->where('driver_id',$id)->where('collection_date',$date);
         $checkOrders = $this->order->all()->where('driver_id',$id)->where('delivery_date',$date) ;
-        $count = Count($checkOrders) + Count($checkOrders);
-        if($count < 4){
+        $max = $this->setting->where('key',ISettingKeys::DRIVER_KEY)->first()->value;
+        $count = Count($checkRequests) + Count($checkOrders);
+        if($count < $max){
             return true ;
         }
         else{

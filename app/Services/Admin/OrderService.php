@@ -6,6 +6,7 @@ namespace App\Services\Admin;
 
 use App\Repositories\Admin\CityRepo;
 use App\Repositories\Admin\DistrictRepo;
+use App\Repositories\Admin\SettingRepo;
 use App\Repositories\Admin\UserRepo;
 use App\Repositories\Admin\OrderRepo;
 use App\Services\Admin\BaseService;
