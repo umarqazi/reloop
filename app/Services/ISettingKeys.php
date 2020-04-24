@@ -16,5 +16,5 @@ interface ISettingKeys
 {
 
     const DRIVER_KEY  = 'per_day_maximum_orders_for_driver';
-    const ONE_AED     = 'one_AED';
+    const ONE_POINT     = 'one_point';
 }

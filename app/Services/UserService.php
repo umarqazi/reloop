@@ -813,19 +813,17 @@ class UserService extends BaseService
 
             if($authUser->reward_points >= $redeemPointForm->redeem_points){
 
-                $pointsConversion = App::make(SettingService::class)->findByKey(ISettingKeys::ONE_AED);
+                $pointsConversion = App::make(SettingService::class)->findByKey(ISettingKeys::ONE_POINT);
                 if($pointsConversion){
 
-                    $discount = $redeemPointForm->redeem_points/$pointsConversion->values;
+                    $discount = $redeemPointForm->redeem_points * $pointsConversion->value;
 
                     return ResponseHelper::responseData(
                         Config::get('constants.POINTS_DISCOUNT'),
                         IResponseHelperInterface::SUCCESS_RESPONSE,
                         true,
                         [
-                            "discount" => [
-                                $discount
-                            ]
+                            "discount" => $discount
                         ]
                     );
                 }
@@ -839,5 +837,26 @@ class UserService extends BaseService
                 );
             }
         }
+    }
+
+    /**
+     * Method: currencyConversion
+     *
+     * @return array
+     */
+    public function currencyConversion()
+    {
+        $currencyConversion = App::make(SettingService::class)->findByKey(ISettingKeys::ONE_POINT);
+        $authUser = $this->findById(auth()->id());
+
+        return ResponseHelper::responseData(
+            Config::get('constants.POINTS_DISCOUNT'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            [
+                "discount" => floatval($currencyConversion->value),
+                "rewardPoints" => $authUser->reward_points ? $authUser->reward_points : 0
+            ]
+        );
     }
 }

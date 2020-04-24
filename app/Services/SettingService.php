@@ -54,6 +54,6 @@ class SettingService extends BaseService
      */
     public function findByKey($key)
     {
-        return $this->model->where('keys', $key)->first();
+        return $this->model->where('key', $key)->first();
     }
 }
