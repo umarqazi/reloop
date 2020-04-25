@@ -163,6 +163,12 @@ class UserService extends BaseService
                 $address_id  = $user_addresses[0]->id;
                 $this->addressRepo->update($address_id,$update_address);
             }
+            else{
+
+                $update_address['user_id'] = $id ;
+
+                $this->addressRepo->create($update_address);
+            }
 
             DB::commit();
             return true;
