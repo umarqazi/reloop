@@ -29,7 +29,7 @@ class LoginForm extends BaseForm
         $this->status = 1;
         $this->reports = 1;
         $this->user_type = 1;
-        $this->api_token = str_random(60);
+        $this->api_token = str_random(50).strtotime('now');
     }
     /**
      * @inheritDoc
