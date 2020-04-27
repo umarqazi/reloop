@@ -65,7 +65,7 @@ class UserService extends BaseService
             'status'          => $data['status'],
             'user_type'       => $data['user_type'],
             'login_type'      => 1,
-            'api_token'       => str_random(60),
+            'api_token'       => str_random(50).strtotime('now'),
             'reports'         => $data['reports'],
         );
         //check that avatar exists or not
