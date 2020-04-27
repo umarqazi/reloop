@@ -132,11 +132,11 @@
                     @if($type != 1)
                     <div class="col s12">
                         <div class="input-field col s6">
-                            {{ Form::select('city_id', (['' => 'Choose City'] + $cities), $user->addresses[0]->city_id, ['id' => 'city_id','required' => 'required']) }}
+                            {{ Form::select('city_id', (['' => 'Choose City'] + $cities), $user->addresses[0]->city_id, ['id' => 'user_city_id','required' => 'required']) }}
                             <label>City</label>
                         </div>
                         <div class="input-field col s6">
-                            {{ Form::select('district_id', (['' => 'Choose District'] + $districts), $user->addresses[0]->district_id, ['id' => 'district_id','required' => 'required']) }}
+                            {{ Form::select('district_id[]', ($districts), $district_ids, ['multiple','id' => 'user_district_id','required' => 'required']) }}
                             <label>District</label>
                         </div>
                     </div>

@@ -128,11 +128,16 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s6">
-                        {{ Form::select('city_id', (['' => 'Choose City'] + $cities), null, ['id' => 'city_id','required' => 'required']) }}
+                        {{ Form::select('city_id', (['' => 'Choose City'] + $cities), null, ['id' => 'user_city_id','required' => 'required']) }}
                         <label>City</label>
                     </div>
                     <div class="input-field col s6">
-                        {{ Form::select('district_id', (['' => 'Choose District'] + $districts), null, ['id' => 'district_id','required' => 'required']) }}
+                        <select multiple required name="district_id[]" id="user_district_id">
+                            <option value="" disabled >Choose District</option>
+                            {{--@foreach($districts as $district)
+                                <option value="{{$district->id}}">{{$district->name}}</option>
+                            @endforeach--}}
+                        </select>
                         <label>District</label>
                     </div>
                 </div>

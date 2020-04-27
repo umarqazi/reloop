@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->string('avatar')->nullable();
             $table->boolean('status');
+            $table->tinyInteger('product_for');
             $table->timestamps();
         });
 

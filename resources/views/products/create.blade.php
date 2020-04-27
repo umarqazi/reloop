@@ -104,6 +104,15 @@
                     </span>
                     @endif
                 </div>
+                <div class="input-field col s6">
+                    <select name="product_for" id="product_for" required>
+                        <option value="" disabled selected>Product For</option>
+                        <option value={{\App\Services\IProductFor::HOUSE_HOLD}} >House Hold</option>
+                        <option value={{\App\Services\IProductFor::ORGANIZATION}} >Organization</option>
+                        <option value={{\App\Services\IProductFor::BOTH}} >Both</option>
+                    </select>
+                    <label>Product For</label>
+                </div>
                 <div class="col s12">
                     <div class="input-field col s6">
                         <h6 class="custom-label">Avatar</h6>

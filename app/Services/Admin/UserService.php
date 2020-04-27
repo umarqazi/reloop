@@ -79,14 +79,18 @@ class UserService extends BaseService
         $user =  parent::create($userData);
 
         if($user){
-                $address = array(
-                    'user_id'         => $user->id,
-                    'location'        => $data['location'],
-                    'city_id'         => $data['city_id'],
-                    'district_id'     => $data['district_id']
-                );
 
-                $this->addressRepo->create($address);
+                foreach ($data['district_id'] as $distict_id ){
+                    $address = array(
+                        'user_id'         => $user->id,
+                        'location'        => $data['location'],
+                        'city_id'         => $data['city_id'],
+                        'district_id'     => $distict_id
+                    );
+                    $this->addressRepo->create($address);
+
+                }
+
 
         if($data['user_type'] == IUserType::HOUSE_HOLD){
             $this->emailNotificationService->adminUserCreateEmail($data);
@@ -151,19 +155,29 @@ class UserService extends BaseService
                 );
             }
             else{
-                $update_address = array(
-                    'location'        => $request['location'],
-                    'city_id'         => $request['city_id'],
-                    'district_id'     => $request['district_id'],
-                );
+                $user = $this->findById($id) ;
+                foreach($user->addresses as $address){
+                    $this->addressRepo->destroy($address->id);
+                }
+
+                for($i = 0 ; $i < sizeof($request['district_id']) ; $i++ ){
+                    $update_address = array(
+                        'user_id'         => $id,
+                        'location'        => $request['location'],
+                        'city_id'         => $request['city_id'],
+                        'district_id'     => $request['district_id'][$i],
+                    );
+
+                    $this->addressRepo->create($update_address);
+                }
             }
             $user_addresses = $this->findById($id)->addresses;
 
-            if(sizeof($user_addresses) > 0){
-                $address_id  = $user_addresses[0]->id;
+            if(sizeof($user_addresses) > 0 && $data['user_type'] == IUserType::HOUSE_HOLD){
+                $address_id  = $user_addresses->first()->id;
                 $this->addressRepo->update($address_id,$update_address);
             }
-            else{
+            if(sizeof($user_addresses) == 0 && $data['user_type'] == IUserType::HOUSE_HOLD){
 
                 $update_address['user_id'] = $id ;
 
