@@ -132,9 +132,11 @@
                         <label>City</label>
                     </div>
                     <div class="input-field col s6">
+                        {{ Form::select('district_id[]', (['' => 'Choose District']), null, ['multiple','id' => 'user_district_id','required' => 'required']) }}
+                        {{--
                         <select multiple required name="district_id" id="user_district_id">
                             <option value="" disabled >Choose District</option>
-                        </select>
+                        </select>--}}
                         <label>District</label>
                     </div>
                 </div>

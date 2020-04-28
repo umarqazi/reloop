@@ -102,7 +102,7 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s6">
-                            <input disabled id="email" name="email" type="email"  value="{{ $user->email }}" required >
+                            <input  id="email" name="email" type="email"  value="{{ $user->email }}" required >
                             <label for="email" >Email</label>
                         </div>
                         <div class="input-field col s6">
@@ -136,7 +136,7 @@
                             <label>City</label>
                         </div>
                         <div class="input-field col s6">
-                            {{ Form::select('district_id', ($districts), $district_ids, ['multiple','id' => 'user_district_id','required' => 'required']) }}
+                            {{ Form::select('district_id[]', ($districts), $district_ids, ['multiple','id' => 'user_district_id','required' => 'required']) }}
                             <label>District</label>
                         </div>
                     </div>
@@ -186,7 +186,7 @@
                                     <label>City</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    {{ Form::select('district_id', (['' => 'Choose District'] + $districts), $user->addresses->first()->district_id , ['id' => 'district_id']) }}
+                                    {{ Form::select('district_id[]', (['' => 'Choose District'] + $districts), $user->addresses->first()->district_id , ['id' => 'district_id']) }}
                                     <label>District</label>
                                 </div>
                                 <div class="input-field col s3">
