@@ -232,15 +232,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="inner-wrapper">
-                <h5>@if(!empty($dashboard->total_natural_ores_saved)){{$dashboard->total_natural_ores_saved}} @else 0 @endif kg</h5>
-                <div class="icon-wrapper">
-                    <span><i class="fas fa-shopping-cart"></i></span>
-                    <p>Natural Ores Saved</p>
-                </div>
-            </div>
-        </div>
     </div>
 
     </body>

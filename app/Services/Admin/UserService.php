@@ -119,7 +119,7 @@ class UserService extends BaseService
      */
     public function upgrade($id, $request)
     {
-        $data = $request->except('_token', '_method', 'email');
+        $data = $request->except('_token', '_method');
 
         $userData = array(
             'first_name'      => $data['first_name'],
