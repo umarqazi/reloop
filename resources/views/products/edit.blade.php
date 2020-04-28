@@ -108,6 +108,22 @@
                 </div>
             </div>
             <div class="col s12">
+            <div class="input-field col s6">
+                <select name="product_for" id="product_for" required>
+                    <option value="" disabled selected>Product For</option>
+                    <option value={{\App\Services\IProductFor::HOUSE_HOLD}} {{ $product->product_for==\App\Services\IProductFor::HOUSE_HOLD ? 'selected': '' }}>House Hold</option>
+                    <option value={{\App\Services\IProductFor::ORGANIZATION}} {{ $product->product_for==\App\Services\IProductFor::ORGANIZATION ? 'selected': '' }}>Organization</option>
+                    <option value={{\App\Services\IProductFor::BOTH}} {{ $product->product_for==\App\Services\IProductFor::BOTH ? 'selected': '' }}>Both</option>
+                </select>
+                <label>Product For</label>
+                @if ($errors->has('product_for'))
+                    <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('product_for') }}</strong>
+                    </span>
+                @endif
+            </div>
+            </div>
+            <div class="col s12">
                 <div class="col s6 box-image">
                     <img src="{{ $product->avatar }}" alt="Avatar">
                 </div>

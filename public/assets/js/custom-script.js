@@ -19,6 +19,27 @@ $(document).ready(function () {
         }
     });
 
+    $("select[id='user_city_id']").on('change', function() {
+       let city_id = $(this).val();
+       let select = $('#user_district_id');
+       select.empty();
+
+
+        //ajax call to append related districts
+        $.ajax({
+            type: "get",
+            url: "/get-related-districts/"+city_id,
+            success: function (res) {
+                if (res) {
+                    select.append('<option value="" disabled selected >Choose District</option>');
+                    $.each(res, function (key, value) {
+                        select.append('<option value="' + key + '">' + value + '</option>');
+                    });
+                    select.material_select();
+                }
+            }
+        });
+    });
 
 
 

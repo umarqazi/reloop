@@ -130,6 +130,14 @@ class CityController extends Controller
     }
 
     /**
+     * @param $id
+     * @return \Illuminate\Support\Collection
+     */
+    public function getDistricts($id){
+       return $this->cityService->getRelatedDistricts($id)->pluck('name', 'id')->toArray();
+    }
+
+    /**
      * export list
      */
     public function export(){
