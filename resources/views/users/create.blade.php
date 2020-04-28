@@ -132,11 +132,8 @@
                         <label>City</label>
                     </div>
                     <div class="input-field col s6">
-                        <select multiple required name="district_id[]" id="user_district_id">
+                        <select multiple required name="district_id" id="user_district_id">
                             <option value="" disabled >Choose District</option>
-                            {{--@foreach($districts as $district)
-                                <option value="{{$district->id}}">{{$district->name}}</option>
-                            @endforeach--}}
                         </select>
                         <label>District</label>
                     </div>
