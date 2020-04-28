@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('collection-requests', 'Admin\CollectionRequestController');
     Route::resource('request-collections', 'Admin\RequestCollectionController');
     Route::resource('password-requests', 'Admin\PasswordResetController');
+    Route::resource('order-acceptances', 'Admin\OrderAcceptanceController');
 
     Route::get('get-cities', 'Admin\CityController@getCities')->name('getCities');
     Route::get('get-related-districts/{city_id}', 'Admin\CityController@getDistricts')->name('getRelatedDistricts');
@@ -75,6 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/all-settings/export', 'Admin\SettingController@export')->name('settings.export');
     Route::get('/contactUs/export', 'Admin\ContactUsController@export')->name('contact-us.export');
     Route::get('/city/export', 'Admin\CityController@export')->name('cities.export');
+    Route::get('/orderAcceptances/export', 'Admin\OrderAcceptanceController@export')->name('orderAcceptances.export');
 
 
     //supervisor routes
