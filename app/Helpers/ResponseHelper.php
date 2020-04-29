@@ -4,6 +4,8 @@
 namespace App\Helpers;
 
 
+use Illuminate\Support\Carbon;
+
 /**
  * Class ResponseHelper
  *
@@ -29,5 +31,46 @@ class ResponseHelper implements IResponseHelperInterface
             'data' => $data
         ];
         return $responseData;
+    }
+
+    /**
+     * @param bool $zero
+     * @return int|null
+     */
+    public static function getActiveWeek($zero = true)
+    {
+        $index = null;
+        $today = now()->format('d');
+        if($today <= 7)
+        {
+            $index = 0;
+        }
+
+        if ($today > 7 && $today <= 14)
+        {
+            $index = 1;
+        }
+
+        if($today > 14 && $today <= 21)
+        {
+            $index = 2;
+        }
+
+        if($today > 21)
+        {
+            $index = 3;
+        }
+
+        return $zero ? $index : ++ $index;
+    }
+
+    /**
+     * @param $date
+     * @return Carbon
+     * @throws \Exception
+     */
+    public static function carbon($date)
+    {
+        return new Carbon($date);
     }
 }

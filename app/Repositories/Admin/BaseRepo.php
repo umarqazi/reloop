@@ -11,7 +11,7 @@ class BaseRepo implements IRepo
     /**
      * @var $model
      */
-    private $model;
+    protected $model;
 
     /**
      * @param $model

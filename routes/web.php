@@ -89,3 +89,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/get-requests', 'Supervisor\CollectionRequestController@index')->name('get-requests');
 
 });
+
+// Chart Routes
+Route::post('get-barChart-data', 'Admin\ChartController@barChart');
+Route::post('get-pieChart-data', 'Admin\ChartController@pieChart');
+
+Route::get('/test', function () {
+   dd(now()->format('Y-m-d'), now()->addDays(- 0)->format('Y-m-d'));
+});

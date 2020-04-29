@@ -15,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RequestCollection extends Model
 {
+
+    /**
+     * @var array
+     */
     protected $fillable = [
         'user_id', 'request_id', 'material_category_id', 'category_name', 'weight'
     ];
@@ -25,7 +29,7 @@ class RequestCollection extends Model
      */
     public function requests()
     {
-        return $this->hasMany(Request::class);
+        return $this->hasMany(Request::class, 'id', 'request_id');
     }
 
     /**

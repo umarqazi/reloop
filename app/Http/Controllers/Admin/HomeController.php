@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\ChartService;
 use App\Services\DashboardService;
 use Illuminate\Support\Facades\App;
 use App\Services\Admin\CollectionRequestService;
