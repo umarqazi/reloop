@@ -66,6 +66,7 @@ class OrganizationService extends BaseService
                 'password'        => Hash::make($request['password']),
                 'status'          => IUserStatus::ACTIVE,
                 'user_type'       => IUserType::ORGANIZATION,
+                'api_token'       => str_random(50).strtotime('now'),
             );
             $user = $this->userService->create($userData);
             if ($user) {
