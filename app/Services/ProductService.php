@@ -11,6 +11,7 @@ use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Product;
 use App\Subscription;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
@@ -106,7 +107,12 @@ class ProductService extends BaseService
                 $categoryProducts = $this->subscription->where(['category_id' => $category->category_id, 'status' => true])->get();
             } else {
 
-                $categoryProducts = $this->product->where(['category_id' => $category->category_id, 'status' => true])->get();
+                $authUser = App::make(UserService::class)->findById(auth()->id());
+                $categoryProducts = $this->product->where([
+                    'category_id' => $category->category_id,
+                    'status' => true,
+                    'product_for' => $authUser->user_type
+                ])->orWhere('product_for', IProductFor::BOTH)->get();
             }
         }
 
@@ -127,7 +133,7 @@ class ProductService extends BaseService
      */
     public function findSubscriptionById($id)
     {
-        return $this->subscription->where('id', $id)->first();
+        return $this->subscription->where(['id' => $id, 'status' => true])->first();
     }
 
     /**

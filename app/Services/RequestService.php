@@ -98,45 +98,66 @@ class RequestService extends BaseService
             );
         }
 
-        $extraCharge = false;
-        if(!empty($collectionRequestForm->card_number)){
+        $material_categories = App::make(MaterialCategoryService::class)->findMaterialCategoryById($collectionRequestForm->material_categories);
+        if(!$material_categories->isEmpty()) {
+            $saveData = [
+                'material_category_details' => $material_categories,
+                'collection_form_data' => $collectionRequestForm,
+                'user_id' => auth()->id(),
+                'request_number' => $this->request_number
+            ];
+            $checkUserTrips = App::make(UserSubscriptionService::class)->checkUserTrips($saveData);
+            if ($checkUserTrips) {
+                $extraCharge = false;
+                if (!empty($collectionRequestForm->card_number)) {
 
-            $stripeService = new StripeService();
-            $makePayment = $stripeService->buyPlan($collectionRequestForm);
-            if(array_key_exists('stripe_error', $makePayment)){
+                    $stripeService = new StripeService();
+                    $makePayment = $stripeService->buyPlan($collectionRequestForm);
+                    if (array_key_exists('stripe_error', $makePayment)) {
+
+                        return ResponseHelper::responseData(
+                            Config::get('constants.ORDER_FAIL'),
+                            IResponseHelperInterface::FAIL_RESPONSE,
+                            false,
+                            $makePayment
+                        );
+                    }
+                    $extraCharge = true;
+                }
+
+                if ($extraCharge) {
+
+                    $saveData['extra_charge'] = $collectionRequestForm->total;
+                }
+                SaveCollectionRequestDetailsJob::dispatch($saveData);
 
                 return ResponseHelper::responseData(
-                    Config::get('constants.ORDER_FAIL'),
-                    IResponseHelperInterface::FAIL_RESPONSE,
-                    false,
-                    $makePayment
+                    Config::get('constants.COLLECTION_SUCCESSFUL'),
+                    IResponseHelperInterface::SUCCESS_RESPONSE,
+                    true,
+                    [
+                        'collection_request' => [
+                            $this->request_number
+                        ],
+                    ]
                 );
             }
-            $extraCharge = true;
+            return ResponseHelper::responseData(
+                Config::get('constants.USER_TRIPS_FAIL'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                [
+                    "InvalidTrips" => [
+                        Config::get('constants.USER_TRIPS_FAIL')
+                    ]
+                ]
+            );
         }
-
-        $material_categories = App::make(MaterialCategoryService::class)->findMaterialCategoryById($collectionRequestForm->material_categories);
-        $saveData = [
-            'material_category_details' => $material_categories,
-            'collection_form_data' => $collectionRequestForm,
-            'user_id' => auth()->id(),
-            'request_number' => $this->request_number
-        ];
-        if($extraCharge){
-
-            $saveData['extra_charge'] = $collectionRequestForm->total;
-        }
-        SaveCollectionRequestDetailsJob::dispatch($saveData);
-
         return ResponseHelper::responseData(
-            Config::get('constants.COLLECTION_SUCCESSFUL'),
-            IResponseHelperInterface::SUCCESS_RESPONSE,
-            true,
-            [
-                'collection_request' => [
-                    $this->request_number
-                ],
-            ]
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
         );
     }
 
