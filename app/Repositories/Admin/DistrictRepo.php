@@ -27,4 +27,8 @@ class DistrictRepo extends BaseRepo
     {
         return $this->all()->where('name',$name)->first();
     }
+
+    public function getRelatedDistricts($id){
+        return $this->all()->where('city_id',$id);
+    }
 }

@@ -52,7 +52,7 @@ class SupervisorController extends Controller
     {
         $type = IUserType::SUPERVISOR;
         $cities  = $this->cityService->all()->pluck('name', 'id')->toArray();
-        $districts  = $this->districtService->all()->pluck('name', 'id')->toArray();
+        $districts  = $this->districtService->all();
         return view('users.create', compact('type','cities','districts'));
     }
 
@@ -98,10 +98,17 @@ class SupervisorController extends Controller
     {
         $type = IUserType::SUPERVISOR;
         $user = $this->userService->findById($id);
+        $district_ids =  array();
         $cities  = $this->cityService->all()->pluck('name', 'id')->toArray();
-        $districts  = $this->districtService->all()->pluck('name', 'id')->toArray();
+        for($i = 0 ; $i < sizeof($user->addresses) ; $i++ ){
+             $district_ids[$i] = $user->addresses[$i]->district_id ;
+             $city_id = $user->addresses[$i]->city_id;
+        }
+
+        $districts  = $this->cityService->getRelatedDistricts($city_id)->pluck('name', 'id')->toArray();
+
         if($user){
-            return view('users.edit', compact('user', 'type','cities','districts'));
+            return view('users.edit', compact('user', 'type','cities','districts','district_ids'));
         }else{
             return view('users.edit')->with('empty', 'No Information Founded !');
         }

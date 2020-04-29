@@ -59,7 +59,7 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
-                    <input id="email" type="email"  name="email"   value="{{$organization->users->first()->email}}" readonly required>
+                    <input id="email" type="email"  name="email"   value="{{$organization->users->first()->email}}"  required>
                     <label for="email">Email</label>
                     @if ($errors->has('email'))
                         <span class="help-block">
@@ -70,7 +70,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="phone_number" type="text" name="phone_number"  value="{{$organization->users->first()->phone_number}}" readonly required>
+                    <input id="phone_number" type="text" name="phone_number"  value="{{$organization->users->first()->phone_number}}"  required>
                     <label for="phone_number">Phone Number</label>
                     @if ($errors->has('phone_number'))
                         <span class="help-block">

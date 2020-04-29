@@ -30,6 +30,7 @@ class CreateRequest extends FormRequest
             'category_id'       => 'required',
             'status'            => 'required',
             'avatar'            => 'required',
+            'product_for'       => 'required',
         ];
     }
 

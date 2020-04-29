@@ -152,4 +152,11 @@ return[
     'PASSWORD_UPDATED_SUCCESSFULLY'         => 'Password updated successfully!',
     'PASSWORD_UPDATE_ERROR'                 => 'Something went wrong in updating password!',
 
+    'ORDER_ACCEPTANCE_CREATION_SUCCESS'    => 'Order Acceptance created successfully',
+    'ORDER_ACCEPTANCE_CREATION_ERROR'      => 'Error Occurred while creating Order Acceptance',
+    'ORDER_ACCEPTANCE_UPDATE_SUCCESS'      => 'Order Acceptance updated successfully',
+    'ORDER_ACCEPTANCE_UPDATE_ERROR'        => 'Error Occurred while updating Order Acceptance',
+    'ORDER_ACCEPTANCE_DELETE_SUCCESS'      => 'Order Acceptance deleted successfully',
+    'ORDER_ACCEPTANCE_DELETE_ERROR'        => 'Error Occurred while deleting Order Acceptance',
+
 ];

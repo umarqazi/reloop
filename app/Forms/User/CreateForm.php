@@ -52,7 +52,7 @@ class CreateForm extends BaseForm
         $this->status = 0;
         $this->reports = 1;
         $this->login_type = 1;
-        $this->api_token = str_random(60);
+        $this->api_token = str_random(50).strtotime('now');
         $this->signup_token = str_random(30);
     }
 

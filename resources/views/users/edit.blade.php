@@ -102,7 +102,7 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s6">
-                            <input disabled id="email" name="email" type="email"  value="{{ $user->email }}" required >
+                            <input  id="email" name="email" type="email"  value="{{ $user->email }}" required >
                             <label for="email" >Email</label>
                         </div>
                         <div class="input-field col s6">
@@ -115,9 +115,14 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s12">
-                            <input id="location" type="text" name="location" value="{{ $user->addresses[0]->location }}" required>
+                            @if($user->addresses->first())
+                            <input id="location" type="text" name="location" value="{{ $user->addresses->first()->location }}" required>
                             <label for="address" >Location</label>
-                            @if ($errors->has('location'))
+                            @else
+                                <input id="location" type="text" name="location"  required>
+                                <label for="address" >Location</label>
+                            @endif
+                                @if ($errors->has('location'))
                                 <span class="help-block">
                                     <strong class="red-text">{{ $errors->first('location') }}</strong>
                                 </span>
@@ -127,11 +132,11 @@
                     @if($type != 1)
                     <div class="col s12">
                         <div class="input-field col s6">
-                            {{ Form::select('city_id', (['' => 'Choose City'] + $cities), $user->addresses[0]->city_id, ['id' => 'city_id','required' => 'required']) }}
+                            {{ Form::select('city_id', (['' => 'Choose City'] + $cities), $user->addresses->first()->city_id, ['id' => 'user_city_id','required' => 'required']) }}
                             <label>City</label>
                         </div>
                         <div class="input-field col s6">
-                            {{ Form::select('district_id', (['' => 'Choose District'] + $districts), $user->addresses[0]->district_id, ['id' => 'district_id','required' => 'required']) }}
+                            {{ Form::select('district_id[]', ($districts), $district_ids, ['multiple','id' => 'user_district_id','required' => 'required']) }}
                             <label>District</label>
                         </div>
                     </div>
@@ -153,7 +158,7 @@
                             <input type="file" class="form-control-file" name="avatar" id="avatar">
                         </div>
                     </div>
-                    @if($type == 1 && sizeof($user->addresses) > 0)
+                    @if($type == 1 && $user->addresses->first())
                     <div id="input_fields_wrap" class="col s12">
 
                                 <div class="adrs-title">
@@ -163,41 +168,85 @@
                                     <input type="hidden" name="address-id" value="{{ $user->addresses[0]->id }}">
                                     <select name="type"  id="type1" required>
                                         <option value="" disabled selected>Choose Type</option>
-                                        <option value="1" {{ $user->addresses[0]->type=='1' ? 'selected': '' }}>Villa</option>
-                                        <option value="2" {{ $user->addresses[0]->type=='2' ? 'selected': '' }}>Apartment</option>
+                                        <option value="1" {{ $user->addresses->first()->type=='1' ? 'selected': '' }}>Villa</option>
+                                        <option value="2" {{ $user->addresses->first()->type=='2' ? 'selected': '' }}>Apartment</option>
                                     </select>
                                     <label>Type</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    <input id="bedrooms" type="number" name="bedrooms" value="{{ $user->addresses[0]->no_of_bedrooms }}" required>
+                                    <input id="bedrooms" type="number" name="bedrooms" value="{{ $user->addresses->first()->no_of_bedrooms }}" required>
                                     <label for="bedrooms">No of Bedrooms</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    <input id="occupants" type="number" name="occupants" value="{{ $user->addresses[0]->no_of_occupants }}"  required>
+                                    <input id="occupants" type="number" name="occupants" value="{{ $user->addresses->first()->no_of_occupants }}"  required>
                                     <label for="occupants">No of Occupants</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    {{ Form::select('city_id', (['' => 'Choose City'] + $cities), $user->addresses[0]->city_id , ['id' => 'city_id']) }}
+                                    {{ Form::select('city_id', (['' => 'Choose City'] + $cities), $user->addresses->first()->city_id , ['id' => 'city_id']) }}
                                     <label>City</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    {{ Form::select('district_id', (['' => 'Choose District'] + $districts), $user->addresses[0]->district_id , ['id' => 'district_id']) }}
+                                    {{ Form::select('district_id[]', (['' => 'Choose District'] + $districts), $user->addresses->first()->district_id , ['id' => 'district_id']) }}
                                     <label>District</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    <input id="street" type="text" name="street" value="{{ $user->addresses[0]->street }}" required>
+                                    <input id="street" type="text" name="street" value="{{ $user->addresses->first()->street }}" required>
                                     <label for="street">Street</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    <input id="floor" type="text" name="floor" value="{{ $user->addresses[0]->floor }}" required>
+                                    <input id="floor" type="text" name="floor" value="{{ $user->addresses->first()->floor }}" required>
                                     <label for="floor">Floor</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    <input id="unit-number" type="text" name="unit-number" value="{{ $user->addresses[0]->unit_number }}" required>
+                                    <input id="unit-number" type="text" name="unit-number" value="{{ $user->addresses->first()->unit_number }}" required>
                                     <label for="unit-number">Unit Number</label>
                                 </div>
                     </div>
                     @endif
+                @if(sizeof($user->addresses) == 0)
+                        <div id="input_fields_wrap" class="col s12">
+                            <div class="adrs-title">
+                                <h5>Address</h5>
+                            </div>
+                            <div class="input-field col s3">
+                                <select name="type"  id="type1" required>
+                                    <option value="" disabled selected>Choose Type</option>
+                                    <option value="1">Villa</option>
+                                    <option value="2">Apartment</option>
+                                </select>
+                                <label>Type</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="bedrooms" type="number" name="bedrooms" required>
+                                <label for="bedrooms">No of Bedrooms</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="occupants" type="number" name="occupants" required>
+                                <label for="occupants">No of Occupants</label>
+                            </div>
+                            <div class="input-field col s3">
+                                {{ Form::select('city_id', (['' => 'Choose City'] + $cities), null, ['id' => 'city_id']) }}
+                                <label>City</label>
+                            </div>
+                            <div class="input-field col s3">
+                                {{ Form::select('district_id', (['' => 'Choose District'] + $districts), null, ['id' => 'district_id']) }}
+                                <label>District</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="street" type="text" name="street" required>
+                                <label for="street">Street</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="floor" type="text" name="floor" required>
+                                <label for="floor">Floor</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="unit-number" type="text" name="unit-number" required>
+                                <label for="unit-number">Unit Number</label>
+                            </div>
+                        </div>
+
+                @endif
 
                     <div class="col s12">
                         <div class="input-field col s12">
