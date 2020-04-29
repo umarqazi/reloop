@@ -121,7 +121,8 @@ const pieChartRequest = async function(data = null) {
  * @param dataPoints
  */
 const drawBarChart = function (activeFilter, dataPoints) {
-    $(".month-view-slider").trigger("to.owl.carousel", [3, 1]);
+    // Dynamically active quarter
+    $(".month-view-slider").trigger("to.owl.carousel", [1, 1]);
     var chart = new CanvasJS.Chart(`bar-${activeFilter}-view`, {
         animationEnabled: true,
         title: {
@@ -132,8 +133,13 @@ const drawBarChart = function (activeFilter, dataPoints) {
             type: "column",
             legendText: "",
             dataPoints: dataPoints,
-            click: function(e){
-                alert(  e.dataSeries.type+ ", dataPoint { x:" + e.dataPoint.date + ", y: "+ e.dataPoint.y + " }" );
+            click: async function(e){
+                // pie chart logic
+                await pieChartRequest(e.dataPoint.data).then(res => {
+                    console.log(res, 'pie chart render logic based barchart click event');
+                    drawPieChart();
+                });
+                alert(  e.dataSeries.type+ ", dataPoint { x:" + e.dataPoint.data + ", y: "+ e.dataPoint.y + " }" );
             },
         }]
     });
@@ -216,14 +222,21 @@ window.onload = async function () {
 
     await barChartRequest(currentFilter).then(async res => {
         loader('disable');
-        drawBarChart(currentFilter, [{ y: 1500, label: "Mon", date: '2020-04-19' }]);
+        // y => weight
+        // label => day, month, week
+        // data => pie char helper
+        drawBarChart(currentFilter, [
+            { y: 1500, label: "Mon", data: '2020-04-19' },
+            { y: 2000, label: "Tue", data: '2020-04-20' },
+        ]);
     });
 
     await pieChartRequest().then(async res => {
         loader('disable');
+        // labels => categories
         pieDataPoints = {
-            labels: ["Green", "Blue", "Gray", "Purple", "Yellow", "Red", "Black"],
-            data: [12, 55, 10, 20, 6, 66, 7]
+            labels: ["Plastic", "Blue", "Gray", "Purple", "Yellow", "Red", "Black"],
+            data: [1200, 55, 10, 20, 6, 66, 7]
         };
 
         drawPieChart(pieDataPoints);
