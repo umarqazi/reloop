@@ -323,3 +323,8 @@ button i.material-icons {
 .twenty {
     background: #7F8C8D;
 }
+
+.date-label{
+    transform: translateY(-14px) scale(0.8) !important;
+    transform-origin: 0 0 !important;
+}

@@ -91,6 +91,7 @@
                             @endif
                         </div>
                         <div class="input-field col s6">
+                            <label class="date-label">{{ ($type == 1) ? 'Date of Birth' : 'Date of Joining' }}</label>
                             <input id="birth_date" name="birth_date" placeholder="Date of Birth" type="date" value="{{ $user->birth_date }}" required >
                             {{--<label for="birth_date">Date of Birth</label>--}}
                             @if ($errors->has('birth_date'))

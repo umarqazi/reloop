@@ -116,9 +116,9 @@
                     @else
                         <select name="category_type"  id="subscription_category_type" required>
                           <option value="" disabled selected>Choose Subscription Category Type</option>
-                          <option value="1" {{ $subscription->category_type==\App\Services\ISubscriptionSubType::SAME_DAY ? 'selected': '' }} >Same Day</option>
+                          {{--<option value="1" {{ $subscription->category_type==\App\Services\ISubscriptionSubType::SAME_DAY ? 'selected': '' }} >Same Day</option>
                           <option value="2" {{ $subscription->category_type==\App\Services\ISubscriptionSubType::NEXT_DAY ? 'selected': '' }} >Next Day</option>
-                          <option value="3" {{ $subscription->category_type==\App\Services\ISubscriptionSubType::SINGLE_COLLECTION ? 'selected': '' }} >Single Collection</option>
+                          --}}<option value="3" {{ $subscription->category_type==\App\Services\ISubscriptionSubType::SINGLE_COLLECTION ? 'selected': '' }} >Single Collection</option>
                          </select>
                          <label for="subscription_category_type">Subscription Category Type</label>
                     @endif
