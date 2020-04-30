@@ -31,6 +31,21 @@ class Request extends Model
     }
 
     /**
+     * @param $collection
+     * @return int
+     */
+    public function weight($collection)
+    {
+        $weight = 0;
+        foreach ($collection as $item)
+        {
+            $weight += $item->weight;
+        }
+
+        return $weight;
+    }
+
+    /**
      * Method: user
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

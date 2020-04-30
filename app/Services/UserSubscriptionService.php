@@ -155,11 +155,7 @@ class UserSubscriptionService extends BaseService
      */
     public function updateTrips($data)
     {
-        $updateTrips = $this->model->where([
-            'user_id' => $data['user_id'],
-            'subscription_type' => $data['collection_form_data']->collection_type,
-            'status' => IUserSubscriptionStatus::ACTIVE
-        ])->first();
+        $updateTrips = $this->checkUserTrips($data);
         if(!empty($updateTrips)){
 
             $updatedTrips = $updateTrips->trips - 1;
@@ -169,5 +165,21 @@ class UserSubscriptionService extends BaseService
 
             return true;
         }
+    }
+
+    /**
+     * Method: checkUserTrips
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function checkUserTrips($data)
+    {
+        return $this->model->where([
+            'user_id' => $data['user_id'],
+            'subscription_type' => $data['collection_form_data']->collection_type,
+            'status' => IUserSubscriptionStatus::ACTIVE
+        ])->first();
     }
 }
