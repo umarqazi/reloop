@@ -174,11 +174,23 @@ class UserController extends Controller
                 $users = $this->userService->getSelected(IUserType::HOUSE_HOLD) ;
 
                 foreach($users as $user){
-                    $print[] = array( 'User ID'        => $user->id,
-                                      'User Email'     => $user->email,
-                                      'User Type'      => ($user->user_type == IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == IUserType::DRIVER) ? 'Driver' : (($user->user_type == IUserType::SUPERVISOR) ? 'Supervisor' : '')) ,
-                                      'Rewards Points' => $user->reward_points ?? '0',
-                                      'User Status'    => ($user->status == 1) ? 'Active' : 'Inactive',
+                    $print[] = array( 'User ID'         => $user->id,
+                                      'User Email'      => $user->email,
+                                      'User Name'       => $user->first_name.' '.$user->last_name,
+                                      'User Type'       => ($user->user_type == IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == IUserType::DRIVER) ? 'Driver' : (($user->user_type == IUserType::SUPERVISOR) ? 'Supervisor' : '')) ,
+                                      'Rewards Points'  => $user->reward_points ?? '0',
+                                      'User City'       => ($user->addresses->first()) ? $user->addresses->first()->city->name : 'Not found',
+                                      'User District'   => ($user->addresses->first()) ? $user->addresses->first()->district->name : 'Not found',
+                                      'Location'        => ($user->addresses->first()) ? $user->addresses->first()->location : 'Not found',
+                                      'Type'            => ($user->addresses->first()) ? (($user->addresses->first()->type=='1') ? 'Villa' : 'Apartment') : 'Not found',
+                                      'No of Bedrooms'  => ($user->addresses->first()) ? $user->addresses->first()->no_of_bedrooms : 'Not found',
+                                      'No of Occupants' => ($user->addresses->first()) ? $user->addresses->first()->no_of_occupants : 'Not found',
+                                      'Street'          => ($user->addresses->first()) ? $user->addresses->first()->street : 'Not found',
+                                      'Floor'           => ($user->addresses->first()) ? $user->addresses->first()->floor : 'Not found',
+                                      'Unit Number'     => ($user->addresses->first()) ? $user->addresses->first()->unit_number : 'Not found',
+                                      'User Status'     => ($user->status == 1) ? 'Active' : 'Inactive',
+                                      'Reports'         => $user->reports == \App\Services\IUserReports::DISABLE ?  'Disable' : 'Enable' ,
+                                      'Date of Birth '  => $user->birth_date,
                         ) ;
                 }
 
