@@ -19,6 +19,7 @@ class CreateDistrictsTable extends Migration
             $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->boolean('status')->nullable();
+            $table->string('order_acceptance_days');
             $table->timestamps();
         });
     }

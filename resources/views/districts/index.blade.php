@@ -30,6 +30,7 @@
                             <tr>
                                 <th>Id</th>
                                 <th>name</th>
+                                <th>order acceptance days</th>
                                 <th>status</th>
                                 <th>Actions</th>
                             </tr>
@@ -39,6 +40,7 @@
                             <tr>
                                 <td>{{ $district->id }}</td>
                                 <td>{{ $district->name }}</td>
+                                <td>{{ $district->order_acceptance_days }}</td>
                                 <td>{{ $district->status == 0 ? 'Inactive' : 'Active'}}</td>
                                 <td>
                                     <a href="{{ route('districts.edit', $district->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
