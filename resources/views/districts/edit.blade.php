@@ -74,6 +74,17 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
+                    {{ Form::select('order_acceptance_days[]', $days, $selected_days, ['multiple','id' => 'order_acceptance_days']) }}
+                    <label for=order_acceptance_days">Order Acceptance Days</label>
+                    @if ($errors->has('order_acceptance_days'))
+                        <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('order_acceptance_days') }}</strong>
+                    </span>
+                    @endif
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s12">
                     <button type="submit" class="btn btn-primary update">Update</button>
                 </div>
             </div>
