@@ -71,7 +71,7 @@
                     <div class="col s12">
                         <div class="input-field col s12">
                             <textarea class="validate materialize-textarea" id="description" name="description">{{ $materialCategory->description }}</textarea>
-                            <label for="description" data-error="wrong" data-success="right">Address</label>
+                            <label for="description" data-error="wrong" data-success="right">Description</label>
                             @if ($errors->has('description'))
                                 <span class="help-block">
                                     <strong class="red-text">{{ $errors->first('description') }}</strong>
@@ -192,7 +192,7 @@
 
                     <div class="col s12">
                         <div class="input-field col s12">
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary update">Update</button>
                         </div>
                     </div>
                 {{ Form::close() }}

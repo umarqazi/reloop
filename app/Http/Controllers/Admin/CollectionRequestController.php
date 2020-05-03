@@ -148,13 +148,19 @@ class CollectionRequestController extends Controller
                 $requests = $this->collectionRequestService->all();
 
                 foreach($requests as $request){
-                    $print[] = array( 'Id'              => $request->id,
-                                      'Request Number'  => $request->request_number,
-                                      'Email'           => $request->user->email,
-                                      'Request Status'  => $request->status == IOrderStaus::ORDER_CONFIRMED ?
+                    $print[] = array( 'Id'               => $request->id,
+                                      'Request Number'   => $request->request_number,
+                                      'Name'             => $request->first_name.' '.$request->last_name,
+                                      'Email'            => $request->user->email,
+                                      'Request Status'   => $request->status == IOrderStaus::ORDER_CONFIRMED ?
                                                            'Request Confirmed'  : ($request->status == IOrderStaus::DRIVER_ASSIGNED ?
                                                            'Driver Assigned'  : ($request->status == IOrderStaus::DRIVER_DISPATCHED)?
-                                                           'Request Dispatched' : 'Request Completed' )
+                                                           'Request Dispatched' : 'Request Completed' ),
+                                      'Request City'     => $request->city,
+                                      'Request District' => $request->district,
+                                      'Location'         => $request->location,
+                                      'Collection Date'  => $request->collection_date,
+                                      'Driver'           => $request->driver_id == null ?'None' : $request->driver->first_name.' '.$request->driver->last_name,
                     ) ;
                 }
 
