@@ -27,6 +27,21 @@ $(document).ready(function () {
         }
     });
 
+    $(".delete, .update").on("click", function(event){
+        event.preventDefault();
+        return Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.value) {
+                return $(this).parents('form').submit();
+            }
+        });
+    });
 
     $('#phone_number').val('+971-5');
     $('#phone_number').mask('+000-00-0000000');
@@ -227,6 +242,24 @@ $(document).ready(function () {
 
     });
 
+    $("#user-form").validate({
+        rules: {
+            password: {
+                minlength: 8,
+            },
+        },
+
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+            var placement = $(element).data('error');
+            if (placement) {
+                $(placement).append(error)
+            } else {
+                error.insertAfter(element);
+            }
+        }
+    });
+
     /**
      * author: Abdullah Wazir
     */
@@ -298,23 +331,4 @@ $(document).ready(function () {
             }
         });
     });
-    $("#user-form").validate({
-        rules: {
-            password: {
-                minlength: 8,
-            },
-        },
-
-        errorElement : 'div',
-        errorPlacement: function(error, element) {
-            var placement = $(element).data('error');
-            if (placement) {
-                $(placement).append(error)
-            } else {
-                error.insertAfter(element);
-            }
-        }
-    });
-
-
 });

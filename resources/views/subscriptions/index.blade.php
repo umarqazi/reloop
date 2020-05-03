@@ -78,7 +78,7 @@
                                 <td>
                                     <a href="{{ route('subscription.edit', $subscription->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
                                     {{ Form::open(['url' => route('subscription.destroy', $subscription->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
-                                    <button type="submit" class="btn btn-danger red"><i class="fa fa-trash "></i></button>
+                                    <button type="submit" class="btn btn-danger red delete"><i class="fa fa-trash "></i></button>
                                     {{ Form::close() }}
                                 </td>
                             </tr>
