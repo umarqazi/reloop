@@ -4,6 +4,6 @@
         'Unit' => [
             '1' => 'Kg',
             '2' => 'Liter',
-            '3' => 'Bottle'
+            '3' => 'Pieces'
         ]
     ];

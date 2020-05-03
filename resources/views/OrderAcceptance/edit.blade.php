@@ -46,20 +46,20 @@
             {{ Form::open(['url' => route('order-acceptances.update',$orderAcceptance->id),'method' => 'PUT', 'class' => 'row']) }}
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="to" type="text" name="to" value="{{$orderAcceptance->to}}" required>
-                    <label for="to">To(From)</label>
-                    @if ($errors->has('to'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('to') }}</strong>
-                    </span>
-                    @endif
-                </div>
-                <div class="input-field col s6">
                     <input id="from" type="text" name="from" value="{{$orderAcceptance->from}}"required>
                     <label for="from">From(Day)</label>
                     @if ($errors->has('from'))
                         <span class="help-block">
                         <strong class="red-text">{{ $errors->first('from') }}</strong>
+                    </span>
+                    @endif
+                </div>
+                <div class="input-field col s6">
+                    <input id="to" type="text" name="to" value="{{$orderAcceptance->to}}" required>
+                    <label for="to">To(From)</label>
+                    @if ($errors->has('to'))
+                        <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('to') }}</strong>
                     </span>
                     @endif
                 </div>

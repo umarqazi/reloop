@@ -53,7 +53,7 @@
                     </button>
                 </div>
             @endif
-            {{ Form::open(['url' => route($route.'.store'), 'class' => 'row','enctype' => 'multipart/form-data']) }}
+            {{ Form::open(['url' => route($route.'.store'), 'class' => 'row','enctype' => 'multipart/form-data','id'=>'user-form']) }}
             {{ Form::hidden('user_type', $type) }}
                 <div class="col s12">
                     <div class="input-field col s6">
@@ -86,8 +86,8 @@
                         @endif
                     </div>
                     <div class="input-field col s6">
+                        <label class="date-label">{{ ($type == 1) ? 'Date of Birth' : 'Date of Joining' }}</label>
                         <input id="birth_date" name="birth_date" placeholder="Date of Birth" type="date" required >
-                        {{--<label for="birth_date">Date of Birth</label>--}}
                         @if ($errors->has('birth_date'))
                             <span class="help-block">
                                 <strong class="red-text">{{ $errors->first('birth_date') }}</strong>

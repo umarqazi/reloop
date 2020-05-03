@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Thank You</div>
-
-                    <div class="card-body">
-                        Your account has activated!
-                    </div>
+    <div class="main-wrapper">
+        <div class="top-bar">
+            <img src="/assets/images/icons/reloop.png">
+        </div>
+        <div class="container">
+            <div class="thanku-wrapper">
+                <div class="thanku-wrapper-inner">
+                    <img src="/assets/images/icons/email.icon.png">
+                    <p>Thank You Your account has activated!</p>
                 </div>
             </div>
         </div>

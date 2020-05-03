@@ -144,8 +144,8 @@ class OrderAcceptanceController extends Controller
 
                 foreach($orderTimings as $orderTime){
                     $print[] = array( 'Id'         => $orderTime->id,
-                                      'To(Time)'   => $orderTime->to,
-                                      'From(Time)' => $orderTime->from,
+                                      'To(Day)'    => $orderTime->to,
+                                      'From(From)' => $orderTime->from,
                                       'District'   => $orderTime->district->name
                     ) ;
                 }

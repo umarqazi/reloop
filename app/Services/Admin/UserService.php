@@ -124,6 +124,7 @@ class UserService extends BaseService
         $userData = array(
             'first_name'      => $data['first_name'],
             'last_name'       => $data['last_name'],
+            'email'           => $data['email'],
             'birth_date'      => $data['birth_date'],
             'phone_number'    => $data['phone_number'],
             'status'          => $data['status'],
