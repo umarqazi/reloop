@@ -218,22 +218,17 @@ window.onload = async function () {
 
     loader('enable');
     let $body = $('body');
-    let barDataPoints = [], pieDataPoints = [], currentFilter = activeFilter('#myTab');
+    let currentFilter = activeFilter('#myTab');
 
-    await barChartRequest(currentFilter).then(async res => {
-        console.log(res);
+    await barChartRequest(currentFilter).then(async chart => {
+        console.log(chart);
         loader('disable');
         // y => weight
         // label => day, month, week
         // data => pie char helper
-        drawBarChart(currentFilter, res);
+        drawBarChart(currentFilter, chart.bar);
 
-        pieDataPoints = {
-            labels: ["Plastic", "Blue", "Gray", "Purple", "Yellow", "Red", "Black"],
-            data: [1200, 55, 150, 200, 160, 230, 270]
-        };
-
-        drawPieChart(pieDataPoints);
+        drawPieChart(chart.pie);
     });
 
     /*await pieChartRequest().then(async res => {

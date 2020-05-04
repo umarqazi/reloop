@@ -153,4 +153,43 @@ class RequestCollectionService extends BaseService
             ->select(['category_name', DB::raw("SUM(weight) as total_weight")])
             ->groupBy('category_name')->get();
     }
+
+    /**
+     * Method: getWeightSum
+     * Get weight sum by group of given date.
+     *
+     * @param $from
+     * @param $till
+     * @param  string  $groupBy
+     *
+     * @return mixed
+     */
+    public function getWeightSum($from, $till, $groupBy = '')
+    {
+        return $this->model->select(['requests.collection_date', DB::raw('SUM(request_collections.weight) as total_weight')])
+            ->join('requests', 'requests.id', 'request_collections.request_id')
+            ->where('requests.confirm', true)
+            ->whereBetween('requests.collection_date', [$from, $till])
+            ->groupBy(DB::raw("$groupBy(requests.collection_date)"))
+            ->get()->pluck('total_weight', 'collection_date');
+    }
+
+    /**
+     * Method: getWeightSumByCat
+     * Get weight sum by category of given date
+     *
+     * @param $from
+     * @param $till
+     *
+     * @return mixed
+     */
+    public function getWeightSumByCat($from, $till)
+    {
+        return $this->model->whereHas('request', static function ($query) use ($from, $till){
+            $query->whereBetween('collection_date', [$from, $till])
+                ->where('confirm', TRUE);
+        })->select(['category_name', DB::raw("SUM(weight) as total_weight")])
+            ->groupBy('category_name')
+            ->get();
+    }
 }
