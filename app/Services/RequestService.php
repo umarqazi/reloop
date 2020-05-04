@@ -49,7 +49,6 @@ class RequestService extends BaseService
      */
     public function __construct(Request $model, UserSubscriptionService $userSubscriptionService)
     {
-        $this->request_number = 'RE'.strtotime(now());
         parent::__construct();
         $this->model = $model;
         $this->userSubscriptionService = $userSubscriptionService;
@@ -100,11 +99,12 @@ class RequestService extends BaseService
 
         $material_categories = App::make(MaterialCategoryService::class)->findMaterialCategoryById($collectionRequestForm->material_categories);
         if(!$material_categories->isEmpty()) {
+            $request_number = 'RE'.strtotime(now());
             $saveData = [
                 'material_category_details' => $material_categories,
                 'collection_form_data' => $collectionRequestForm,
                 'user_id' => auth()->id(),
-                'request_number' => $this->request_number
+                'request_number' => $request_number
             ];
             $checkUserTrips = App::make(UserSubscriptionService::class)->checkUserTrips($saveData);
             if ($checkUserTrips) {
@@ -137,7 +137,7 @@ class RequestService extends BaseService
                     true,
                     [
                         'collection_request' => [
-                            $this->request_number
+                            $request_number
                         ],
                     ]
                 );
@@ -198,7 +198,7 @@ class RequestService extends BaseService
         $model = $this->model;
         $model = $model->create([
             'user_id' => $data['user_id'],
-            'request_number'  => $this->request_number,
+            'request_number'  => $data['request_number'],
             'collection_date' => $data['collection_form_data']->collection_date,
             'collection_type' => $data['collection_form_data']->collection_type,
             'reward_points'   => null,
