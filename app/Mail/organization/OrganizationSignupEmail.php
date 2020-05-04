@@ -29,7 +29,7 @@ class OrganizationSignupEmail extends Mailable
     public function __construct($data)
     {
         $this->data = $data;
-        $this->subject('Welcome to Reloop!');
+        $this->subject('Welcome to ReLoop!');
     }
 
     /**
