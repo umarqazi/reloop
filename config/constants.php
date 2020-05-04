@@ -9,7 +9,7 @@ return[
     'DISABLED_USER_EXISTS'                  => 'Email already exists as a disabled user!',
 
     'USER_CREATION_SUCCESS'                 => 'Verification Link sent to your email',
-    'ORGANIZATION_CREATION_SUCCESS'         => 'Your signup request has submitted to admin!',
+    'ORGANIZATION_CREATION_SUCCESS'         => 'Your signup request has been submitted to admin!',
     'PROFILE_UPDATE_SUCCESS'                => 'Profile updated successfully',
     'USER_PROFILE'                          => 'User Profile shown as',
     'USER_UPDATE_SUCCESS'                   => 'User updated successfully',
@@ -17,7 +17,7 @@ return[
     'REGISTRATION_ACTIVATION_SUCCESS'       => 'Registration Activated',
     'REGISTRATION_HAS_NOT_EXPIRED'          => 'Previous Registration has not expired',
 
-    'USER_LOGIN_SUCCESSFULLY'               => 'User has successfully logged in!',
+    'USER_LOGIN_SUCCESSFULLY'               => 'You have successfully logged in!',
     'USER_LOGIN_FAILED'                     => 'Email not verified!',
     'USER_DASHBOARD'                        => 'User stats shown as:',
 
@@ -47,6 +47,7 @@ return[
     'USER_SUBSCRIPTIONS_SUCCESS'            => 'User subscriptions shown as:',
     'USER_SUBSCRIPTIONS_FAIL'               => 'You didn\'t buy any subscription!',
     'COLLECTION_SUCCESSFUL'                 => 'Collection request successful!',
+    'USER_TRIPS_FAIL'                       => 'You don\'t have any trip!',
 
     'UN_AUTHORIZE_ERROR'                    => 'You are not authorized',
     'GENERAL_ERROR'                         => 'Something went wrong.Please try again later!',

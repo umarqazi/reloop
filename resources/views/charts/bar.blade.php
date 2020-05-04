@@ -22,7 +22,7 @@
             </div>
 
             <div class="tab-pane fade" id="week" role="tabpanel" aria-labelledby="week-tab">
-                <input type="hidden" name="activeWeek" value="{{ \App\Helpers\ResponseHelper::getActiveWeek() }}">
+                <input type="hidden" name="activeQuarter" value="{{ \App\Helpers\ResponseHelper::getActiveWeek() }}">
                 <div class="owl-carousel month-view-slider">
                     @for($i = 1; $i <= \App\Helpers\ResponseHelper::getActiveWeek(false); $i ++)
                         <div class="month-slider">

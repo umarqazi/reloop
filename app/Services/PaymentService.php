@@ -7,6 +7,7 @@ use App\Forms\Checkout\BuyPlanForm;
 use App\Forms\Checkout\BuyProductForm;
 use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use App\Jobs\SaveOrderDetailsJob;
 use App\Jobs\SaveSubscriptionDetailsJob;
 use Illuminate\Support\Facades\App;
@@ -106,13 +107,12 @@ class PaymentService extends BaseService
             $makePayment = $this->stripeService->buyPlan($buyPlanForm);
             if(array_key_exists('stripe_error', $makePayment)){
 
-                $responseData = [
-                    'message' => Config::get('constants.ORDER_FAIL'),
-                    'code' => IResponseHelperInterface::FAIL_RESPONSE,
-                    'status' => false,
-                    'data' => $makePayment
-                ];
-                return $responseData;
+                return ResponseHelper::responseData(
+                    Config::get('constants.ORDER_FAIL'),
+                    IResponseHelperInterface::FAIL_RESPONSE,
+                    false,
+                    $makePayment
+                );
             } else {
 
                 $data = [
@@ -123,19 +123,24 @@ class PaymentService extends BaseService
                 ];
 
                 SaveSubscriptionDetailsJob::dispatch($data);
-                $responseData = [
-                    'message' => Config::get('constants.ORDER_SUCCESSFUL'),
-                    'code' => IResponseHelperInterface::SUCCESS_RESPONSE,
-                    'status' => true,
-                    'data' => [
+                return ResponseHelper::responseData(
+                    Config::get('constants.ORDER_SUCCESSFUL'),
+                    IResponseHelperInterface::SUCCESS_RESPONSE,
+                    true,
+                    [
                         'buy_plan' => [
                             $this->order_number
                         ],
-                    ],
-                ];
-                return $responseData;
+                    ]
+                );
             }
         }
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_OPERATION'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
     }
 
     /**
