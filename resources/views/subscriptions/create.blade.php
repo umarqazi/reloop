@@ -116,6 +116,16 @@
                     </span>
                     @endif
                 </div>
+                <div class="input-field col s6">
+                        <h6 class="custom-label">Avatar</h6>
+                        <input type="file" class="form-control-file" name="avatar" id="avatar">
+                    </div>
+                @if ($errors->has('avatar'))
+                    <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('avatar') }}</strong>
+                    </span>
+                @endif
+
             </div>
             <div class="col s12">
                 <div class="input-field col s12">

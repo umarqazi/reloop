@@ -78,7 +78,12 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
-                    {{ Form::select('order_acceptance_days[]', $days, null, ['multiple','id' => 'order_acceptance_days']) }}
+                    <select multiple name="order_acceptance_days[]" required>
+                        <option value="" disabled selected>Choose Days</option>
+                        @foreach($days as $key => $value)
+                        <option value="{{$key}}">{{$value}}</option>
+                        @endforeach
+                    </select>
                     <label for=order_acceptance_days">Order Acceptance Days</label>
                     @if ($errors->has('order_acceptance_days'))
                         <span class="help-block">
