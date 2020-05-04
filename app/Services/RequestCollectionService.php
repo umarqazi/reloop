@@ -8,8 +8,10 @@ use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\RequestCollection;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -134,5 +136,21 @@ class RequestCollectionService extends BaseService
             true,
             null
         );
+    }
+
+    public function getWeightByDate($date)
+    {
+        return $this->model->whereHas('request', function ($query) use ($date){
+            $query->where('collection_date', $date);
+        })->sum('weight');
+    }
+
+    public function getWeightByWeek($dates)
+    {
+        return $this->model->whereHas('request', function ($query) use ($dates){
+            $query->whereIn('collection_date', $dates)->where('confirm', TRUE);
+        })
+            ->select(['category_name', DB::raw("SUM(weight) as total_weight")])
+            ->groupBy('category_name')->get();
     }
 }

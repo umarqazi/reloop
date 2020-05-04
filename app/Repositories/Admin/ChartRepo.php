@@ -3,8 +3,10 @@
 namespace App\Repositories\Admin;
 
 use App\Helpers\ResponseHelper;
+use App\Request;
 use App\RequestCollection;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class ChartRepo
@@ -18,7 +20,7 @@ class ChartRepo extends BaseRepo
      */
     public function __construct()
     {
-        $this->getModel(RequestCollection::class);
+        $this->getModel(Request::class);
     }
 
     /**
@@ -29,10 +31,9 @@ class ChartRepo extends BaseRepo
      */
     public function daily($date)
     {
-        return $this->model->whereHas('requests', function ($query) use ($date) {
-            return $query->where('confirm', TRUE)
-                    ->whereIn('created_at', $this->date('day', $date));
-        });
+        return  $this->model->with('requestCollection')
+            ->whereIn('collection_date', $this->date('daily', $date))
+            ->where('confirm', true);
     }
 
     /**
@@ -59,7 +60,7 @@ class ChartRepo extends BaseRepo
         $date = ResponseHelper::carbon($date ?? now()->format('Y-m-d'));
         switch ($filter)
         {
-            case 'day':
+            case 'daily':
                 for ($i = 0; $i < 7; $i ++)
                 {
                     $collection[] = (new Carbon())->createFromDate(
@@ -70,7 +71,7 @@ class ChartRepo extends BaseRepo
                 }
                 break;
 
-            case 'week':
+            case 'weekly':
                 for ($i = 0; $i < 14; $i ++)
                 {
 

@@ -221,17 +221,22 @@ window.onload = async function () {
     let barDataPoints = [], pieDataPoints = [], currentFilter = activeFilter('#myTab');
 
     await barChartRequest(currentFilter).then(async res => {
+        console.log(res);
         loader('disable');
         // y => weight
         // label => day, month, week
         // data => pie char helper
-        drawBarChart(currentFilter, [
-            { y: 1500, label: "Mon", data: '2020-04-19' },
-            { y: 2000, label: "Tue", data: '2020-04-20' },
-        ]);
+        drawBarChart(currentFilter, res);
+
+        pieDataPoints = {
+            labels: ["Plastic", "Blue", "Gray", "Purple", "Yellow", "Red", "Black"],
+            data: [1200, 55, 150, 200, 160, 230, 270]
+        };
+
+        drawPieChart(pieDataPoints);
     });
 
-    await pieChartRequest().then(async res => {
+    /*await pieChartRequest().then(async res => {
         loader('disable');
         // labels => categories
         pieDataPoints = {
@@ -240,7 +245,7 @@ window.onload = async function () {
         };
 
         drawPieChart(pieDataPoints);
-    });
+    });*/
 
     $body.on('click', '.fa-chevron-left', function () {
         // alert('prev');
@@ -257,7 +262,26 @@ window.onload = async function () {
         setTimeout(() => {
 
             currentFilter = activeFilter(this);
+            //barChartRequest(currentFilter).then()
             // Send Request for both charts for current filter
+            barChartRequest(currentFilter).then(async res => {
+                console.log(res);
+                loader('disable');
+                // y => weight
+                // label => day, month, week
+                // data => pie char helper
+                drawBarChart(currentFilter, [
+                    { y: 1500, label: "Mon", data: '2020-04-19' },
+                    { y: 2000, label: "Tue", data: '2020-04-20' },
+                ]);
+
+                pieDataPoints = {
+                    labels: ["Plastic", "Blue", "Gray", "Purple", "Yellow", "Red", "Black"],
+                    data: [1200, 55, 150, 200, 160, 230, 270]
+                };
+
+                drawPieChart(pieDataPoints);
+            });
         }, 100);
     });
 

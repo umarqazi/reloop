@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Repositories\Admin\ChartRepo;
+use Illuminate\Support\Facades\App;
 
 /**
  * Class ChartService
@@ -55,21 +57,45 @@ class ChartService
 
     public function daily($date = null)
     {
-        // daily logic
+        $dailyReports = $this->_chartRepo->daily($date)->get();
+        $dates = $this->_chartRepo->date('daily', $date);
+
+        $getWeightByWeek  = App::make(RequestCollectionService::class)->getWeightByWeek($dates);
+        foreach ($dates as $index => $date){
+
+            //$data[$index]['label'] = date('D', strtotime($date));
+            $data[$index]['label'] = Carbon::createFromDate($date)->format('d-M');
+            $data[$index]['data']  = $date;
+
+            $currentY = 0;
+            foreach ($dailyReports as $dailyReport){
+
+                $collectionDate = $dailyReport->collection_date;
+
+                if($date == $collectionDate){
+
+                    $currentY  = App::make(RequestCollectionService::class)->getWeightByDate($date);
+                    break;
+                }
+            }
+            $data[$index]['y'] = $currentY;
+            $data[$index]['pie'] = $getWeightByWeek;
+        }
+        return $data;
     }
 
     public function weekly($date = null)
     {
-        // week login
+        dd('weekly');
     }
 
     public function monthly()
     {
-        // month logic
+        dd('monthly');
     }
 
     public function yearly()
     {
-        // year logic
+        dd('yearly');
     }
 }
