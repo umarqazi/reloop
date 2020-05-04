@@ -36,6 +36,11 @@ class SubscriptionSerivce extends BaseService
         if(!$request->has('request_allowed')){
             $data["request_allowed"] = ITrips::ONE_TRIP;
         }
+
+        //check that avatar exists or not
+        if(array_key_exists('avatar', $data) && $data['avatar'] != null){
+            $data = $this->uploadFile($data, $request);
+        }
         $subscription = parent::create($data);
 
         if($subscription) {
@@ -78,6 +83,11 @@ class SubscriptionSerivce extends BaseService
         else{
             $data["request_allowed"] = ITrips::ONE_TRIP;
         }
+
+        //check that avatar exists or not
+        if(array_key_exists('avatar', $data) && $data['avatar'] != null){
+            $data = $this->uploadFile($data, $request);
+        }
         return parent::update($id, $data);
     }
 
@@ -88,6 +98,31 @@ class SubscriptionSerivce extends BaseService
     public function destroy(int $id)
     {
         return parent::destroy($id);
+    }
+
+    /**
+     * @param $data
+     * @param $request
+     * @param null $id
+     * @return mixed
+     */
+    public function uploadFile($data, $request, $id = null)
+    {
+        if($id != null){
+            //Deleting the existing image of respective user.
+            $getOldData = $this->subscriptionRepo->findById($id);
+            if($getOldData->avatar != null){
+                Storage::disk()->delete(config('filesystems.subscription_avatar_upload_path').$getOldData->avatar);
+            }
+        }
+        //upload new image
+        $fileName = 'image-'.time().'-'.$request->file('avatar')->getClientOriginalName();
+        $filePath = config('filesystems.subscription_avatar_upload_path').$fileName;
+        Storage::disk()->put($filePath, file_get_contents($request->file('avatar')),'public');
+        $data['avatar'] = $fileName;
+
+        return $data;
+
     }
 
 }

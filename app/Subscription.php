@@ -11,7 +11,7 @@ class Subscription extends Model
      * @var array
      */
     protected $fillable = [
-        'category_id','stripe_product_id', 'name', 'price', 'description', 'request_allowed', 'status','category_type'
+        'category_id','stripe_product_id', 'name', 'price', 'description', 'request_allowed', 'status','category_type','avatar'
     ];
 
     /**
@@ -39,6 +39,21 @@ class Subscription extends Model
     public function userSubscription()
     {
         return $this->hasMany(UserSubscription::class);
+    }
+
+    /**
+     * Method: getAvatarAttribute
+     *
+     * @param $value
+     *
+     * @return string
+     */
+    public function getAvatarAttribute($value)
+    {
+        if(!empty($value)){
+
+            return env('APP_URL').'/storage/uploads/images/subscription/' . $value;
+        }
     }
 
 }

@@ -191,7 +191,7 @@
                                     <label>City</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    {{ Form::select('district_id[]', (['' => 'Choose District'] + $districts), $user->addresses->first()->district_id , ['id' => 'district_id']) }}
+                                    {{ Form::select('district_id', (['' => 'Choose District'] + $districts), $user->addresses->first()->district_id , ['id' => 'district_id']) }}
                                     <label>District</label>
                                 </div>
                                 <div class="input-field col s3">

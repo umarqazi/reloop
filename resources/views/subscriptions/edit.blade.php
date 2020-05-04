@@ -125,6 +125,14 @@
                 </div>
             </div>
             <div class="col s12">
+                <div class="col s6 box-image">
+                    <img src="{{ $subscription->avatar }}" alt="Avatar">
+                </div>
+                <div class="input-field col s6 ">
+                    <input type="file" class="form-control-file" name="avatar" id="avatar">
+                </div>
+            </div>
+            <div class="col s12">
                 <div class="input-field col s12">
                     <button type="submit" class="btn btn-primary update">Update</button>
                 </div>

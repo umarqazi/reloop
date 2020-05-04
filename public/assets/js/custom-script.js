@@ -166,8 +166,19 @@ $(document).ready(function () {
 
     $(wrapper).on("click", ".remove-append", function (e) {
         e.preventDefault();
-        $(this).parent('div').remove();
-        x--;
+        return Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.value) {
+                $(this).parent('div').remove();
+                x--;
+            }
+        });
     });
 
     $( "#subscription_category_id" ).change(function() {
