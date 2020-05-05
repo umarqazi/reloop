@@ -9,8 +9,10 @@ class MaterialCategory extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'description', 'avatar', 'status', 'quantity', 'unit', 'reward_points'
-    ,'co2_emission_reduced','trees_saved','oil_saved','electricity_saved','natural_ores_saved','water_saved','landfill_space_saved'];
+    protected $fillable = [
+        'name', 'description', 'avatar', 'status', 'quantity', 'unit', 'reward_points', 'co2_emission_reduced',
+        'trees_saved', 'oil_saved', 'electricity_saved', 'water_saved', 'landfill_space_saved'
+    ];
 
     /**
      * Method: getAvatarAttribute

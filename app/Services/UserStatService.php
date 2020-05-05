@@ -85,7 +85,6 @@ class UserStatService extends BaseService
             DB::raw("SUM(trees_saved) as total_trees_saved"),
             DB::raw("SUM(oil_saved) as total_oil_saved"),
             DB::raw("SUM(electricity_saved) as total_electricity_saved"),
-            DB::raw("SUM(natural_ores_saved) as total_natural_ores_saved"),
             DB::raw("SUM(water_saved) as total_water_saved"),
             DB::raw("SUM(landfill_space_saved) as total_landfill_space_saved"),
         ])

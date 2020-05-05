@@ -120,7 +120,6 @@ class CollectionRequestService extends BaseService
                 'trees_saved'             => $collection->weight * $collection->materialCategory->trees_saved,
                 'oil_saved'               => $collection->weight * $collection->materialCategory->oil_saved,
                 'electricity_saved'       => $collection->weight * $collection->materialCategory->electricity_saved,
-                'natural_ores_saved'      => $collection->weight * $collection->materialCategory->natural_ores_saved,
                 'water_saved'             => $collection->weight * $collection->materialCategory->water_saved,
                 'landfill_space_saved'    => $collection->weight * $collection->materialCategory->landfill_space_saved,
                 'created_at'              => Carbon::now(),
