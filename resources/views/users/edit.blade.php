@@ -103,11 +103,7 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s6">
-                            @if($type != 1)
                             <input  id="email" name="email" type="email"  value="{{ $user->email }}" required >
-                            @else
-                            <input  id="email" name="email" type="email"  value="{{ $user->email }}" required readonly>
-                            @endif
                             <label for="email" >Email</label>
                         </div>
                         <div class="input-field col s6">
