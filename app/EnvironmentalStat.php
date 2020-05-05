@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class EnvironmentalStat extends Model
 {
     protected $fillable = [
-        'user_id', 'co2_emission_reduced', 'trees_saved', 'oil_saved', 'electricity_saved', 'natural_ores_saved',
+        'user_id', 'co2_emission_reduced', 'trees_saved', 'oil_saved', 'electricity_saved',
         'water_saved', 'landfill_space_saved'
     ];
 }
