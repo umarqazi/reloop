@@ -115,9 +115,15 @@ class ChartService
         /* @var RequestCollectionService $requestCollectionService */
         $requestCollectionService = App::make(RequestCollectionService::class);
         $date = $date ?? now()->format('Y-m-d');
+        $date = ResponseHelper::carbon($date);
 
         $startDate = ResponseHelper::carbon($date)->firstOfQuarter();
         $endDate = ResponseHelper::carbon($date)->lastOfQuarter();
+
+        // Set nav button and heading.
+        $data['header']['text'] = 'Quarter-' . $date->quarter ." " . $date->format('Y');
+        $data['header']['prev'] = ResponseHelper::carbon($startDate)->subWeek()->format('Y-m-d');
+        $data['header']['next'] = ResponseHelper::carbon($endDate)->addWeek()->format('Y-m-d');
 
         // Get weight sum against given dates.
         $weightByWeek = $requestCollectionService->getWeightSum($startDate, $endDate, 'week');
@@ -127,15 +133,14 @@ class ChartService
         // Starting dates from the start of week.
         $startDate->startOfWeek();
         $endDate->startOfWeek();
-        $counter = 1;
-        $data = [];
+        $counter = 0;
 
         // Iterate from start date to end date.
         while ($startDate <= $endDate) {
 
             // Set label and data of bar chart.
-            $data['bar'][$counter]['label'] = $startDate->format('Y-m-d');
-            $data['bar'][$counter]['data']  = "Week - $counter";
+            $data['bar'][$counter]['label'] = $counter;
+            $data['bar'][$counter]['data']  = $startDate->format('Y-m-d');
 
             // Filter weight record of iterated date.
             $weight = $weightByWeek->filter(static function ($weight, $date) use ($startDate) {
@@ -149,6 +154,7 @@ class ChartService
             $counter++;
             $startDate->addWeek();
         }
+
         // Pie Chart data
         $data['pie']['labels'] = $weightByCat->pluck('category_name');
         $data['pie']['data'] = $weightByCat->pluck('total_weight');
@@ -183,7 +189,7 @@ class ChartService
         // Starting dates from the start of week.
         $startDate->startOfMonth();
         $endDate->startOfMonth();
-        $counter = 1;
+        $counter = 0;
         $data = [];
 
         // Iterate from start date to end date.
@@ -239,7 +245,7 @@ class ChartService
         // Starting dates from the start of week.
         $startDate->startOfYear();
         $endDate->startOfYear();
-        $counter = 1;
+        $counter = 0;
         $data = [];
 
         // Iterate from start date to end date.

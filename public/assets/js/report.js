@@ -122,11 +122,11 @@ const pieChartRequest = async function(data = null) {
  */
 const drawBarChart = function (activeFilter, dataPoints) {
     // Dynamically active quarter
-    $(".month-view-slider").trigger("to.owl.carousel", [1, 1]);
+    // $(".month-view-slider").trigger("to.owl.carousel", [1, 1]);
     var chart = new CanvasJS.Chart(`bar-${activeFilter}-view`, {
         animationEnabled: true,
         title: {
-            text: 'Vat'
+            text: ''
         },
         theme: "light2",
         data: [{
@@ -231,53 +231,72 @@ window.onload = async function () {
         drawPieChart(chart.pie);
     });
 
-    /*await pieChartRequest().then(async res => {
-        loader('disable');
-        // labels => categories
-        pieDataPoints = {
-            labels: ["Plastic", "Blue", "Gray", "Purple", "Yellow", "Red", "Black"],
-            data: [1200, 55, 10, 20, 6, 66, 7]
-        };
-
-        drawPieChart(pieDataPoints);
-    });*/
-
-    $body.on('click', '.fa-chevron-left', function () {
-        // alert('prev');
-        // Send Request with last timestamp and active filter
-    });
-
-    $body.on('click', '.fa-chevron-right', function () {
-        // alert('next');
+    /**
+     * Draw charts of selected date
+     */
+    $body.on('click', '.tab-pane .fa-chevron-left, .tab-pane .fa-chevron-right', function () {
         // Send Request with latest timestamp and active filter
+        drawCharts($(this).data('date'));
     });
 
     // Select New Filter Listener
     $body.on('click', '#myTab', function () {
-        setTimeout(() => {
-
-            currentFilter = activeFilter(this);
-            //barChartRequest(currentFilter).then()
-            // Send Request for both charts for current filter
-            barChartRequest(currentFilter).then(async res => {
-                console.log(res);
-                loader('disable');
-                // y => weight
-                // label => day, month, week
-                // data => pie char helper
-                drawBarChart(currentFilter, [
-                    { y: 1500, label: "Mon", data: '2020-04-19' },
-                    { y: 2000, label: "Tue", data: '2020-04-20' },
-                ]);
-
-                pieDataPoints = {
-                    labels: ["Plastic", "Blue", "Gray", "Purple", "Yellow", "Red", "Black"],
-                    data: [1200, 55, 150, 200, 160, 230, 270]
-                };
-
-                drawPieChart(pieDataPoints);
-            });
-        }, 100);
+        drawCharts();
     });
+};
 
+/**
+ * Draw Charts
+ * Renders Bar and Pie charts after getting datapoints.
+ *
+ * @param data
+ */
+const drawCharts = function (data = null) {
+    setTimeout(() => {
+        // Fetching the current filter
+        let currentFilter = activeFilter('#myTab');
+
+        // Send Request for both charts for current filter
+        barChartRequest(currentFilter, data).then(async res => {
+            console.log(res);
+            loader('disable');
+
+            // nav menu handler
+            await navHandler(currentFilter, res);
+
+            // y => weight
+            // label => day, month, week
+            // data => pie char helper
+            drawBarChart(currentFilter, res.bar);
+
+            drawPieChart(res.pie);
+        });
+    }, 100);
+};
+
+/**
+ * Navigation Handler
+ * Setup nav buttons and heading when new chart loaded.
+ *
+ * @param currentFilter
+ * @param res
+ */
+const navHandler = function (currentFilter, res) {
+
+    // Set header text of pie chart
+    $(`#bar-${currentFilter}-header`).text(res.header.text);
+
+    // Set next and previous buttons
+    let prevBtn = $(`#bar-${currentFilter}-prev-btn`);
+    let nxtBtn = $(`#bar-${currentFilter}-next-btn`);
+    prevBtn.data('date', res.header.prev);
+    nxtBtn.data('date', res.header.next);
+
+    console.log(nxtBtn);
+
+    let nxtDate = new Date(res.header.next);
+    let curDate = new Date();
+
+    // Hide next button if next date lies in future.
+    curDate < nxtDate ? nxtBtn.hide() : nxtBtn.show();
 };
