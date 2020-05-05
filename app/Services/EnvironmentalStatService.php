@@ -91,7 +91,6 @@ class EnvironmentalStatService extends BaseService
                 $findUser->trees_saved             = $totalStat->total_trees_saved;
                 $findUser->oil_saved               = $totalStat->total_oil_saved;
                 $findUser->electricity_saved       = $totalStat->total_electricity_saved;
-                $findUser->natural_ores_saved      = $totalStat->total_natural_ores_saved;
                 $findUser->water_saved             = $totalStat->total_water_saved;
                 $findUser->landfill_space_saved    = $totalStat->total_landfill_space_saved;
                 $findUser->update();
@@ -103,7 +102,6 @@ class EnvironmentalStatService extends BaseService
                     'trees_saved'             => $totalStat->total_trees_saved,
                     'oil_saved'               => $totalStat->total_oil_saved,
                     'electricity_saved'       => $totalStat->total_electricity_saved,
-                    'natural_ores_saved'      => $totalStat->total_natural_ores_saved,
                     'water_saved'             => $totalStat->total_water_saved,
                     'landfill_space_saved'    => $totalStat->total_landfill_space_saved,
                 ]);
@@ -123,7 +121,6 @@ class EnvironmentalStatService extends BaseService
             DB::raw("SUM(trees_saved) as total_trees_saved"),
             DB::raw("SUM(oil_saved) as total_oil_saved"),
             DB::raw("SUM(electricity_saved) as total_electricity_saved"),
-            DB::raw("SUM(natural_ores_saved) as total_natural_ores_saved"),
             DB::raw("SUM(water_saved) as total_water_saved"),
             DB::raw("SUM(landfill_space_saved) as total_landfill_space_saved"),
         ])->first();
@@ -149,7 +146,6 @@ class EnvironmentalStatService extends BaseService
             'trees_saved'           => 0,
             'oil_saved'             => 0,
             'electricity_saved'     => 0,
-            'natural_ores_saved'    => 0,
             'water_saved'           => 0,
             'landfill_space_saved'  => 0,
         ];

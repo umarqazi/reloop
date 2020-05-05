@@ -34,7 +34,6 @@ class CreateRequest extends FormRequest
             'trees_saved'          => 'required',
             'oil_saved'            => 'required',
             'electricity_saved'    => 'required',
-            'natural_ores_saved'   => 'required',
             'water_saved'          => 'required',
             'landfill_space_saved' => 'required',
         ];

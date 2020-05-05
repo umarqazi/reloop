@@ -78,6 +78,22 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
+                    <select multiple name="order_acceptance_days[]" required>
+                        <option value="" disabled selected>Choose Days</option>
+                        @foreach($days as $key => $value)
+                        <option value="{{$key}}">{{$value}}</option>
+                        @endforeach
+                    </select>
+                    <label for=order_acceptance_days">Order Acceptance Days</label>
+                    @if ($errors->has('order_acceptance_days'))
+                        <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('order_acceptance_days') }}</strong>
+                    </span>
+                    @endif
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s12">
                     <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </div>

@@ -72,7 +72,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s12">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary update">Update</button>
                 </div>
             </div>
             {{ Form::close() }}

@@ -28,7 +28,6 @@ class CreateUserStatsTable extends Migration
             $table->double('trees_saved');
             $table->double('oil_saved');
             $table->double('electricity_saved');
-            $table->double('natural_ores_saved');
             $table->double('water_saved');
             $table->double('landfill_space_saved');
             $table->timestamps();

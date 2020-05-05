@@ -162,12 +162,6 @@
                     </a>
                 </li>
                 <li class="bold">
-                    <a href="{{ route('order-acceptances.index') }}">
-                        <i class="material-icons"><img src="/assets/images/icons/settings.svg" alt="re loop logo"></i>
-                        <span class="nav-text">Order Acceptances</span>
-                    </a>
-                </li>
-                <li class="bold">
                     <a href="{{ route('contact-us.index') }}">
                         <i class="material-icons">account_circle</i>
                         <span class="nav-text">Contact Us</span>
