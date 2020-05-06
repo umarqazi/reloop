@@ -136,10 +136,10 @@ const drawBarChart = function (activeFilter, dataPoints) {
             click: async function(e){
                 // pie chart logic
                 await pieChartRequest(e.dataPoint.data).then(res => {
-                    console.log(res, 'pie chart render logic based barchart click event');
-                    drawPieChart();
+                    if (res) {
+                        drawPieChart(res);
+                    }
                 });
-                alert(  e.dataSeries.type+ ", dataPoint { x:" + e.dataPoint.data + ", y: "+ e.dataPoint.y + " }" );
             },
         }]
     });
@@ -199,7 +199,6 @@ const drawPieChart = function (dataPoints) {
         var chart = Chart.instances[chartId];
         var index = Array.prototype.slice.call(parent.children).indexOf(target);
         var meta = chart.getDatasetMeta(0);
-        console.log(index);
         var item = meta.data[index];
 
         if (item.hidden === null || item.hidden === false) {
@@ -250,7 +249,6 @@ const drawCharts = function (data = null) {
 
         // Send Request for both charts for current filter
         barChartRequest(currentFilter, data).then(async res => {
-            console.log(res);
             loader('disable');
 
             // nav menu handler

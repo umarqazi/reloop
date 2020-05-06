@@ -58,9 +58,35 @@ class ChartService
         return [];
     }
 
-    public function pieChart(Request $request)
+    /**
+     * Method: pieChart
+     * Returns pie chart data points of requested date.
+     *
+     * @param  Request  $request
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function pieChart(Request $request): array
     {
-        VarDumper::dump('Pie Chart');
+        $data = [];
+        $startDate = $request->start ?? null;
+        $endDate = $request->end ?? $startDate;
+
+        if ($startDate) {
+
+            $startDate = ResponseHelper::carbon($startDate);
+            $endDate = ResponseHelper::carbon($endDate);
+
+            // Get weight w.r.t category.
+            $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate);
+
+            // Pie Chart data
+            $data['labels'] = $weightByCat->pluck('category_name');
+            $data['data'] = $weightByCat->pluck('total_weight');
+        }
+
+        return $data;
     }
 
     /**
@@ -94,7 +120,9 @@ class ChartService
 
             // Set label and data of bar chart.
             $data['bar'][$counter]['label'] = $startDate->format('d-M');
-            $data['bar'][$counter]['data']  = $startDate->format('Y-m-d');
+            $data['bar'][$counter]['data']  = [
+                'start' => ResponseHelper::carbon($startDate)->format('Y-m-d')
+            ];
 
             // Filter weight record of iterated date.
             $weight = $weightByWeek->filter(static function ($weight, $date) use ($startDate) {
@@ -147,7 +175,10 @@ class ChartService
 
             // Set label and data of bar chart.
             $data['bar'][$counter]['label'] = $counter;
-            $data['bar'][$counter]['data']  = $startDate->format('Y-m-d');
+            $data['bar'][$counter]['data']  = [
+                'start' => ResponseHelper::carbon($startDate)->startOfWeek()->format('Y-m-d'),
+                'end' => ResponseHelper::carbon($startDate)->endOfWeek()->format('Y-m-d')
+            ];
 
             // Filter weight record of iterated date.
             $weight = $weightByWeek->filter(static function ($weight, $date) use ($startDate) {
