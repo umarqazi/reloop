@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Repositories\Admin\ChartRepo;
 use Illuminate\Support\Facades\App;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Class ChartService
@@ -16,26 +17,30 @@ use Illuminate\Support\Facades\App;
  */
 class ChartService
 {
-
     /**
-     * @var ChartRepo
+     * Property: requestCollectionService
+     *
+     * @var RequestCollectionService
      */
-    private $_chartRepo;
+    private $requestCollectionService;
 
     /**
      * ChartService constructor.
+     *
+     * @param  RequestCollectionService  $requestCollectionService
      */
-    public function __construct()
+    public function __construct(RequestCollectionService $requestCollectionService)
     {
-        $this->_chartRepo = new ChartRepo();
+        $this->requestCollectionService = $requestCollectionService;
     }
 
     /**
      * Process Bar Chart
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return array
+     * @throws Exception
      */
     public function barChart(Request $request)
     {
@@ -43,7 +48,8 @@ class ChartService
         {
             if(method_exists($this, $request->get('filter')))
             {
-                return $this->{$request->get('filter')}($request->get('data'));
+                $date = $request->get('data') ? ResponseHelper::carbon($request->get('data')) : now();
+                return $this->{$request->get('filter')}($date);
             }
 
             return [];
@@ -54,49 +60,58 @@ class ChartService
 
     public function pieChart(Request $request)
     {
-
+        VarDumper::dump('Pie Chart');
     }
 
     /**
      * Method: daily
+     * Returns the daily stats data of week.
      *
-     * @param  null  $date
+     * @param  Carbon  $date
      *
      * @return array
      * @throws Exception
      */
-    public function daily($date = null): array
+    public function daily(Carbon $date): array
     {
-        $data = [];
-        $dailyReports = $this->_chartRepo->daily($date)->get();
-        $dates = $this->_chartRepo->date('daily', $date);
+        $startDate = ResponseHelper::carbon($date)->startOfWeek();
+        $endDate = ResponseHelper::carbon($date)->endOfWeek();
+        $data['header']['prev'] = ResponseHelper::carbon($startDate)->subWeek()->format('Y-m-d');
+        $data['header']['next'] = ResponseHelper::carbon($startDate)->addWeek()->format('Y-m-d');
 
-        $getWeightByWeek  = App::make(RequestCollectionService::class)->getWeightByWeek($dates);
+        // Set nav button and heading.
+        $data['header']['text'] = 'Daily Stats ' . $date->format('Y');
 
-        foreach ($dates as $index => $currentDate){
+        // Get weights sum against given dates.
+        $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate);
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate);
 
-            //$data[$index]['label'] = date('D', strtotime($currentDate));
-            $data['bar'][$index]['label'] = Carbon::createFromDate($currentDate)->format('d-M');
-            $data['bar'][$index]['data']  = $currentDate;
+        // Set counter.
+        $counter = 0;
 
-            $currentY = 0;
-            foreach ($dailyReports as $dailyReport){
+        // Iterate from start date to end date.
+        while ($startDate <= $endDate) {
 
-                $collectionDate = $dailyReport->collection_date;
+            // Set label and data of bar chart.
+            $data['bar'][$counter]['label'] = $startDate->format('d-M');
+            $data['bar'][$counter]['data']  = $startDate->format('Y-m-d');
 
-                if($currentDate == $collectionDate){
+            // Filter weight record of iterated date.
+            $weight = $weightByWeek->filter(static function ($weight, $date) use ($startDate) {
+                return $startDate->isSameDay(ResponseHelper::carbon($date));
+            });
 
-                    $currentY  = App::make(RequestCollectionService::class)->getWeightByDate($currentDate);
-                    break;
-                }
-            }
-            $data['bar'][$index]['y'] = $currentY;
+            // Set weight against iterated week.
+            $data['bar'][$counter]['y'] = $weight->isEmpty() ? 0 : $weight->first();
 
+            // Increment statements.
+            $counter++;
+            $startDate->addDay();
         }
 
         // Pie Chart data
-        $data['pie']['labels'] = $getWeightByWeek->pluck('category_name');
-        $data['pie']['data'] = $getWeightByWeek->pluck('total_weight');
+        $data['pie']['labels'] = $weightByCat->pluck('category_name');
+        $data['pie']['data'] = $weightByCat->pluck('total_weight');
 
         return $data;
     }
@@ -105,34 +120,26 @@ class ChartService
      * Method: weekly
      * Returns bar and pie chart data points.
      *
-     * @param  null  $date
+     * @param  Carbon  $date
      *
      * @return array
      * @throws Exception
      */
-    public function weekly($date = null)
+    public function weekly(Carbon $date): array
     {
-        /* @var RequestCollectionService $requestCollectionService */
-        $requestCollectionService = App::make(RequestCollectionService::class);
-        $date = $date ?? now()->format('Y-m-d');
-        $date = ResponseHelper::carbon($date);
-
         $startDate = ResponseHelper::carbon($date)->firstOfQuarter();
         $endDate = ResponseHelper::carbon($date)->lastOfQuarter();
-
-        // Set nav button and heading.
-        $data['header']['text'] = 'Quarter-' . $date->quarter ." " . $date->format('Y');
         $data['header']['prev'] = ResponseHelper::carbon($startDate)->subWeek()->format('Y-m-d');
         $data['header']['next'] = ResponseHelper::carbon($endDate)->addWeek()->format('Y-m-d');
 
+        // Set nav button and heading.
+        $data['header']['text'] = 'Quarter-' . $date->quarter ." " . $date->format('Y');
+
         // Get weight sum against given dates.
-        $weightByWeek = $requestCollectionService->getWeightSum($startDate, $endDate, 'week');
+        $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'week');
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate);
 
-        $weightByCat = $requestCollectionService->getWeightSumByCat($startDate, $endDate);
-
-        // Starting dates from the start of week.
-        $startDate->startOfWeek();
-        $endDate->startOfWeek();
+        // Set counter.
         $counter = 0;
 
         // Iterate from start date to end date.
@@ -160,51 +167,47 @@ class ChartService
         $data['pie']['data'] = $weightByCat->pluck('total_weight');
 
         return $data;
-
     }
 
     /**
      * Method: monthly
      * Returns bar and pie chart data points.
      *
-     * @param  null  $date
+     * @param  Carbon  $date
      *
      * @return array
      * @throws Exception
      */
-    public function monthly($date = null)
+    public function monthly(Carbon $date): array
     {
-        /* @var RequestCollectionService $requestCollectionService */
-        $requestCollectionService = App::make(RequestCollectionService::class);
-        $date = $date ?? now()->format('Y-m-d');
-
         $startDate = ResponseHelper::carbon($date)->firstOfQuarter();
         $endDate = ResponseHelper::carbon($date)->lastOfQuarter();
+        $data['header']['prev'] = ResponseHelper::carbon($startDate)->subMonth()->format('Y-m-d');
+        $data['header']['next'] = ResponseHelper::carbon($endDate)->addMonth()->format('Y-m-d');
+
+        // Set nav button and heading.
+        $data['header']['text'] = 'Quarter-' . $date->quarter ." " . $date->format('Y');
 
         // Get weight sum against given dates.
-        $totalWeight = $requestCollectionService->getWeightSum($startDate, $endDate, 'month');
+        $weightByMonth = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'month');
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate);
 
-        $weightByCat = $requestCollectionService->getWeightSumByCat($startDate, $endDate);
-
-        // Starting dates from the start of week.
-        $startDate->startOfMonth();
-        $endDate->startOfMonth();
+        // Set counter.
         $counter = 0;
-        $data = [];
 
         // Iterate from start date to end date.
         while ($startDate <= $endDate) {
 
             // Set label and data of bar chart.
-            $data['bar'][$counter]['label'] = $startDate->format('Y-m-d');
-            $data['bar'][$counter]['data']  = $startDate->format('M');
+            $data['bar'][$counter]['label'] = $startDate->format('M');
+            $data['bar'][$counter]['data']  = $startDate->format('Y-m-d');
 
             // Filter weight record of iterated date.
-            $weight = $totalWeight->filter(static function ($weight, $date) use ($startDate) {
-                return $startDate->isSameWeek(ResponseHelper::carbon($date));
+            $weight = $weightByMonth->filter(static function ($weight, $date) use ($startDate) {
+                return $startDate->isSameMonth(ResponseHelper::carbon($date));
             });
 
-            // Set weight against iterated week.
+            // Set weight against iterated month.
             $data['bar'][$counter]['y'] = $weight->isEmpty() ? 0 : $weight->first();
 
             // Increment statements.
@@ -223,44 +226,41 @@ class ChartService
      * Method: yearly
      * Returns bar and pie chart data points.
      *
-     * @param  null  $date
+     * @param  Carbon  $date
      *
      * @return array
      * @throws Exception
      */
-    public function yearly($date = null)
+    public function yearly(Carbon $date): array
     {
-        /* @var RequestCollectionService $requestCollectionService */
-        $requestCollectionService = App::make(RequestCollectionService::class);
-        $date = $date ?? now()->format('Y-m-d');
+        $startDate = ResponseHelper::carbon($date)->subYears(4)->startOfYear();
+        $endDate = ResponseHelper::carbon($date)->endOfYear();
+        $data['header']['prev'] = ResponseHelper::carbon($startDate)->subYear()->format('Y-m-d');
+        $data['header']['next'] = ResponseHelper::carbon($startDate)->addYears(9)->format('Y-m-d');
 
-        $startDate = ResponseHelper::carbon($date)->subYears(4);
-        $endDate = ResponseHelper::carbon($date);
+        // Set nav button and heading.
+        $data['header']['text'] = 'Year ' . $startDate->format('Y') . '-' . $endDate->format('Y');
 
         // Get weight sum against given dates.
-        $totalWeight = $requestCollectionService->getWeightSum($startDate, $endDate, 'year');
+        $weightByYear = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'year');
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate);
 
-        $weightByCat = $requestCollectionService->getWeightSumByCat($startDate, $endDate);
-
-        // Starting dates from the start of week.
-        $startDate->startOfYear();
-        $endDate->startOfYear();
+        // Set counter.
         $counter = 0;
-        $data = [];
 
         // Iterate from start date to end date.
         while ($startDate <= $endDate) {
 
             // Set label and data of bar chart.
-            $data['bar'][$counter]['label'] = $startDate->format('Y-m-d');
-            $data['bar'][$counter]['data']  = $startDate->format('Y');
+            $data['bar'][$counter]['label'] = $startDate->format('Y');
+            $data['bar'][$counter]['data']  = $startDate->format('Y-m-d');
 
             // Filter weight record of iterated date.
-            $weight = $totalWeight->filter(static function ($weight, $date) use ($startDate) {
-                return $startDate->isSameWeek(ResponseHelper::carbon($date));
+            $weight = $weightByYear->filter(static function ($weight, $date) use ($startDate) {
+                return $startDate->isSameYear(ResponseHelper::carbon($date));
             });
 
-            // Set weight against iterated week.
+            // Set weight against iterated year.
             $data['bar'][$counter]['y'] = $weight->isEmpty() ? 0 : $weight->first();
 
             // Increment statements.

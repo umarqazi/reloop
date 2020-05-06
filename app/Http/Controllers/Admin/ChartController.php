@@ -21,10 +21,12 @@ class ChartController extends Controller
 
     /**
      * ChartController constructor.
+     *
+     * @param  ChartService  $chartService
      */
-    public function __construct()
+    public function __construct(ChartService $chartService)
     {
-        $this->_chartService = new ChartService();
+        $this->_chartService = $chartService;
     }
 
     /**

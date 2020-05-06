@@ -12,7 +12,7 @@
                 <a class="nav-link" id="month-tab" data-toggle="tab" href="#month" role="tab" aria-controls="contact" aria-selected="false">Monthly</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="year-tab" data-toggle="tab" href="#year" role="tab" aria-controls="contact" aria-selected="false">yearly</a>
+                <a class="nav-link" id="year-tab" data-toggle="tab" href="#year" role="tab" aria-controls="contact" aria-selected="false">Yearly</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
@@ -20,7 +20,7 @@
             <div class="tab-pane fade show active" id="day" role="tabpanel" aria-labelledby="day-tab">
                 <h3>
                     <i class="fa fa-chevron-left float-left" id="bar-daily-prev-btn"></i>
-                    <span id="bar-weekly-header">Daily Stats</span>
+                    <span id="bar-daily-header">Daily Stats</span>
                     <i class="fa fa-chevron-right float-right" id="bar-daily-next-btn"></i>
                 </h3>
                 <div class="charts-wrapper" id="bar-daily-view"></div>
@@ -36,36 +36,21 @@
             </div>
 
             <div class="tab-pane fade" id="month" role="tabpanel" aria-labelledby="month-tab">
-                <div class="owl-carousel month-view-slider">
-                    <h3>
-                        <i class="fa fa-chevron-left float-left" id="bar-montly-prev-btn"></i>
-                        <span id="bar-weekly-header">Quarter Monthly Stats</span>
-                        <i class="fa fa-chevron-right float-right" id="bar-monthly-next-btn"></i>
-                    </h3>
-                    <div class="charts-wrapper" id="bar-monthly-view"></div>
-                </div>
+                <h3>
+                    <i class="fa fa-chevron-left float-left" id="bar-monthly-prev-btn"></i>
+                    <span id="bar-monthly-header">Quarter Monthly Stats</span>
+                    <i class="fa fa-chevron-right float-right" id="bar-monthly-next-btn"></i>
+                </h3>
+                <div class="charts-wrapper" id="bar-monthly-view"></div>
             </div>
 
             <div class="tab-pane fade" id="year" role="tabpanel" aria-labelledby="year-tab">
-                <div class="owl-carousel month-view-slider">
-                    <div class="month-slider">
-                        <h3>Year<span>(2019)</span></h3>
-                        <div class="charts-wrapper" id="chartContainer-quart-1"></div>
-                    </div>
-                    <div class="month-slider">
-                        <h3>Year<span>(2019)</span></h3>
-                        <div class="charts-wrapper" id="chartContainer-quart-2"></div>
-                    </div>
-                    <div class="month-slider">
-                        <h3>Year<span>(2019)</span></h3>
-                        <div class="charts-wrapper" id="chartContainer-quart-3"></div>
-                    </div>
-                    <div class="month-slider">
-                        <h3>Year<span>(2019)</span></h3>
-                        <div class="charts-wrapper" id="chartContainer-quart-4"></div>
-                    </div>
-
-                </div>
+                <h3>
+                    <i class="fa fa-chevron-left float-left" id="bar-yearly-prev-btn"></i>
+                    <span id="bar-yearly-header">Yearly Stats</span>
+                    <i class="fa fa-chevron-right float-right" id="bar-yearly-next-btn"></i>
+                </h3>
+                <div class="charts-wrapper" id="bar-yearly-view"></div>
             </div>
         </div>
     </div>

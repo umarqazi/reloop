@@ -218,29 +218,21 @@ window.onload = async function () {
 
     loader('enable');
     let $body = $('body');
-    let currentFilter = activeFilter('#myTab');
 
-    await barChartRequest(currentFilter).then(async chart => {
-        console.log(chart);
-        loader('disable');
-        // y => weight
-        // label => day, month, week
-        // data => pie char helper
-        drawBarChart(currentFilter, chart.bar);
-
-        drawPieChart(chart.pie);
-    });
+    // Draw charts on page loaded.
+    drawCharts();
 
     /**
      * Draw charts of selected date
      */
     $body.on('click', '.tab-pane .fa-chevron-left, .tab-pane .fa-chevron-right', function () {
-        // Send Request with latest timestamp and active filter
+        // Drw charts with respect to given date.
         drawCharts($(this).data('date'));
     });
 
     // Select New Filter Listener
     $body.on('click', '#myTab', function () {
+        // Draw charts when click on tab.
         drawCharts();
     });
 };
@@ -292,11 +284,9 @@ const navHandler = function (currentFilter, res) {
     prevBtn.data('date', res.header.prev);
     nxtBtn.data('date', res.header.next);
 
-    console.log(nxtBtn);
-
     let nxtDate = new Date(res.header.next);
     let curDate = new Date();
 
     // Hide next button if next date lies in future.
-    curDate < nxtDate ? nxtBtn.hide() : nxtBtn.show();
+    curDate <= nxtDate ? nxtBtn.hide() : nxtBtn.show();
 };
