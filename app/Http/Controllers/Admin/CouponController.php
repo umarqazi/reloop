@@ -136,17 +136,17 @@ class CouponController extends Controller
         Excel::create('coupons', function($excel) {
             $excel->sheet('coupons', function($sheet) {
                 $coupons = $this->couponService->all();
+                if(!$coupons->isEmpty()) {
 
-                foreach($coupons as $coupon){
-                    $print[] = array( 'Id'      => $coupon->id,
-                                      'Code'    => $coupon->code,
-                                      'Type'    => $coupon->type == ICouponType::FIXED ? 'Fixed' : 'Percentage',
-                                      'Amount'  => $coupon->amount,
-                    ) ;
+                    foreach ($coupons as $coupon) {
+                        $print[] = array('Id' => $coupon->id,
+                            'Code' => $coupon->code,
+                            'Type' => $coupon->type == ICouponType::FIXED ? 'Fixed' : 'Percentage',
+                            'Amount' => $coupon->amount,
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

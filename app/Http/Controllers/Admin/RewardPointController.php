@@ -163,17 +163,17 @@ class RewardPointController extends Controller
         Excel::create('users', function($excel) {
             $excel->sheet('users', function($sheet) {
                 $users = $this->userService->all();
+                if(!$users->isEmpty()) {
 
-                foreach($users as $user){
-                    $print[] = array( 'User ID'          => $user->id,
-                                      'User Email'       => $user->email,
-                                      'User Type'        => ($user->user_type == IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == IUserType::DRIVER) ? 'Driver' : (($user->user_type == IUserType::SUPERVISOR) ? 'Supervisor' : '')),
-                                      'Rewards Point(s)' => $user->reward_points ?? '0',
-                    ) ;
+                    foreach ($users as $user) {
+                        $print[] = array('User ID' => $user->id,
+                            'User Email' => $user->email,
+                            'User Type' => ($user->user_type == IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == IUserType::DRIVER) ? 'Driver' : (($user->user_type == IUserType::SUPERVISOR) ? 'Supervisor' : '')),
+                            'Rewards Point(s)' => $user->reward_points ?? '0',
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

@@ -182,18 +182,18 @@ class SupervisorController extends Controller
         Excel::create('supervisors', function($excel) {
             $excel->sheet('supervisors', function($sheet) {
                 $users = $this->userService->getSelected(IUserType::SUPERVISOR) ;
+                if(!$users->isEmpty()) {
 
-                foreach($users as $user){
-                    $print[] = array( 'User ID'        =>  $user->id,
-                                      'User Email'     =>  $user->email,
-                                      'User Type'      => ($user->user_type == IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == IUserType::DRIVER) ? 'Driver' : (($user->user_type == IUserType::SUPERVISOR) ? 'Supervisor' : '')) ,
-                                      'Rewards Points' =>  $user->reward_points ?? '0',
-                                      'User Status'    => ($user->status == 1) ? 'Active' : 'Inactive',
-                    ) ;
+                    foreach ($users as $user) {
+                        $print[] = array('User ID' => $user->id,
+                            'User Email' => $user->email,
+                            'User Type' => ($user->user_type == IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == IUserType::DRIVER) ? 'Driver' : (($user->user_type == IUserType::SUPERVISOR) ? 'Supervisor' : '')),
+                            'Rewards Points' => $user->reward_points ?? '0',
+                            'User Status' => ($user->status == 1) ? 'Active' : 'Inactive',
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

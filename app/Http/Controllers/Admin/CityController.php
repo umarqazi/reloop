@@ -144,16 +144,16 @@ class CityController extends Controller
         Excel::create('cities', function($excel) {
             $excel->sheet('cities', function($sheet) {
                 $cities = $this->cityService->all();
+                if(!$cities->isEmpty()) {
 
-                foreach($cities as $city){
-                    $print[] = array( 'Id'        => $city->id,
-                                      'name'      => $city->name,
-                                      'status'    => $city->status == 0 ? 'Inactive' : 'Active',
-                    ) ;
+                    foreach ($cities as $city) {
+                        $print[] = array('Id' => $city->id,
+                            'name' => $city->name,
+                            'status' => $city->status == 0 ? 'Inactive' : 'Active',
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

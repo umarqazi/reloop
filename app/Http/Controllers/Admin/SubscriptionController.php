@@ -149,20 +149,20 @@ class SubscriptionController extends Controller
         Excel::create('subscriptions', function($excel) {
             $excel->sheet('subscriptions', function($sheet) {
                 $subscriptions = $this->subscriptionService->all();
+                if(!$subscriptions->isEmpty()) {
+                    foreach ($subscriptions as $subscription) {
+                        $print[] = array('Id' => $subscription->id,
+                            'Category' => $subscription->category_id == 1 ? 'Renewable Subscriptions' : 'One Time Services',
+                            'name' => $subscription->name,
+                            'price' => $subscription->price,
+                            'Description' => $subscription->description,
+                            'Request(s) Allowed' => $subscription->request_allowed,
+                            'Status' => $subscription->status == 1 ? 'Active' : 'InActive',
+                        );
+                    }
 
-                foreach($subscriptions as $subscription){
-                    $print[] = array( 'Id'                 => $subscription->id,
-                                      'Category'           => $subscription->category_id == 1 ? 'Renewable Subscriptions':'One Time Services',
-                                      'name'               => $subscription->name,
-                                      'price'              => $subscription->price,
-                                      'Description'        => $subscription->description,
-                                      'Request(s) Allowed' => $subscription->request_allowed,
-                                      'Status'             => $subscription->status == 1 ? 'Active':'InActive',
-                    ) ;
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

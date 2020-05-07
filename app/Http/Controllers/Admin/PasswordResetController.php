@@ -113,17 +113,17 @@ class passwordResetController extends Controller
     public function export(){
         Excel::create('passwordResetRequests', function($excel) {
             $excel->sheet('passwordResetRequests', function($sheet) {
-                $requests = $this->passwordResetService->all() ;
+                $requests = $this->passwordResetService->all();
+                if(!$requests->isEmpty()){
 
-                foreach($requests as $request){
-                    $print[] = array( 'Request ID'       => $request->id,
-                                      'User Email'       => $request->email,
-                                      'Request Status'   => ($request->status == 0) ? 'New' : 'Completed' ,
-                    ) ;
+                    foreach($requests as $request){
+                        $print[] = array( 'Request ID'       => $request->id,
+                                          'User Email'       => $request->email,
+                                          'Request Status'   => ($request->status == 0) ? 'New' : 'Completed' ,
+                        ) ;
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');
