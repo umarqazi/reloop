@@ -12,6 +12,7 @@ use App\Services\Admin\OrganizationService;
 use App\Services\ICategoryType;
 use App\Services\IUserStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OrganizationController extends Controller
@@ -52,9 +53,13 @@ class OrganizationController extends Controller
     public function create()
     {
         $sectors    = $this->sectorRepo->all()->pluck('name', 'id')->toArray();
+        $noOfBranches   = $units = Config::get('global.Branches');
+        $noOfEmployees  = $units = Config::get('global.Employees');
         $cities     = $this->cityRepo->all()->pluck('name', 'id')->toArray();
         $districts  = $this->districtRepo->all()->pluck('name', 'id')->toArray();
-        return view('organizations.create', compact('sectors','cities','districts'));
+        return view('organizations.create', compact(
+            'sectors','cities','districts', 'noOfBranches', 'noOfEmployees'
+        ));
     }
 
     /**
@@ -99,9 +104,13 @@ class OrganizationController extends Controller
         $sectors = $this->sectorRepo->all()->pluck('name', 'id')->toArray();
         $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
         $districts  = $this->districtRepo->all()->pluck('name', 'id')->toArray();
+        $noOfBranches   = $units = Config::get('global.Branches');
+        $noOfEmployees  = $units = Config::get('global.Employees');
         $organization = $this->organizationService->findById($id);
         if ($organization) {
-            return view('organizations.edit', compact('organization','sectors','cities','districts'));
+            return view('organizations.edit', compact(
+                'organization','sectors','cities','districts', 'noOfBranches', 'noOfEmployees'
+            ));
         } else {
             return view('organizations.edit')->with('error', 'No Information Founded !');
         }
