@@ -137,7 +137,8 @@ class OrderService extends BaseService
                     }
                 ]);
             }
-        ])->select('id', 'order_number', 'total', 'status', 'created_at')
+        ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
+            'city', 'district')
             ->where(['user_id' => auth()->id()])->first();
     }
 
