@@ -72,7 +72,7 @@
                 <h5>@if(!empty($dashboard->total_co2_emission_reduced)){{$dashboard->total_co2_emission_reduced}} @else 0 @endif Kg</h5>
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>
-                    <p>CO2 Emission Reduced</p>
+                    <p>CO<sub>2</sub> Emission Reduced</p>
                 </div>
             </div>
         </div>

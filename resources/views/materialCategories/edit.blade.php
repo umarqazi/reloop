@@ -127,7 +127,7 @@
                         </div>
                         <div class="input-field col s4">
                             <input id="co2_emission_reduced" type="number" name="co2_emission_reduced" value="{{$materialCategory->co2_emission_reduced}}" step="any" required>
-                            <label for="co2_emission_reduced">CO2 emission reduced (kg)</label>
+                            <label for="co2_emission_reduced">CO<sub>2</sub> emission reduced (kg)</label>
                             @if ($errors->has('co2_emission_reduced'))
                                 <span class="help-block">
                               <strong class="red-text">{{ $errors->first('co2_emission_reduced') }}</strong>

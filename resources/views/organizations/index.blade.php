@@ -56,9 +56,9 @@
                             <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>name</th>
-                                <th>email</th>
-                                <th>phone number</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Mobile number</th>
                                 <th>Number of branches</th>
                                 <th>Number of employees</th>
                                 <th>Status</th>
