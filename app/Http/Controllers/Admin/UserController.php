@@ -208,18 +208,18 @@ class UserController extends Controller
         Excel::create('userSubscriptions', function($excel) {
             $excel->sheet('userSubscriptions', function($sheet) {
                 $userSubscriptions = $this->userSubscriptionService->all();
+                if(!$userSubscriptions->isEmpty()) {
 
-                foreach($userSubscriptions as $userSubscription){
-                    $print[] = array( 'User ID'        => $userSubscription->user->id,
-                                      'User Email'     => $userSubscription->user->email,
-                                      'User Type'      => $userSubscription->user->user_type == IUserType::HOUSE_HOLD ? 'House Hold' : 'Organization' ,
-                                      'Subscription'   => $userSubscription->subscription->name,
-                                      'Trip(s)'        => $userSubscription->trips,
-                    ) ;
+                    foreach ($userSubscriptions as $userSubscription) {
+                        $print[] = array('User ID' => $userSubscription->user->id,
+                            'User Email' => $userSubscription->user->email,
+                            'User Type' => $userSubscription->user->user_type == IUserType::HOUSE_HOLD ? 'House Hold' : 'Organization',
+                            'Subscription' => $userSubscription->subscription->name,
+                            'Trip(s)' => $userSubscription->trips,
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');
@@ -232,18 +232,18 @@ class UserController extends Controller
         Excel::create('userDonations', function($excel) {
             $excel->sheet('userDonations', function($sheet) {
                 $userDonations = $this->userDonationService->all();;
+                if(!$userDonations->isEmpty()) {
 
-                foreach($userDonations as $userDonation){
-                    $print[] = array( 'User ID'               => $userDonation->user->id,
-                                      'User Email'            => $userDonation->user->email,
-                                      'Donation Product'      => $userDonation->donationProduct->name ,
-                                      'Donation Product Type' => ($userDonation->donationProduct->category_id == 1) ? 'Plant a Tree' : 'Charity',
-                                      'Redeem Points'         => $userDonation->donationProduct->redeem_points,
-                    ) ;
+                    foreach ($userDonations as $userDonation) {
+                        $print[] = array('User ID' => $userDonation->user->id,
+                            'User Email' => $userDonation->user->email,
+                            'Donation Product' => $userDonation->donationProduct->name,
+                            'Donation Product Type' => ($userDonation->donationProduct->category_id == 1) ? 'Plant a Tree' : 'Charity',
+                            'Redeem Points' => $userDonation->donationProduct->redeem_points,
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

@@ -141,19 +141,18 @@ class ProductController extends Controller
         Excel::create('products', function($excel) {
             $excel->sheet('products', function($sheet) {
                 $products = $this->productService->all();
-
-                foreach($products as $product){
-                    $print[] = array( 'Id'          => $product->id,
-                                      'Category'    => $product->category->name,
-                                      'name'        => $product->name,
-                                      'price'       => $product->price,
-                                      'Description' => $product->description,
-                                      'Status'      => $product->status == 0 ? 'Inactive' : 'Active',
-                    ) ;
+                if(!$products->isEmpty()) {
+                    foreach ($products as $product) {
+                        $print[] = array('Id' => $product->id,
+                            'Category' => $product->category->name,
+                            'name' => $product->name,
+                            'price' => $product->price,
+                            'Description' => $product->description,
+                            'Status' => $product->status == 0 ? 'Inactive' : 'Active',
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');
