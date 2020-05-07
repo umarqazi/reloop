@@ -7,17 +7,47 @@ $(document).ready(function () {
     //alert for inactive
     $("select[name='status']").on('change', function() {
         if($(this).val() == 0){
-            var retVal = confirm("Do you want to continue ?");
-            if( retVal == true ) {
-                $(this).val(0);
-                $(this).material_select();
-            }
-            if( retVal == false ) {
-                $(this).val(1);
-                $(this).material_select();
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.value) {
+                    $(this).val(0);
+                    $(this).material_select();
+                }
+                else{
+                    $(this).val(1);
+                    $(this).material_select();
+                }
+            })
         }
     });
+
+    $(".delete, .update").on("click", function(event){
+        event.preventDefault();
+        return Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.value) {
+                return $(this).parents('form').submit();
+            }
+        });
+    });
+
+    if ($('#phone_number').val() == ''){
+
+        $('#phone_number').val('+971-5');
+    }
+    $('#phone_number').mask('+000-00-0000000');
 
     $("select[id='user_city_id']").on('change', function() {
        let city_id = $(this).val();
@@ -139,8 +169,19 @@ $(document).ready(function () {
 
     $(wrapper).on("click", ".remove-append", function (e) {
         e.preventDefault();
-        $(this).parent('div').remove();
-        x--;
+        return Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.value) {
+                $(this).parent('div').remove();
+                x--;
+            }
+        });
     });
 
     $( "#subscription_category_id" ).change(function() {
@@ -151,8 +192,8 @@ $(document).ready(function () {
             $('.subscription_request_allowed_input_field').append('' +
                 '                    <select name="category_type"  id="subscription_category_type" required>\n' +
                 '                        <option value="" disabled selected>Choose Subscription Category Type</option>\n' +
-                '                        <option value="1">Same Day</option>\n' +
-                '                        <option value="2">Next Day</option>\n' +
+                /*'                        <option value="1">Same Day</option>\n' +
+                '                        <option value="2">Next Day</option>\n' +*/
                 '                        <option value="3">Single Collection</option>\n' +
                 '                    </select>' +
                 '                    <label for="subscription_category_type">Subscription Category Type</label>');
@@ -213,6 +254,24 @@ $(document).ready(function () {
             }
         });
 
+    });
+
+    $("#user-form").validate({
+        rules: {
+            password: {
+                minlength: 8,
+            },
+        },
+
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+            var placement = $(element).data('error');
+            if (placement) {
+                $(placement).append(error)
+            } else {
+                error.insertAfter(element);
+            }
+        }
     });
 
     /**
@@ -286,6 +345,4 @@ $(document).ready(function () {
             }
         });
     });
-
-
 });

@@ -18,7 +18,8 @@ class CreateDistrictsTable extends Migration
             $table->unsignedBigInteger('city_id');
             $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
-            $table->boolean('status')->nullable();
+            $table->boolean('status');
+            $table->string('order_acceptance_days');
             $table->timestamps();
         });
     }

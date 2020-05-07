@@ -137,7 +137,8 @@ class OrderService extends BaseService
                     }
                 ]);
             }
-        ])->select('id', 'order_number', 'total', 'status', 'created_at')
+        ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
+            'city', 'district')
             ->where(['user_id' => auth()->id()])->first();
     }
 
@@ -162,12 +163,12 @@ class OrderService extends BaseService
         ]);
         if(!empty($date)){
 
-            return $assignedOrders->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-                'city', 'district', 'phone_number', 'driver_trip_status')
+            return $assignedOrders->select('id', 'order_number', 'delivery_date', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
+                'city', 'district', 'phone_number', 'driver_trip_status', 'first_name', 'organization_name')
                 ->where(['driver_id' => $driverId, 'delivery_date' => $date])->get();
         }
-        return $assignedOrders->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-            'city', 'district', 'phone_number', 'driver_trip_status')
+        return $assignedOrders->select('id', 'order_number', 'delivery_date', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
+            'city', 'district', 'phone_number', 'driver_trip_status', 'first_name', 'organization_name')
             ->where('driver_id', $driverId)->get();
     }
 

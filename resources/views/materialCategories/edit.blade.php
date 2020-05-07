@@ -71,7 +71,7 @@
                     <div class="col s12">
                         <div class="input-field col s12">
                             <textarea class="validate materialize-textarea" id="description" name="description">{{ $materialCategory->description }}</textarea>
-                            <label for="description" data-error="wrong" data-success="right">Address</label>
+                            <label for="description" data-error="wrong" data-success="right">Description</label>
                             @if ($errors->has('description'))
                                 <span class="help-block">
                                     <strong class="red-text">{{ $errors->first('description') }}</strong>
@@ -162,15 +162,6 @@
                             @endif
                         </div>
                         <div class="input-field col s4">
-                            <input id="natural_ores_saved" type="number" name="natural_ores_saved" value="{{$materialCategory->natural_ores_saved}}" step="any" required>
-                            <label for="natural_ores_saved">Natural Ores saved (kg)</label>
-                            @if ($errors->has('natural_ores_saved'))
-                                <span class="help-block">
-                              <strong class="red-text">{{ $errors->first('natural_ores_saved') }}</strong>
-                            </span>
-                            @endif
-                        </div>
-                        <div class="input-field col s4">
                             <input id="water_saved" type="number" name="water_saved" step="any" value="{{$materialCategory->water_saved}}" required>
                             <label for="trees_saved">Water saved (ltrs)</label>
                             @if ($errors->has('water_saved'))
@@ -192,7 +183,7 @@
 
                     <div class="col s12">
                         <div class="input-field col s12">
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary update">Update</button>
                         </div>
                     </div>
                 {{ Form::close() }}

@@ -69,6 +69,15 @@
     <div class="row m-0 cards-row">
         <div class="col-md-4 col-sm-6 col-12">
             <div class="inner-wrapper">
+                <h5>@if(!empty($dashboard->total_co2_emission_reduced)){{$dashboard->total_co2_emission_reduced}} @else 0 @endif Kg</h5>
+                <div class="icon-wrapper">
+                    <span><i class="fas fa-shopping-cart"></i></span>
+                    <p>CO2 Emission Reduced</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-12">
+            <div class="inner-wrapper">
                 <h5>@if(!empty($dashboard->total_trees_saved)){{$dashboard->total_trees_saved}} @else 0 @endif trees</h5>
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>
@@ -96,10 +105,10 @@
         </div>
         <div class="col-md-4 col-sm-6 col-12">
             <div class="inner-wrapper">
-                <h5>@if(!empty($dashboard->total_co2_emission_reduced)){{$dashboard->total_co2_emission_reduced}} @else 0 @endif Kg</h5>
+                <h5>@if(!empty($dashboard->total_water_saved)){{$dashboard->total_water_saved}} @else 0 @endif ltrs</h5>
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>
-                    <p>CO2 Emission Reduced</p>
+                    <p>Water Saved</p>
                 </div>
             </div>
         </div>
@@ -108,16 +117,7 @@
                 <h5>@if(!empty($dashboard->total_landfill_space_saved)){{$dashboard->total_landfill_space_saved}} @else 0 @endif ft<sup>3</sup></h5>
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>
-                    <p>CO2 Emission Reduced</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-6 col-12">
-            <div class="inner-wrapper">
-                <h5>@if(!empty($dashboard->total_water_saved)){{$dashboard->total_water_saved}} @else 0 @endif ltrs</h5>
-                <div class="icon-wrapper">
-                    <span><i class="fas fa-shopping-cart"></i></span>
-                    <p>Water Saved</p>
+                    <p>Landfill Space Saved</p>
                 </div>
             </div>
         </div>

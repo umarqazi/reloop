@@ -91,6 +91,7 @@
                             @endif
                         </div>
                         <div class="input-field col s6">
+                            <label class="date-label">{{ ($type == 1) ? 'Date of Birth' : 'Date of Joining' }}</label>
                             <input id="birth_date" name="birth_date" placeholder="Date of Birth" type="date" value="{{ $user->birth_date }}" required >
                             {{--<label for="birth_date">Date of Birth</label>--}}
                             @if ($errors->has('birth_date'))
@@ -186,7 +187,7 @@
                                     <label>City</label>
                                 </div>
                                 <div class="input-field col s3">
-                                    {{ Form::select('district_id[]', (['' => 'Choose District'] + $districts), $user->addresses->first()->district_id , ['id' => 'district_id']) }}
+                                    {{ Form::select('district_id', (['' => 'Choose District'] + $districts), $user->addresses->first()->district_id , ['id' => 'district_id']) }}
                                     <label>District</label>
                                 </div>
                                 <div class="input-field col s3">
@@ -250,7 +251,7 @@
 
                     <div class="col s12">
                         <div class="input-field col s12">
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary update">Update</button>
                         </div>
                     </div>
                 {{ Form::close() }}

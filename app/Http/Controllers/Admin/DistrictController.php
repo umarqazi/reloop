@@ -52,6 +52,7 @@ class DistrictController extends Controller
     public function store(CreateRequest $request)
     {
         $data = $request->except('_token') ;
+        $data['order_acceptance_days'] = implode(',',$data['order_acceptance_days']);
         $district = $this->districtService->create($data);
 
         if ($district) {
@@ -81,8 +82,10 @@ class DistrictController extends Controller
     public function edit($id)
     {
         $district = $this->districtService->findById($id);
+        $selected_days = explode(',',$district->order_acceptance_days) ;
+        $days = Config::get('global.Day');
         if ($district) {
-            return view('districts.edit', compact('district'));
+            return view('districts.edit', compact('district','days','selected_days'));
         } else {
             return view('districts.edit')->with('error', Config::get('constants.ERROR'));
         }
@@ -98,9 +101,10 @@ class DistrictController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $data = $request->except('_token','_method') ;
+        $data['order_acceptance_days'] = implode(',',$data['order_acceptance_days']);
         $district = $this->districtService->update($id,$data);
         if ($district) {
-            return redirect()->back()->with('success', Config::get('constants.DISTRICT_UPDATE_SUCCESS'));
+            return redirect()->back()->with('success', Config::get('constants.DISTRICT  _UPDATE_SUCCESS'));
         } else {
             return redirect()->back()->with('error', Config::get('constants.DISTRICT_UPDATE_ERROR'));
         }
@@ -129,7 +133,8 @@ class DistrictController extends Controller
          */
     public function districtCreate($city_id){
         $city = $this->cityService->findById(($city_id));
-        return view('districts.create',compact('city'));
+        $days = Config::get('global.Day');
+        return view('districts.create',compact('city','days'));
     }
 
 }
