@@ -222,8 +222,15 @@ class RequestService extends BaseService
 
     public function userCollectionRequests()
     {
-        return $this->model->with('requestCollection')
-            ->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+        return $this->model->with([
+            'requestCollection' => function($query){
+                return $query->with([
+                    'materialCategory' => function($subQuery){
+                        return $subQuery->select('id', 'name', 'unit');
+                    }
+                ]);
+            }
+        ])->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
                 'district', 'street', 'created_at', 'status')
             ->where('user_id', auth()->id())->get();
     }

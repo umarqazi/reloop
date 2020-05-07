@@ -72,7 +72,7 @@
             <div class="col s12">
                 <div class="input-field col s6">
                     <input id="phone_number" type="text" name="phone_number" required>
-                    <label for="phone_number">Phone Number</label>
+                    <label for="phone_number">Mobile Number</label>
                     @if ($errors->has('phone_number'))
                         <span class="help-block">
                         <strong class="red-text">{{ $errors->first('phone_number') }}</strong>
@@ -91,7 +91,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    <input id="no_of_employees" type="text" name="no_of_employees" required>
+                    {{ Form::select('no_of_employees', (['' => 'Select No of Employees'] + $noOfEmployees), null, ['id' => 'no_of_employees']) }}
                     <label for="no_of_employees">Number of employees</label>
                     @if ($errors->has('no_of_employees'))
                         <span class="help-block">
@@ -100,7 +100,7 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
-                    <input id="no_of_branches" type="text" name="no_of_branches" required>
+                    {{ Form::select('no_of_branches', (['' => 'Select No of Branches'] + $noOfBranches), null, ['id' => 'no_of_branches']) }}
                     <label for="no_of_branches">Number of branches</label>
                     @if ($errors->has('no_of_branches'))
                         <span class="help-block">

@@ -139,19 +139,19 @@ class DonationProductController extends Controller
         Excel::create('donationProducts', function($excel) {
             $excel->sheet('donationProducts', function($sheet) {
                 $products = $this->donationProductService->all();
+                if(!$products->isEmpty()) {
 
-                foreach($products as $product){
-                    $print[] = array( 'Id'            => $product->id,
-                                      'Category'      => $product->category->name,
-                                      'name'          => $product->name,
-                                      'Redeem Points' => $product->redeem_points,
-                                      'Description'   => $product->description,
-                                      'Status'        => $product->status == 0 ? 'Inactive' : 'Active',
-                    ) ;
+                    foreach ($products as $product) {
+                        $print[] = array('Id' => $product->id,
+                            'Category' => $product->category->name,
+                            'name' => $product->name,
+                            'Redeem Points' => $product->redeem_points,
+                            'Description' => $product->description,
+                            'Status' => $product->status == 0 ? 'Inactive' : 'Active',
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

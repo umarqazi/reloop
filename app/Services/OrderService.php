@@ -127,7 +127,7 @@ class OrderService extends BaseService
      *
      * @return Order|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
      */
-    public function userOrdersList()
+    public function userOrdersList($id)
     {
         return $this->model->with([
             'orderItems' => function ($query){
@@ -137,8 +137,9 @@ class OrderService extends BaseService
                     }
                 ]);
             }
-        ])->select('id', 'order_number', 'total', 'status', 'created_at')
-            ->where(['user_id' => auth()->id()])->first();
+        ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
+            'city', 'district')
+            ->where(['id' => $id])->first();
     }
 
     /**

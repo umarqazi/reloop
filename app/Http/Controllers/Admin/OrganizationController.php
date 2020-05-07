@@ -12,6 +12,7 @@ use App\Services\Admin\OrganizationService;
 use App\Services\ICategoryType;
 use App\Services\IUserStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OrganizationController extends Controller
@@ -52,9 +53,13 @@ class OrganizationController extends Controller
     public function create()
     {
         $sectors    = $this->sectorRepo->all()->pluck('name', 'id')->toArray();
+        $noOfBranches   = $units = Config::get('global.Branches');
+        $noOfEmployees  = $units = Config::get('global.Employees');
         $cities     = $this->cityRepo->all()->pluck('name', 'id')->toArray();
         $districts  = $this->districtRepo->all()->pluck('name', 'id')->toArray();
-        return view('organizations.create', compact('sectors','cities','districts'));
+        return view('organizations.create', compact(
+            'sectors','cities','districts', 'noOfBranches', 'noOfEmployees'
+        ));
     }
 
     /**
@@ -99,9 +104,13 @@ class OrganizationController extends Controller
         $sectors = $this->sectorRepo->all()->pluck('name', 'id')->toArray();
         $cities  = $this->cityRepo->all()->pluck('name', 'id')->toArray();
         $districts  = $this->districtRepo->all()->pluck('name', 'id')->toArray();
+        $noOfBranches   = $units = Config::get('global.Branches');
+        $noOfEmployees  = $units = Config::get('global.Employees');
         $organization = $this->organizationService->findById($id);
         if ($organization) {
-            return view('organizations.edit', compact('organization','sectors','cities','districts'));
+            return view('organizations.edit', compact(
+                'organization','sectors','cities','districts', 'noOfBranches', 'noOfEmployees'
+            ));
         } else {
             return view('organizations.edit')->with('error', 'No Information Founded !');
         }
@@ -153,31 +162,31 @@ class OrganizationController extends Controller
         Excel::create('organizations', function($excel) {
             $excel->sheet('organizations', function($sheet) {
                 $organizations = $this->organizationService->all();
+                if(!$organizations->isEmpty()) {
 
-                foreach($organizations as $organization){
-                    $print[] = array('Id'                  => $organization->id,
-                                     'name'                => $organization->name,
-                                     'email'               => $organization->users->first()->email ,
-                                     'phone number'        => $organization->users->first()->phone_number,
-                                     'Number of branches'  => $organization->no_of_branches,
-                                     'Number of employees' => $organization->no_of_employees,
-                                     'Status'              => $organization->users->first()->status == IUserStatus::ACTIVE ? 'Active' : 'Inactive',
-                                     'Sector'              => $organization->sector->name,
-                                     'Type'                => ($organization->users->first()->addresses->first()->type=='1') ? 'Villa' : 'Apartment',
-                                     'No of Bedrooms'      => $organization->users->first()->addresses->first()->no_of_bedrooms,
-                                     'No of Occupants'     => $organization->users->first()->addresses->first()->no_of_occupants,
-                                     'City'                => $organization->users->first()->addresses->first()->city->name,
-                                     'District'            => $organization->users->first()->addresses->first()->district->name,
-                                     'Street'              => $organization->users->first()->addresses->first()->street,
-                                     'Floor'               => $organization->users->first()->addresses->first()->floor,
-                                     'Unit Number'         => $organization->users->first()->addresses->first()->unit_number,
-                                     'Location'            => $organization->users->first()->addresses->first()->location,
+                    foreach ($organizations as $organization) {
+                        $print[] = array('Id' => $organization->id,
+                            'name' => $organization->name,
+                            'email' => $organization->users->first()->email,
+                            'phone number' => $organization->users->first()->phone_number,
+                            'Number of branches' => $organization->no_of_branches,
+                            'Number of employees' => $organization->no_of_employees,
+                            'Status' => $organization->users->first()->status == IUserStatus::ACTIVE ? 'Active' : 'Inactive',
+                            'Sector' => $organization->sector->name,
+                            'Type' => ($organization->users->first()->addresses->first()->type == '1') ? 'Villa' : 'Apartment',
+                            'No of Bedrooms' => $organization->users->first()->addresses->first()->no_of_bedrooms,
+                            'No of Occupants' => $organization->users->first()->addresses->first()->no_of_occupants,
+                            'City' => $organization->users->first()->addresses->first()->city->name,
+                            'District' => $organization->users->first()->addresses->first()->district->name,
+                            'Street' => $organization->users->first()->addresses->first()->street,
+                            'Floor' => $organization->users->first()->addresses->first()->floor,
+                            'Unit Number' => $organization->users->first()->addresses->first()->unit_number,
+                            'Location' => $organization->users->first()->addresses->first()->location,
 
-                    ) ;
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

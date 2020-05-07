@@ -43,7 +43,10 @@ $(document).ready(function () {
         });
     });
 
-    $('#phone_number').val('+971-5');
+    if ($('#phone_number').val() == ''){
+
+        $('#phone_number').val('+971-5');
+    }
     $('#phone_number').mask('+000-00-0000000');
 
     $("select[id='user_city_id']").on('change', function() {

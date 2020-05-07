@@ -100,16 +100,16 @@ class ContactUsController extends Controller
         Excel::create('contactUs', function($excel) {
             $excel->sheet('contactUs', function($sheet) {
                 $contactUs = $this->contactUsService->all();
+                if(!$contactUs->isEmpty()) {
 
-                foreach($contactUs as $contact){
-                    $print[] = array( 'Id'         => $contact->id,
-                                      'Email'      => $contact->email,
-                                      'Subject'    => $contact->subject,
-                    ) ;
+                    foreach ($contactUs as $contact) {
+                        $print[] = array('Id' => $contact->id,
+                            'Email' => $contact->email,
+                            'Subject' => $contact->subject,
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

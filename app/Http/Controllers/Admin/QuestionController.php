@@ -133,15 +133,15 @@ class QuestionController extends Controller
         Excel::create('questions', function($excel) {
             $excel->sheet('questions', function($sheet) {
                 $questions = $this->questionService->all();
+                if(!$questions->isEmpty()) {
 
-                foreach($questions as $question){
-                    $print[] = array( 'Id'        => $question->id,
-                                      'Question'  => $question->question,
-                    ) ;
+                    foreach ($questions as $question) {
+                        $print[] = array('Id' => $question->id,
+                            'Question' => $question->question,
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

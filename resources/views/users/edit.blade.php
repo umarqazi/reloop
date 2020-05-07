@@ -83,7 +83,7 @@
                     <div class="col s12">
                         <div class="input-field col s6">
                             <input id="phone_number" name="phone_number" type="text" value="{{ $user->phone_number }}" required >
-                            <label for="phone_number" >Phone Number</label>
+                            <label for="phone_number" >Mobile Number</label>
                             @if ($errors->has('phone_number'))
                                 <span class="help-block">
                                 <strong class="red-text">{{ $errors->first('phone_number') }}</strong>
@@ -103,11 +103,7 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s6">
-                            @if($type != 1)
                             <input  id="email" name="email" type="email"  value="{{ $user->email }}" required >
-                            @else
-                            <input  id="email" name="email" type="email"  value="{{ $user->email }}" required readonly>
-                            @endif
                             <label for="email" >Email</label>
                         </div>
                         <div class="input-field col s6">

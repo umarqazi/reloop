@@ -128,16 +128,16 @@ class SettingController extends Controller
         Excel::create('settings', function($excel) {
             $excel->sheet('settings', function($sheet) {
                 $settings = $this->settingService->all();
+                if(!$settings->isEmpty()) {
 
-                foreach($settings as $setting){
-                    $print[] = array( 'Id'        => $setting->id,
-                                      'Keys'      => $setting->keys,
-                                      'Values'    => $setting->values,
-                    ) ;
+                    foreach ($settings as $setting) {
+                        $print[] = array('Id' => $setting->id,
+                            'Keys' => $setting->keys,
+                            'Values' => $setting->values,
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');
