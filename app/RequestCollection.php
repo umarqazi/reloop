@@ -43,6 +43,6 @@ class RequestCollection extends Model
 
     public function materialCategory()
     {
-        return $this->belongsTo(MaterialCategory::class);
+        return $this->belongsTo(MaterialCategory::class, 'material_category_id');
     }
 }

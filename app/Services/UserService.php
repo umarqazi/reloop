@@ -750,7 +750,7 @@ class UserService extends BaseService
                 }
             } elseif ($userBilling->transactionable_type == Order::class){
 
-                $userOrders = App::make(OrderService::class)->userOrdersList();
+                $userOrders = App::make(OrderService::class)->userOrdersList($userBilling->transactionable_id);
                 $userOrdersList[] = $userOrders;
             }
         }
