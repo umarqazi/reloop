@@ -52,13 +52,18 @@ class HomeController extends Controller
     {
         $organizations      = count($this->organizationService->all()) ;
         $users              = count($this->userService->getSelected(IUserType::HOUSE_HOLD)) ;
+        $allUsers           = $this->userService->getSelected(IUserType::HOUSE_HOLD)->pluck('email', 'id')->toArray();
+        $allOrganizations   = $this->userService->getSelected(IUserType::ORGANIZATION)->pluck('email', 'id')->toArray();
+        $allDrivers         = $this->userService->getSelected(IUserType::DRIVER)->pluck('email', 'id')->toArray();
+        $allSupervisors     = $this->userService->getSelected(IUserType::SUPERVISOR)->pluck('email', 'id')->toArray();
         $materialCategories = count($this->materialCategoryService->all()) ;
         $products           = count($this->productService->all()) ;
         $collectionRequest  = count($this->collectionRequestService->all()) ;
         $orders             = count($this->orderService->all()) ;
         $dashboard          = App::make(DashboardService::class)->dashboard();
         return view('index',compact(
-            'organizations','users','materialCategories','products','collectionRequest','orders','dashboard'
+            'organizations','users','materialCategories','products','collectionRequest','orders','dashboard',
+            'allSupervisors', 'allDrivers', 'allOrganizations', 'allUsers'
         ));
     }
 }
