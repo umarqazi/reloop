@@ -100,8 +100,8 @@ class ChartService
      */
     public function daily(Carbon $date): array
     {
-        $startDate = ResponseHelper::carbon($date)->startOfWeek();
-        $endDate = ResponseHelper::carbon($date)->endOfWeek();
+        $startDate = ResponseHelper::carbon($date)->startOfWeek(Carbon::SUNDAY);
+        $endDate = ResponseHelper::carbon($date)->endOfWeek(Carbon::SATURDAY);
         $data['header']['prev'] = ResponseHelper::carbon($startDate)->subWeek()->format('Y-m-d');
         $data['header']['next'] = ResponseHelper::carbon($startDate)->addWeek()->format('Y-m-d');
 
@@ -176,8 +176,8 @@ class ChartService
             // Set label and data of bar chart.
             $data['bar'][$counter]['label'] = $counter;
             $data['bar'][$counter]['data']  = [
-                'start' => ResponseHelper::carbon($startDate)->startOfWeek()->format('Y-m-d'),
-                'end' => ResponseHelper::carbon($startDate)->endOfWeek()->format('Y-m-d')
+                'start' => ResponseHelper::carbon($startDate)->startOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
+                'end' => ResponseHelper::carbon($startDate)->endOfWeek(Carbon::SATURDAY)->format('Y-m-d')
             ];
 
             // Filter weight record of iterated date.
