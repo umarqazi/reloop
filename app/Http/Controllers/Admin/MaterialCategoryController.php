@@ -139,16 +139,16 @@ class MaterialCategoryController extends Controller
         Excel::create('materialCategories', function($excel) {
             $excel->sheet('materialCategories', function($sheet) {
                 $materialCategories = $this->materialCategoryService->all();
+                if(!$materialCategories->isEmpty()) {
 
-                foreach($materialCategories as $material){
-                    $print[] = array( 'ID'       => $material->id,
-                                     'Name'      => $material->name,
-                                     'Status'    => ($material->status == 1) ? 'Active' : 'Inactive',
-                    ) ;
+                    foreach ($materialCategories as $material) {
+                        $print[] = array('ID' => $material->id,
+                            'Name' => $material->name,
+                            'Status' => ($material->status == 1) ? 'Active' : 'Inactive',
+                        );
+                    }
+                    $sheet->fromArray($print);
                 }
-
-                $sheet->fromArray($print);
-
             });
 
         })->export('csv');

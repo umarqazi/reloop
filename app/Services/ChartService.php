@@ -231,7 +231,10 @@ class ChartService
 
             // Set label and data of bar chart.
             $data['bar'][$counter]['label'] = $startDate->format('M');
-            $data['bar'][$counter]['data']  = $startDate->format('Y-m-d');
+            $data['bar'][$counter]['data']  = [
+                'start' => ResponseHelper::carbon($startDate)->startOfMonth()->format('Y-m-d'),
+                'end' => ResponseHelper::carbon($startDate)->endOfMonth()->format('Y-m-d')
+            ];
 
             // Filter weight record of iterated date.
             $weight = $weightByMonth->filter(static function ($weight, $date) use ($startDate) {
@@ -284,7 +287,10 @@ class ChartService
 
             // Set label and data of bar chart.
             $data['bar'][$counter]['label'] = $startDate->format('Y');
-            $data['bar'][$counter]['data']  = $startDate->format('Y-m-d');
+            $data['bar'][$counter]['data']  = [
+                'start' => ResponseHelper::carbon($startDate)->startOfYear()->format('Y-m-d'),
+                'end' => ResponseHelper::carbon($startDate)->endOfYear()->format('Y-m-d')
+            ];
 
             // Filter weight record of iterated date.
             $weight = $weightByYear->filter(static function ($weight, $date) use ($startDate) {
