@@ -290,6 +290,13 @@ class UserService extends BaseService
                 $authUser = auth()->user();
                 if ($authUser->status == true) {
 
+                    $authUser->player_id = $loginForm->player_id;
+                    $authUser->update();
+                    /*if(!in_array($loginForm->player_id, $authUser->player_id)){
+
+                        $authUser->player_id = $loginForm->player_id;
+                    }*/
+
                     $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization', 'roles')->first();
                     return ResponseHelper::responseData(
                         Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
@@ -354,6 +361,32 @@ class UserService extends BaseService
                     );
                 }
             }
+        }
+    }
+
+    /**
+     * Method: logout
+     *
+     * @param $userId
+     *
+     * @return array
+     */
+    public function logout($userId)
+    {
+        $authUser = $this->findById($userId);
+        if($authUser){
+            $authUser->player_id = null;
+            $authUser->update();
+            return ResponseHelper::responseData(
+                Config::get('constants.USER_LOGOUT_SUCCESSFULLY'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                [
+                    "Logout" => [
+                        Config::get('constants.USER_LOGOUT_SUCCESSFULLY')
+                    ]
+                ]
+            );
         }
     }
 

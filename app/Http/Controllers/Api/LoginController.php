@@ -55,6 +55,22 @@ class LoginController extends Controller
     }
 
     /**
+     * Method: logout
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        $authUser = $this->userService->logout(auth()->id());
+        return ResponseHelper::jsonResponse(
+            $authUser['message'],
+            $authUser['code'],
+            $authUser['status'],
+            $authUser['data']
+        );
+    }
+
+    /**
      * Method: changePassword
      *
      * @param Request $request

@@ -23,6 +23,7 @@ class LoginForm extends BaseForm
     public $reports;
     public $api_token;
     public $user_type;
+    public $player_id;
 
     public function __construct()
     {
@@ -39,7 +40,8 @@ class LoginForm extends BaseForm
         return [
             'email'        => $this->email,
             'password'     => $this->password,
-            'login_type'   => $this->login_type
+            'login_type'   => $this->login_type,
+            'player_id'    => $this->player_id
         ];
     }
 
@@ -51,7 +53,8 @@ class LoginForm extends BaseForm
         return [
             'email' => 'required|email',
             'login_type'   => 'required|between:1,3|integer',
-            'password' => 'required_if:login_type,==,1'
+            'password' => 'required_if:login_type,==,1',
+            'player_id' => 'required'
         ];
     }
 }

@@ -12,6 +12,9 @@ class User extends Authenticatable
     use Notifiable;
     use HasRoles;
 
+    public $playerId = [];
+    public $message;
+    public $orderNumber;
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name', 'last_name', 'email', 'password','organization_id','phone_number','birth_date', 'hh_organization_name',
         'avatar','user_type','trips','reward_points','status','verified_at', 'signup_token', 'api_token','stripe_customer_id',
-        'login_type', 'reports', 'password_reset_token'
+        'login_type', 'reports', 'password_reset_token', 'player_id'
     ];
 
     /**
@@ -109,4 +112,60 @@ class User extends Authenticatable
     {
         return $this->hasOne(DriverCurrentLocation::class, 'driver_id', 'id');
     }
+
+    /**
+     * Method: routeNotificationForOneSignal
+     *
+     * @return array
+     */
+    public function routeNotificationForOneSignal()
+    {
+        return $this->playerId;
+    }
+
+    /**
+     * Method: setPlayerId
+     *
+     * @param array $value
+     *
+     * @return void
+     */
+    public function setPlayerId(array $value)
+    {
+        $this->playerId = $value;
+    }
+
+    /**
+     * Method: setLoginSuccessMsg
+     *
+     * @param $message
+     *
+     * @return void
+     */
+    public function setLoginSuccessMsg($message)
+    {
+        $this->message = $message;
+    }
+
+    /**
+     * Method: setOrderNumber
+     *
+     * @param $orderNumber
+     *
+     * @return void
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        $this->orderNumber = $orderNumber;
+    }
+
+    /*public function getPlayerIdAttribute($playerId)
+    {
+        return (!empty($playerId) ? explode(',', $playerId) : '');
+    }
+
+    public function setPlayerIdAttribute($playerId)
+    {
+        return $this->player_id = (!empty($playerId) ? implode(',', $playerId) : '');
+    }*/
 }
