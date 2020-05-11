@@ -21,6 +21,7 @@ Route::post('reset-password', 'Api\LoginController@resetPassword');
 Route::post('password-change-request', 'Api\DriverController@passwordChangeRequest');
 Route::middleware('auth:api')->group(function () {
 
+    Route::post('logout', 'Api\LoginController@logout');
     Route::get('dashboard', 'UserController@dashboard');
     Route::get('categories', 'Api\ProductController@categories');
     Route::get('category/products', 'Api\ProductController@categoryProducts');
