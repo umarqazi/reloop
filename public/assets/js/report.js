@@ -273,8 +273,10 @@ const drawCharts = function (data = null) {
  */
 const navHandler = function (currentFilter, res) {
 
+    let header = $(`#bar-${currentFilter}-header`);
+
     // Set header text of pie chart
-    $(`#bar-${currentFilter}-header`).text(res.header.text);
+    header.data('start', res.header.start).data('end', res.header.end).text(res.header.text);
 
     // Set next and previous buttons
     let prevBtn = $(`#bar-${currentFilter}-prev-btn`);
@@ -288,3 +290,21 @@ const navHandler = function (currentFilter, res) {
     // Hide next button if next date lies in future.
     curDate <= nxtDate ? nxtBtn.hide() : nxtBtn.show();
 };
+
+/**
+ * Export chart of visible range
+ */
+$(document).on('click', '#export-chart-btn', function () {
+
+    let currentFilter = activeFilter('#myTab');
+
+    let header = $(`#bar-${currentFilter}-header`);
+
+    let data = {
+        filter: currentFilter,
+        start: header.data('start'),
+        end: header.data('end')
+    };
+
+    location.href = 'export-chart-data?' + $.param(data);
+});

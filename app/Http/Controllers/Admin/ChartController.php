@@ -52,4 +52,18 @@ class ChartController extends Controller
     {
         return $this->_chartService->pieChart($request);
     }
+
+    /**
+     * Method: export
+     * Export chart data
+     *
+     * @param  Request  $request
+     *
+     * @return |null
+     * @throws \Exception
+     */
+    public function export(Request $request)
+    {
+        return $this->_chartService->export($request);
+    }
 }

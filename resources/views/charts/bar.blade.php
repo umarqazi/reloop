@@ -1,4 +1,5 @@
 <div class="col-md-6">
+    <div id="export-chart-btn" class="btn btn-primary">Export</div>
     <div class="chart-wrapper" id="bar-chart-container">
         <div class="chart-loader" style="display: none;">Loading ...</div>
         <ul class="nav nav-tabs" id="myTab" role="tablist">

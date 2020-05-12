@@ -6,9 +6,7 @@ use App\Helpers\ResponseHelper;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use App\Repositories\Admin\ChartRepo;
-use Illuminate\Support\Facades\App;
-use Symfony\Component\VarDumper\VarDumper;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Class ChartService
@@ -32,6 +30,10 @@ class ChartService
     public function __construct(RequestCollectionService $requestCollectionService)
     {
         $this->requestCollectionService = $requestCollectionService;
+
+        // Set up week start and end
+        Carbon::setWeekStartsAt(Carbon::SUNDAY);
+        Carbon::setWeekEndsAt(Carbon::SATURDAY);
     }
 
     /**
@@ -102,6 +104,8 @@ class ChartService
     {
         $startDate = ResponseHelper::carbon($date)->startOfWeek(Carbon::SUNDAY);
         $endDate = ResponseHelper::carbon($date)->endOfWeek(Carbon::SATURDAY);
+        $data['header']['start'] = $startDate->format('Y-m-d');
+        $data['header']['end'] = $endDate->format('Y-m-d');
         $data['header']['prev'] = ResponseHelper::carbon($startDate)->subWeek()->format('Y-m-d');
         $data['header']['next'] = ResponseHelper::carbon($startDate)->addWeek()->format('Y-m-d');
 
@@ -157,6 +161,8 @@ class ChartService
     {
         $startDate = ResponseHelper::carbon($date)->firstOfQuarter();
         $endDate = ResponseHelper::carbon($date)->lastOfQuarter();
+        $data['header']['start'] = $startDate->format('Y-m-d');
+        $data['header']['end'] = $endDate->format('Y-m-d');
         $data['header']['prev'] = ResponseHelper::carbon($startDate)->subWeek()->format('Y-m-d');
         $data['header']['next'] = ResponseHelper::carbon($endDate)->addWeek()->format('Y-m-d');
 
@@ -213,6 +219,8 @@ class ChartService
     {
         $startDate = ResponseHelper::carbon($date)->firstOfQuarter();
         $endDate = ResponseHelper::carbon($date)->lastOfQuarter();
+        $data['header']['start'] = $startDate->format('Y-m-d');
+        $data['header']['end'] = $endDate->format('Y-m-d');
         $data['header']['prev'] = ResponseHelper::carbon($startDate)->subMonth()->format('Y-m-d');
         $data['header']['next'] = ResponseHelper::carbon($endDate)->addMonth()->format('Y-m-d');
 
@@ -269,6 +277,8 @@ class ChartService
     {
         $startDate = ResponseHelper::carbon($date)->subYears(4)->startOfYear();
         $endDate = ResponseHelper::carbon($date)->endOfYear();
+        $data['header']['start'] = $startDate->format('Y-m-d');
+        $data['header']['end'] = $endDate->format('Y-m-d');
         $data['header']['prev'] = ResponseHelper::carbon($startDate)->subYear()->format('Y-m-d');
         $data['header']['next'] = ResponseHelper::carbon($startDate)->addYears(9)->format('Y-m-d');
 
@@ -310,5 +320,63 @@ class ChartService
         $data['pie']['data'] = $weightByCat->pluck('total_weight');
 
         return $data;
+    }
+
+    /**
+     * Method: export
+     * Export chart details in csv file.
+     *
+     * @param $request
+     *
+     * @return mixed|null
+     * @throws Exception
+     */
+    public function export($request)
+    {
+        $filter = $request->filter;
+        $date = ResponseHelper::carbon($request->start);
+
+        if(method_exists($this, $filter)) {
+            $data = $this->{$filter}($date);
+
+
+            return Excel::create(
+                'ChartDetails',
+                static function ($excel) use ($data) {
+                    $excel->sheet('ChartDetails', static function ($sheet) use ($data) {
+
+                        $row1[] = 'Filter';
+                        $row2[] = 'Weight';
+                        foreach ($data['bar'] as $barData) {
+
+                            $row1[] = $barData['label'];
+
+                            $row2[] = $barData['y'];
+                        }
+                        $row = [
+                            ['Bar chart Details'],
+                            $row1,
+                            $row2,
+                            [],
+                            [],
+                            ['Pie chart Details'],
+                            ['Category', 'Weight']
+                        ];
+
+                        $pieData = $data['pie']['labels']->combine($data['pie']['data']);
+
+                        foreach ($pieData as $label => $y) {
+                            $row[] = [
+                                $label,
+                                $y
+                            ];
+                        }
+                        $sheet->fromArray($row);
+                    });
+
+                })->export('csv');
+        }
+
+        return null;
     }
 }
