@@ -16,8 +16,9 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'user_id','driver_id', 'order_number', 'subtotal', 'redeem_points', 'coupon_discount', 'total', 'first_name', 'last_name', 'email',
-        'organization_name', 'phone_number', 'location', 'latitude', 'longitude', 'city', 'district','status','delivery_date','driver_trip_status'
+        'user_id','driver_id', 'supervisor_id', 'order_number', 'subtotal', 'redeem_points', 'coupon_discount', 'total',
+        'first_name', 'last_name', 'email', 'organization_name', 'phone_number', 'location', 'latitude', 'longitude',
+        'city', 'district','status','delivery_date','driver_trip_status'
     ];
 
     /**
