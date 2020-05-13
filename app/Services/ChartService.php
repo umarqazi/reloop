@@ -44,14 +44,16 @@ class ChartService
      * @return array
      * @throws Exception
      */
-    public function barChart(Request $request)
+    public function barChart(Request $request): array
     {
         if($request->has('filter'))
         {
             if(method_exists($this, $request->get('filter')))
             {
-                $date = $request->get('data') ? ResponseHelper::carbon($request->get('data')) : now();
-                return $this->{$request->get('filter')}($date);
+                $date = $request->get('date') ? ResponseHelper::carbon($request->get('date')) : now();
+                $users = $request->get('users') ?? [];
+
+                return $this->{$request->get('filter')}($date, $users);
             }
 
             return [];
@@ -96,11 +98,12 @@ class ChartService
      * Returns the daily stats data of week.
      *
      * @param  Carbon  $date
+     * @param  array  $users
      *
      * @return array
      * @throws Exception
      */
-    public function daily(Carbon $date): array
+    public function daily(Carbon $date, array $users): array
     {
         $startDate = ResponseHelper::carbon($date)->startOfWeek(Carbon::SUNDAY);
         $endDate = ResponseHelper::carbon($date)->endOfWeek(Carbon::SATURDAY);
@@ -113,8 +116,8 @@ class ChartService
         $data['header']['text'] = 'Daily Stats ' . $date->format('Y');
 
         // Get weights sum against given dates.
-        $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate);
-        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate);
+        $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate, '', $users);
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate, $users);
 
         // Set counter.
         $counter = 0;
@@ -153,11 +156,12 @@ class ChartService
      * Returns bar and pie chart data points.
      *
      * @param  Carbon  $date
+     * @param  array  $users
      *
      * @return array
      * @throws Exception
      */
-    public function weekly(Carbon $date): array
+    public function weekly(Carbon $date, array $users): array
     {
         $startDate = ResponseHelper::carbon($date)->firstOfQuarter();
         $endDate = ResponseHelper::carbon($date)->lastOfQuarter();
@@ -170,8 +174,8 @@ class ChartService
         $data['header']['text'] = 'Quarter-' . $date->quarter ." " . $date->format('Y');
 
         // Get weight sum against given dates.
-        $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'week');
-        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate);
+        $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'week', $users);
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate, $users);
 
         // Set counter.
         $counter = 0;
@@ -188,7 +192,7 @@ class ChartService
 
             // Filter weight record of iterated date.
             $weight = $weightByWeek->filter(static function ($weight, $date) use ($startDate) {
-                return $startDate->isSameWeek(ResponseHelper::carbon($date));
+                return $startDate->format('W') === ResponseHelper::carbon($date)->format('W');
             });
 
             // Set weight against iterated week.
@@ -211,11 +215,12 @@ class ChartService
      * Returns bar and pie chart data points.
      *
      * @param  Carbon  $date
+     * @param  array  $users
      *
      * @return array
      * @throws Exception
      */
-    public function monthly(Carbon $date): array
+    public function monthly(Carbon $date, array $users): array
     {
         $startDate = ResponseHelper::carbon($date)->firstOfQuarter();
         $endDate = ResponseHelper::carbon($date)->lastOfQuarter();
@@ -228,8 +233,8 @@ class ChartService
         $data['header']['text'] = 'Quarter-' . $date->quarter ." " . $date->format('Y');
 
         // Get weight sum against given dates.
-        $weightByMonth = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'month');
-        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate);
+        $weightByMonth = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'month', $users);
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate, $users);
 
         // Set counter.
         $counter = 0;
@@ -269,11 +274,12 @@ class ChartService
      * Returns bar and pie chart data points.
      *
      * @param  Carbon  $date
+     * @param  array  $users
      *
      * @return array
      * @throws Exception
      */
-    public function yearly(Carbon $date): array
+    public function yearly(Carbon $date, array $users): array
     {
         $startDate = ResponseHelper::carbon($date)->subYears(4)->startOfYear();
         $endDate = ResponseHelper::carbon($date)->endOfYear();
@@ -286,8 +292,8 @@ class ChartService
         $data['header']['text'] = 'Year ' . $startDate->format('Y') . '-' . $endDate->format('Y');
 
         // Get weight sum against given dates.
-        $weightByYear = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'year');
-        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate);
+        $weightByYear = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'year', $users);
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate, $users);
 
         // Set counter.
         $counter = 0;
@@ -331,14 +337,10 @@ class ChartService
      * @return mixed|null
      * @throws Exception
      */
-    public function export($request)
+    public function export(Request $request)
     {
-        $filter = $request->filter;
-        $date = ResponseHelper::carbon($request->start);
-
-        if(method_exists($this, $filter)) {
-            $data = $this->{$filter}($date);
-
+        $data = $this->barChart($request);
+        if (!empty($data)) {
 
             return Excel::create(
                 'ChartDetails',

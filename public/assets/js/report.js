@@ -94,14 +94,38 @@ const loader = function(state) {
 };
 
 /**
+ * Return users object having user drop-down data
+ *
+ * @returns {{users: {organizationId: jQuery, driverId: jQuery, supervisorId: jQuery, userId: jQuery}}}
+ */
+const getUsersData = function () {
+    return {
+        users: {
+            userId: $('#user_id:enabled').val(),
+            organizationId: $('#organization_id:enabled').val(),
+            driverId: $('#driver_id:enabled').val(),
+            supervisorId: $('#supervisor_id:enabled').val()
+        }
+    };
+}
+
+/**
  * BarChart Fetcher
  *
  * @param filter
- * @param data
+ * @param date
  * @returns {Promise<void>}
  */
-const barChartRequest = async function(filter, data = null) {
-    return await ajaxRequest(`get-barChart-data`, 'post', { filter: filter, data: data });
+const barChartRequest = async function(filter, date = null) {
+    return await ajaxRequest(
+        `get-barChart-data`,
+        'post',
+        {
+            filter: filter,
+            date: date,
+            ...getUsersData()
+        }
+    );
 };
 
 /**
@@ -111,6 +135,10 @@ const barChartRequest = async function(filter, data = null) {
  * @returns {Promise<void>}
  */
 const pieChartRequest = async function(data = null) {
+    data = {
+        ...data,
+        ...getUsersData()
+    };
     return await ajaxRequest(`get-pieChart-data`, 'post', data);
 };
 
@@ -152,9 +180,16 @@ const drawBarChart = function (activeFilter, dataPoints) {
  *
  * @param dataPoints
  */
+let chart;
 const drawPieChart = function (dataPoints) {
     var ctx = document.getElementById("myChart").getContext('2d');
-    var chart = new Chart(ctx, {
+
+    // Destroy chart if already drawn.
+    if(typeof chart === "object") {
+        chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
         type: 'pie',
         data: {
             labels: dataPoints.labels,
@@ -240,15 +275,15 @@ window.onload = async function () {
  * Draw Charts
  * Renders Bar and Pie charts after getting datapoints.
  *
- * @param data
+ * @param date
  */
-const drawCharts = function (data = null) {
+const drawCharts = function (date = null) {
     setTimeout(() => {
         // Fetching the current filter
         let currentFilter = activeFilter('#myTab');
 
         // Send Request for both charts for current filter
-        barChartRequest(currentFilter, data).then(async res => {
+        barChartRequest(currentFilter, date).then(async res => {
             loader('disable');
 
             // nav menu handler
@@ -302,8 +337,8 @@ $(document).on('click', '#export-chart-btn', function () {
 
     let data = {
         filter: currentFilter,
-        start: header.data('start'),
-        end: header.data('end')
+        date: header.data('start'),
+        ...getUsersData()
     };
 
     location.href = 'export-chart-data?' + $.param(data);
