@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('phone_number')->nullable();
             $table->string('hh_organization_name')->nullable();
             $table->date('birth_date')->nullable();
+            $table->string('player_id')->nullable();
             $table->string('avatar')->nullable();
             $table->tinyInteger('user_type')->nullable();
             $table->tinyInteger('login_type')->nullable();

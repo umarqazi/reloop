@@ -18,6 +18,7 @@ return[
     'REGISTRATION_HAS_NOT_EXPIRED'          => 'Previous Registration has not expired',
 
     'USER_LOGIN_SUCCESSFULLY'               => 'You have successfully logged in!',
+    'USER_LOGOUT_SUCCESSFULLY'              => 'You have successfully logged out!',
     'USER_LOGIN_FAILED'                     => 'Email not verified!',
     'USER_DASHBOARD'                        => 'User stats shown as:',
 
@@ -86,6 +87,11 @@ return[
     'DRIVER_LOCATION'                       => 'Your location has sent to admin successfully!',
 
     'BILLING_HISTORY_SUCCESS'               => 'Billing history shown as:',
+
+    //Notifications
+    'DRIVER_TRIP_INITIATED'                 => 'Driver on the way',
+    'DRIVER_TRIP_ENDED'                     => 'Order Completed',
+    'DRIVER_ASSIGNED'                       => 'Order scheduled on ',
 
     'ADDRESS_UPDATE'                        => 'Address has updated!',
     'INVALID_ADDRESS_ID'                    => 'You\'ve requested for invalid Address!',

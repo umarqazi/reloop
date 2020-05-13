@@ -13,7 +13,10 @@ use App\Services\Admin\BaseService;
 use App\Services\EmailNotificationService;
 use App\Services\IOrderStaus;
 use App\Services\IUserType;
+use App\Services\OneSignalNotificationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use phpDocumentor\Reflection\Types\Parent_;
 
 class OrderService extends BaseService
@@ -66,6 +69,10 @@ class OrderService extends BaseService
         $order = $this->findById($id);
 
         if($orderAssignment){
+
+            App::make(OneSignalNotificationService::class)->oneSignalNotificationService(
+                $order->user_id, Config::get('constants.DRIVER_ASSIGNED').$request['delivery_date'], $order->order_number
+            );
             $user = array(
                 'email'   => $this->userRepo->findById($order->user_id)->email,
             );
@@ -99,8 +106,8 @@ class OrderService extends BaseService
      * @return mixed
      */
     public function availableDrivers($date,$order_id){
-        $order = $this->findById($order_id);
 
+        $order = $this->findById($order_id);
         $city = $order->city ;
         $district = $order->district;
 

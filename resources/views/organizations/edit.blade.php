@@ -146,11 +146,11 @@
                             <label for="occupants[]">No of Occupants</label>
                         </div>
                         <div class="input-field col s3">
-                            {{ Form::select('city_id[]', (['' => 'Choose City'] + $cities), $address->city_id , ['id' => 'city_id']) }}
+                            {{ Form::select('city_id[]', (['' => 'Choose City'] + $cities), $address->city_id, ['id' => 'user_city_id','required' => 'required']) }}
                             <label>City</label>
                         </div>
                         <div class="input-field col s3">
-                            {{ Form::select('district_id[]', (['' => 'Choose District'] + $districts), $address->district_id , ['id' => 'district_id']) }}
+                            {{ Form::select('district_id[]', ($districts), $address->district_id, ['id' => 'user_district_id','required' => 'required']) }}
                             <label>District</label>
                         </div>
                         <div class="input-field col s3">

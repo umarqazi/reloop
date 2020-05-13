@@ -16,11 +16,13 @@ use App\Services\EmailNotificationService;
 use App\Services\EnvironmentalStatService;
 use App\Services\IOrderStaus;
 use App\Services\IUserType;
+use App\Services\OneSignalNotificationService;
 use App\Services\UserStatService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use phpDocumentor\Reflection\Types\Parent_;
 
 class CollectionRequestService extends BaseService
@@ -68,6 +70,10 @@ class CollectionRequestService extends BaseService
             'driver_id'        => $request['driver_id'],
             'status'           => IOrderStaus::DRIVER_ASSIGNED,
         );
+        if(auth()->user()->user_type == IUserType::SUPERVISOR){
+
+            $order = $order + [ 'supervisor_id' => auth()->id() ];
+        }
 
         $orderAssignment =  parent::update($id, $order);
 
@@ -75,7 +81,10 @@ class CollectionRequestService extends BaseService
 
         if($orderAssignment){
 
-            return true ;
+            App::make(OneSignalNotificationService::class)->oneSignalNotificationService(
+                $order->user_id, Config::get('constants.DRIVER_ASSIGNED').$order->collection_date, $order->request_number);
+
+            return true;
         }
 
         else {
@@ -208,7 +217,4 @@ class CollectionRequestService extends BaseService
         }
 
     }
-
-
-
 }

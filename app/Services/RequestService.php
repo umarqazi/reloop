@@ -300,10 +300,18 @@ class RequestService extends BaseService
 
                 $findRequest->status = IOrderStaus::DRIVER_DISPATCHED;
                 $findRequest->driver_trip_status = IDriverTripStatus::TRIP_INITIATED;
+
+                App::make(OneSignalNotificationService::class)->oneSignalNotificationService(
+                    $findRequest->user_id, Config::get('constants.DRIVER_TRIP_INITIATED'), $findRequest->request_number
+                );
             } elseif ($statusType == IOrderStatusType::TRIP_COMPLETED){
 
                 $findRequest->status = IOrderStaus::ORDER_COMPLETED;
                 $findRequest->driver_trip_status = IDriverTripStatus::TRIP_COMPLETED;
+
+                App::make(OneSignalNotificationService::class)->oneSignalNotificationService(
+                    $findRequest->user_id, Config::get('constants.DRIVER_TRIP_ENDED'), $findRequest->request_number
+                );
             }
             $findRequest->update();
 

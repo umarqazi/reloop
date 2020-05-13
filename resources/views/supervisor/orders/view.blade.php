@@ -56,10 +56,10 @@
                                 <li><strong>Id :</strong><span>{{$order->id}}</span></li>
                                 <li><strong>Number :</strong><span>{{$order->order_number}}</span></li>
                                 <li><strong>Date :</strong><span>{{$order->created_at->format('Y-m-d')}}</span></li>
-                                <li><strong>Status :</strong><span>@if($order->status == \App\Services\IOrderStaus::NOT_ASSIGNED) Not Assigned @endif
-                                                                   @if($order->status == \App\Services\IOrderStaus::ASSIGNED) Assigned @endif
-                                                                   @if($order->status == \App\Services\IOrderStaus::TRIP_INITIATED) Trip Initiated @endif
-                                                                   @if($order->status == \App\Services\IOrderStaus::COMPLETED) Completed @endif</span></li>
+                                <li><strong>Status :</strong><span>@if($order->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Order Confirmed @endif
+                                                                   @if($order->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
+                                                                   @if($order->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Order Dispatched @endif
+                                                                   @if($order->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Order Completed @endif</span></li>
                                 <li><strong>Redeem Points :</strong><span>{{$order->redeem_points == null ? 'None' : $order->redeem_points}}</span></li>
                                 <li><strong>Coupon Discount :</strong><span>{{$order->coupon_discount == null ? 'None' : $order->coupon_discount}}</span></li>
                                 <li><strong>Subtotal :</strong><span>{{$order->subtotal}}</span></li>
