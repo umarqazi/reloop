@@ -153,7 +153,7 @@
                         @endif
                     </div>
                     <div class="input-field col s3">
-                        {{ Form::select('city_id[]', (['' => 'Choose City'] + $cities), null, ['id' => 'city_id','required' => 'required']) }}
+                        {{ Form::select('city_id[]', (['' => 'Choose City'] + $cities), null, ['id' => 'user_city_id','required' => 'required']) }}
                         <label>City</label>
                         @if ($errors->has('city_id'))
                             <span class="help-block">
@@ -162,11 +162,11 @@
                         @endif
                     </div>
                     <div class="input-field col s3">
-                        {{ Form::select('district_id[]', (['' => 'Choose District'] + $districts), null, ['id' => 'district_id','required' => 'required']) }}
+                        {{ Form::select('district_id[]', (['' => 'Choose District']), null, ['id' => 'user_district_id','required' => 'required']) }}
                         <label>District</label>
-                        @if ($errors->has('district'))
+                        @if ($errors->has('district_id'))
                             <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('district') }}</strong>
+                        <strong class="red-text">{{ $errors->first('district_id') }}</strong>
                     </span>
                         @endif
                     </div>
