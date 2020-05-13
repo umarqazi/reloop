@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('collection-requests', 'Admin\CollectionRequestController');
     Route::resource('request-collections', 'Admin\RequestCollectionController');
     Route::resource('password-requests', 'Admin\PasswordResetController');
+    Route::resource('environmental-stats', 'Admin\EnvironmentalStatsController');
 
     Route::get('get-cities', 'Admin\CityController@getCities')->name('getCities');
     Route::get('get-related-districts/{city_id}', 'Admin\CityController@getDistricts')->name('getRelatedDistricts');

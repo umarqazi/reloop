@@ -143,6 +143,12 @@
                         </ul>
                     </div>
                 </li>
+                <li class="bold">
+                    <a href="{{ route('environmental-stats.index') }}">
+                        <i class="material-icons"><img src="/assets/images/icons/pages.svg" alt="re loop logo"></i>
+                        <span class="nav-text">Environmental Stats</span>
+                    </a>
+                </li>
                  <li>
                     <a href="{{ route('questions.index') }}">
                         <i class="material-icons"><img src="/assets/images/icons/questions.svg" alt="re loop logo"></i>
