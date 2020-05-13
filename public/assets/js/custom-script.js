@@ -49,26 +49,37 @@ $(document).ready(function () {
     }
     $('#phone_number').mask('+000-00-0000000');
 
+    $('#phone_number').on('keydown', function (e) {
+
+        if (e.keyCode == 8 && $('#phone_number').is(":focus") && $('#phone_number').val().length < 7) {
+            e.preventDefault();
+        }
+    });
+
     $("select[id='user_city_id']").on('change', function() {
        let city_id = $(this).val();
        let select = $('#user_district_id');
        select.empty();
+       if (city_id != '') {
 
-
-        //ajax call to append related districts
-        $.ajax({
-            type: "get",
-            url: "/get-related-districts/"+city_id,
-            success: function (res) {
-                if (res) {
-                    select.append('<option value="" disabled selected >Choose District</option>');
-                    $.each(res, function (key, value) {
-                        select.append('<option value="' + key + '">' + value + '</option>');
-                    });
-                    select.material_select();
-                }
-            }
-        });
+           //ajax call to append related districts
+           $.ajax({
+               type: "get",
+               url: "/get-related-districts/" + city_id,
+               success: function (res) {
+                   if (res) {
+                       select.append('<option value="" disabled selected >Choose District</option>');
+                       $.each(res, function (key, value) {
+                           select.append('<option value="' + key + '">' + value + '</option>');
+                       });
+                       select.material_select();
+                   }
+               }
+           });
+       } else {
+           select.append('<option value="" disabled selected >Choose District</option>');
+           select.material_select();
+       }
     });
 
 
