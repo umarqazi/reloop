@@ -70,6 +70,10 @@ class CollectionRequestService extends BaseService
             'driver_id'        => $request['driver_id'],
             'status'           => IOrderStaus::DRIVER_ASSIGNED,
         );
+        if(auth()->user()->user_type == IUserType::SUPERVISOR){
+
+            $order = $order + [ 'supervisor_id' => auth()->id() ];
+        }
 
         $orderAssignment =  parent::update($id, $order);
 
