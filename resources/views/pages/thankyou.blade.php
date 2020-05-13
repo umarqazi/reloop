@@ -8,7 +8,7 @@
         <div class="container">
             <div class="thanku-wrapper">
                 <div class="thanku-wrapper-inner">
-                    <img src="/assets/images/icons/email.icon.png">
+                    <img src="/assets/images/logo/logo.png">
                     <p>Thank You Your account has activated!</p>
                 </div>
             </div>
