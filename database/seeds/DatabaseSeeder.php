@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
          $this->call(PageSeeder::class);
          $this->call(DonationCategorySeeder::class);
          $this->call(SettingSeeder::class);
+         $this->call(EnvironmentalStatsDescriptionSeeder::class);
     }
 }
