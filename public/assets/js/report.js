@@ -343,3 +343,12 @@ $(document).on('click', '#export-chart-btn', function () {
 
     location.href = 'export-chart-data?' + $.param(data);
 });
+
+/**
+ * Toggle enable / disable organization drop-down
+ * Depending on user drop-down
+ */
+$(document).on("change", "#user_id", function () {
+    $("#organization_id").attr("disabled", !!$("#user_id").val())
+        .material_select();
+});
