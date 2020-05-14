@@ -164,13 +164,30 @@ class RequestCollectionService extends BaseService
      *
      * @return mixed
      */
-    public function getWeightSum($from, $till, $groupBy = '')
+    public function getWeightSum($from, $till, $groupBy = '', $users = [])
     {
-        return $this->model->select(['requests.collection_date', DB::raw('SUM(request_collections.weight) as total_weight')])
-            ->join('requests', 'requests.id', 'request_collections.request_id')
+        $result = $this->model->select([
+            'requests.collection_date',
+            DB::raw('SUM(request_collections.weight) as total_weight')
+        ])->join('requests', 'requests.id', 'request_collections.request_id')
             ->where('requests.confirm', true)
-            ->whereBetween('requests.collection_date', [$from, $till])
-            ->groupBy(DB::raw("$groupBy(requests.collection_date)"))
+            ->whereBetween('requests.collection_date', [$from, $till]);
+
+        if (!empty($users['userId'])) {
+            $result->where('requests.user_id', $users['userId']);
+        } elseif (!empty($users['organizationId'])) {
+            $result->where('requests.user_id', $users['organizationId']);
+        }
+
+        if (!empty($users['driverId'])) {
+            $result->where('requests.driver_id', $users['driverId']);
+        }
+
+        if (!empty($users['supervisorId'])) {
+            $result->where('requests.supervisor_id', $users['supervisorId']);
+        }
+
+        return $result->groupBy(DB::raw("$groupBy(requests.collection_date)"))
             ->get()->pluck('total_weight', 'collection_date');
     }
 
@@ -183,12 +200,29 @@ class RequestCollectionService extends BaseService
      *
      * @return mixed
      */
-    public function getWeightSumByCat($from, $till)
+    public function getWeightSumByCat($from, $till, $users = [])
     {
-        return $this->model->whereHas('request', static function ($query) use ($from, $till){
-            $query->whereBetween('collection_date', [$from, $till])
-                ->where('confirm', TRUE);
-        })->select(['category_name', DB::raw("SUM(weight) as total_weight")])
+        return $this->model->whereHas(
+            'request',
+            static function ($query) use ($from, $till, $users) {
+                $query->whereBetween('collection_date', [$from, $till])
+                    ->where('confirm', true);
+
+                if (!empty($users['userId'])) {
+                    $query->where('requests.user_id', $users['userId']);
+                } elseif (!empty($users['organizationId'])) {
+                    $query->where('requests.user_id', $users['organizationId']);
+                }
+
+                if (!empty($users['driverId'])) {
+                    $query->where('requests.driver_id', $users['driverId']);
+                }
+
+                if (!empty($users['supervisorId'])) {
+                    $query->where('requests.supervisor_id', $users['supervisorId']);
+                }
+            }
+        )->select(['category_name', DB::raw("SUM(weight) as total_weight")])
             ->groupBy('category_name')
             ->get();
     }
