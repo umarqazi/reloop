@@ -92,7 +92,8 @@ Route::group(['middleware' => ['auth']], function () {
 // Chart Routes
 Route::post('get-barChart-data', 'Admin\ChartController@barChart');
 Route::post('get-pieChart-data', 'Admin\ChartController@pieChart');
+Route::get('export-chart-data', 'Admin\ChartController@export');
 
-Route::get('/test', function () {
+Route::get('/test', static function () {
    dd(now()->format('Y-m-d'), now()->addDays(- 0)->format('Y-m-d'));
 });

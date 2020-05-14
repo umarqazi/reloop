@@ -3,8 +3,10 @@
 namespace App\Repositories\Admin;
 
 use App\Helpers\ResponseHelper;
+use App\Request;
 use App\RequestCollection;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class ChartRepo
@@ -18,7 +20,7 @@ class ChartRepo extends BaseRepo
      */
     public function __construct()
     {
-        $this->getModel(RequestCollection::class);
+        $this->getModel(Request::class);
     }
 
     /**
@@ -29,10 +31,26 @@ class ChartRepo extends BaseRepo
      */
     public function daily($date)
     {
-        return $this->model->whereHas('requests', function ($query) use ($date) {
-            return $query->where('confirm', TRUE)
-                    ->whereIn('created_at', $this->date('day', $date));
-        });
+        return  $this->model->with('requestCollection')
+            ->whereIn('collection_date', $this->date('daily', $date))
+            ->where('confirm', true);
+    }
+
+    /**
+     * Method: getByDate
+     * Fetch requests between given date.
+     *
+     * @param $strDate
+     * @param $endDate
+     *
+     * @return mixed
+     */
+    public function getByDate($strDate, $endDate)
+    {
+        return  $this->model->with('requestCollection')
+            ->whereBetween('collection_date', [$strDate, $endDate])
+            ->where('confirm', true)
+            ->get();
     }
 
     /**
@@ -56,21 +74,18 @@ class ChartRepo extends BaseRepo
     public function date($filter, $date)
     {
         $collection = [];
-        $date = ResponseHelper::carbon($date ?? now()->format('Y-m-d'));
+        $date = $date ?? now()->format('Y-m-d');
+
         switch ($filter)
         {
-            case 'day':
-                for ($i = 0; $i < 7; $i ++)
+            case 'daily':
+                for ($i = 6; $i >= 0; $i--)
                 {
-                    $collection[] = (new Carbon())->createFromDate(
-                        $date->format('Y'),
-                        $date->format('m'),
-                        $date->format('d')
-                    )->addDays(- $i)->format('Y-m-d');
+                    $collection[] = ResponseHelper::carbon($date)->subDays($i)->format('Y-m-d');
                 }
                 break;
 
-            case 'week':
+            case 'weekly':
                 for ($i = 0; $i < 14; $i ++)
                 {
 

@@ -57,4 +57,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('feedback-questions', 'Api\DriverController@feedbackQuestions');
     Route::post('feedback', 'Api\DriverController@feedback');
     Route::post('driver-location', 'Api\DriverController@driverLocation');
+
+    // Chart Api's
+    Route::post('get-barChart-data', 'UserController@barChart');
 });

@@ -40,25 +40,20 @@ class ResponseHelper implements IResponseHelperInterface
     public static function getActiveWeek($zero = true)
     {
         $index = null;
-        $today = now()->format('d');
-        if($today <= 7)
+        $month = now()->format('m');
+        if($month <= 4)
         {
             $index = 0;
         }
 
-        if ($today > 7 && $today <= 14)
+        if ($month > 4 && $month <= 8)
         {
             $index = 1;
         }
 
-        if($today > 14 && $today <= 21)
+        if($month > 8 && $month <= 12)
         {
             $index = 2;
-        }
-
-        if($today > 21)
-        {
-            $index = 3;
         }
 
         return $zero ? $index : ++ $index;

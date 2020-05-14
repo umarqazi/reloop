@@ -21,6 +21,7 @@ return[
     'USER_LOGOUT_SUCCESSFULLY'              => 'You have successfully logged out!',
     'USER_LOGIN_FAILED'                     => 'Email not verified!',
     'USER_DASHBOARD'                        => 'User stats shown as:',
+    'USER_CHARTS'                           => 'User charts data shown as:',
 
     'SIGN_UP_COMPLETION'                    => 'SignUp process completed successfully! You may login now.',
 

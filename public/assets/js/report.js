@@ -94,14 +94,38 @@ const loader = function(state) {
 };
 
 /**
+ * Return users object having user drop-down data
+ *
+ * @returns {{users: {organizationId: jQuery, driverId: jQuery, supervisorId: jQuery, userId: jQuery}}}
+ */
+const getUsersData = function () {
+    return {
+        users: {
+            userId: $('#user_id:enabled').val(),
+            organizationId: $('#organization_id:enabled').val(),
+            driverId: $('#driver_id:enabled').val(),
+            supervisorId: $('#supervisor_id:enabled').val()
+        }
+    };
+}
+
+/**
  * BarChart Fetcher
  *
  * @param filter
- * @param data
+ * @param date
  * @returns {Promise<void>}
  */
-const barChartRequest = async function(filter, data = null) {
-    return await ajaxRequest(`get-barChart-data`, 'post', { filter: filter, data: data });
+const barChartRequest = async function(filter, date = null) {
+    return await ajaxRequest(
+        `get-barChart-data`,
+        'post',
+        {
+            filter: filter,
+            date: date,
+            ...getUsersData()
+        }
+    );
 };
 
 /**
@@ -111,6 +135,10 @@ const barChartRequest = async function(filter, data = null) {
  * @returns {Promise<void>}
  */
 const pieChartRequest = async function(data = null) {
+    data = {
+        ...data,
+        ...getUsersData()
+    };
     return await ajaxRequest(`get-pieChart-data`, 'post', data);
 };
 
@@ -122,11 +150,11 @@ const pieChartRequest = async function(data = null) {
  */
 const drawBarChart = function (activeFilter, dataPoints) {
     // Dynamically active quarter
-    $(".month-view-slider").trigger("to.owl.carousel", [1, 1]);
+    // $(".month-view-slider").trigger("to.owl.carousel", [1, 1]);
     var chart = new CanvasJS.Chart(`bar-${activeFilter}-view`, {
         animationEnabled: true,
         title: {
-            text: 'Vat'
+            text: ''
         },
         theme: "light2",
         data: [{
@@ -136,10 +164,10 @@ const drawBarChart = function (activeFilter, dataPoints) {
             click: async function(e){
                 // pie chart logic
                 await pieChartRequest(e.dataPoint.data).then(res => {
-                    console.log(res, 'pie chart render logic based barchart click event');
-                    drawPieChart();
+                    if (res) {
+                        drawPieChart(res);
+                    }
                 });
-                alert(  e.dataSeries.type+ ", dataPoint { x:" + e.dataPoint.data + ", y: "+ e.dataPoint.y + " }" );
             },
         }]
     });
@@ -152,9 +180,16 @@ const drawBarChart = function (activeFilter, dataPoints) {
  *
  * @param dataPoints
  */
+let chart;
 const drawPieChart = function (dataPoints) {
     var ctx = document.getElementById("myChart").getContext('2d');
-    var chart = new Chart(ctx, {
+
+    // Destroy chart if already drawn.
+    if(typeof chart === "object") {
+        chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
         type: 'pie',
         data: {
             labels: dataPoints.labels,
@@ -199,7 +234,6 @@ const drawPieChart = function (dataPoints) {
         var chart = Chart.instances[chartId];
         var index = Array.prototype.slice.call(parent.children).indexOf(target);
         var meta = chart.getDatasetMeta(0);
-        console.log(index);
         var item = meta.data[index];
 
         if (item.hidden === null || item.hidden === false) {
@@ -218,47 +252,103 @@ window.onload = async function () {
 
     loader('enable');
     let $body = $('body');
-    let barDataPoints = [], pieDataPoints = [], currentFilter = activeFilter('#myTab');
 
-    await barChartRequest(currentFilter).then(async res => {
-        loader('disable');
-        // y => weight
-        // label => day, month, week
-        // data => pie char helper
-        drawBarChart(currentFilter, [
-            { y: 1500, label: "Mon", data: '2020-04-19' },
-            { y: 2000, label: "Tue", data: '2020-04-20' },
-        ]);
-    });
+    // Draw charts on page loaded.
+    drawCharts();
 
-    await pieChartRequest().then(async res => {
-        loader('disable');
-        // labels => categories
-        pieDataPoints = {
-            labels: ["Plastic", "Blue", "Gray", "Purple", "Yellow", "Red", "Black"],
-            data: [1200, 55, 10, 20, 6, 66, 7]
-        };
-
-        drawPieChart(pieDataPoints);
-    });
-
-    $body.on('click', '.fa-chevron-left', function () {
-        // alert('prev');
-        // Send Request with last timestamp and active filter
-    });
-
-    $body.on('click', '.fa-chevron-right', function () {
-        // alert('next');
-        // Send Request with latest timestamp and active filter
+    /**
+     * Draw charts of selected date
+     */
+    $body.on('click', '.tab-pane .fa-chevron-left, .tab-pane .fa-chevron-right', function () {
+        // Drw charts with respect to given date.
+        drawCharts($(this).data('date'));
     });
 
     // Select New Filter Listener
     $body.on('click', '#myTab', function () {
-        setTimeout(() => {
-
-            currentFilter = activeFilter(this);
-            // Send Request for both charts for current filter
-        }, 100);
+        // Draw charts when click on tab.
+        drawCharts();
     });
-
 };
+
+/**
+ * Draw Charts
+ * Renders Bar and Pie charts after getting datapoints.
+ *
+ * @param date
+ */
+const drawCharts = function (date = null) {
+    setTimeout(() => {
+        // Fetching the current filter
+        let currentFilter = activeFilter('#myTab');
+
+        // Send Request for both charts for current filter
+        barChartRequest(currentFilter, date).then(async res => {
+            loader('disable');
+
+            // nav menu handler
+            await navHandler(currentFilter, res);
+
+            // y => weight
+            // label => day, month, week
+            // data => pie char helper
+            drawBarChart(currentFilter, res.bar);
+
+            drawPieChart(res.pie);
+        });
+    }, 100);
+};
+
+/**
+ * Navigation Handler
+ * Setup nav buttons and heading when new chart loaded.
+ *
+ * @param currentFilter
+ * @param res
+ */
+const navHandler = function (currentFilter, res) {
+
+    let header = $(`#bar-${currentFilter}-header`);
+
+    // Set header text of pie chart
+    header.data('start', res.header.start).data('end', res.header.end).text(res.header.text);
+
+    // Set next and previous buttons
+    let prevBtn = $(`#bar-${currentFilter}-prev-btn`);
+    let nxtBtn = $(`#bar-${currentFilter}-next-btn`);
+    prevBtn.data('date', res.header.prev);
+    nxtBtn.data('date', res.header.next);
+
+    let nxtDate = new Date(res.header.next);
+    let curDate = new Date();
+
+    // Hide next button if next date lies in future.
+    curDate <= nxtDate ? nxtBtn.hide() : nxtBtn.show();
+};
+
+/**
+ * Export chart of visible range
+ */
+$(document).on('click', '#export-chart-btn', function () {
+
+    let currentFilter = activeFilter('#myTab');
+
+    let header = $(`#bar-${currentFilter}-header`);
+
+    let data = {
+        filter: currentFilter,
+        date: header.data('start'),
+        ...getUsersData()
+    };
+
+    location.href = 'export-chart-data?' + $.param(data);
+});
+
+/**
+ * Toggle enable / disable organization drop-down
+ * Depending on user drop-down
+ */
+$(document).on("change", "#user_id", function () {
+    $("#organization_id").attr("disabled", !!$("#user_id").val())
+        .material_select();
+});

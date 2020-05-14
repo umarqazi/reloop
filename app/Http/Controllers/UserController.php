@@ -7,11 +7,15 @@ use App\Forms\User\DefaultAddressForm;
 use App\Forms\User\DeleteAddressForm;
 use App\Forms\User\UpdateAddressForm;
 use App\Forms\User\UpdateProfileForm;
+use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
+use App\Http\Controllers\Admin\ChartController;
 use App\Services\DashboardService;
+use App\Services\IUserType;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Class UserController
@@ -50,6 +54,35 @@ class UserController extends Controller
             $userDashboard['data']
         );
     }
+
+    /**
+     * Method: barChart
+     * // User charts data
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function barChart(Request $request)
+    {
+        if(auth()->user()->user_type == IUserType::DRIVER){
+
+            $userId['users']['driverId'] = auth()->id();
+        } else {
+
+            $userId['users']['userId'] = auth()->id();
+        }
+        $request->merge($userId);
+        $userReports = App::make(ChartController::class)->barChart($request);
+
+        return ResponseHelper::jsonResponse(
+            Config::get('constants.USER_CHARTS'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $userReports
+        );
+    }
+
     /**
      * Method: accountVerification
      *

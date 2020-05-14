@@ -21,10 +21,12 @@ class ChartController extends Controller
 
     /**
      * ChartController constructor.
+     *
+     * @param  ChartService  $chartService
      */
-    public function __construct()
+    public function __construct(ChartService $chartService)
     {
-        $this->_chartService = new ChartService();
+        $this->_chartService = $chartService;
     }
 
     /**
@@ -49,5 +51,19 @@ class ChartController extends Controller
     public function pieChart(Request $request)
     {
         return $this->_chartService->pieChart($request);
+    }
+
+    /**
+     * Method: export
+     * Export chart data
+     *
+     * @param  Request  $request
+     *
+     * @return |null
+     * @throws \Exception
+     */
+    public function export(Request $request)
+    {
+        return $this->_chartService->export($request);
     }
 }

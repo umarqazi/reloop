@@ -1,5 +1,6 @@
 <!-- js -->
 <script type="text/javascript" src="/assets/vendors/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/assets/js/chart/bootstrap.min.js"></script>
 <script type="text/javascript" src="/assets/js/materialize.min.js"></script>
 <script type="text/javascript" src="/assets/vendors/prism/prism.js"></script>
 <script type="text/javascript" src="/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -14,7 +15,6 @@
 <script type="text/javascript" src="/assets/js/scripts/data-tables.js"></script>
 {{--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>--}}
 
-<script type="text/javascript" src="/assets/js/chart/bootstrap.min.js"></script>
 <script type="text/javascript" src="/assets/js/chart/owl.carousel.min.js"></script>
 <script type="text/javascript" src="/assets/js/chart/chart.js"></script>
 <script type="text/javascript" src="/assets/js/chart/custom.js"></script>
