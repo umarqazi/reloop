@@ -51,7 +51,16 @@ class ChartService
             if(method_exists($this, $request->get('filter')))
             {
                 $date = $request->get('date') ? ResponseHelper::carbon($request->get('date')) : now();
-                $users = $request->get('users') ?? [];
+
+                if(auth()->user()->user_type == IUserType::SUPERVISOR){
+
+                    $supervisorId['users']['supervisorId'] = auth()->id();
+                    $request->merge($supervisorId);
+                    $users = $request->get('users') ?? [];
+                } else {
+
+                    $users = $request->get('users') ?? [];
+                }
 
                 return $this->{$request->get('filter')}($date, $users);
             }
@@ -145,8 +154,8 @@ class ChartService
         }
 
         // Pie Chart data
-        $data['pie']['labels'] = $weightByCat->pluck('category_name');
-        $data['pie']['data'] = $weightByCat->pluck('total_weight');
+        $data['pie']['labels'] = $weightByCat->pluck('category_name')->toArray();
+        $data['pie']['data'] = $weightByCat->pluck('total_weight')->toArray();
 
         return $data;
     }
@@ -204,8 +213,8 @@ class ChartService
         }
 
         // Pie Chart data
-        $data['pie']['labels'] = $weightByCat->pluck('category_name');
-        $data['pie']['data'] = $weightByCat->pluck('total_weight');
+        $data['pie']['labels'] = $weightByCat->pluck('category_name')->toArray();
+        $data['pie']['data'] = $weightByCat->pluck('total_weight')->toArray();
 
         return $data;
     }
@@ -263,8 +272,8 @@ class ChartService
         }
 
         // Pie Chart data
-        $data['pie']['labels'] = $weightByCat->pluck('category_name');
-        $data['pie']['data'] = $weightByCat->pluck('total_weight');
+        $data['pie']['labels'] = $weightByCat->pluck('category_name')->toArray();
+        $data['pie']['data'] = $weightByCat->pluck('total_weight')->toArray();
 
         return $data;
     }
@@ -322,8 +331,8 @@ class ChartService
         }
 
         // Pie Chart data
-        $data['pie']['labels'] = $weightByCat->pluck('category_name');
-        $data['pie']['data'] = $weightByCat->pluck('total_weight');
+        $data['pie']['labels'] = $weightByCat->pluck('category_name')->toArray();
+        $data['pie']['data'] = $weightByCat->pluck('total_weight')->toArray();
 
         return $data;
     }
@@ -365,7 +374,7 @@ class ChartService
                             ['Category', 'Weight']
                         ];
 
-                        $pieData = $data['pie']['labels']->combine($data['pie']['data']);
+                        $pieData = array_combine($data['pie']['labels'], $data['pie']['data']);
 
                         foreach ($pieData as $label => $y) {
                             $row[] = [

@@ -368,6 +368,27 @@ button i.material-icons {
     margin: 0;
     padding: 10px 0;
 }
+.chart-wrapper h3{
+    text-align: center;
+}
+@media all and (max-width: 991px) {
+    .brand-sidebar .logo-wrapper a.navbar-toggler {
+        display: block;
+    }
+
+    aside .brand-sidebar .logo-wrapper {
+        padding: 16px 10px;
+    }
+
+    .left-sidebar-content .brand-sidebar {
+        left: 0;
+    }
+
+    ul.side-nav.leftside-navigation {
+        transform: translateX(0);
+        top: 64px !important;
+    }
+}
 @media all and (max-width: 767px ){
     .thanku-wrapper-inner img{
         max-width: 50px;
