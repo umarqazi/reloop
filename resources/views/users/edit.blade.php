@@ -160,51 +160,54 @@
                         </div>
                     </div>
                     @if($type == 1 && $user->addresses->first())
-                    <div id="input_fields_wrap" class="col s12">
-
-                                <div class="adrs-title">
-                                    <h5>Address</h5>
-                                </div>
-                                <div class="input-field col s3">
-                                    <input type="hidden" name="address-id" value="{{ $user->addresses[0]->id }}">
-                                    <select name="type"  id="type1" required>
-                                        <option value="" disabled selected>Choose Type</option>
-                                        <option value="1" {{ $user->addresses->first()->type=='1' ? 'selected': '' }}>Villa</option>
-                                        <option value="2" {{ $user->addresses->first()->type=='2' ? 'selected': '' }}>Apartment</option>
-                                    </select>
-                                    <label>Type</label>
-                                </div>
-                                <div class="input-field col s3">
-                                    <input id="bedrooms" type="number" name="bedrooms" value="{{ $user->addresses->first()->no_of_bedrooms }}" required>
-                                    <label for="bedrooms">No of Bedrooms</label>
-                                </div>
-                                <div class="input-field col s3">
-                                    <input id="occupants" type="number" name="occupants" value="{{ $user->addresses->first()->no_of_occupants }}"  required>
-                                    <label for="occupants">No of Occupants</label>
-                                </div>
-                                <div class="input-field col s3">
-                                    {{ Form::select('city_id', (['' => 'Choose City'] + $cities), $user->addresses->first()->city_id , ['id' => 'city_id']) }}
-                                    <label>City</label>
-                                </div>
-                                <div class="input-field col s3">
-                                    {{ Form::select('district_id', (['' => 'Choose District'] + $districts), $user->addresses->first()->district_id , ['id' => 'district_id']) }}
-                                    <label>District</label>
-                                </div>
-                                <div class="input-field col s3">
-                                    <input id="street" type="text" name="street" value="{{ $user->addresses->first()->street }}" required>
-                                    <label for="street">Street</label>
-                                </div>
-                                <div class="input-field col s3">
-                                    <input id="floor" type="text" name="floor" value="{{ $user->addresses->first()->floor }}" required>
-                                    <label for="floor">Floor</label>
-                                </div>
-                                <div class="input-field col s3">
-                                    <input id="unit-number" type="text" name="unit-number" value="{{ $user->addresses->first()->unit_number }}" required>
-                                    <label for="unit-number">Unit Number</label>
-                                </div>
-                    </div>
+                        <div id="input_fields_wrap" class="col s12">
+                            <div class="adrs-title">
+                                <h5>Address</h5>
+                            </div>
+                            <div class="input-field col s3">
+                                <input type="hidden" name="address-id" value="{{ $user->addresses[0]->id }}">
+                                <select name="type"  id="type1" required>
+                                    <option value="" disabled selected>Choose Type</option>
+                                    <option value="villa" {{ $user->addresses->first()->type=='villa' ? 'selected': '' }}>Villa</option>
+                                    <option value="apartment" {{ $user->addresses->first()->type=='apartment' ? 'selected': '' }}>Apartment</option>
+                                </select>
+                                <label>Property Type</label>
+                            </div>
+                            <div class="input-field col s3">
+                                {{ Form::select('city_id', (['' => 'Choose City'] + $cities), $user->addresses->first()->city_id , ['id' => 'city_id']) }}
+                                <label>City</label>
+                            </div>
+                            <div class="input-field col s3">
+                                {{ Form::select('district_id', (['' => 'Choose District'] + $districts), $user->addresses->first()->district_id , ['id' => 'district_id']) }}
+                                <label>District</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="street" type="text" name="street" value="{{ $user->addresses->first()->street }}" required>
+                                <label for="street">Street/Cluster</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="building_name" type="text" name="building_name" value="{{ $user->addresses->first()->building_name }}" required>
+                                <label for="building_name">Building Name</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="floor" type="text" name="floor" value="{{ $user->addresses->first()->floor }}" required>
+                                <label for="floor">Floor No.</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="unit-number" type="text" name="unit-number" value="{{ $user->addresses->first()->unit_number }}" required>
+                                <label for="unit-number">Unit No.</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="bedrooms" type="number" name="bedrooms" value="{{ $user->addresses->first()->no_of_bedrooms }}" required>
+                                <label for="bedrooms">No. of Bedrooms</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="occupants" type="number" name="occupants" value="{{ $user->addresses->first()->no_of_occupants }}"  required>
+                                <label for="occupants">No. of Occupants</label>
+                            </div>
+                        </div>
                     @endif
-                @if(sizeof($user->addresses) == 0)
+                    @if(sizeof($user->addresses) == 0)
                         <div id="input_fields_wrap" class="col s12">
                             <div class="adrs-title">
                                 <h5>Address</h5>
@@ -212,18 +215,10 @@
                             <div class="input-field col s3">
                                 <select name="type"  id="type1" required>
                                     <option value="" disabled selected>Choose Type</option>
-                                    <option value="1">Villa</option>
-                                    <option value="2">Apartment</option>
+                                    <option value="villa">Villa</option>
+                                    <option value="apartment">Apartment</option>
                                 </select>
-                                <label>Type</label>
-                            </div>
-                            <div class="input-field col s3">
-                                <input id="bedrooms" type="number" name="bedrooms" required>
-                                <label for="bedrooms">No of Bedrooms</label>
-                            </div>
-                            <div class="input-field col s3">
-                                <input id="occupants" type="number" name="occupants" required>
-                                <label for="occupants">No of Occupants</label>
+                                <label>Property Type</label>
                             </div>
                             <div class="input-field col s3">
                                 {{ Form::select('city_id', (['' => 'Choose City'] + $cities), null, ['id' => 'city_id']) }}
@@ -235,19 +230,30 @@
                             </div>
                             <div class="input-field col s3">
                                 <input id="street" type="text" name="street" required>
-                                <label for="street">Street</label>
+                                <label for="street">Street/Cluster</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="building_name" type="text" name="building_name" required>
+                                <label for="building_name">Building Name</label>
                             </div>
                             <div class="input-field col s3">
                                 <input id="floor" type="text" name="floor" required>
-                                <label for="floor">Floor</label>
+                                <label for="floor">Floor No.</label>
                             </div>
                             <div class="input-field col s3">
                                 <input id="unit-number" type="text" name="unit-number" required>
-                                <label for="unit-number">Unit Number</label>
+                                <label for="unit-number">Unit No.</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="bedrooms" type="number" name="bedrooms" required>
+                                <label for="bedrooms">No. of Bedrooms</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="occupants" type="number" name="occupants" required>
+                                <label for="occupants">No. of Occupants</label>
                             </div>
                         </div>
-
-                @endif
+                    @endif
 
                     <div class="col s12">
                         <div class="input-field col s12">

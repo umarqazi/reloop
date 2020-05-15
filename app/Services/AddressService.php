@@ -107,6 +107,7 @@ class AddressService extends BaseService
                 $findAddress->floor = $address->floor;
                 $findAddress->unit_number = $address->unit_number;
                 $findAddress->default = $address->default;
+                $findAddress->building_name = $address->building_name;
                 $findAddress->update();
 
                 $responseData = [
@@ -144,6 +145,7 @@ class AddressService extends BaseService
                 'floor'           => $address->floor,
                 'unit_number'     => $address->unit_number,
                 'default'         => $address->default,
+                'building_name'   => $address->building_name,
             ];
             $saveAddress = $this->model->create($newAddress);
             $responseData = [

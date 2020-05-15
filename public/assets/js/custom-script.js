@@ -102,18 +102,11 @@ $(document).ready(function () {
             $(wrapper).append('<div class="appendable-filed top-bordered"><a href="javascript:void(0);" class="remove-append"><i class="fa fa-minus" aria-hidden="true"></i></a><div class="input-field col s3">\n' +
                 '              <select name="type[]"  id="type' + x + '" required>\n' +
                 '                            <option value="" disabled selected>Choose Type</option>\n' +
-                '                            <option value="1">Villa</option>\n' +
-                '                            <option value="2">Apartment</option>\n' +
+                '                            <option value="office">Office</option>\n' +
+                '                            <option value="warehouse">Warehouse</option>\n' +
+                '                            <option value="shop">Shop</option>\n' +
                 '              </select>  ' +
-                '                             <label>Type</label></div>\n' +
-                '                <div class="input-field col s3">\n' +
-                '                    <input id="bedrooms[]" type="number" name="bedrooms[]" required>\n' +
-                '                    <label for="bedrooms">No of Bedrooms</label>\n' +
-                '                </div>\n' +
-                '                <div class="input-field col s3">\n' +
-                '                    <input id="occupants[]" type="number" name="occupants[]" required>\n' +
-                '                    <label for="occupants">No of Occupants</label>\n' +
-                '                </div>\n' +
+                '                             <label>Property Type</label></div>\n' +
                 '                <div class=" input-field col s3">\n' +
                 '                    <select name="city_id[]"  id="city' + x + '" required>\n' +
                 '                    </select>\n' +
@@ -126,20 +119,24 @@ $(document).ready(function () {
                 '                </div>\n' +
                 '                <div class="input-field col s3">\n' +
                 '                    <input id="street[]" type="text" name="street[]" required>\n' +
-                '                    <label for="street[]">Street</label>\n' +
+                '                    <label for="street[]">Street/Cluster</label>\n' +
                 '                </div>\n' +
                 '                <div class="input-field col s3">\n' +
                 '                    <input id="floor[]" type="text" name="floor[]" required>\n' +
-                '                    <label for="floor[]">Floor</label>\n' +
+                '                    <label for="floor[]">Floor No.</label>\n' +
                 '                </div>\n' +
                 '                <div class="input-field col s3">\n' +
                 '                    <input id="unit-number[]" type="text" name="unit-number[]" required>\n' +
-                '                    <label for="unit-number[]">Unit Number</label>\n' +
+                '                    <label for="unit-number[]">Unit No.</label>\n' +
                 '                </div>' +
-                '                <div class="input-field col s12">\n' +
+                '                <div class="input-field col s3">\n' +
                 '                    <input id="location[]" type="text" name="location[]" required>\n' +
                 '                    <label for="location[]">Location</label>\n' +
                 '                </div>' +
+                '                <div class="input-field col s3">\n' +
+                '                    <input id="occupants[]" type="number" name="occupants[]" required>\n' +
+                '                    <label for="occupants">No. of Occupants</label>\n' +
+                '                </div>\n' +
                 '                </div>' +
                 '<div> ');
         }

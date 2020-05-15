@@ -115,35 +115,26 @@
             </div>
 
             <div id="input_fields_wrap" class="col s12">
-
-            @foreach($organization->users->first()->addresses as $key => $address)
-
+                @foreach($organization->users->first()->addresses as $key => $address)
                     @if($key == 0)
-                    <div class="adrs-title">
-                        <h5>Address</h5>
-                        <button class="btn btn-primary add-more-filed">Add More</button>
-                    </div>
+                        <div class="adrs-title">
+                            <h5>Address</h5>
+                            <button class="btn btn-primary add-more-filed">Add More</button>
+                        </div>
                     @endif
                     <div class="appendable-filed">
                         @if($key != 0)
-                        <a href="javascript:void(0);" class="remove-append"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                            <a href="javascript:void(0);" class="remove-append"><i class="fa fa-minus" aria-hidden="true"></i></a>
                         @endif
-                            <div class="input-field col s3">
+                        <div class="input-field col s3">
                             <input type="hidden" name="address-id[]" value="{{ $address->id }}">
                             <select name="type[]"  id="type1" >
                                 <option value="" disabled selected>Choose Type</option>
-                                <option value="1" {{ $address->type=='1' ? 'selected': '' }}>Villa</option>
-                                <option value="2" {{ $address->type=='2' ? 'selected': '' }}>Apartment</option>
+                                <option value="office" {{ $address->type=='office' ? 'selected': '' }}>Office</option>
+                                <option value="warehouse" {{ $address->type=='warehouse' ? 'selected': '' }}>Warehouse</option>
+                                <option value="shop" {{ $address->type=='shop' ? 'selected': '' }}>Shop</option>
                             </select>
-                            <label>Type</label>
-                        </div>
-                        <div class="input-field col s3">
-                            <input id="bedrooms[]" type="number" name="bedrooms[]" value="{{ $address->no_of_bedrooms }}" >
-                            <label for="bedrooms[]">No of Bedrooms</label>
-                        </div>
-                        <div class="input-field col s3">
-                            <input id="occupants[]" type="number" name="occupants[]" value="{{ $address->no_of_occupants }}" >
-                            <label for="occupants[]">No of Occupants</label>
+                            <label>Property Type</label>
                         </div>
                         <div class="input-field col s3">
                             {{ Form::select('city_id[]', (['' => 'Choose City'] + $cities), $address->city_id, ['id' => 'user_city_id','required' => 'required']) }}
@@ -152,25 +143,38 @@
                         <div class="input-field col s3">
                             {{ Form::select('district_id[]', ($districts), $address->district_id, ['id' => 'user_district_id','required' => 'required']) }}
                             <label>District</label>
+                            @if ($errors->has('district_id'))
+                                <span class="help-block">
+                                <strong class="red-text">{{ $errors->first('district_id') }}</strong>
+                            </span>
+                            @endif
                         </div>
                         <div class="input-field col s3">
-                            <input id="street[]" type="text" name="street[]" value="{{ $address->street }}" >
-                            <label for="street[]">Street</label>
+                            <input id="street[]" type="text" name="street[]" value="{{ $address->street }}" required="required">
+                            <label for="street[]">Street/Cluster</label>
+                        </div>
+                        <div class="input-field col s3">
+                            <input id="building_name[]" type="text" name="building_name[]" value="{{ $address->building_name }}">
+                            <label for="building_name[]">Building Name</label>
                         </div>
                         <div class="input-field col s3">
                             <input id="floor[]" type="text" name="floor[]" value="{{ $address->floor }}" >
-                            <label for="floor[]">Floor</label>
+                            <label for="floor[]">Floor No.</label>
                         </div>
                         <div class="input-field col s3">
                             <input id="unit-number[]" type="text" name="unit-number[]" value="{{ $address->unit_number }}" >
-                            <label for="unit-number[]">Unit Number</label>
+                            <label for="unit-number[]">Unit No.</label>
                         </div>
-                        <div class="input-field col s12">
+                        <div class="input-field col s3">
                             <input id="location[]" type="text" name="location[]" value="{{ $address->location }}" required>
                             <label for="location[]">Location</label>
                         </div>
+                        <div class="input-field col s12">
+                            <input id="occupants[]" type="number" name="occupants[]" value="{{ $address->no_of_occupants }}" >
+                            <label for="occupants[]">No. of Occupants</label>
+                        </div>
                     </div>
-            @endforeach
+                @endforeach
             </div>
 
 

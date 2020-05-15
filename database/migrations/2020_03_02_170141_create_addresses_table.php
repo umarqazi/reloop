@@ -28,6 +28,8 @@ class CreateAddressesTable extends Migration
             $table->double('longitude')->nullable();
             $table->string('type')->nullable();
             $table->integer('no_of_bedrooms')->nullable();
+            $table->string('building_name')->nullable();
+            $table->string('address_name')->nullable();
             $table->integer('no_of_occupants')->nullable();
             $table->string('street')->nullable();
             $table->string('floor')->nullable();
