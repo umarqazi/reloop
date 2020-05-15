@@ -153,6 +153,7 @@ class UserService extends BaseService
                     'street'          => $request['street'],
                     'floor'           => $request['floor'],
                     'unit_number'     => $request['unit-number'],
+                    'building_name'   => $request['building_name'],
                 );
             }
             else{

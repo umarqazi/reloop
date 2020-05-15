@@ -182,7 +182,7 @@ class UserController extends Controller
                                       'User City'       => ($user->addresses->first()) ? $user->addresses->first()->city->name : 'Not found',
                                       'User District'   => ($user->addresses->first()) ? $user->addresses->first()->district->name : 'Not found',
                                       'Location'        => ($user->addresses->first()) ? $user->addresses->first()->location : 'Not found',
-                                      'Type'            => ($user->addresses->first()) ? (($user->addresses->first()->type=='1') ? 'Villa' : 'Apartment') : 'Not found',
+                                      'Type'            => ($user->addresses->first()) ? (($user->addresses->first()->type=='villa') ? 'Villa' : 'Apartment') : 'Not found',
                                       'No of Bedrooms'  => ($user->addresses->first()) ? $user->addresses->first()->no_of_bedrooms : 'Not found',
                                       'No of Occupants' => ($user->addresses->first()) ? $user->addresses->first()->no_of_occupants : 'Not found',
                                       'Street'          => ($user->addresses->first()) ? $user->addresses->first()->street : 'Not found',

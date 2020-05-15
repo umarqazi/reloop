@@ -173,7 +173,7 @@ class OrganizationController extends Controller
                             'Number of employees' => $organization->no_of_employees,
                             'Status' => $organization->users->first()->status == IUserStatus::ACTIVE ? 'Active' : 'Inactive',
                             'Sector' => $organization->sector->name,
-                            'Type' => ($organization->users->first()->addresses->first()->type == '1') ? 'Villa' : 'Apartment',
+                            'Type' => $organization->users->first()->addresses->first()->type,
                             'No of Bedrooms' => $organization->users->first()->addresses->first()->no_of_bedrooms,
                             'No of Occupants' => $organization->users->first()->addresses->first()->no_of_occupants,
                             'City' => $organization->users->first()->addresses->first()->city->name,

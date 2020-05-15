@@ -32,14 +32,13 @@ class CreateRequest extends FormRequest
             'no_of_branches'      => 'required',
             'sector_id'           => 'required',
             'type'                => 'required',
-            'bedrooms'            => 'required',
-            'occupants'           => 'required',
             'city_id'             => 'required',
             'district_id'         => 'required',
             'street'              => 'required',
             'floor'               => 'required',
             'unit-number'         => 'required',
             'location'            => 'required',
+            'occupants'           => 'required',
         ];
     }
 

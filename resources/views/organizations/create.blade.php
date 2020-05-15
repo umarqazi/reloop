@@ -124,32 +124,15 @@
                     <div class="input-field col s3">
                         <select name="type[]" id="type1" required>
                             <option value="" disabled selected>Choose Type</option>
-                            <option value="1">Villa</option>
-                            <option value="2">Apartment</option>
+                            <option value="office">Office</option>
+                            <option value="warehouse">Warehouse</option>
+                            <option value="shop">Shop</option>
                         </select>
-                        <label>Type</label>
+                        <label>Property Type</label>
                         @if ($errors->has('type'))
                             <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('type') }}</strong>
-                    </span>
-                        @endif
-                    </div>
-                    <div class="input-field col s3">
-                        <input id="bedrooms[]" type="number" name="bedrooms[]" required>
-                        <label for="bedrooms[]">No of Bedrooms</label>
-                        @if ($errors->has('bedrooms'))
-                            <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('bedrooms') }}</strong>
-                    </span>
-                        @endif
-                    </div>
-                    <div class="input-field col s3">
-                        <input id="occupants[]" type="number" name="occupants[]" required>
-                        <label for="occupants[]">No of Occupants</label>
-                        @if ($errors->has('occupants'))
-                            <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('occupants') }}</strong>
-                    </span>
+                                <strong class="red-text">{{ $errors->first('type') }}</strong>
+                            </span>
                         @endif
                     </div>
                     <div class="input-field col s3">
@@ -157,8 +140,8 @@
                         <label>City</label>
                         @if ($errors->has('city_id'))
                             <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('city_id') }}</strong>
-                    </span>
+                                <strong class="red-text">{{ $errors->first('city_id') }}</strong>
+                            </span>
                         @endif
                     </div>
                     <div class="input-field col s3">
@@ -166,46 +149,55 @@
                         <label>District</label>
                         @if ($errors->has('district_id'))
                             <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('district_id') }}</strong>
-                    </span>
+                                <strong class="red-text">{{ $errors->first('district_id') }}</strong>
+                            </span>
                         @endif
                     </div>
                     <div class="input-field col s3">
                         <input id="street[]" type="text" name="street[]" required>
-                        <label for="street[]">Street</label>
+                        <label for="street[]">Street/Cluster</label>
                         @if ($errors->has('street'))
                             <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('street') }}</strong>
-                    </span>
+                                <strong class="red-text">{{ $errors->first('street') }}</strong>
+                            </span>
                         @endif
                     </div>
                     <div class="input-field col s3">
                         <input id="floor[]" type="text" name="floor[]" required>
-                        <label for="floor[]">Floor</label>
+                        <label for="floor[]">Floor No.</label>
                         @if ($errors->has('floor'))
                             <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('floor') }}</strong>
-                    </span>
+                                <strong class="red-text">{{ $errors->first('floor') }}</strong>
+                            </span>
                         @endif
                     </div>
                     <div class="input-field col s3">
                         <input id="unit-number[]" type="text" name="unit-number[]" required>
-                        <label for="unit-number[]">Unit Number</label>
+                        <label for="unit-number[]">Unit No.</label>
                         @if ($errors->has('unit-number'))
                             <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('unit-number') }}</strong>
-                    </span>
+                                <strong class="red-text">{{ $errors->first('unit-number') }}</strong>
+                            </span>
                         @endif
                     </div>
-                <div class="input-field col s12">
-                    <input id="location[]" type="text" name="location[]" required>
-                    <label for="location[]">Location</label>
-                    @if ($errors->has('email'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('email') }}</strong>
-                    </span>
-                    @endif
-                </div>
+                    <div class="input-field col s3">
+                        <input id="location[]" type="text" name="location[]" required>
+                        <label for="location[]">Location</label>
+                        @if ($errors->has('email'))
+                            <span class="help-block">
+                                <strong class="red-text">{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="occupants[]" type="number" name="occupants[]" required>
+                        <label for="occupants[]">No. of Occupants</label>
+                        @if ($errors->has('occupants'))
+                            <span class="help-block">
+                                <strong class="red-text">{{ $errors->first('occupants') }}</strong>
+                            </span>
+                        @endif
+                    </div>
                 </div>
             </div>
 

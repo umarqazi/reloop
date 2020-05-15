@@ -28,6 +28,7 @@ class UpdateAddressForm extends BaseForm
     public $floor;
     public $unit_number;
     public $default;
+    public $building_name;
 
     /**
      * @inheritDoc
@@ -48,6 +49,7 @@ class UpdateAddressForm extends BaseForm
             'floor'           =>$this->floor,
             'unit_number'     =>$this->unit_number,
             'default'         =>$this->default,
+            'building_name'   =>$this->building_name,
         ];
     }
 
