@@ -10,7 +10,9 @@ use App\Forms\User\UpdateProfileForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Admin\ChartController;
+use App\Services\Admin\EnvironmentalStatsDescriptionService;
 use App\Services\DashboardService;
+use App\Services\EnvironmentalStatService;
 use App\Services\IUserType;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -74,12 +76,21 @@ class UserController extends Controller
         }
         $request->merge($userId);
         $userReports = App::make(ChartController::class)->barChart($request);
+        $environmentalStats = App::make(EnvironmentalStatService::class)->userEnvironmentalStats(auth()->id());
+        $environmentalStatsDescription = App::make(EnvironmentalStatsDescriptionService::class)->all();
+        $userService = $this->userService->findById(auth()->id());
+        $data = [
+            'userReports' => $userReports,
+            'environmentalStats' => $environmentalStats,
+            'rewardPoints' => ($userService->reward_points) ? $userService->reward_points : 0,
+            'environmentalStatsDescription' => $environmentalStatsDescription
+        ];
 
         return ResponseHelper::jsonResponse(
             Config::get('constants.USER_CHARTS'),
             IResponseHelperInterface::SUCCESS_RESPONSE,
             true,
-            $userReports
+            $data
         );
     }
 
