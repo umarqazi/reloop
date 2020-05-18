@@ -210,7 +210,7 @@ $(document).ready(function () {
         else{
             $('.subscription_request_allowed_input_field').html('');
             $('.subscription_request_allowed_input_field').append('' +
-                '                    <input id="subscription_request_allowed" type="number" name="request_allowed" required>\n' +
+                '                    <input id="subscription_request_allowed" min="1" type="number" name="request_allowed" required>\n' +
                 '                    <label for="subscription_request_allowed">Request(s) Allowed</label>\n' +
                 '                    ');
         }
