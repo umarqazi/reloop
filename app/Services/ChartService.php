@@ -122,7 +122,7 @@ class ChartService
         $data['header']['next'] = ResponseHelper::carbon($startDate)->addWeek()->format('Y-m-d');
 
         // Set nav button and heading.
-        $data['header']['text'] = 'Daily Stats ' . $date->format('Y');
+        $data['header']['text'] = $startDate->format('M d').' - '.$endDate->format('M d') .', '. $date->format('Y');
 
         // Get weights sum against given dates.
         $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate, '', $users);
