@@ -24,4 +24,14 @@ class PageController extends Controller
     {
         return view('pages.thankyou');
     }
+
+    /**
+     * Method: tokenExpired
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function tokenExpired()
+    {
+        return view('pages.expired');
+    }
 }
