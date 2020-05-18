@@ -108,7 +108,7 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6 subscription_request_allowed_input_field">
-                    <input id="subscription_request_allowed" type="number" name="request_allowed" required>
+                    <input id="subscription_request_allowed" min="1" type="number" name="request_allowed" required>
                     <label for="subscription_request_allowed">Request(s) Allowed</label>
                     @if ($errors->has('request_allowed'))
                         <span class="help-block">

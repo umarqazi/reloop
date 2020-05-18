@@ -112,7 +112,10 @@ class ProductService extends BaseService
                     'category_id' => $category->category_id,
                     'status' => true,
                     'product_for' => $authUser->user_type
-                ])->orWhere('product_for', IProductFor::BOTH)->get();
+                ])->orWhere(function($query) use ($category) {
+                    $query->where('category_id', $category->category_id)
+                        ->where('product_for', IProductFor::BOTH);
+                })->get();
             }
         }
 
