@@ -62,7 +62,7 @@
                         <div class="order-user-detail">
                             <h5>User Detail</h5>
                             <ul>
-                                <li><strong>Name :</strong><span>{{$request->first_name.' '.$request->last_name}}</span></li>
+                                <li><strong>Name :</strong><span>{{ ($request->organization_name) ? $request->organization_name : $request->first_name.' '.$request->last_name}}</span></li>
                                 <li><strong>Email :</strong><span>{{$request->user->email}}</span></li>
                                 <li><strong>Phone Number :</strong><span>{{$request->phone_number}}</span></li>
                                 <li><strong>Location :</strong><span>{{$request->location}}</span></li>
