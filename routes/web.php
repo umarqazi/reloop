@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/activate-account/{id}/{token}', 'UserController@accountVerification');
 Route::get('/thankyou', 'PageController@thankyou')->name('thankyou');
+Route::get('/token-expired', 'PageController@tokenExpired')->name('token-expired');
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/home', 'Admin\HomeController@index')->name('home');

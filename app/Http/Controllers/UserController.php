@@ -97,7 +97,7 @@ class UserController extends Controller
         if($activateAccount){
             return redirect('thankyou');
         }
-        return redirect('login');
+        return redirect('token-expired');
     }
 
     /**
