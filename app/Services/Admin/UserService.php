@@ -151,7 +151,7 @@ class UserService extends BaseService
                     'no_of_occupants' => $request['occupants'],
                     'district_id'     => $request['district_id'],
                     'street'          => $request['street'],
-                    'floor'           => $request['floor'],
+                    'floor'           => ($request['type'] == 'apartment') ? $request['floor'] : null,
                     'unit_number'     => $request['unit-number'],
                     'building_name'   => $request['building_name'],
                 );
