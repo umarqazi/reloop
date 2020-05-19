@@ -108,11 +108,8 @@ class OrderService extends BaseService
     public function availableDrivers($date,$order_id){
 
         $order = $this->findById($order_id);
-        $city = $order->city ;
-        $district = $order->district;
-
-        $city_id = $this->cityRepo->findByName($city)->id ;
-        $district_id = $this->districtRepo->findByName($district)->id;
+        $city_id = $order->city_id;
+        $district_id = $order->district_id;
 
         $drivers = $this->userRepo->getDrivers(IUserType::DRIVER,$city_id,$district_id);
 

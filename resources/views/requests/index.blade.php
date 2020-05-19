@@ -69,8 +69,8 @@
                                     @if($request->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
                                     @if($request->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Driver Dispatched @endif
                                     @if($request->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Request Completed @endif</td>
-                                <td>{{ $request->city }}</td>
-                                <td>{{ $request->district }}</td>
+                                <td>{{ $request->city->name }}</td>
+                                <td>{{ $request->district->name }}</td>
                                 <td>{{ $request->collection_date}}</td>
                                 <td><a href="{{ route('collection-requests.show', $request->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
                             </tr>

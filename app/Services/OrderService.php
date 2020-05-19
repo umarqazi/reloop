@@ -83,8 +83,8 @@ class OrderService extends BaseService
             'location'            => $data['request_data']->location,
             'latitude'            => $data['request_data']->latitude,
             'longitude'           => $data['request_data']->longitude,
-            'city'                => $city->name,
-            'district'            => $district->name
+            'city_id'             => $city->id,
+            'district_id'         => $district->id
         ]);
         return $model->fresh();
     }

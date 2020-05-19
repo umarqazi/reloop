@@ -75,8 +75,8 @@
                                 <li><strong>Email :</strong><span>{{$order->email}}</span></li>
                                 <li><strong>Phone Number :</strong><span>{{$order->phone_number}}</span></li>
                                 <li><strong>Location :</strong><span>{{$order->location}}</span></li>
-                                <li><strong>City :</strong><span>{{$order->city}}</span></li>
-                                <li><strong>District :</strong><span>{{$order->district}}</span></li>
+                                <li><strong>City :</strong><span>{{$order->city->name}}</span></li>
+                                <li><strong>District :</strong><span>{{$order->district->name}}</span></li>
                             </ul>
                         </div>
                     </div>
