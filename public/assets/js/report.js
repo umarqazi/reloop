@@ -352,3 +352,10 @@ $(document).on("change", "#user_id", function () {
     $("#organization_id").attr("disabled", !!$("#user_id").val())
         .material_select();
 });
+
+/**
+ * Draw chart again when any of the chart drop-down changed
+ */
+$(document).on("change", ".chart-dropdown", function () {
+    drawCharts();
+})
