@@ -216,6 +216,24 @@ $(document).ready(function () {
         }
     });
 
+    // Hide floor for villa and show for apartment
+    $( ".user-property-type" ).change(function() {
+        let user_property_value = $(this).val();
+        let floor_no = $('.floor-no').val();
+        if (user_property_value == 'apartment'){
+
+            $('.floor-wrapper').append('' +
+                '                    <input id="floor" type="text" name="floor" value="'+floor_no+'" required>\n' +
+                '                        <label for="floor">Floor No.</label>\n ');
+            $('.floor-wrapper #floor').focus();
+
+        } else if (user_property_value == 'villa') {
+
+            $('.floor-wrapper #floor').remove();
+            $('.floor-wrapper label').remove();
+        }
+    });
+
     $( ".getSubscription" ).click(function() {
         let subscription_id = $(this).attr('id');
         let route = 'subscription/'+ subscription_id;

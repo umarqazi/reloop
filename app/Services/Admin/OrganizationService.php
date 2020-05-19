@@ -9,6 +9,7 @@ use App\Repositories\Admin\OrganizationRepo;
 use App\Repositories\Admin\UserRepo;
 use App\Services\Admin\BaseService;
 use App\Services\Admin\UserService;
+use App\Services\ILoginType;
 use App\Services\IUserStatus;
 use App\Services\IUserType;
 use Illuminate\Http\Request;
@@ -66,6 +67,7 @@ class OrganizationService extends BaseService
                 'password'        => Hash::make($request['password']),
                 'status'          => IUserStatus::ACTIVE,
                 'user_type'       => IUserType::ORGANIZATION,
+                'login_type'      => ILoginType::APP_LOGIN,
                 'api_token'       => str_random(50).strtotime('now'),
             );
             $user = $this->userService->create($userData);
