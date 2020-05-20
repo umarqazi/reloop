@@ -104,7 +104,15 @@ class ProductService extends BaseService
 
             if($cat->type == ICategoryType::SUBSCRIPTION){
 
-                $categoryProducts = $this->subscription->where(['category_id' => $category->category_id, 'status' => true])->get();
+                $authUser = App::make(UserService::class)->findById(auth()->id());
+                $categoryProducts = $this->subscription->where([
+                    'category_id' => $category->category_id,
+                    'status' => true,
+                    'product_for' => $authUser->user_type
+                ])->orWhere(function($query) use ($category) {
+                    $query->where('category_id', $category->category_id)
+                        ->where('product_for', IProductFor::BOTH);
+                })->get();
             } else {
 
                 $authUser = App::make(UserService::class)->findById(auth()->id());

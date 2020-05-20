@@ -22,30 +22,29 @@
         </div>
     </div>
 
-    @if ($message = Session::get('success'))
-        <div id="card-alert" class="card green">
-            <div class="card-content white-text">
-                <p>{{ $message }}</p>
-            </div>
-            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-    @endif
-
-    @if ($message = Session::get('error'))
-        <div id="card-alert" class="card red">
-            <div class="card-content white-text">
-                <p>{{ $message }}</p>
-            </div>
-            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-    @endif
-
     <div class="container">
         <div class="section">
+            @if ($message = Session::get('success'))
+                <div id="card-alert" class="card green">
+                    <div class="card-content white-text">
+                        <p>{{ $message }}</p>
+                    </div>
+                    <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            @endif
+
+            @if ($message = Session::get('error'))
+                <div id="card-alert" class="card red">
+                    <div class="card-content white-text">
+                        <p>{{ $message }}</p>
+                    </div>
+                    <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            @endif
             <br>
             {{ Form::open(['url' => route('subscription.store'),
                            'class' => 'row',
@@ -117,15 +116,25 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
-                        <h6 class="custom-label">Avatar</h6>
-                        <input type="file" class="form-control-file" name="avatar" id="avatar">
-                    </div>
+                    <select name="product_for" id="product_for" required>
+                        <option value="" disabled selected>Product For</option>
+                        <option value={{\App\Services\IProductFor::HOUSE_HOLD}} >House Hold</option>
+                        <option value={{\App\Services\IProductFor::ORGANIZATION}} >Organization</option>
+                        <option value={{\App\Services\IProductFor::BOTH}} >Both</option>
+                    </select>
+                    <label>Product For</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <h6 class="custom-label">Avatar</h6>
+                    <input type="file" class="form-control-file" name="avatar" id="avatar">
+                </div>
                 @if ($errors->has('avatar'))
                     <span class="help-block">
                         <strong class="red-text">{{ $errors->first('avatar') }}</strong>
                     </span>
                 @endif
-
             </div>
             <div class="col s12">
                 <div class="input-field col s12">

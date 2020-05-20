@@ -24,6 +24,7 @@ class CreateSubscriptionsTable extends Migration
             $table->integer('request_allowed');
             $table->integer('category_type')->nullable();
             $table->boolean('status');
+            $table->tinyInteger('product_for');
             $table->timestamps();
         });
     }
