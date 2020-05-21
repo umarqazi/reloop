@@ -6,6 +6,7 @@ namespace App\Services\Admin;
 
 use App\Repositories\Admin\DonationProductCategoryRepo;
 use App\Services\Admin\BaseService;
+use Illuminate\Support\Facades\Storage;
 
 class DonationProductCategoryService extends BaseService
 {
@@ -20,6 +21,76 @@ class DonationProductCategoryService extends BaseService
     {
         $donationProductCategoryRepo         =  $this->getRepo(DonationProductCategoryRepo::class);
         $this->donationProductCategoryRepo   =  new $donationProductCategoryRepo;
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function insert($request)
+    {
+        //check that avatar exists or not
+        $data = $request->except('_token');
+
+        //check that avatar exists or not
+        if(array_key_exists('avatar', $data) && $data['avatar'] != null){
+            $data = $this->uploadFile($data, $request);
+        }
+        return parent::create($data);
+    }
+
+    /**
+     * @param array $data
+     * @param  int $id
+     * @return bool
+     */
+    public function upgrade($id, $request)
+    {
+        $data = $request->except('_token', '_method');
+
+        //check that avatar exists or not
+        if(array_key_exists('avatar', $data) && $data['avatar'] != null){
+            $data = $this->uploadFile($data, $request,$id);
+        }
+        return parent::update($id, $data);
+    }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function destroy(int $id)
+    {
+        $image = $this->findById($id)->avatar ;
+        if($image != null) {
+            Storage::disk()->delete(config('filesystems.donation_category_upload_path').$image);
+        }
+        return parent::destroy($id);
+    }
+
+    /**
+     * @param $data
+     * @param $request
+     * @param null $id
+     * @return mixed
+     */
+    public function uploadFile($data, $request, $id = null)
+    {
+        if($id != null){
+            //Deleting the existing image of respective user.
+            $getOldData = $this->donationProductCategoryRepo->findById($id);
+            if($getOldData->avatar != null){
+                Storage::disk()->delete(config('filesystems.donation_category_upload_path').$getOldData->avatar);
+            }
+        }
+        //upload new image
+        $fileName = 'image-'.time().'-'.$request->file('avatar')->getClientOriginalName();
+        $filePath = config('filesystems.donation_category_upload_path').$fileName;
+        Storage::disk()->put($filePath, file_get_contents($request->file('avatar')),'public');
+        $data['avatar'] = $fileName;
+
+        return $data;
+
     }
 
 }

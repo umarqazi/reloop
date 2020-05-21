@@ -94,13 +94,14 @@ class DonationProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Method: update
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param CreateRequest $request
+     * @param $id
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(CreateRequest $request, $id)
     {
 
         $data = $request->except('_token', '_method');

@@ -44,11 +44,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('request-collections', 'Admin\RequestCollectionController');
     Route::resource('password-requests', 'Admin\PasswordResetController');
     Route::resource('environmental-stats', 'Admin\EnvironmentalStatsController');
+    Route::resource('donation-categories', 'Admin\DonationCategoryController');
+    Route::resource('donation-products', 'Admin\DonationProductController');
 
     Route::get('get-cities', 'Admin\CityController@getCities')->name('getCities');
     Route::get('get-related-districts/{city_id}', 'Admin\CityController@getDistricts')->name('getRelatedDistricts');
     Route::get('district-create/{city_id}', 'Admin\DistrictController@districtCreate')->name('districtCreate');
-    Route::resource('donation-products', 'Admin\DonationProductController');
     Route::get('/all-users', 'Admin\RewardPointController@allUsers')->name('all-users');
     Route::get('/get-user/{id}', 'Admin\RewardPointController@getUser')->name('get-user');
     Route::put('/update-user', 'Admin\RewardPointController@updateRewardPoints')->name('update-user');

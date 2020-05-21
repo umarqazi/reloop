@@ -4,7 +4,7 @@ namespace App\Http\Requests\DonationProduct;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +25,20 @@ class CreateRequest extends FormRequest
     {
         return [
             'name'              => 'required',
-            'redeem_points'     => 'required',
-            'description'       => 'required',
-            'category_id'       => 'required',
             'status'            => 'required',
-            'product_for'       => 'required',
+            'avatar'            => 'required'
+        ];
+    }
+
+    /**
+     * Method: messages
+     *
+     * @return array|string[]
+     */
+    public function messages()
+    {
+        return [
+            'avatar.required'  => 'Avatar is required.',
         ];
     }
 }

@@ -16,11 +16,13 @@ class CreateDonationProductsTable extends Migration
         Schema::create('donation_products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('donation_product_categories');
+            $table->foreign('category_id')->references('id')->on('donation_product_categories')
+            ->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->integer('redeem_points');
             $table->text('description')->nullable();
             $table->boolean('status');
+            $table->tinyInteger('product_for');
             $table->timestamps();
         });
     }
