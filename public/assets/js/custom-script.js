@@ -56,9 +56,13 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('change', 'select[name="city_id[]"]', function() {
+    $(document).on('change', 'select[name="city_id[]"], select[name="city_id"]', function() {
        let city_id = $(this).val();
        let select = $(this).closest('.appendable-filed').find('select[name="district_id[]"]');
+       if (select.length == 0){
+
+           select = $(this).closest('.city-wrapper').find('select[name="district_id[]"]');
+       }
        select.empty();
        if (city_id != '') {
 

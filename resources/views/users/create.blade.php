@@ -126,7 +126,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="col s12">
+                <div class="col s12 city-wrapper">
                     <div class="input-field col s6">
                         {{ Form::select('city_id', (['' => 'Choose City'] + $cities), null, ['id' => 'user_city_id','required' => 'required']) }}
                         <label>City</label>
