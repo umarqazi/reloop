@@ -2,18 +2,17 @@
 @section('content')
 
     <div id="breadcrumbs-wrapper">
-        <!-- Search for small screen -->
         <div class="header-search-wrapper grey lighten-2 hide-on-large-only">
             <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize">
         </div>
         <div class="container">
             <div class="row">
                 <div class="col s10 m6 l6">
-                    <h5 class="breadcrumbs-title">Create Subscription</h5>
+                    <h5 class="breadcrumbs-title">Create Donation Categories</h5>
                     <ol class="breadcrumbs">
                         <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
-                        <li><a href="{{route('subscription.index')}}">Subscriptions</a>
+                        <li><a href="{{route('donation-categories.index')}}">Donation Categories</a>
                         </li>
                         <li class="active">Create</li>
                     </ol>
@@ -46,7 +45,7 @@
                 </div>
             @endif
             <br>
-            {{ Form::open(['url' => route('subscription.store'),
+            {{ Form::open(['url' => route('donation-categories.store'),
                            'class' => 'row',
                            'enctype' => 'multipart/form-data']) }}
 
@@ -61,11 +60,15 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
-                    <input id="price" type="number" max="99999" min="0" name="price" required>
-                    <label for="price">Price</label>
-                    @if ($errors->has('price'))
+                    <select name="status" id="status" required>
+                        <option value="" disabled selected>Choose Donation Category Status</option>
+                        <option value="0">Inactive</option>
+                        <option value="1">Active</option>
+                    </select>
+                    <label>Status</label>
+                    @if ($errors->has('status'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('price') }}</strong>
+                        <strong class="red-text">{{ $errors->first('status') }}</strong>
                     </span>
                     @endif
                 </div>
@@ -83,59 +86,15 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    {{ Form::select('category_id', (['' => 'Choose Subscription Category'] + $categories), null, ['id' => 'subscription_category_id']) }}
-                    <label>Subscription Category</label>
-                    @if ($errors->has('category_id'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('category_id') }}</strong>
-                    </span>
-                    @endif
-                </div>
-                <div class="input-field col s6">
-                    <select name="status"  id="status" required>
-                        <option value="" disabled selected>Choose Subscription Status</option>
-                        <option value="0">Inactive</option>
-                        <option value="1">Active</option>
-                    </select>
-                    <label>Subscription Status</label>
-                    @if ($errors->has('status'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('status') }}</strong>
-                    </span>
-                    @endif
-                </div>
-            </div>
-            <div class="col s12">
-                <div class="input-field col s6 subscription_request_allowed_input_field">
-                    <input id="subscription_request_allowed" min="1" type="number" name="request_allowed" required>
-                    <label for="subscription_request_allowed">Request(s) Allowed</label>
-                    @if ($errors->has('request_allowed'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('request_allowed') }}</strong>
-                    </span>
-                    @endif
-                </div>
-                <div class="input-field col s6">
-                    <select name="product_for" id="product_for" required>
-                        <option value="" disabled selected>Product For</option>
-                        <option value={{\App\Services\IProductFor::HOUSE_HOLD}} >House Hold</option>
-                        <option value={{\App\Services\IProductFor::ORGANIZATION}} >Organization</option>
-                        <option value={{\App\Services\IProductFor::BOTH}} >Both</option>
-                    </select>
-                    <label>Product For</label>
-                </div>
-            </div>
-            <div class="col s12">
-                <div class="input-field col s6">
                     <h6 class="custom-label">Avatar</h6>
                     <input type="file" class="form-control-file" name="avatar" id="avatar">
                 </div>
-                @if ($errors->has('avatar'))
-                    <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('avatar') }}</strong>
-                    </span>
-                @endif
             </div>
+            @if ($errors->has('avatar'))
+                <span class="help-block">
+                    <strong class="red-text">{{ $errors->first('avatar') }}</strong>
+                </span>
+            @endif
             <div class="col s12">
                 <div class="input-field col s12">
                     <button type="submit" class="btn btn-primary">Create</button>

@@ -135,7 +135,7 @@ class ChartService
         while ($startDate <= $endDate) {
 
             // Set label and data of bar chart.
-            $data['bar'][$counter]['label'] = $startDate->format('d-M');
+            $data['bar'][$counter]['label'] = $startDate->format('D');
             $data['bar'][$counter]['data']  = [
                 'start' => ResponseHelper::carbon($startDate)->format('Y-m-d')
             ];
@@ -179,8 +179,27 @@ class ChartService
         $data['header']['prev'] = ResponseHelper::carbon($startDate)->subWeek()->format('Y-m-d');
         $data['header']['next'] = ResponseHelper::carbon($endDate)->addWeek()->format('Y-m-d');
 
+        switch ($startDate->quarter) {
+            case 1:
+                $stWk = 1;
+                $endWk = 13;
+                break;
+            case 2:
+                $stWk = 14;
+                $endWk = 26;
+                break;
+            case 3:
+                $stWk = 27;
+                $endWk = 39;
+                break;
+            case 4:
+                $stWk = 40;
+                $endWk = 52;
+                break;
+        }
+
         // Set nav button and heading.
-        $data['header']['text'] = 'Quarter-' . $date->quarter ." " . $date->format('Y');
+        $data['header']['text'] = "Week $stWk - Week $endWk, Q$date->quarter, " . $date->format('Y');
 
         // Get weight sum against given dates.
         $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'week', $users);
@@ -193,7 +212,7 @@ class ChartService
         while ($startDate <= $endDate) {
 
             // Set label and data of bar chart.
-            $data['bar'][$counter]['label'] = $counter;
+            $data['bar'][$counter]['label'] = $startDate->weekOfYear;
             $data['bar'][$counter]['data']  = [
                 'start' => ResponseHelper::carbon($startDate)->startOfWeek(Carbon::SUNDAY)->format('Y-m-d'),
                 'end' => ResponseHelper::carbon($startDate)->endOfWeek(Carbon::SATURDAY)->format('Y-m-d')
@@ -231,15 +250,15 @@ class ChartService
      */
     public function monthly(Carbon $date, array $users): array
     {
-        $startDate = ResponseHelper::carbon($date)->firstOfQuarter();
-        $endDate = ResponseHelper::carbon($date)->lastOfQuarter();
+        $startDate = ResponseHelper::carbon($date)->firstOfYear();
+        $endDate = ResponseHelper::carbon($date)->lastOfYear();
         $data['header']['start'] = $startDate->format('Y-m-d');
         $data['header']['end'] = $endDate->format('Y-m-d');
         $data['header']['prev'] = ResponseHelper::carbon($startDate)->subMonth()->format('Y-m-d');
         $data['header']['next'] = ResponseHelper::carbon($endDate)->addMonth()->format('Y-m-d');
 
         // Set nav button and heading.
-        $data['header']['text'] = 'Quarter-' . $date->quarter ." " . $date->format('Y');
+        $data['header']['text'] = $startDate->format('M Y') . " - " . $endDate->format('M Y');
 
         // Get weight sum against given dates.
         $weightByMonth = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'month', $users);

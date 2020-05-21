@@ -20,6 +20,7 @@ return [
     'product_avatar_upload_path'            => 'public/uploads/images/product/',
     'subscription_avatar_upload_path'       => 'public/uploads/images/subscription/',
     'profile_pic_upload_path'               => 'public/uploads/images/profile-pictures/',
+    'donation_category_upload_path'         => 'public/uploads/images/donation-category/',
 
     /*
     |--------------------------------------------------------------------------

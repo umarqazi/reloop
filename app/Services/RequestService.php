@@ -230,7 +230,7 @@ class RequestService extends BaseService
                     }
                 ]);
             }
-        ])->select('id', 'request_number', 'collection_date', 'location', 'latitude', 'longitude', 'city',
+        ])->select('id', 'request_number', 'confirm', 'collection_date', 'location', 'latitude', 'longitude', 'city',
                 'district', 'street', 'created_at', 'status')
             ->where('user_id', auth()->id())->get();
     }

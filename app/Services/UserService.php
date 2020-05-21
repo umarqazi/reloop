@@ -333,6 +333,9 @@ class UserService extends BaseService
             $authUser = $this->findByEmail($loginForm->email);
             if($authUser && $authUser->login_type != ILoginType::APP_LOGIN){
 
+                $authUser->player_id = $loginForm->player_id;
+                $authUser->update();
+
                 $authUser = $authUser->load('addresses', 'organization', 'roles');
                 return ResponseHelper::responseData(
                     Config::get('constants.USER_LOGIN_SUCCESSFULLY'),

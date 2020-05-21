@@ -22,30 +22,29 @@
         </div>
     </div>
 
-    @if ($message = Session::get('success'))
-        <div id="card-alert" class="card green">
-            <div class="card-content white-text">
-                <p>{{ $message }}</p>
-            </div>
-            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-    @endif
-
-    @if ($message = Session::get('error'))
-        <div id="card-alert" class="card red">
-            <div class="card-content white-text">
-                <p>{{ $message }}</p>
-            </div>
-            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-    @endif
-
     <div class="container">
         <div class="section">
+            @if ($message = Session::get('success'))
+                <div id="card-alert" class="card green">
+                    <div class="card-content white-text">
+                        <p>{{ $message }}</p>
+                    </div>
+                    <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            @endif
+
+            @if ($message = Session::get('error'))
+                <div id="card-alert" class="card red">
+                    <div class="card-content white-text">
+                        <p>{{ $message }}</p>
+                    </div>
+                    <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            @endif
             <br>
             {{ Form::open(['url' => route('subscription.update',$subscription->id),'method' => 'PUT', 'class' => 'row','enctype' => 'multipart/form-data']) }}
             <div class="col s12">
@@ -121,6 +120,20 @@
                           --}}<option value="3" {{ $subscription->category_type==\App\Services\ISubscriptionSubType::SINGLE_COLLECTION ? 'selected': '' }} >Single Collection</option>
                          </select>
                          <label for="subscription_category_type">Subscription Category Type</label>
+                    @endif
+                </div>
+                <div class="input-field col s6">
+                    <select name="product_for" id="product_for" required>
+                        <option value="" disabled selected>Product For</option>
+                        <option value={{\App\Services\IProductFor::HOUSE_HOLD}} {{ $subscription->product_for==\App\Services\IProductFor::HOUSE_HOLD ? 'selected': '' }}>House Hold</option>
+                        <option value={{\App\Services\IProductFor::ORGANIZATION}} {{ $subscription->product_for==\App\Services\IProductFor::ORGANIZATION ? 'selected': '' }}>Organization</option>
+                        <option value={{\App\Services\IProductFor::BOTH}} {{ $subscription->product_for==\App\Services\IProductFor::BOTH ? 'selected': '' }}>Both</option>
+                    </select>
+                    <label>Product For</label>
+                    @if ($errors->has('product_for'))
+                        <span class="help-block">
+                        <strong class="red-text">{{ $errors->first('product_for') }}</strong>
+                    </span>
                     @endif
                 </div>
             </div>

@@ -18,6 +18,7 @@ class CreateDonationProductCategoriesTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('status');
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

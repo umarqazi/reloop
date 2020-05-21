@@ -166,7 +166,7 @@
                             </div>
                             <div class="input-field col s3">
                                 <input type="hidden" name="address-id" value="{{ $user->addresses[0]->id }}">
-                                <select name="type"  id="type1" required>
+                                <select name="type"  id="type1" class="user-property-type" required>
                                     <option value="" disabled selected>Choose Type</option>
                                     <option value="villa" {{ $user->addresses->first()->type=='villa' ? 'selected': '' }}>Villa</option>
                                     <option value="apartment" {{ $user->addresses->first()->type=='apartment' ? 'selected': '' }}>Apartment</option>
@@ -190,10 +190,6 @@
                                 <label for="building_name">Building Name</label>
                             </div>
                             <div class="input-field col s3">
-                                <input id="floor" type="text" name="floor" value="{{ $user->addresses->first()->floor }}" required>
-                                <label for="floor">Floor No.</label>
-                            </div>
-                            <div class="input-field col s3">
                                 <input id="unit-number" type="text" name="unit-number" value="{{ $user->addresses->first()->unit_number }}" required>
                                 <label for="unit-number">Unit No.</label>
                             </div>
@@ -204,6 +200,15 @@
                             <div class="input-field col s3">
                                 <input id="occupants" type="number" name="occupants" value="{{ $user->addresses->first()->no_of_occupants }}"  required>
                                 <label for="occupants">No. of Occupants</label>
+                            </div>
+                            <div class="input-field col s3 floor-wrapper">
+                                @if($user->addresses->first()->type=='apartment')
+                                    <input id="floor" type="text" name="floor" value="{{ $user->addresses->first()->floor }}" required>
+                                    <label for="floor">Floor No.</label>
+                                    <input type="hidden" class="floor-no" value="{{ $user->addresses->first()->floor }}">
+                                @else
+                                    <input type="hidden" class="floor-no" value="{{ $user->addresses->first()->floor }}">
+                                @endif
                             </div>
                         </div>
                     @endif
