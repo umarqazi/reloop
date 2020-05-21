@@ -18,7 +18,7 @@ class Request extends Model
     protected $fillable = [
         'user_id', 'driver_id', 'supervisor_id', 'request_number', 'collection_date', 'collection_type', 'reward_points',
         'status', 'first_name', 'last_name', 'organization_name', 'phone_number', 'location', 'latitude', 'longitude',
-        'city', 'district', 'street', 'question_1', 'answer_1', 'question_2', 'answer_2','confirm','driver_trip_status'
+        'city_id', 'district_id', 'street', 'question_1', 'answer_1', 'question_2', 'answer_2','confirm','driver_trip_status'
     ];
 
     /**
@@ -60,5 +60,25 @@ class Request extends Model
     public function driver()
     {
         return $this->belongsTo(User::class, 'driver_id');
+    }
+
+    /**
+     * Method: city
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
+
+    /**
+     * Method: district
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id');
     }
 }

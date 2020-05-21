@@ -25,6 +25,12 @@ class CreateRequestsTable extends Migration
             $table->unsignedBigInteger('supervisor_id')->nullable();
             $table->foreign('supervisor_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
 
+            $table->unsignedBigInteger('city_id');
+            $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
+
+            $table->unsignedBigInteger('district_id');
+            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
+
             $table->string('request_number');
             $table->boolean('confirm')->default('0');
             $table->date('collection_date');
@@ -40,8 +46,6 @@ class CreateRequestsTable extends Migration
             $table->string('location');
             $table->string('latitude');
             $table->string('longitude');
-            $table->string('city');
-            $table->string('district');
             $table->string('street');
 
             $table->string('question_1');

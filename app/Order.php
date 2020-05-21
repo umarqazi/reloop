@@ -18,7 +18,7 @@ class Order extends Model
     protected $fillable = [
         'user_id','driver_id', 'supervisor_id', 'order_number', 'subtotal', 'redeem_points', 'coupon_discount', 'total',
         'first_name', 'last_name', 'email', 'organization_name', 'phone_number', 'location', 'latitude', 'longitude',
-        'city', 'district','status','delivery_date','driver_trip_status'
+        'city_id', 'district_id','status','delivery_date','driver_trip_status'
     ];
 
     /**
@@ -60,5 +60,25 @@ class Order extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Method: city
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
+
+    /**
+     * Method: district
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id');
     }
 }

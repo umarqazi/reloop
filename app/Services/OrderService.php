@@ -83,8 +83,8 @@ class OrderService extends BaseService
             'location'            => $data['request_data']->location,
             'latitude'            => $data['request_data']->latitude,
             'longitude'           => $data['request_data']->longitude,
-            'city'                => $city->name,
-            'district'            => $district->name
+            'city_id'             => $city->id,
+            'district_id'         => $district->id
         ]);
         return $model->fresh();
     }
@@ -103,10 +103,8 @@ class OrderService extends BaseService
                     return $subQuery->select('id', 'name');
                     }
                 ]);
-            }
-        ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-            'city', 'district')
-            ->where(['user_id' => auth()->id()])->get();
+            }, 'city', 'district'
+        ])->where(['user_id' => auth()->id()])->get();
 
         $getUserCollectionRequests = $this->requestService->userCollectionRequests();
         $data = [
@@ -136,10 +134,8 @@ class OrderService extends BaseService
                         return $subQuery->select('id', 'name');
                     }
                 ]);
-            }
-        ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-            'city', 'district')
-            ->where(['id' => $id])->first();
+            }, 'city', 'district'
+        ])->where(['id' => $id])->first();
     }
 
     /**
@@ -159,17 +155,13 @@ class OrderService extends BaseService
                         return $subQuery->select('id', 'name');
                     }
                 ]);
-            }
+            }, 'city', 'district'
         ]);
         if(!empty($date)){
 
-            return $assignedOrders->select('id', 'order_number', 'delivery_date', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-                'city', 'district', 'phone_number', 'driver_trip_status', 'first_name', 'organization_name')
-                ->where(['driver_id' => $driverId, 'delivery_date' => $date])->get();
+            return $assignedOrders->where(['driver_id' => $driverId, 'delivery_date' => $date])->get();
         }
-        return $assignedOrders->select('id', 'order_number', 'delivery_date', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-            'city', 'district', 'phone_number', 'driver_trip_status', 'first_name', 'organization_name')
-            ->where('driver_id', $driverId)->get();
+        return $assignedOrders->where('driver_id', $driverId)->get();
     }
 
     /**

@@ -99,12 +99,8 @@ class CollectionRequestService extends BaseService
      */
     public function availableDrivers($date,$order_id){
         $request = $this->findById($order_id);
-
-        $city = $request->city ;
-        $district = $request->district;
-
-        $city_id = $this->cityRepo->findByName($city)->id ;
-        $district_id = $this->districtRepo->findByName($district)->id;
+        $city_id = $request->city_id;
+        $district_id = $request->district_id;
 
         $drivers = $this->userRepo->getDrivers(IUserType::DRIVER,$city_id,$district_id);
 
