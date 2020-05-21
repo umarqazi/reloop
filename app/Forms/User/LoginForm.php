@@ -58,8 +58,6 @@ class LoginForm extends BaseForm
             'email' => 'required|email',
             'login_type'   => 'required|between:1,3|integer',
             'password' => 'required_if:login_type,==,1',
-            'first_name' => 'required_unless:login_type,1',
-            'last_name' => 'required_unless:login_type,1',
         ];
     }
 }
