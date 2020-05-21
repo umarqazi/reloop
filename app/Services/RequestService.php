@@ -229,10 +229,8 @@ class RequestService extends BaseService
                         return $subQuery->select('id', 'name', 'unit');
                     }
                 ]);
-            }
-        ])->select('id', 'request_number', 'confirm', 'collection_date', 'location', 'latitude', 'longitude', 'city',
-                'district', 'street', 'created_at', 'status')
-            ->where('user_id', auth()->id())->get();
+            }, 'city', 'district'
+        ])->where('user_id', auth()->id())->get();
     }
 
     /**

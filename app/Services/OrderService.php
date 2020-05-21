@@ -103,10 +103,8 @@ class OrderService extends BaseService
                     return $subQuery->select('id', 'name');
                     }
                 ]);
-            }
-        ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-            'city', 'district')
-            ->where(['user_id' => auth()->id()])->get();
+            }, 'city', 'district'
+        ])->where(['user_id' => auth()->id()])->get();
 
         $getUserCollectionRequests = $this->requestService->userCollectionRequests();
         $data = [
@@ -136,10 +134,8 @@ class OrderService extends BaseService
                         return $subQuery->select('id', 'name');
                     }
                 ]);
-            }
-        ])->select('id', 'order_number', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-            'city', 'district')
-            ->where(['id' => $id])->first();
+            }, 'city', 'district'
+        ])->where(['id' => $id])->first();
     }
 
     /**
