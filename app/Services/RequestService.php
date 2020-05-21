@@ -252,19 +252,13 @@ class RequestService extends BaseService
                         return $subQuery->select('id', 'name', 'unit');
                     }
                 ]);
-            }
+            }, 'city', 'district'
         ]);
         if(!empty($date)){
 
-            return $assignedTrips->select('id', 'request_number', 'collection_date', 'location', 'latitude',
-                'longitude', 'city', 'district', 'street', 'created_at', 'status', 'driver_trip_status', 'phone_number',
-            'first_name', 'organization_name')
-                ->where(['driver_id' => $driverId, 'collection_date' => $date])->get();
+            return $assignedTrips->where(['driver_id' => $driverId, 'collection_date' => $date])->get();
         }
-        return $assignedTrips->select('id', 'request_number', 'collection_date', 'location', 'latitude',
-            'longitude', 'city', 'district', 'street', 'created_at', 'status', 'driver_trip_status', 'phone_number',
-            'first_name', 'organization_name')
-            ->where('driver_id', $driverId)->get();
+        return $assignedTrips->where('driver_id', $driverId)->get();
     }
 
     /**

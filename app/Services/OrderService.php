@@ -159,17 +159,13 @@ class OrderService extends BaseService
                         return $subQuery->select('id', 'name');
                     }
                 ]);
-            }
+            }, 'city', 'district'
         ]);
         if(!empty($date)){
 
-            return $assignedOrders->select('id', 'order_number', 'delivery_date', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-                'city', 'district', 'phone_number', 'driver_trip_status', 'first_name', 'organization_name')
-                ->where(['driver_id' => $driverId, 'delivery_date' => $date])->get();
+            return $assignedOrders->where(['driver_id' => $driverId, 'delivery_date' => $date])->get();
         }
-        return $assignedOrders->select('id', 'order_number', 'delivery_date', 'total', 'status', 'created_at', 'location', 'latitude', 'longitude',
-            'city', 'district', 'phone_number', 'driver_trip_status', 'first_name', 'organization_name')
-            ->where('driver_id', $driverId)->get();
+        return $assignedOrders->where('driver_id', $driverId)->get();
     }
 
     /**
