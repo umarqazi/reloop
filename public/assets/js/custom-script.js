@@ -56,9 +56,9 @@ $(document).ready(function () {
         }
     });
 
-    $("select[id='user_city_id']").on('change', function() {
+    $(document).on('change', 'select[name="city_id[]"]', function() {
        let city_id = $(this).val();
-       let select = $('#user_district_id');
+       let select = $(this).closest('.appendable-filed').find('select[name="district_id[]"]');
        select.empty();
        if (city_id != '') {
 
@@ -92,6 +92,16 @@ $(document).ready(function () {
     var wrapper = $("#input_fields_wrap"); //Fields wrapper
     var add_button = $(".add-more-filed"); //Add button ID
     var x = 1;
+
+    let hasBuilding = $('input[name="building_name[]"]').length;
+    let buildingHtml = '';
+    if (hasBuilding) {
+        buildingHtml = '<div class="input-field col s3">\n' +
+            '<input id="building_name[]" type="text" name="building_name[]" value="">\n' +
+            '<label for="building_name[]" class="">Building Name</label>\n' +
+        '</div>';
+    }
+
     $(add_button).click(function (e) {
         e.preventDefault();
         if (x < max_fields) {
@@ -120,7 +130,7 @@ $(document).ready(function () {
                 '                <div class="input-field col s3">\n' +
                 '                    <input id="street[]" type="text" name="street[]" required>\n' +
                 '                    <label for="street[]">Street/Cluster</label>\n' +
-                '                </div>\n' +
+                '                </div>\n' + buildingHtml +
                 '                <div class="input-field col s3">\n' +
                 '                    <input id="floor[]" type="text" name="floor[]" required>\n' +
                 '                    <label for="floor[]">Floor No.</label>\n' +
@@ -133,7 +143,7 @@ $(document).ready(function () {
                 '                    <input id="location[]" type="text" name="location[]" required>\n' +
                 '                    <label for="location[]">Location</label>\n' +
                 '                </div>' +
-                '                <div class="input-field col s3">\n' +
+                '                <div class="input-field col ' + (hasBuilding ? 's12' : 's3') + '">\n' +
                 '                    <input id="occupants[]" type="number" name="occupants[]" required>\n' +
                 '                    <label for="occupants">No. of Occupants</label>\n' +
                 '                </div>\n' +
@@ -159,20 +169,8 @@ $(document).ready(function () {
             }
         });
 
-        //ajax call to append districts from backend
-        $.ajax({
-            type: "get",
-            url: "/districts",
-            success: function (res) {
-                $('#' + district_name).append('<option value="" disabled selected >Choose District</option>');
-                if (res) {
-                    $.each(res, function (key, value) {
-                        $('#' + district_name).append('<option value="' + key + '">' + value + '</option>');
-                    });
-                    $('#' + district_name).material_select();
-                }
-            }
-        });
+        $('#' + district_name).html('<option>Choose District</option>');
+        $('#' + district_name).material_select();
     });
 
     $(wrapper).on("click", ".remove-append", function (e) {
