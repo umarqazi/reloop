@@ -10,6 +10,7 @@ use App\Services\Admin\CityService;
 use App\Services\Admin\DistrictService;
 use App\Services\Admin\UserDonationService;
 use App\Services\Admin\UserSubscriptionService;
+use App\Services\IUserSubscriptionStatus;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
@@ -211,11 +212,37 @@ class UserController extends Controller
                 if(!$userSubscriptions->isEmpty()) {
 
                     foreach ($userSubscriptions as $userSubscription) {
-                        $print[] = array('User ID' => $userSubscription->user->id,
+                        switch ($userSubscription->status){
+                            case (IUserSubscriptionStatus::ACTIVE):
+                                $status = 'Active';
+                                break;
+                            case (IUserSubscriptionStatus::PENDING):
+                                $status = 'Pending';
+                                break;
+                            case (IUserSubscriptionStatus::COMPLETED):
+                                $status = 'Completed';
+                                break;
+                            case (IUserSubscriptionStatus::EXPIRED):
+                                $status = 'Expired';
+                                break;
+                        }
+                        $print[] = array(
+                            'User ID' => $userSubscription->user->id,
                             'User Email' => $userSubscription->user->email,
-                            'User Type' => $userSubscription->user->user_type == IUserType::HOUSE_HOLD ? 'House Hold' : 'Organization',
-                            'Subscription' => $userSubscription->subscription->name,
-                            'Trip(s)' => $userSubscription->trips,
+                            'Name' => ($userSubscription->user->user_type == 1) ?
+                                       $userSubscription->user->first_name . ' ' . $userSubscription->user->last_name :
+                                       $userSubscription->user->organization->name,
+                            'User Type' => $userSubscription->user->user_type == IUserType::HOUSE_HOLD ? 'HouseHold' : 'Organization',
+                            'Phone Number' => $userSubscription->user->phone_number,
+                            'Subscription Name' => $userSubscription->subscription->name,
+                            'Subscription Price' => $userSubscription->subscription->price,
+                            'Total Trip(s)' => $userSubscription->subscription->request_allowed,
+                            'Remaining Trip(s)' => $userSubscription->trips,
+                            'Starting Date' => $userSubscription->start_date,
+                            'Ending Date' => $userSubscription->end_date,
+                            'Status' => $status,
+                            'City' => $userSubscription->user->addresses->first()->city->name,
+                            'District' => $userSubscription->user->addresses->first()->district->name,
                         );
                     }
                     $sheet->fromArray($print);
@@ -235,11 +262,19 @@ class UserController extends Controller
                 if(!$userDonations->isEmpty()) {
 
                     foreach ($userDonations as $userDonation) {
-                        $print[] = array('User ID' => $userDonation->user->id,
+                        $print[] = array(
+                            'User ID' => $userDonation->user->id,
                             'User Email' => $userDonation->user->email,
-                            'Donation Product' => $userDonation->donationProduct->name,
-                            'Donation Product Type' => ($userDonation->donationProduct->category_id == 1) ? 'Plant a Tree' : 'Charity',
-                            'Redeem Points' => $userDonation->donationProduct->redeem_points,
+                            'Name' => ($userDonation->user->user_type == 1) ?
+                                             $userDonation->user->first_name . ' ' . $userDonation->user->last_name :
+                                             $userDonation->user->organization->name,
+                            'User Type' => ($userDonation->user->user_type == IUserType::HOUSE_HOLD ? 'HouseHold' : 'Organization'),
+                            'Phone Number' => $userDonation->user->phone_number,
+                            'Reward Category' => $userDonation->donationProduct->category->name,
+                            'Reward Item' => $userDonation->donationProduct->name,
+                            'Redeemed Points' => $userDonation->donationProduct->redeem_points,
+                            'City' => $userDonation->user->addresses->first()->city->name,
+                            'District' => $userDonation->user->addresses->first()->district->name,
                         );
                     }
                     $sheet->fromArray($print);

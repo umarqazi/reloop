@@ -73,8 +73,8 @@
                                     <td>{{ ($userDonation->user->user_type == \App\Services\IUserType::HOUSE_HOLD ? 'HouseHold' : 'Organization') }}</td>
                                     <td>{{ $userDonation->user->phone_number }}</td>
                                     <td>{{ $userDonation->donationProduct->category->name }}</td>
-                                    <td>{{$userDonation->donationProduct->name}}</td>
-                                    <td>{{$userDonation->donationProduct->redeem_points}}</td>
+                                    <td>{{ $userDonation->donationProduct->name }}</td>
+                                    <td>{{ $userDonation->donationProduct->redeem_points }}</td>
                                 </tr>
                             @endforeach
 
