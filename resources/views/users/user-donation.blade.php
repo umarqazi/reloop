@@ -52,9 +52,12 @@
                             <tr>
                                 <th>User ID</th>
                                 <th>User Email</th>
-                                <th>Donation Product</th>
-                                <th>Donation Product Type</th>
-                                <th>Redeem Points</th>
+                                <th>Name</th>
+                                <th>User Type</th>
+                                <th>Phone Number</th>
+                                <th>Reward Category</th>
+                                <th>Reward Item</th>
+                                <th>Redeemed Points</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -63,9 +66,15 @@
                                 <tr>
                                     <td>{{$userDonation->user->id}}</td>
                                     <td>{{$userDonation->user->email}}</td>
-                                    <td>{{$userDonation->donationProduct->name}}</td>
-                                    <td>{{ ($userDonation->donationProduct->category_id == 1) ? 'Plant a Tree' : 'Charity' }}</td>
-                                    <td>{{$userDonation->donationProduct->redeem_points}}</td>
+                                    <td>{{ ($userDonation->user->user_type == 1) ?
+                                            $userDonation->user->first_name . ' ' . $userDonation->user->last_name :
+                                            $userDonation->user->organization->name  }}
+                                    </td>
+                                    <td>{{ ($userDonation->user->user_type == \App\Services\IUserType::HOUSE_HOLD ? 'HouseHold' : 'Organization') }}</td>
+                                    <td>{{ $userDonation->user->phone_number }}</td>
+                                    <td>{{ $userDonation->donationProduct->category->name }}</td>
+                                    <td>{{ $userDonation->donationProduct->name }}</td>
+                                    <td>{{ $userDonation->donationProduct->redeem_points }}</td>
                                 </tr>
                             @endforeach
 
