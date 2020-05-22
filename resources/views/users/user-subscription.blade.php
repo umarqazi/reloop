@@ -54,17 +54,18 @@
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
+                                <th>ID</th>
+                                <th>Email</th>
                                 <th>Name</th>
-                                <th>User Type</th>
-                                <th>Phone Number</th>
+                                <th>Type</th>
+                                <th>Phone</th>
                                 <th>Subscription</th>
-                                <th>Total Trip(s)</th>
-                                <th>Remaining Trip(s)</th>
-                                <th>Starting Date</th>
-                                <th>Ending Date</th>
+                                <th>Total Trips</th>
+                                <th>Trips Left</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
                                 <th>Status</th>
+                                <th>City - District</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -95,6 +96,7 @@
                                             {{ 'Expired' }}
                                         @endif
                                     </td>
+                                    <td>{{ $userSubscription->user->addresses->first()->city->name . ' - ' . $userSubscription->user->addresses->first()->district->name }}</td>
                                 </tr>
                             @endforeach
 

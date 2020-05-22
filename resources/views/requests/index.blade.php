@@ -49,13 +49,16 @@
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>ID</th>
                                 <th>Request Number</th>
                                 <th>Email</th>
-                                <th>Request Status</th>
-                                <th>Request City</th>
-                                <th>Request District</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>City</th>
+                                <th>District</th>
                                 <th>Collection Date</th>
+                                <th>Comments</th>
                                 <th>Detail</th>
                             </tr>
                             </thead>
@@ -65,13 +68,19 @@
                                 <td>{{ $request->id }}</td>
                                 <td>{{ $request->request_number  }}</td>
                                 <td>{{ $request->user->email }}</td>
-                                <td>@if($request->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Request Confirmed @endif
-                                    @if($request->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
-                                    @if($request->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Driver Dispatched @endif
-                                    @if($request->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Request Completed @endif</td>
+                                <td>{{ ($request->user->user_type == \App\Services\IUserType::HOUSE_HOLD) ?
+                                        $request->first_name . ' ' . $request->last_name :
+                                        $request->organization_name  }}
+                                </td>
+                                <td>{{ $request->phone_number }}</td>
+                                <td>@if($request->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) New @endif
+                                    @if($request->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Assigned @endif
+                                    @if($request->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Dispatched @endif
+                                    @if($request->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Completed @endif</td>
                                 <td>{{ $request->city->name }}</td>
                                 <td>{{ $request->district->name }}</td>
-                                <td>{{ $request->collection_date}}</td>
+                                <td>{{ $request->collection_date }}</td>
+                                <td>{{ $request->additional_comments }}</td>
                                 <td><a href="{{ route('collection-requests.show', $request->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
                             </tr>
                             @endforeach

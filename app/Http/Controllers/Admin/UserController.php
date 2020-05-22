@@ -275,6 +275,7 @@ class UserController extends Controller
                             'Redeemed Points' => $userDonation->donationProduct->redeem_points,
                             'City' => $userDonation->user->addresses->first()->city->name,
                             'District' => $userDonation->user->addresses->first()->district->name,
+                            'Date - Time' => $userDonation->created_at,
                         );
                     }
                     $sheet->fromArray($print);

@@ -53,13 +53,15 @@
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>ID</th>
                                 <th>Order Number</th>
                                 <th>Email</th>
+                                <th>Name</th>
+                                <th>Phone</th>
                                 <th>Order Status</th>
-                                <th>Order City</th>
-                                <th>Order District</th>
-                                <th>Order Created at</th>
+                                <th>City</th>
+                                <th>District</th>
+                                <th>Created at</th>
                                 <th>Total</th>
                                 <th>Detail</th>
                             </tr>
@@ -70,13 +72,18 @@
                                 <td>{{ $order->id }}</td>
                                 <td>{{ $order->order_number  }}</td>
                                 <td>{{ $order->email }}</td>
-                                <td>@if($order->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Order Confirmed @endif
-                                    @if($order->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
-                                    @if($order->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Order Dispatched @endif
-                                    @if($order->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Order Completed @endif</td>
+                                <td>{{ ($order->user->user_type == \App\Services\IUserType::HOUSE_HOLD) ?
+                                        $order->first_name . ' ' . $order->last_name :
+                                        $order->organization_name  }}
+                                </td>
+                                <td>{{ $order->phone_number }}</td>
+                                <td>@if($order->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) New @endif
+                                    @if($order->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Assigned @endif
+                                    @if($order->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Dispatched @endif
+                                    @if($order->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Completed @endif</td>
                                 <td>{{ $order->city->name }}</td>
                                 <td>{{ $order->district->name }}</td>
-                                <td>{{ $order->created_at->format('Y-m-d')}}</td>
+                                <td>{{ $order->created_at }}</td>
                                 <td>{{ $order->total }}</td>
                                 <td><a href="{{ route('orders.show', $order->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
                             </tr>
