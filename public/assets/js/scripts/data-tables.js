@@ -4,7 +4,9 @@
 
 
 $(function() {
-  $('#data-table-simple').DataTable();
+  $('#data-table-simple').DataTable({
+      "displayLength": 50
+  });
 
   var table = $('#data-table-row-grouping').DataTable({
     "columnDefs": [{
