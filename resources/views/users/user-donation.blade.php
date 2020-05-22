@@ -50,14 +50,16 @@
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
+                                <th>ID</th>
+                                <th>Email</th>
                                 <th>Name</th>
-                                <th>User Type</th>
-                                <th>Phone Number</th>
-                                <th>Reward Category</th>
-                                <th>Reward Item</th>
-                                <th>Redeemed Points</th>
+                                <th>Type</th>
+                                <th>Phone</th>
+                                <th>Category</th>
+                                <th>Item</th>
+                                <th>Points</th>
+                                <th>City - District</th>
+                                <th>Date - Time</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -75,6 +77,8 @@
                                     <td>{{ $userDonation->donationProduct->category->name }}</td>
                                     <td>{{ $userDonation->donationProduct->name }}</td>
                                     <td>{{ $userDonation->donationProduct->redeem_points }}</td>
+                                    <td>{{ $userDonation->user->addresses->first()->city->name . ' - ' . $userDonation->user->addresses->first()->district->name }}</td>
+                                    <td>{{ $userDonation->created_at }}</td>
                                 </tr>
                             @endforeach
 

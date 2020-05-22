@@ -71,7 +71,13 @@
                         <div class="order-user-detail">
                             <h5>User Detail</h5>
                             <ul>
-                                <li><strong>Name :</strong><span>{{$order->first_name.' '.$order->last_name}}</span></li>
+                                <li><strong>Name :</strong>
+                                    <span>
+                                        {{ ($order->user->user_type == \App\Services\IUserType::HOUSE_HOLD) ?
+                                        $order->first_name . ' ' . $order->last_name :
+                                        $order->organization_name  }}
+                                    </span>
+                                </li>
                                 <li><strong>Email :</strong><span>{{$order->email}}</span></li>
                                 <li><strong>Phone Number :</strong><span>{{$order->phone_number}}</span></li>
                                 <li><strong>Location :</strong><span>{{$order->location}}</span></li>

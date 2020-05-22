@@ -127,6 +127,7 @@
                     <img src="{{ $product->avatar }}" alt="Avatar">
                 </div>
                 <div class="input-field col s6 ">
+                    <h6 class="custom-label">Update Photo</h6>
                     <input type="file" class="form-control-file" name="avatar" id="avatar">
                 </div>
             </div>

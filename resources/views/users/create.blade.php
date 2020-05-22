@@ -158,7 +158,7 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s6">
-                        <h6 class="custom-label">Avatar</h6>
+                        <h6 class="custom-label">Choose Photo</h6>
                         <input type="file" class="form-control-file" name="avatar" id="avatar">
                     </div>
                 </div>
