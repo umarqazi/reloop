@@ -66,8 +66,8 @@
                                 <li><strong>Email :</strong><span>{{$request->user->email}}</span></li>
                                 <li><strong>Phone Number :</strong><span>{{$request->phone_number}}</span></li>
                                 <li><strong>Location :</strong><span>{{$request->location}}</span></li>
-                                <li><strong>City :</strong><span>{{$request->city}}</span></li>
-                                <li><strong>District :</strong><span>{{$request->district}}</span></li>
+                                <li><strong>City :</strong><span>{{ $request->city->name }}</span></li>
+                                <li><strong>District :</strong><span>{{ $request->district->name }}</span></li>
                             </ul>
                         </div>
                     </div>

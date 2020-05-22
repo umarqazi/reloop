@@ -8,11 +8,11 @@
         <div class="container">
             <div class="row">
                 <div class="col s10 m6 l6">
-                    <h5 class="breadcrumbs-title">Create Donation Product</h5>
+                    <h5 class="breadcrumbs-title">Create Donation Categories</h5>
                     <ol class="breadcrumbs">
                         <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
-                        <li><a href="{{route('donation-products.index')}}">Donation Products</a>
+                        <li><a href="{{route('donation-categories.index')}}">Donation Categories</a>
                         </li>
                         <li class="active">Create</li>
                     </ol>
@@ -45,8 +45,9 @@
                 </div>
             @endif
             <br>
-            {{ Form::open(['url' => route('donation-products.store'),
-                           'class' => 'row']) }}
+            {{ Form::open(['url' => route('donation-categories.store'),
+                           'class' => 'row',
+                           'enctype' => 'multipart/form-data']) }}
 
             <div class="col s12">
                 <div class="input-field col s6">
@@ -59,11 +60,15 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
-                    <input id="price" type="number" max="99999" min="0" name="redeem_points" required>
-                    <label for="price">Redeem Points</label>
-                    @if ($errors->has('redeem_points'))
+                    <select name="status" id="status" required>
+                        <option value="" disabled selected>Choose Donation Category Status</option>
+                        <option value="0">Inactive</option>
+                        <option value="1">Active</option>
+                    </select>
+                    <label>Status</label>
+                    @if ($errors->has('status'))
                         <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('redeem_points') }}</strong>
+                        <strong class="red-text">{{ $errors->first('status') }}</strong>
                     </span>
                     @endif
                 </div>
@@ -81,37 +86,15 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
-                    {{ Form::select('category_id', (['' => 'Choose Donation Product Category'] + $categories), null, ['id' => 'category_id']) }}
-                    <label>Donation Product Category</label>
-                    @if ($errors->has('category_id'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('category_id') }}</strong>
-                    </span>
-                    @endif
-                </div>
-                <div class="input-field col s6">
-                    <select name="status" id="status" required>
-                        <option value="" disabled selected>Choose Donation Product Status</option>
-                        <option value="0">Inactive</option>
-                        <option value="1">Active</option>
-                    </select>
-                    <label>Donation Product Status</label>
-                    @if ($errors->has('status'))
-                        <span class="help-block">
-                        <strong class="red-text">{{ $errors->first('status') }}</strong>
-                    </span>
-                    @endif
-                </div>
-                <div class="input-field col s6">
-                    <select name="product_for" id="product_for" required>
-                        <option value="" disabled selected>Product For</option>
-                        <option value={{\App\Services\IProductFor::HOUSE_HOLD}} >House Hold</option>
-                        <option value={{\App\Services\IProductFor::ORGANIZATION}} >Organization</option>
-                        <option value={{\App\Services\IProductFor::BOTH}} >Both</option>
-                    </select>
-                    <label>Product For</label>
+                    <h6 class="custom-label">Avatar</h6>
+                    <input type="file" class="form-control-file" name="avatar" id="avatar">
                 </div>
             </div>
+            @if ($errors->has('avatar'))
+                <span class="help-block">
+                    <strong class="red-text">{{ $errors->first('avatar') }}</strong>
+                </span>
+            @endif
             <div class="col s12">
                 <div class="input-field col s12">
                     <button type="submit" class="btn btn-primary">Create</button>

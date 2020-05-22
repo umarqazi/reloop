@@ -29,6 +29,7 @@ class CollectionRequestController extends Controller
     public function index()
     {
         $requests = $this->collectionRequestService->all();
+        $requests->load('city', 'district');
         return view('requests.index', compact('requests'));
     }
 
@@ -151,14 +152,14 @@ class CollectionRequestController extends Controller
                     foreach ($requests as $request) {
                         $print[] = array('Id' => $request->id,
                             'Request Number' => $request->request_number,
-                            'Name' => $request->first_name . ' ' . $request->last_name,
+                            'Name' => ($request->organization_name) ? $request->organization_name : $request->first_name . ' ' . $request->last_name,
                             'Email' => $request->user->email,
                             'Request Status' => $request->status == IOrderStaus::ORDER_CONFIRMED ?
                                 'Request Confirmed' : ($request->status == IOrderStaus::DRIVER_ASSIGNED ?
                                     'Driver Assigned' : ($request->status == IOrderStaus::DRIVER_DISPATCHED) ?
                                         'Request Dispatched' : 'Request Completed'),
-                            'Request City' => $request->city,
-                            'Request District' => $request->district,
+                            'Request City' => $request->city->name,
+                            'Request District' => $request->district->name,
                             'Location' => $request->location,
                             'Collection Date' => $request->collection_date,
                             'Driver' => $request->driver_id == null ? 'None' : $request->driver->first_name . ' ' . $request->driver->last_name,

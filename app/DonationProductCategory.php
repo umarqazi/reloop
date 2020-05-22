@@ -11,7 +11,7 @@ class DonationProductCategory extends Model
      * @var array
      */
     protected $fillable = [
-        'name','description','status'
+        'name', 'description', 'status', 'avatar'
     ];
 
     /**
@@ -21,5 +21,20 @@ class DonationProductCategory extends Model
     public function donationProducts()
     {
         return $this->hasMany(DonationProduct::class);
+    }
+
+    /**
+     * Method: getAvatarAttribute
+     *
+     * @param $value
+     *
+     * @return string
+     */
+    public function getAvatarAttribute($value)
+    {
+        if(!empty($value)){
+
+            return env('APP_URL').'/storage/uploads/images/donation-category/' . $value;
+        }
     }
 }

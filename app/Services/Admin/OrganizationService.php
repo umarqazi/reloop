@@ -12,7 +12,9 @@ use App\Services\Admin\UserService;
 use App\Services\ILoginType;
 use App\Services\IUserStatus;
 use App\Services\IUserType;
+use App\Services\StripeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -60,9 +62,12 @@ class OrganizationService extends BaseService
         DB::beginTransaction();
         $organization = parent::create($organizationData);
         if ($organization) {
+            $dataObject = (object) $request;
+            $stripeCustomerId = App::make(StripeService::class)->createCustomer($dataObject);
             $userData = array(
                 'organization_id' => $organization->id,
                 'email'           => $request['email'],
+                'stripe_customer_id' => $stripeCustomerId,
                 'phone_number'    => $request['phone_number'],
                 'password'        => Hash::make($request['password']),
                 'status'          => IUserStatus::ACTIVE,

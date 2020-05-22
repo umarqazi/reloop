@@ -28,6 +28,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = $this->orderService->all();
+        $orders->load('city', 'district');
         return view('orders.index', compact('orders'));
     }
 
@@ -127,15 +128,15 @@ class OrderController extends Controller
                     foreach ($orders as $order) {
                         $print[] = array('Id' => $order->id,
                             'Order Number' => $order->order_number,
-                            'Name' => $order->first_name . ' ' . $order->last_name,
+                            'Name' => ($order->organization_name) ? $order->organization_name : $order->first_name . ' ' . $order->last_name,
                             'Email' => $order->email,
                             'Phone Number' => $order->phone_number,
                             'Order Status' => $order->status == IOrderStaus::ORDER_CONFIRMED ?
                                 'Order Confirmed' : ($order->status == IOrderStaus::DRIVER_ASSIGNED ?
                                     'Driver Assigned' : ($order->status == IOrderStaus::DRIVER_DISPATCHED) ?
                                         'Order Dispatched' : 'Order Completed'),
-                            'Order City' => $order->city,
-                            'Order District' => $order->district,
+                            'Order City' => $order->city->name,
+                            'Order District' => $order->district->name,
                             'Location' => $order->location,
                             'Order Created at' => $order->created_at->format('Y-m-d'),
                             'Delivery Date' => $order->delivery_date == null ? 'None' : $order->delivery_date,

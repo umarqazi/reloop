@@ -11,7 +11,7 @@ class DonationProduct extends Model
      * @var array
      */
     protected $fillable = [
-        'category_id', 'name', 'redeem_points', 'description','status'
+        'category_id', 'name', 'redeem_points', 'description', 'status', 'product_for'
     ];
 
     /**

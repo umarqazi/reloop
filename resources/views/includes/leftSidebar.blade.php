@@ -161,6 +161,12 @@
                         <span class="nav-text">Donation Products</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('donation-categories.index') }}">
+                        <i class="material-icons"><img src="/assets/images/icons/donation.svg" alt="re loop logo"></i>
+                        <span class="nav-text">Donation Categories</span>
+                    </a>
+                </li>
                 <li class="bold">
                     <a href="{{ route('settings.index') }}">
                         <i class="material-icons"><img src="/assets/images/icons/settings.svg" alt="re loop logo"></i>

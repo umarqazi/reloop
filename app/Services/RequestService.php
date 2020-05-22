@@ -209,8 +209,8 @@ class RequestService extends BaseService
             'location' => $data['collection_form_data']->location,
             'latitude' => $data['collection_form_data']->latitude,
             'longitude' => $data['collection_form_data']->longitude,
-            'city' => $city->name,
-            'district' => $district->name,
+            'city_id' => $city->id,
+            'district_id' => $district->id,
             'street' => $data['collection_form_data']->street,
             'question_1' => $data['collection_form_data']->questions[0]['ques'],
             'answer_1' => $data['collection_form_data']->questions[0]['ans'],
@@ -229,10 +229,8 @@ class RequestService extends BaseService
                         return $subQuery->select('id', 'name', 'unit');
                     }
                 ]);
-            }
-        ])->select('id', 'request_number', 'confirm', 'collection_date', 'location', 'latitude', 'longitude', 'city',
-                'district', 'street', 'created_at', 'status')
-            ->where('user_id', auth()->id())->get();
+            }, 'city', 'district'
+        ])->where('user_id', auth()->id())->get();
     }
 
     /**
@@ -252,19 +250,13 @@ class RequestService extends BaseService
                         return $subQuery->select('id', 'name', 'unit');
                     }
                 ]);
-            }
+            }, 'city', 'district'
         ]);
         if(!empty($date)){
 
-            return $assignedTrips->select('id', 'request_number', 'collection_date', 'location', 'latitude',
-                'longitude', 'city', 'district', 'street', 'created_at', 'status', 'driver_trip_status', 'phone_number',
-            'first_name', 'organization_name')
-                ->where(['driver_id' => $driverId, 'collection_date' => $date])->get();
+            return $assignedTrips->where(['driver_id' => $driverId, 'collection_date' => $date])->get();
         }
-        return $assignedTrips->select('id', 'request_number', 'collection_date', 'location', 'latitude',
-            'longitude', 'city', 'district', 'street', 'created_at', 'status', 'driver_trip_status', 'phone_number',
-            'first_name', 'organization_name')
-            ->where('driver_id', $driverId)->get();
+        return $assignedTrips->where('driver_id', $driverId)->get();
     }
 
     /**

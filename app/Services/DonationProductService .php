@@ -6,6 +6,7 @@ use App\DonationProduct;
 use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
@@ -92,7 +93,16 @@ class DonationProductService extends BaseService
             );
         }
 
-        $donationProducts = $this->findByCategoryId($donationProductForm->category_id);
+        $authUser = App::make(UserService::class)->findById(auth()->id());
+        $donationProducts = $this->model->where([
+            'category_id' => $donationProductForm->category_id,
+            'status' => true,
+            'product_for' => $authUser->user_type
+        ])->orWhere(function($query) use ($donationProductForm) {
+            $query->where('category_id', $donationProductForm->category_id)
+                ->where('product_for', IProductFor::BOTH);
+        })->get();
+
         if(!$donationProducts->isEmpty()){
 
             return ResponseHelper::responseData(
