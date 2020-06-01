@@ -54,22 +54,49 @@
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
-                                <th>User Type</th>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Phone</th>
                                 <th>Subscription</th>
-                                <th>Trip(s)</th>
+                                <th>Total Trips</th>
+                                <th>Trips Left</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>City - District</th>
                             </tr>
                             </thead>
                             <tbody>
 
                             @foreach($userSubscriptions as $userSubscription)
                                 <tr>
-                                <td>{{ $userSubscription->user->id }}</td>
-                                <td>{{ $userSubscription->user->email }}</td>
-                                <td>{{ $userSubscription->user->user_type == \App\Services\IUserType::HOUSE_HOLD ? 'House Hold' : 'Organization' }}</td>
-                                <td><a href="javascript:void(0)"  id="{{ $userSubscription->subscription->id }}" class="getSubscription">{{ $userSubscription->subscription->name }}</a></td>
-                                <td>{{ $userSubscription->trips }}</td>
+                                    <td>{{ $userSubscription->user->id }}</td>
+                                    <td>{{ $userSubscription->user->email }}</td>
+                                    <td>{{ ($userSubscription->user->user_type == \App\Services\IUserType::HOUSE_HOLD) ?
+                                           $userSubscription->user->first_name . ' ' . $userSubscription->user->last_name :
+                                           $userSubscription->user->organization->name  }}
+                                    </td>
+                                    <td>{{ $userSubscription->user->user_type == \App\Services\IUserType::HOUSE_HOLD ? 'HouseHold' : 'Organization' }}</td>
+                                    <td>{{ $userSubscription->user->phone_number }}</td>
+                                    <td><a href="javascript:void(0)"  id="{{ $userSubscription->subscription->id }}" class="getSubscription">{{ $userSubscription->subscription->name }}</a></td>
+                                    <td>{{ $userSubscription->subscription->request_allowed }}</td>
+                                    <td>{{ $userSubscription->trips }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($userSubscription->start_date)) }}</td>
+                                    <td>{{ date('Y-m-d', strtotime($userSubscription->end_date)) }}</td>
+                                    <td>
+                                        @if ($userSubscription->status == \App\Services\IUserSubscriptionStatus::ACTIVE)
+                                            {{ 'Active' }}
+                                        @elseif (($userSubscription->status == \App\Services\IUserSubscriptionStatus::PENDING))
+                                            {{ 'Pending' }}
+                                        @elseif (($userSubscription->status == \App\Services\IUserSubscriptionStatus::COMPLETED))
+                                            {{ 'Completed' }}
+                                        @elseif (($userSubscription->status == \App\Services\IUserSubscriptionStatus::EXPIRED))
+                                            {{ 'Expired' }}
+                                        @endif
+                                    </td>
+                                    <td>{{ $userSubscription->user->addresses->first()->city->name . ' - ' . $userSubscription->user->addresses->first()->district->name }}</td>
                                 </tr>
                             @endforeach
 

@@ -79,7 +79,7 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s12">
-                        <h6 class="custom-label">Avatar</h6>
+                        <h6 class="custom-label">Choose Photo</h6>
                         <input id="avatar" name="avatar" type="file" class="attach-file">
                     </div>
                     @if ($errors->has('avatar'))
