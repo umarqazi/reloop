@@ -12,6 +12,7 @@ use App\Services\Admin\UserService;
 use App\Services\ILoginType;
 use App\Services\IUserStatus;
 use App\Services\IUserType;
+use App\Services\SectorService;
 use App\Services\StripeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Services\EmailNotificationService;
+use Maatwebsite\Excel\Collections\RowCollection;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrganizationService extends BaseService
 {
@@ -102,6 +105,95 @@ class OrganizationService extends BaseService
         } else {
             DB::rollBack();
             return false;
+        }
+    }
+
+    /**
+     * Method: import
+     * Import organizations from the CSV file.
+     *
+     * @param $request
+     *
+     * @return void
+     */
+    public function import($request): void
+    {
+        $path = $request->file('importFile')->getRealPath();
+
+        /* @var RowCollection $organizations*/
+        $organizations = Excel::load($path)->get();
+
+        if($organizations->count() > 0) {
+            // Get all sectors
+            $sectors = App::make(SectorService::class)->getAll();
+            $cities = App::make(\App\Services\CityService::class)->getAll();
+            $districts = App::make(\App\Services\DistrictService::class)->getAll();
+
+            foreach ($organizations as $org) {
+                // Get sector
+                if (!empty($org['sector'])) {
+                    $sector = $sectors->first(
+                        static function ($sector, $key) use ($org) {
+                            return $sector->name === $org['sector'];
+                        }
+                    );
+                }
+
+                DB::beginTransaction();
+
+                $organizationData = array(
+                    'name' => $org['name'],
+                    'no_of_employees' => $org['number_of_employees'],
+                    'no_of_branches' => $org['number_of_branches'],
+                    'sector_id' => $sector ? $sector->id : null,
+                );
+                $organization = $this->create($organizationData);
+
+                if ($organization) {
+                    $userData = array(
+                        'organization_id' => $organization->id,
+                        'email' => $org['email'],
+                        'phone_number' => $org['phone_number'],
+                        'password' => ($org['password'] ?? Hash::make('12345678')),
+                        'status' => IUserStatus::ACTIVE,
+                        'user_type' => IUserType::ORGANIZATION,
+                        'login_type' => ILoginType::APP_LOGIN,
+                        'api_token' => str_random(50).strtotime('now'),
+                    );
+                    $user = $this->userService->create($userData);
+
+                    if (!empty($org['city'])) {
+                        $city = $cities->first(
+                            static function ($city, $key) use ($org) {
+                                return $city->name === $org['city'];
+                            }
+                        );
+                    }
+
+                    if (!empty($org['district'])) {
+                        $district = $districts->first(
+                            static function ($district, $key) use ($org) {
+                                return $district->name === $org['district'];
+                            }
+                        );
+                    }
+
+                    $address = array(
+                        'user_id' => $user->id,
+                        'type' => $org['type'],
+                        'city_id' => (!empty($city) ? $city->id : null),
+                        'district_id' => (!empty($district) ? $district->id : null),
+                        'street' => $org['street'],
+                        'floor' => $org['floor'],
+                        'unit_number' => $org['unit_number'],
+                        'location' => $org['location'],
+                        'no_of_occupants' => $org['no_of_occupants'],
+                        'default' => true,
+                    );
+                    $this->addressRepo->create($address);
+                    DB::commit();
+                }
+            }
         }
     }
 

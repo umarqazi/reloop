@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/user-subscriptions/export', 'Admin\UserController@userSubscriptionExport')->name('user-subscriptions.export');
     Route::get('/user-donations/export', 'Admin\UserController@userDonationExport')->name('user-donations.export');
     Route::get('/organizations/export', 'Admin\OrganizationController@export')->name('organizations.export');
+    Route::post('/organizations/import', 'Admin\OrganizationController@import')->name('organizations.import');
     Route::get('/order/export', 'Admin\OrderController@export')->name('userOrders.export');
     Route::get('/requests/export', 'Admin\CollectionRequestController@export')->name('requests.export');
     Route::get('/material-categories/export', 'Admin\MaterialCategoryController@export')->name('material-categories.export');

@@ -191,4 +191,17 @@ class OrganizationController extends Controller
 
         })->export('csv');
     }
+
+    /**
+     * Method: import
+     * Import organizations form the csv file.
+     *
+     * @param  Request  $request
+     *
+     * @return void
+     */
+    public function import(Request $request)
+    {
+        $this->organizationService->import($request);
+    }
 }

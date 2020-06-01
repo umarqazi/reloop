@@ -50,6 +50,11 @@
                         <a class="btn waves-effect waves-light primary-btn-bgcolor"
                            href="{{ route('organization.create') }}">Create</a>
                         <a class="btn btn-primary" href="{{ route('organizations.export') }}">Export</a>
+                        <a class="btn btn-danger" href="javascript:void(0)"
+                           onclick="$(this).next('input').click()">
+                            Import
+                        </a>
+                        <input type="file" id="import-csv" name="import_csv" style="display: none"/>
                     </div>
                         <div class="col s12">
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
