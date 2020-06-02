@@ -33,7 +33,7 @@ class OrderRepo extends BaseRepo
      */
     public function getOrders($city,$district)
     {
-        $orders = $this->all()->where('city',$city)->where('district',$district);
+        $orders = $this->all()->where('city_id',$city)->where('district_id',$district);
         return $orders;
     }
 

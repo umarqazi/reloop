@@ -21,5 +21,10 @@ class SettingSeeder extends Seeder
             'key'      => 'one_point',
             'value'    => '0.1',
         ]);
+        Setting::create([
+            'name'     => 'Per Order Reward Points for Drivers and Supervisors',
+            'key'      => 'reward_points_per_order_complete',
+            'value'    => '10',
+        ]);
     }
 }

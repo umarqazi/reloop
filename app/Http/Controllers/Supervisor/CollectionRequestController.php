@@ -42,7 +42,7 @@ class CollectionRequestController extends Controller
         $district = $this->districtService->findById($district_id)->name ;
 
         //get orders of supervisor's city and district
-        $requests = $this->collectionRequestService->getOrders($city,$district);
+        $requests = $this->collectionRequestService->getOrders($city_id,$district_id);
 
         return view('requests.index', compact('requests'));
     }

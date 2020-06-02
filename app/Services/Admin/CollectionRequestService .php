@@ -15,8 +15,10 @@ use App\Services\Admin\BaseService;
 use App\Services\EmailNotificationService;
 use App\Services\EnvironmentalStatService;
 use App\Services\IOrderStaus;
+use App\Services\ISettingKeys;
 use App\Services\IUserType;
 use App\Services\OneSignalNotificationService;
+use App\Services\SettingService;
 use App\Services\UserStatService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -167,8 +169,9 @@ class CollectionRequestService extends BaseService
             $userPoints = $this->userRepo->update($user->id, $userData);
         }
 
+        $rewardPointsPerOrder = App::make(SettingService::class)->findByKey(ISettingKeys::REWARD_POINTS_PER_ORDER);
         $driverData = array(
-            'reward_points' => $rewardPoints,
+            'reward_points' => $rewardPointsPerOrder->value,
         );
 
         $driver = $this->userRepo->findById($request->driver_id);
@@ -177,21 +180,21 @@ class CollectionRequestService extends BaseService
             $driverPoints = $this->userRepo->update($driver->id, $driverData);
         } else {
             $driverData = array(
-                'reward_points' => $rewardPoints + $this->userRepo->findById($request->driver_id)->reward_points,
+                'reward_points' => $rewardPointsPerOrder->value + $this->userRepo->findById($request->driver_id)->reward_points,
             );
             $driverPoints = $this->userRepo->update($driver->id, $driverData);
         }
 
         if (Auth::user()->hasRole('supervisor')) {
             $supervisorData = array(
-                'reward_points' => $rewardPoints,
+                'reward_points' => $rewardPointsPerOrder->value,
             );
 
             if (Auth::user()->reward_points == null) {
                 $supervisorPoints = $this->userRepo->update(Auth::user()->id, $supervisorData);
             } else {
                 $supervisorData = array(
-                    'reward_points' => $rewardPoints + $this->userRepo->findById(Auth::user()->id)->reward_points,
+                    'reward_points' => $rewardPointsPerOrder->value + $this->userRepo->findById(Auth::user()->id)->reward_points,
                 );
                 $supervisorPoints = $this->userRepo->update(Auth::user()->id, $supervisorData);
             }

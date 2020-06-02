@@ -47,7 +47,7 @@ class OrderController extends Controller
         $district = $this->districtService->findById($district_id)->name ;
 
         //get orders of supervisor's city and district
-        $orders = $this->orderService->getOrders($city,$district);
+        $orders = $this->orderService->getOrders($city_id,$district_id);
 
         return view('supervisor.orders.index', compact('orders'));
     }
