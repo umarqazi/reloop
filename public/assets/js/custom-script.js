@@ -1,13 +1,15 @@
 /**
  * Set Default Request Headers
  */
-const setHeaders = function () {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
-        }
-    });
-};
+if (typeof setHeaders === 'undefined') {
+    const setHeaders = function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+            }
+        });
+    };
+}
 
 $(document).ready(function () {
 
