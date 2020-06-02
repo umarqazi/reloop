@@ -189,6 +189,20 @@ class OrderService extends BaseService
                 $findOrder->status = IOrderStaus::ORDER_COMPLETED;
                 $findOrder->driver_trip_status = IDriverTripStatus::TRIP_COMPLETED;
 
+                // Update Driver Reward Points
+                $driver = App::make(UserService::class)->findById($findOrder->driver_id);
+                $rewardPointsPerOrder = App::make(SettingService::class)->findByKey(ISettingKeys::REWARD_POINTS_PER_ORDER);
+                $driver->reward_points = $driver->reward_points + $rewardPointsPerOrder->value;
+                $driver->update();
+
+                // Update Supervisor Reward Points
+                if($findOrder->supervisor_id){
+
+                    $supervisor = App::make(UserService::class)->findById($findOrder->supervisor_id);
+                    $supervisor->reward_points = $supervisor->reward_points + $rewardPointsPerOrder->value;
+                    $supervisor->update();
+                }
+
                 App::make(OneSignalNotificationService::class)->oneSignalNotificationService(
                     $findOrder->user_id, Config::get('constants.DRIVER_TRIP_ENDED'), $findOrder->order_number
                 );

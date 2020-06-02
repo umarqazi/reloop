@@ -64,6 +64,11 @@ class OrderService extends BaseService
             'status'           => IOrderStaus::DRIVER_ASSIGNED,
         );
 
+        if(auth()->user()->user_type == IUserType::SUPERVISOR){
+
+            $order = $order + [ 'supervisor_id' => auth()->id() ];
+        }
+
         $orderAssignment =  parent::update($id, $order);
 
         $order = $this->findById($id);

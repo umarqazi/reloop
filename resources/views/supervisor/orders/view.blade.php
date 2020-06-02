@@ -75,8 +75,8 @@
                                 <li><strong>Email :</strong><span>{{$order->email}}</span></li>
                                 <li><strong>Phone Number :</strong><span>{{$order->phone_number}}</span></li>
                                 <li><strong>Location :</strong><span>{{$order->location}}</span></li>
-                                <li><strong>City :</strong><span>{{$order->city}}</span></li>
-                                <li><strong>District :</strong><span>{{$order->district}}</span></li>
+                                <li><strong>City :</strong><span>{{ $order->city->name }}</span></li>
+                                <li><strong>District :</strong><span>{{ $order->district->name }}</span></li>
                             </ul>
                         </div>
                     </div>
@@ -102,7 +102,9 @@
                                 @endif
                             </div>
                             <div class="input-field">
-                                 <button type="submit" class="btn btn-primary">Assign</button>
+                                @if($order->status != \App\Services\IOrderStaus::ORDER_COMPLETED)
+                                    <button type="submit" class="btn btn-primary">Assign</button>
+                                @endif
                             </div>
                             {{ Form::close() }}
                         </div>

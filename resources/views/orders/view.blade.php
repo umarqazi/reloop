@@ -108,7 +108,9 @@
                                 @endif
                             </div>
                             <div class="input-field">
-                                <button type="submit" class="btn btn-primary">Assign</button>
+                                @if($order->status != \App\Services\IOrderStaus::ORDER_COMPLETED)
+                                    <button type="submit" class="btn btn-primary">Assign</button>
+                                @endif
                             </div>
                             {{ Form::close() }}
                         </div>

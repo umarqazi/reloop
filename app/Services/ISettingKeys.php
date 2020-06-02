@@ -17,4 +17,5 @@ interface ISettingKeys
 
     const DRIVER_KEY  = 'per_day_maximum_orders_for_driver';
     const ONE_POINT     = 'one_point';
+    const REWARD_POINTS_PER_ORDER  = 'reward_points_per_order_complete';
 }
