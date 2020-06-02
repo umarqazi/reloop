@@ -124,77 +124,93 @@ class OrganizationService extends BaseService
         $organizations = Excel::load($path)->get();
 
         if($organizations->count() > 0) {
-            // Get all sectors
-            $sectors = App::make(SectorService::class)->getAll();
-            $cities = App::make(\App\Services\CityService::class)->getAll();
-            $districts = App::make(\App\Services\DistrictService::class)->getAll();
+            // Get heading
+            $heading = $organizations->getHeading();
 
-            foreach ($organizations as $org) {
-                // Get sector
-                if (!empty($org['sector'])) {
-                    $sector = $sectors->first(
-                        static function ($sector, $key) use ($org) {
-                            return $sector->name === $org['sector'];
-                        }
+            if ($this->importValidate($heading)) {
+                // Get all sectors
+                $sectors = App::make(SectorService::class)->getAll();
+                $cities = App::make(\App\Services\CityService::class)->getAll();
+                $districts = App::make(\App\Services\DistrictService::class)->getAll();
+
+                foreach ($organizations as $org) {
+                    // Get sector
+                    if (!empty($org['sector'])) {
+                        $sector = $sectors->first(
+                            static function ($sector, $key) use ($org) {
+                                return $sector->name === $org['sector'];
+                            }
+                        );
+                    }
+
+                    DB::beginTransaction();
+
+                    $organizationData = array(
+                        'name' => $org['name'],
+                        'no_of_employees' => $org['number_of_employees'],
+                        'no_of_branches' => $org['number_of_branches'],
+                        'sector_id' => $sector ? $sector->id : null,
                     );
-                }
+                    $organization = $this->create($organizationData);
 
-                DB::beginTransaction();
+                    if ($organization) {
+                        $userData = array(
+                            'organization_id' => $organization->id,
+                            'email' => $org['email'],
+                            'phone_number' => $org['phone_number'],
+                            'password' => ($org['password'] ?? Hash::make('12345678')),
+                            'status' => IUserStatus::ACTIVE,
+                            'user_type' => IUserType::ORGANIZATION,
+                            'login_type' => ILoginType::APP_LOGIN,
+                            'api_token' => str_random(50).strtotime('now'),
+                        );
+                        $user = $this->userService->create($userData);
 
-                $organizationData = array(
-                    'name' => $org['name'],
-                    'no_of_employees' => $org['number_of_employees'],
-                    'no_of_branches' => $org['number_of_branches'],
-                    'sector_id' => $sector ? $sector->id : null,
-                );
-                $organization = $this->create($organizationData);
-
-                if ($organization) {
-                    $userData = array(
-                        'organization_id' => $organization->id,
-                        'email' => $org['email'],
-                        'phone_number' => $org['phone_number'],
-                        'password' => ($org['password'] ?? Hash::make('12345678')),
-                        'status' => IUserStatus::ACTIVE,
-                        'user_type' => IUserType::ORGANIZATION,
-                        'login_type' => ILoginType::APP_LOGIN,
-                        'api_token' => str_random(50).strtotime('now'),
-                    );
-                    $user = $this->userService->create($userData);
-
-                    if (!empty($org['city'])) {
                         $city = $cities->first(
                             static function ($city, $key) use ($org) {
                                 return $city->name === $org['city'];
                             }
                         );
-                    }
 
-                    if (!empty($org['district'])) {
                         $district = $districts->first(
                             static function ($district, $key) use ($org) {
                                 return $district->name === $org['district'];
                             }
                         );
-                    }
 
-                    $address = array(
-                        'user_id' => $user->id,
-                        'type' => $org['type'],
-                        'city_id' => (!empty($city) ? $city->id : null),
-                        'district_id' => (!empty($district) ? $district->id : null),
-                        'street' => $org['street'],
-                        'floor' => $org['floor'],
-                        'unit_number' => $org['unit_number'],
-                        'location' => $org['location'],
-                        'no_of_occupants' => $org['no_of_occupants'],
-                        'default' => true,
-                    );
-                    $this->addressRepo->create($address);
-                    DB::commit();
+                        $address = array(
+                            'user_id' => $user->id,
+                            'type' => (!empty($org['type']) ? $org['type'] : ''),
+                            'city_id' => (!empty($city) ? $city->id : null),
+                            'district_id' => (!empty($district) ? $district->id : null),
+                            'street' => $org['street'],
+                            'floor' => $org['floor'],
+                            'unit_number' => $org['unit_number'],
+                            'location' => $org['location'],
+                            'no_of_occupants' => $org['no_of_occupants'],
+                            'default' => true,
+                        );
+                        $this->addressRepo->create($address);
+                        DB::commit();
+                    }
                 }
             }
         }
+    }
+
+    private function importValidate(array $data)
+    {
+        return in_array('name', $data)
+            && in_array('number_of_employees', $data)
+            && in_array('email', $data)
+            && in_array('phone_number', $data)
+            && in_array('city', $data)
+            && in_array('district', $data)
+            && in_array('street', $data)
+            && in_array('floor', $data)
+            && in_array('unit_number', $data)
+            && in_array('location', $data)
+            && in_array('no_of_occupants', $data);
     }
 
     /**
