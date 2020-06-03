@@ -42,6 +42,8 @@ class CreateForm extends BaseForm
     public $hh_organization_name;
     public $reports;
     public $login_type;
+    public $signup_token;
+    public $org_external_id;
 
     /**
      * CreateForm constructor.
@@ -54,6 +56,7 @@ class CreateForm extends BaseForm
         $this->login_type = 1;
         $this->api_token = str_random(50).strtotime('now');
         $this->signup_token = str_random(30);
+        $this->org_external_id = 'OrgId'.strtotime('now');
     }
 
     /**

@@ -68,6 +68,9 @@ return[
     'COUPON_FAIL'                           => 'Invalid coupon!',
     'POINTS_DISCOUNT'                       => 'You have successfully redeemed your points!',
 
+    'ORGANIZATION_VERIFICATION'             => 'Organization details shown as:',
+    'INVALID_ORGANIZATION_ID'               => 'Invalid organization id!',
+
     'ORDER_SUCCESSFUL'                      => 'Your order has been placed successfully!',
     'ORDER_FAIL'                            => 'Your order has failed!',
     'ORDER_ASSIGNED'                        => 'Order assigned successfully!',

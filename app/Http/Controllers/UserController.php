@@ -14,6 +14,7 @@ use App\Services\Admin\EnvironmentalStatsDescriptionService;
 use App\Services\DashboardService;
 use App\Services\EnvironmentalStatService;
 use App\Services\IUserType;
+use App\Services\OrganizationService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -296,6 +297,25 @@ class UserController extends Controller
             $currencyConversion['code'],
             $currencyConversion['status'],
             $currencyConversion['data']
+        );
+    }
+
+    /**
+     * Method: organizationVerification
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function organizationVerification(Request $request)
+    {
+        $organization = App::make(OrganizationService::class)->organizationVerification($request->all());
+
+        return ResponseHelper::jsonResponse(
+            $organization['message'],
+            $organization['code'],
+            $organization['status'],
+            $organization['data']
         );
     }
 }

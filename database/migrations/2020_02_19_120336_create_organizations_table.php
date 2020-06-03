@@ -15,6 +15,7 @@ class CreateOrganizationsTable extends Migration
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('org_external_id');
             $table->string('name');
             $table->string('no_of_employees');
             $table->string('no_of_branches');
