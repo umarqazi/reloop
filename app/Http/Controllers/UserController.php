@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Forms\Checkout\RedeemPointForm;
+use App\Forms\Organization\OrganizationVerificationForm;
 use App\Forms\User\DefaultAddressForm;
 use App\Forms\User\DeleteAddressForm;
 use App\Forms\User\UpdateAddressForm;
@@ -309,7 +310,9 @@ class UserController extends Controller
      */
     public function organizationVerification(Request $request)
     {
-        $organization = App::make(OrganizationService::class)->organizationVerification($request->all());
+        $organizationVerificationForm = new OrganizationVerificationForm();
+        $organizationVerificationForm->loadFromArray($request->all());
+        $organization = App::make(OrganizationService::class)->organizationVerification($organizationVerificationForm);
 
         return ResponseHelper::jsonResponse(
             $organization['message'],

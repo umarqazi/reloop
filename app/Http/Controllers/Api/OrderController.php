@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Forms\OrderAcceptance\OrderAcceptanceDistrictForm;
 use App\Helpers\ResponseHelper;
 use App\Services\DistrictService;
 use App\Services\OrderService;
@@ -51,7 +52,9 @@ class OrderController extends Controller
 
     public function orderAcceptanceDays(Request $request)
     {
-        $orderAcceptanceDays = App::make(DistrictService::class)->orderAcceptanceDays($request->all());
+        $orderAcceptanceForm = new OrderAcceptanceDistrictForm();
+        $orderAcceptanceForm->loadFromArray($request->all());
+        $orderAcceptanceDays = App::make(DistrictService::class)->orderAcceptanceDays($orderAcceptanceForm);
 
         return ResponseHelper::jsonResponse(
             $orderAcceptanceDays['message'],

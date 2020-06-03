@@ -112,13 +112,22 @@ class OrganizationService extends BaseService
     /**
      * Method: organizationVerification
      *
-     * @param $externalId
+     * @param IForm $form
      *
      * @return array
      */
-    public function organizationVerification($externalId)
+    public function organizationVerification(IForm $form)
     {
-        $findOrganization = $this->findByExternalId($externalId);
+        if($form->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $form->errors()
+            );
+        }
+        $findOrganization = $this->findByExternalId($form->org_external_id);
         if($findOrganization){
 
             return ResponseHelper::responseData(

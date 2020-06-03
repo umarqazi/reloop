@@ -56,9 +56,25 @@ class DistrictService extends BaseService
         return $this->model->all();
     }
 
-    public function orderAcceptanceDays($districtId)
+    /**
+     * Method: orderAcceptanceDays
+     *
+     * @param IForm $form
+     *
+     * @return array
+     */
+    public function orderAcceptanceDays(IForm $form)
     {
-        $orderAcceptanceDays = $this->model->where('id', $districtId)->first();
+        if($form->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $form->errors()
+            );
+        }
+        $orderAcceptanceDays = $this->model->where('id', $form->district_id)->first();
         if ($orderAcceptanceDays){
 
             $data = [
