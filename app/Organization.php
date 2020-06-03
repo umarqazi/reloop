@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Organization extends Model
 {
     protected $fillable = [
-        'name', 'no_of_employees', 'no_of_branches', 'sector_id'
+        'org_external_id', 'name', 'no_of_employees', 'no_of_branches', 'sector_id'
     ];
 
     /**

@@ -6,7 +6,10 @@ namespace App\Services;
 
 use App\Forms\IForm;
 use App\Forms\User\CreateForm;
+use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use App\Organization;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -61,6 +64,18 @@ class OrganizationService extends BaseService
     }
 
     /**
+     * Method: findByExternalId
+     *
+     * @param $externalId
+     *
+     * @return mixed
+     */
+    public function findByExternalId($externalId)
+    {
+        return $this->model->where('org_external_id', $externalId)->first();
+    }
+
+    /**
      * @inheritDoc
      */
     public function remove($id)
@@ -92,5 +107,36 @@ class OrganizationService extends BaseService
             $organization->sector_id = $data->sector_id ?? $organization->sector_id;
             $organization->update();
         }
+    }
+
+    /**
+     * Method: organizationVerification
+     *
+     * @param $externalId
+     *
+     * @return array
+     */
+    public function organizationVerification($externalId)
+    {
+        $findOrganization = $this->findByExternalId($externalId);
+        if($findOrganization){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.ORGANIZATION_VERIFICATION'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                $findOrganization
+            );
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_ORGANIZATION_ID'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            [
+                "InvalidOrganization" => [
+                    Config::get('constants.INVALID_ORGANIZATION_ID')
+                ]
+            ]
+        );
     }
 }

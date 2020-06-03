@@ -57,6 +57,7 @@ class OrganizationService extends BaseService
     public function insert($request)
     {
         $organizationData = array(
+            'org_external_id'   => 'OrgId'.strtotime('now'),
             'name'              => $request['name'],
             'no_of_employees'   => $request['no_of_employees'],
             'no_of_branches'    => $request['no_of_branches'],
