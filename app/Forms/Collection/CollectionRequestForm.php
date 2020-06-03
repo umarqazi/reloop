@@ -36,6 +36,7 @@ class CollectionRequestForm extends BaseForm
     public $exp_year;
     public $total;
     public $organization_name;
+    public $user_comments;
 
     /**
      * @inheritDoc
@@ -57,6 +58,7 @@ class CollectionRequestForm extends BaseForm
             'street'              => $this->street,
             'material_categories' => $this->material_categories,
             'questions'           => $this->questions,
+            'user_comments'       => $this->user_comments,
             'card_number'         => $this->card_number,
             'exp_month'           => $this->exp_month,
             'exp_year'            => $this->exp_year,

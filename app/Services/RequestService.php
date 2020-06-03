@@ -215,7 +215,8 @@ class RequestService extends BaseService
             'question_1' => $data['collection_form_data']->questions[0]['ques'],
             'answer_1' => $data['collection_form_data']->questions[0]['ans'],
             'question_2' => $data['collection_form_data']->questions[1]['ques'],
-            'answer_2' => $data['collection_form_data']->questions[1]['ans']
+            'answer_2' => $data['collection_form_data']->questions[1]['ans'],
+            'user_comments' => $data['collection_form_data']->user_comments,
         ]);
         return $model->fresh();
     }
