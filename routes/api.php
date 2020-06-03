@@ -50,6 +50,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('donation-products', 'Api\DonationController@donationProducts');
     Route::post('donations', 'Api\DonationController@donations');
     Route::post('organization-verification', 'UserController@organizationVerification');
+    Route::post('order-acceptance-days', 'Api\OrderController@orderAcceptanceDays');
 
     //Driver routes
     Route::post('assigned-trips', 'Api\DriverController@driverAssignedTrips');

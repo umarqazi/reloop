@@ -148,6 +148,7 @@ return[
     'DISTRICT_UPDATE_ERROR'                 => 'Error Occurred while updating District',
     'DISTRICT_DELETE_SUCCESS'               => 'District deleted successfully',
     'DISTRICT_DELETE_ERROR'                 => 'Error Occurred while deleting District',
+    'ORDER_ACCEPTANCE_DAYS'                 => 'Order acceptance days shown as:',
 
     'CONTACT_US_ERROR'                      => 'Error Occurred while Sending Message',
 
