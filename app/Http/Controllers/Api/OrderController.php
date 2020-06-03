@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helpers\ResponseHelper;
+use App\Services\DistrictService;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 
 /**
  * Class OrderController
@@ -44,6 +46,18 @@ class OrderController extends Controller
             $userOrders['code'],
             $userOrders['status'],
             $userOrders['data']
+        );
+    }
+
+    public function orderAcceptanceDays(Request $request)
+    {
+        $orderAcceptanceDays = App::make(DistrictService::class)->orderAcceptanceDays($request->all());
+
+        return ResponseHelper::jsonResponse(
+            $orderAcceptanceDays['message'],
+            $orderAcceptanceDays['code'],
+            $orderAcceptanceDays['status'],
+            $orderAcceptanceDays['data']
         );
     }
 }
