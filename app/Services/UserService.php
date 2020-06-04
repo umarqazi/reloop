@@ -191,7 +191,11 @@ class UserService extends BaseService
 
             $model->stripe_customer_id = $stripeCustomerId;
             $model->save();
-            $model->load('organization','addresses');
+            $model->load(['organization',
+                'addresses' => function ($query){
+                    return $query->with('city', 'district');
+                }
+            ]);
 
             DB::commit();
 
@@ -301,7 +305,11 @@ class UserService extends BaseService
                         $authUser->player_id = $loginForm->player_id;
                     }*/
 
-                    $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization', 'roles')->first();
+                    $userProfile = $this->model->where('id', auth()->id())->with([
+                        'addresses' => function ($query){
+                            return $query->with('city', 'district');
+                        },
+                        'organization', 'roles'])->first();
                     return ResponseHelper::responseData(
                         Config::get('constants.USER_LOGIN_SUCCESSFULLY'),
                         IResponseHelperInterface::SUCCESS_RESPONSE,
