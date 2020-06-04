@@ -58,6 +58,12 @@
                     @endif
                 </div>
                 <div class="input-field col s6">
+                    <input id="org_external_id" type="text" name="org_external_id" readonly value="{{ $organization->org_external_id }}"  required>
+                    <label for="org_external_id">Organization ID</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
                     <input id="email" type="email"  name="email"   value="{{$organization->users->first()->email}}"  required>
                     <label for="email">Email</label>
                     @if ($errors->has('email'))
@@ -66,8 +72,6 @@
                     </span>
                     @endif
                 </div>
-            </div>
-            <div class="col s12">
                 <div class="input-field col s6">
                     <input id="phone_number" type="text" name="phone_number"  value="{{$organization->users->first()->phone_number}}"  required>
                     <label for="phone_number">Mobile Number</label>
@@ -77,6 +81,8 @@
                     </span>
                     @endif
                 </div>
+            </div>
+            <div class="col s12">
                 <div class="input-field col s6">
                     {{ Form::select('no_of_employees', (['' => 'Select No of Employees'] + $noOfEmployees), $organization->no_of_employees, ['id' => 'no_of_employees']) }}
                     <label for="no_of_employees">Number of employees</label>
@@ -86,8 +92,6 @@
                     </span>
                     @endif
                 </div>
-            </div>
-            <div class="col s12">
                 <div class="input-field col s6">
                     {{ Form::select('no_of_branches', (['' => 'Select No of Branches'] + $noOfBranches), $organization->no_of_branches, ['id' => 'no_of_branches']) }}
                     <label for="no_of_branches">Number of branches</label>
@@ -97,19 +101,19 @@
                     </span>
                     @endif
                 </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    {{ Form::select('sector_id', (['' => 'Choose Organization Sector'] + $sectors), $organization->sector->id, ['id' => 'sector_id']) }}
+                    <label>Sector</label>
+                </div>
                 <div class="input-field col s6">
                     <select name="status" id="status" required>
                         <option value="" disabled selected>Choose Product Status</option>
                         <option value="0" {{ $organization->users->first()->status== \App\Services\IUserStatus::INACTIVE ? 'selected': '' }}>Inactive</option>
                         <option value="1" {{ $organization->users->first()->status== \App\Services\IUserStatus::ACTIVE ? 'selected': '' }}>Active</option>
                     </select>
-                    <label>Organization Status</label>
-                </div>
-            </div>
-            <div class="col s12">
-                <div class="input-field col s12">
-                    {{ Form::select('sector_id', (['' => 'Choose Organization Sector'] + $sectors), $organization->sector->id, ['id' => 'sector_id']) }}
-                    <label>Sector</label>
+                    <label>Status</label>
                 </div>
             </div>
 

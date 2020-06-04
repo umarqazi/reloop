@@ -61,6 +61,7 @@
                             <thead>
                             <tr>
                                 <th>Id</th>
+                                <th>Organization Id</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Mobile number</th>
@@ -74,6 +75,7 @@
                             @foreach($organizations as $organization)
                             <tr>
                                 <td>{{ $organization->id }}</td>
+                                <td>{{ $organization->org_external_id }}</td>
                                 <td>{{ $organization->name }}</td>
                                 <td>{{ Str::limit($organization->users->first()->email, 10) }}</td>
                                 <td>{{ $organization->users->first()->phone_number }}</td>
