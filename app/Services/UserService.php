@@ -242,7 +242,11 @@ class UserService extends BaseService
 
     public function userProfile()
     {
-        $userProfile = $this->model->with('addresses', 'organization')->where('id', auth()->id())->first();
+        $userProfile = $this->model->with([
+            'addresses' => function ($query) {
+                return $query->with('city', 'district');
+            },
+            'organization'])->where('id', auth()->id())->first();
         if($userProfile){
 
             return ResponseHelper::responseData(
