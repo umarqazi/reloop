@@ -55,7 +55,7 @@
                             <ul>
                                 <li><strong>Id :</strong><span>{{$order->id}}</span></li>
                                 <li><strong>Number :</strong><span>{{$order->order_number}}</span></li>
-                                <li><strong>Date :</strong><span>{{$order->created_at->format('Y-m-d')}}</span></li>
+                                <li><strong>Created At :</strong><span>{{ $order->created_at }}</span></li>
                                 <li><strong>Status :</strong><span>@if($order->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Order Confirmed @endif
                                         @if($order->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
                                         @if($order->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Order Dispatched @endif
@@ -64,6 +64,15 @@
                                 <li><strong>Coupon Discount :</strong><span>{{$order->coupon_discount == null ? 'None' : $order->coupon_discount}}</span></li>
                                 <li><strong>Subtotal :</strong><span>{{$order->subtotal}}</span></li>
                                 <li><strong>Total :</strong><span>{{$order->total}}</span></li>
+                                @php $count = 0; @endphp
+                                @foreach($feedback as $feedBackQuestion)
+                                    @php $count++; @endphp
+                                    <li><strong>Driver Feedback Q{{ $count }} :</strong><span>{{ $feedBackQuestion->question }}</span></li>
+                                    <li><strong>Answer :</strong><span>{{ $feedBackQuestion->answer }}</span></li>
+                                @endforeach
+                                <li><strong>Feedback Questions Comment :</strong>
+                                    <span>{{ (!($feedback->isEmpty())) ? $feedback->first()->additional_comments : '' }}</span>
+                                </li>
                             </ul>
                         </div>
                     </div>

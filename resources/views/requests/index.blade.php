@@ -80,7 +80,7 @@
                                 <td>{{ $request->city->name }}</td>
                                 <td>{{ $request->district->name }}</td>
                                 <td>{{ $request->collection_date }}</td>
-                                <td>{{ $request->additional_comments }}</td>
+                                <td>{{ str_limit($request->user_comments, $limit = 10, $end = '...') }}</td>
                                 <td><a href="{{ route('collection-requests.show', $request->id) }}" class="btn waves-effect waves-light blue accent-2">View</a></td>
                             </tr>
                             @endforeach

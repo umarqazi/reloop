@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Services\Admin\CollectionRequestService;
+use App\Services\FeedbackService;
 use App\Services\IOrderStaus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -63,9 +65,10 @@ class CollectionRequestController extends Controller
     public function show($id)
     {
         $request = $this->collectionRequestService->findById($id);
+        $feedback = App::make(FeedbackService::class)->findByIdAndType($id, \App\Request::class);
 
         $drivers = $this->availableDrivers($request->collection_date, $id);
-        return  view('requests.view', compact('request','drivers'));
+        return  view('requests.view', compact('request','drivers', 'feedback'));
     }
 
     /**

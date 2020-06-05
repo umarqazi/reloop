@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Supervisor;
 
 use App\Http\Requests\Order\UpdateRequest;
+use App\Order;
 use App\Services\Admin\CityService;
 use App\Services\Admin\DistrictService;
 use App\Services\Admin\UserService;
+use App\Services\FeedbackService;
 use App\Services\IUserType;
 use App\Services\Admin\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
@@ -82,10 +85,11 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = $this->orderService->findById($id);
+        $feedback = App::make(FeedbackService::class)->findByIdAndType($id, Order::class);
         if($order->driver_id != null){
            $drivers = $this->availableDrivers($order->delivery_date, $id);
         }
-        return  view('supervisor.orders.view', compact('order','drivers'));
+        return  view('supervisor.orders.view', compact('order','drivers', 'feedback'));
     }
 
     /**

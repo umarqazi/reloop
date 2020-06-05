@@ -140,4 +140,17 @@ class FeedbackService extends BaseService
             null
         );
     }
+
+    /**
+     * Method: findByIdAndType
+     *
+     * @param $id
+     * @param $type
+     *
+     * @return mixed
+     */
+    public function findByIdAndType($id, $type)
+    {
+        return $this->model->where(['orderable_id' => $id, 'orderable_type' => $type])->get();
+    }
 }

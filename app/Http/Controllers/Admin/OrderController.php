@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Order;
 use App\Services\Admin\OrderService;
+use App\Services\FeedbackService;
 use App\Services\IOrderStaus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
@@ -62,13 +65,14 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = $this->orderService->findById($id);
+        $feedback = App::make(FeedbackService::class)->findByIdAndType($id, Order::class);
 
         if($order->driver_id != null){
             $drivers = $this->availableDrivers($order->delivery_date, $id);
-            return  view('orders.view', compact('order','drivers'));
+            return  view('orders.view', compact('order','drivers', 'feedback'));
         }
 
-        return  view('orders.view', compact('order'));
+        return  view('orders.view', compact('order', 'feedback'));
 
     }
 
