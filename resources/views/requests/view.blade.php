@@ -50,11 +50,22 @@
                             <ul>
                                 <li><strong>Id :</strong><span>{{$request->id}}</span></li>
                                 <li><strong>Number :</strong><span>{{$request->request_number}}</span></li>
-                                <li><strong>Date :</strong><span>{{$request->collection_date}}</span></li>
+                                <li><strong>Created at :</strong><span>{{$request->created_at}}</span></li>
+                                <li><strong>Schedule Date :</strong><span>{{$request->collection_date}}</span></li>
                                 <li><strong>Status :</strong><span>@if($request->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Request Confirmed @endif
                                         @if($request->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
                                         @if($request->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Driver Dispatched @endif
                                         @if($request->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Request Completed @endif</span></li>
+                                <li><strong>Weight Record Comment :</strong><span> {{ $request->additional_comments }} </span></li>
+                                @php $count = 0; @endphp
+                                @foreach($feedback as $feedBackQuestion)
+                                    @php $count++; @endphp
+                                    <li><strong>Driver Feedback Q{{ $count }} :</strong><span>{{ $feedBackQuestion->question }}</span></li>
+                                    <li><strong>Answer :</strong><span>{{ $feedBackQuestion->answer }}</span></li>
+                                @endforeach
+                                <li><strong>Feedback Questions Comment :</strong>
+                                    <span>{{ (!($feedback->isEmpty())) ? $feedback->first()->additional_comments : '' }}</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -68,6 +79,7 @@
                                 <li><strong>Location :</strong><span>{{$request->location}}</span></li>
                                 <li><strong>City :</strong><span>{{ $request->city->name }}</span></li>
                                 <li><strong>District :</strong><span>{{ $request->district->name }}</span></li>
+                                <li><strong>User Comment :</strong><span>{{ $request->user_comments }}</span></li>
                             </ul>
                         </div>
                     </div>
