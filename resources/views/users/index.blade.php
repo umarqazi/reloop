@@ -63,16 +63,16 @@
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>User ID</th>
-                                <th>User Email</th>
-                                <th>User Type</th>
-                                <th>Rewards Points</th>
-                                <th>User Status</th>
-                                <th>User City</th>
-                                <th>User District</th>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Remaining Points</th>
+                                <th>City</th>
+                                <th>District</th>
                                 <th>Created at</th>
-                                {{--<th>Total Orders</th>
-                                <th>Last Activity</th>--}}
+                                <th>Organization</th>
+                                <th>Org Code</th>
                                 @if($route != '')
                                     <th>Action</th>
                                 @endif
@@ -84,12 +84,14 @@
                                         <tr>
                                             <td>{{ $user->id }}</td>
                                             <td>{{ Str::limit($user->email, 13) }}</td>
-                                                <td>{{ ($user->user_type == \App\Services\IUserType::HOUSE_HOLD) ? 'House Hold' : (($user->user_type == \App\Services\IUserType::DRIVER) ? 'Driver' : (($user->user_type == \App\Services\IUserType::SUPERVISOR) ? 'Supervisor' : '')) }}</td>
+                                            <td>{{ $user->first_name . ' ' . $user->last_name }}</td>
+                                            <td>{{ $user->phone_number }}</td>
                                             <td>{{ $user->reward_points ?? '0' }}</td>
-                                            <td>{{ ($user->status == 1) ? 'Active' : 'Inactive' }}</td>
                                             <td>{{ ($user->addresses->first()) ? $user->addresses->first()->city->name : 'Not found' }}</td>
                                             <td>{{ ($user->addresses->first()) ? $user->addresses->first()->district->name : 'Not found' }}</td>
                                             <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                                            <td>{{ ($user->organization) ? $user->organization->name : '-' }}</td>
+                                            <td>{{ ($user->organization) ? $user->organization->org_external_id : '-' }}</td>
                                         @if($route != '')
                                                 <td>
                                                     @if($type ==\App\Services\IUserType::DRIVER)

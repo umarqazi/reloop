@@ -61,13 +61,17 @@
                             <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Organization Id</th>
+                                <th>Organization Code</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Mobile number</th>
-                                <th>Number of branches</th>
-                                <th>Number of employees</th>
+                                <th>Phone</th>
+                                <th>Branches</th>
+                                <th>Employees</th>
+                                <th>Sector</th>
                                 <th>Status</th>
+                                <th>City</th>
+                                <th>District</th>
+                                <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -81,7 +85,11 @@
                                 <td>{{ $organization->users->first()->phone_number }}</td>
                                 <td>{{ $organization->no_of_branches }}</td>
                                 <td>{{ $organization->no_of_employees }}</td>
+                                <td>{{ str_limit($organization->sector->name, 8) }}</td>
                                 <td>{{ $organization->users->first()->status == \App\Services\IUserStatus::ACTIVE ? 'Active' : 'Inactive'}}</td>
+                                <td>{{ $organization->users->first()->addresses->first()->city->name }}</td>
+                                <td>{{ $organization->users->first()->addresses->first()->district->name }}</td>
+                                <td>{{ $organization->created_at->format('Y-m-d') }}</td>
                                 <td>
                                     <a href="{{ route('organization.edit', $organization->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
                                     {{ Form::open(['url' => route('organization.destroy', $organization->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
