@@ -130,6 +130,7 @@ class UserService extends BaseService
             'status'          => $data['status'],
             'user_type'       => $data['user_type'],
             'reports'         => $data['reports'],
+            'gender'          => $data['gender'],
         );
         if(array_key_exists('avatar', $data) && $data['avatar'] != null){
             $data = $this->uploadFile($data, $request, $id);
