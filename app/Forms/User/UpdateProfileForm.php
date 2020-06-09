@@ -25,6 +25,8 @@ class UpdateProfileForm extends BaseForm
     public $no_of_employees;
     public $no_of_branches;
     public $sector_id;
+    public $birth_date;
+    public $gender;
 
     /**
      * @inheritDoc
@@ -42,6 +44,8 @@ class UpdateProfileForm extends BaseForm
             'no_of_employees'       => $this->no_of_employees,
             'no_of_branches'        => $this->no_of_branches,
             'sector_id'             => $this->sector_id,
+            'birth_date'            => $this->birth_date,
+            'gender'                => $this->gender,
         ];
     }
 
