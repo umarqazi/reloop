@@ -48,10 +48,10 @@ class CreateRequestsTable extends Migration
             $table->string('longitude');
             $table->string('street');
 
-            $table->string('question_1');
-            $table->string('answer_1');
-            $table->string('question_2');
-            $table->string('answer_2');
+            $table->string('question_1')->nullable();
+            $table->string('answer_1')->nullable();
+            $table->string('question_2')->nullable();
+            $table->string('answer_2')->nullable();
             $table->text('user_comments')->nullable();
             $table->text('additional_comments')->nullable();
             $table->timestamps();

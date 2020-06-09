@@ -82,7 +82,6 @@ class CollectionRequestForm extends BaseForm
             'district_id'         =>'required',
             'street'              =>'required',
             'material_categories' =>'required',
-            'questions'           =>'required'
         ];
     }
 }
