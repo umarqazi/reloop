@@ -80,9 +80,11 @@
                 <div class="input-field col s12">
                     <select multiple name="order_acceptance_days[]" required>
                         <option value="" disabled selected>Choose Days</option>
-                        @foreach($days as $key => $value)
-                        <option value="{{$key}}">{{$value}}</option>
-                        @endforeach
+                        @if (!empty($days))
+                            @foreach($days as $key => $value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
+                        @endif
                     </select>
                     <label for=order_acceptance_days">Order Acceptance Days</label>
                     @if ($errors->has('order_acceptance_days'))

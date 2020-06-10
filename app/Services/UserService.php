@@ -298,12 +298,12 @@ class UserService extends BaseService
                 $authUser = auth()->user();
                 if ($authUser->status == true) {
 
-                    $authUser->player_id = $loginForm->player_id;
+                    // setting up player_id
+                    $authUser->player_id = $this->playerIdHandler(
+                        $authUser->player_id,
+                        $loginForm->player_id
+                    );
                     $authUser->update();
-                    /*if(!in_array($loginForm->player_id, $authUser->player_id)){
-
-                        $authUser->player_id = $loginForm->player_id;
-                    }*/
 
                     $userProfile = $this->model->where('id', auth()->id())->with([
                         'addresses' => function ($query){
@@ -908,5 +908,32 @@ class UserService extends BaseService
                 "rewardPoints" => $authUser->reward_points ? $authUser->reward_points : 0
             ]
         );
+    }
+
+    /**
+     * PlayerId column values handler.
+     *
+     * @param  array  $playerIds
+     * @param  string  $currentId
+     * @param  bool  $isAdded
+     *
+     * @return  array
+     */
+    public function playerIdHandler(array $playerIds, string $currentId, bool $isAdded = true)
+    {
+        $position = array_search($currentId, $playerIds);
+
+        if ($isAdded) {
+            if (!$position) {
+                $playerIds[] = $currentId;
+                return $playerIds;
+            }
+        } else {
+            if ($position) {
+                unset($playerIds[$position]);
+            }
+        }
+
+        return $playerIds;
     }
 }

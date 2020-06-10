@@ -159,13 +159,25 @@ class User extends Authenticatable
         $this->orderNumber = $orderNumber;
     }
 
-    /*public function getPlayerIdAttribute($playerId)
+    /**
+     * Accessor for player id column.
+     *
+     * @param  $playerId
+     *
+     * @return  array|false|string[]
+     */
+    public function getPlayerIdAttribute($playerId)
     {
-        return (!empty($playerId) ? explode(',', $playerId) : '');
+        return (!empty($playerId) ? explode(',', $playerId) : []);
     }
 
+    /**
+     * Mutator for player id column.
+     *
+     * @param  $playerId
+     */
     public function setPlayerIdAttribute($playerId)
     {
-        return $this->player_id = (!empty($playerId) ? implode(',', $playerId) : '');
-    }*/
+        $this->attributes['player_id'] = is_array($playerId) ? implode(',', $playerId) : $playerId;
+    }
 }
