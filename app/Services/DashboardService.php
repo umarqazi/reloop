@@ -6,6 +6,7 @@ use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\Admin\EnvironmentalStatsDescriptionService;
+use App\Services\Admin\RequestCollectionService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -86,11 +87,13 @@ class DashboardService extends BaseService
         $environmentalStats = App::make(EnvironmentalStatService::class)->userEnvironmentalStats($userId);
         $environmentalStatsDescription = App::make(EnvironmentalStatsDescriptionService::class)->all();
         $userService = App::make(UserService::class)->findById($userId);
+        $totalWeight = App::make(RequestCollectionService::class)->calculateWeight($userId);
 
         $userDashboard = [
             'environmentalStats' => $environmentalStats,
             'rewardPoints' => ($userService->reward_points) ? $userService->reward_points : 0,
-            'environmentalStatsDescriptions' => $environmentalStatsDescription
+            'environmentalStatsDescriptions' => $environmentalStatsDescription,
+            'totalRecycledKg' => $totalWeight
         ];
 
         return ResponseHelper::responseData(
