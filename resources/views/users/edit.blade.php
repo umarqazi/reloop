@@ -115,6 +115,84 @@
                         </div>
                     </div>
                     <div class="col s12">
+                        <div class="input-field col s6">
+                            <input  id="total_trips" type="text" name="total_trips" value="{{ count($totalTrips) }}" readonly>
+                            <label for="total_trips" >Total Trips</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input  id="total_recycled" type="text" name="total_recycled" value="{{ $totalWeight }}" readonly>
+                            <label for="total_recycled" >Total Recycled (kgs)</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s6">
+                            <input  id="total_product_orders" type="text" name="total_product_orders" value="{{ count($totalOrders) }}" readonly>
+                            <label for="total_product_orders" >Total Product Orders</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input  id="total_reward_points" type="text" name="total_reward_points" value="{{ $rewardPoints }}" readonly>
+                            <label for="total_reward_points" >Total Points</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s6">
+                            <input  id="remaining_points" type="text" name="remaining_points" value="{{ ($user->reward_points) ?? 0 }}" readonly>
+                            <label for="remaining_points" >Remaining Points</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input  id="total_bills" type="text" name="total_bills" value="{{ $totalBills }}" readonly>
+                            <label for="total_bills" >Total Bills</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s6">
+                            <input  id="organization_name" type="text" name="organization_name" value="{{ ($user->organization) ? $user->organization->name : '-' }}" readonly>
+                            <label for="organization_name" >Organization Name</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input  id="organization_code" type="text" name="organization_code" value="{{ ($user->organization) ? $user->organization->org_external_id : '-' }}" readonly>
+                            <label for="organization_code" >Organization Code</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s6">
+                            <input  id="organization_name" type="text" name="organization_name" value="{{ ($environmentalStats->trees_saved) ?? 0 }}" readonly>
+                            <label for="organization_name" >Total Trees Saved</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input  id="organization_code" type="text" name="organization_code" value="{{ ($environmentalStats->co2_emission_reduced) ?? 0 }}" readonly>
+                            <label for="organization_code" >Total CO<sub>2</sub> Reduced</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s6">
+                            <input  id="organization_name" type="text" name="organization_name" value="{{ ($environmentalStats->oil_saved) ?? 0 }}" readonly>
+                            <label for="organization_name" >Total Oil Saved</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input  id="organization_code" type="text" name="organization_code" value="{{ ($environmentalStats->water_saved) ?? 0 }}" readonly>
+                            <label for="organization_code" >Total Water Saved</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s6">
+                            <input  id="organization_name" type="text" name="organization_name" value="{{ ($environmentalStats->landfill_space_saved) ?? 0 }}" readonly>
+                            <label for="organization_name" >Total Landfill Space Saved</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input  id="organization_code" type="text" name="organization_code" value="{{ ($environmentalStats->electricity_saved) ?? 0 }}" readonly>
+                            <label for="organization_code" >Total Electricity Saved</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s12">
+                            <input  id="organization_name" type="text" name="organization_name"
+                                    value="{{ $user->addresses->first()->unit_number .', '. $user->addresses->first()->building_name .', '.
+                                            $user->addresses->first()->street .', '. $user->addresses->first()->district->name .', '. $user->addresses->first()->city->name }}" readonly>
+                            <label for="organization_name" >Address</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
                         <div class="input-field col s12">
                             @if($user->addresses->first())
                             <input id="location" type="text" name="location" value="{{ $user->addresses->first()->location }}" required>

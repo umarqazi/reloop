@@ -7,13 +7,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Services\Admin\CityService;
+use App\Services\Admin\CollectionRequestService;
 use App\Services\Admin\DistrictService;
+use App\Services\EnvironmentalStatService;
+use App\Services\OrderService;
+use App\Services\Admin\RequestCollectionService;
 use App\Services\Admin\UserDonationService;
 use App\Services\Admin\UserSubscriptionService;
 use App\Services\IUserSubscriptionStatus;
 use App\Services\IUserType;
 use App\Services\Admin\UserService;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -104,8 +110,18 @@ class UserController extends Controller
         $user = $this->userService->findById($id);
         $cities  = $this->cityService->all()->pluck('name', 'id')->toArray();
         $districts = $this->districtService->all()->pluck('name', 'id')->toArray();
+        $totalTrips = App::make(CollectionRequestService::class)->calculateTripsWeights($user->id);
+        $rewardPoints = $totalTrips->sum('reward_points');
+        $totalWeight = App::make(RequestCollectionService::class)->calculateWeight($user->id);
+        $totalOrders = App::make(OrderService::class)->totalOrders($user->id);
+        $totalBills = App::make(TransactionService::class)->userBillings($user->id);
+        $totalBills = $totalBills->sum('total');
+        $environmentalStats = App::make(EnvironmentalStatService::class)->userStats($user->id);
         if($user){
-            return view('users.edit', compact('user', 'type','cities','districts'));
+            return view('users.edit', compact(
+                'user', 'type','cities','districts', 'totalTrips', 'totalWeight', 'totalOrders', 'rewardPoints',
+                'totalBills', 'environmentalStats'
+            ));
         }else{
             return view('users.edit')->with('error', 'No Information Founded !');
         }
@@ -175,6 +191,13 @@ class UserController extends Controller
                 $users = $this->userService->getSelected(IUserType::HOUSE_HOLD) ;
 
                 foreach($users as $user){
+                    $totalTrips = App::make(CollectionRequestService::class)->calculateTripsWeights($user->id);
+                    $rewardPoints = $totalTrips->sum('reward_points');
+                    $totalWeight = App::make(RequestCollectionService::class)->calculateWeight($user->id);
+                    $totalOrders = App::make(OrderService::class)->totalOrders($user->id);
+                    $totalBills = App::make(TransactionService::class)->userBillings($user->id);
+                    $totalBills = $totalBills->sum('total');
+                    $environmentalStats = App::make(EnvironmentalStatService::class)->userStats($user->id);
                     $print[] = array( 'User ID'         => $user->id,
                                       'User Email'      => $user->email,
                                       'User Name'       => $user->first_name.' '.$user->last_name,
@@ -191,7 +214,17 @@ class UserController extends Controller
                                       'Unit Number'     => ($user->addresses->first()) ? $user->addresses->first()->unit_number : 'Not found',
                                       'User Status'     => ($user->status == 1) ? 'Active' : 'Inactive',
                                       'Reports'         => $user->reports == \App\Services\IUserReports::DISABLE ?  'Disable' : 'Enable' ,
-                                      'Date of Birth '  => $user->birth_date,
+                                      'Total Trips '    => count($totalTrips),
+                                      'Total Points'    => $rewardPoints,
+                                      'Total Weight'    => $totalWeight,
+                                      'Total Orders '   => count($totalOrders),
+                                      'Total Bills '    => $totalBills,
+                                      'Trees Saved'     => ($environmentalStats->trees_saved) ?? 0,
+                                      'Co2 Emission Reduced' => ($environmentalStats->co2_emission_reduced) ?? 0,
+                                      'Oil Saved'            => ($environmentalStats->oil_saved) ?? 0,
+                                      'Water Saved'          => ($environmentalStats->water_saved) ?? 0,
+                                      'Landfill Space Saved' => ($environmentalStats->landfill_space_saved) ?? 0,
+                                      'Electricity Saved'    => ($environmentalStats->electricity_saved) ?? 0,
                         ) ;
                 }
 

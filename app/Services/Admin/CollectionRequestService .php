@@ -216,4 +216,16 @@ class CollectionRequestService extends BaseService
         }
 
     }
+
+    /**
+     * Method: calculateTripsWeights
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function calculateTripsWeights($userId)
+    {
+        return $this->collectionRequestRepo->calculateTripsWeights($userId);
+    }
 }

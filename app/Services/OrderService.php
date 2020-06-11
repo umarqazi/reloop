@@ -223,4 +223,16 @@ class OrderService extends BaseService
             null
         );
     }
+
+    /**
+     * Method: totalOrders
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function totalOrders($userId)
+    {
+        return $this->model->where('user_id', $userId)->get();
+    }
 }

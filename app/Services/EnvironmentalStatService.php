@@ -150,4 +150,16 @@ class EnvironmentalStatService extends BaseService
             'landfill_space_saved'  => 0,
         ];
     }
+
+    /**
+     * Method: userStats
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function userStats($userId)
+    {
+        return $this->model->where('user_id', $userId)->first();
+    }
 }
