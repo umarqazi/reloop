@@ -5,16 +5,29 @@
         <div class="container">
             <div class="row">
                 <div class="col s10 m6 l6">
-                    <h5 class="breadcrumbs-title">View Driver's Location</h5>
-                    <ol class="breadcrumbs">
-                        <li>
-                            <a href="{{ route('home') }}">Dashboard</a>
-                        </li>
-                        <li class="active">
-                            <a href="{{ route('driver.index') }}">Drivers</a>
-                        </li>
-                        <li class="active">Driver's Location</li>
-                    </ol>
+                    @if($user->user_type == \App\Services\IUserType::DRIVER)
+                        <h5 class="breadcrumbs-title">View Driver's Location</h5>
+                        <ol class="breadcrumbs">
+                            <li>
+                                <a href="{{ route('home') }}">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ route('driver.index') }}">Drivers</a>
+                            </li>
+                            <li class="active">Driver's Location</li>
+                        </ol>
+                    @else
+                        <h5 class="breadcrumbs-title">View User's Location</h5>
+                        <ol class="breadcrumbs">
+                            <li>
+                                <a href="{{ route('home') }}">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                <a href="{{ route('user.index') }}">Users</a>
+                            </li>
+                            <li class="active">User's Location</li>
+                        </ol>
+                    @endif
                 </div>
             </div>
         </div>
@@ -44,30 +57,47 @@
                 </div>
             @endif
 
-            @if(!empty($driver->currentLocation))
-                {{--<div class="col s12">
-                    <div class="input-field col s12">
-                        <input id="location" type="text" name="location" value="{{ $driver->currentLocation->latitude }}" required readonly>
-                        <label for="address" >Location</label>
+            @if($user->user_type == \App\Services\IUserType::DRIVER)
+                @if(!empty($user->currentLocation))
+                    <div class="col s12">
+                        <div class="input-field col s12">
+                            <input id="updated_at" type="text" name="updated_at"
+                                   value="{{ $user->currentLocation->updated_at }}" required readonly>
+                            <label for="address">Last Updated At</label>
+                        </div>
                     </div>
-                </div>--}}
-                <div class="col s12">
-                    <div class="input-field col s12">
-                        <input id="updated_at" type="text" name="updated_at" value="{{ $driver->currentLocation->updated_at }}" required readonly>
-                        <label for="address" >Last Updated At</label>
+                    <div class="col s12">
+                        <div class="input-field col s12">
+                            <a href="http://www.google.com/maps/place/{{ $user->currentLocation->latitude }},{{ $user->currentLocation->longitude }}"
+                               target="_blank" style="color: white">
+                                <button type="submit" class="btn btn-primary">View on Map</button>
+                            </a>
+                        </div>
                     </div>
-               </div>
-                <div class="col s12">
-                    <div class="input-field col s12">
-                        <a href="http://www.google.com/maps/place/{{ $driver->currentLocation->latitude }},{{ $driver->currentLocation->longitude }}" target="_blank" style="color: white"><button type="submit" class="btn btn-primary">View on Map</button></a>
+                @else
+                    <div class="col s12">
+                        <div class="input-field col s12">
+                            <label for="address">No location found for this driver.</label>
+                        </div>
                     </div>
-                </div>
+                @endif
             @else
-                <div class="col s12">
-                    <div class="input-field col s12">
-                        <label for="address" >No location found for this driver.</label>
+                @if($user->addresses->first()->latitude)
+                    <div class="col s12">
+                        <div class="input-field col s12">
+                            <a href="http://www.google.com/maps/place/{{ $user->addresses->first()->latitude }},{{ $user->addresses->first()->longitude }}"
+                               target="_blank" style="color: white">
+                                <button type="submit" class="btn btn-primary">View on Map</button>
+                            </a>
+                        </div>
                     </div>
-                </div>
+                @else
+                    <div class="col s12">
+                        <div class="input-field col s12">
+                            <label for="address">No location found for this user.</label>
+                        </div>
+                    </div>
+                @endif
             @endif
         </div>
     </div>

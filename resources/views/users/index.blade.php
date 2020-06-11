@@ -94,7 +94,7 @@
                                             <td>{{ ($user->organization) ? $user->organization->org_external_id : '-' }}</td>
                                         @if($route != '')
                                                 <td>
-                                                    @if($type ==\App\Services\IUserType::DRIVER)
+                                                    @if($type !=\App\Services\IUserType::SUPERVISOR)
                                                         <a href="{{ route($route.'.show', $user->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-map-marker"></i></a>
                                                     @endif
                                                     <a href="{{ route($route.'.edit', $user->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>

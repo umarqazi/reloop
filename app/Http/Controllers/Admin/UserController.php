@@ -95,7 +95,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = $this->userService->findById($id) ;
+        return view('users.view',compact('user'));
     }
 
     /**
