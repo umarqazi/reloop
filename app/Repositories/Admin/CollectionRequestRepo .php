@@ -72,4 +72,16 @@ class CollectionRequestRepo extends BaseRepo
         }
     }
 
+    /**
+     * Method: calculateTripsWeights
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function calculateTripsWeights($userId)
+    {
+        return $this->all()->where('user_id', $userId)->where( 'confirm', 1)->load('requestCollection');
+    }
+
 }
