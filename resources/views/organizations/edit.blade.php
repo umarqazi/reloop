@@ -84,6 +84,86 @@
             </div>
             <div class="col s12">
                 <div class="input-field col s6">
+                    <input type="text" value="{{$organization->users->first()->created_at}}"  readonly>
+                    <label for="email">Created At</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" value="{{ ($organization->users->first()->verified_at) ?? '-' }}"  readonly>
+                    <label for="date_activated">Date Activated</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input type="text" value="{{ $totalWeight }}"  readonly>
+                    <label for="email">Total Recycled (Kg)</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" value="0"  readonly>
+                    <label for="date_activated">Total Household Recycled (kg)</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input type="text" value="{{ count($totalTrips) }}"  readonly>
+                    <label for="email">Total Trips</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" value="0"  readonly>
+                    <label for="date_activated">Household Trips</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input type="text" value="{{ count($totalOrders) }}"  readonly>
+                    <label for="email">Total Product Orders</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" value="{{ $rewardPoints }}"  readonly>
+                    <label for="date_activated">Total Points</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input type="text" value="{{ ($organization->users->first()->reward_points) ?? 0 }}"  readonly>
+                    <label for="email">Remaining Points</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" value="{{ $totalBills }}"  readonly>
+                    <label for="date_activated">Total Bills</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input  type="text" value="{{ ($environmentalStats->trees_saved) ?? 0 }}" readonly>
+                    <label for="organization_name" >Total Trees Saved</label>
+                </div>
+                <div class="input-field col s6">
+                    <input  type="text" value="{{ ($environmentalStats->co2_emission_reduced) ?? 0 }}" readonly>
+                    <label for="organization_code" >Total CO<sub>2</sub> Reduced</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input  type="text" value="{{ ($environmentalStats->oil_saved) ?? 0 }}" readonly>
+                    <label for="organization_name" >Total Oil Saved</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" value="{{ ($environmentalStats->water_saved) ?? 0 }}" readonly>
+                    <label for="organization_code" >Total Water Saved</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input  type="text" value="{{ ($environmentalStats->landfill_space_saved) ?? 0 }}" readonly>
+                    <label for="organization_name" >Total Landfill Space Saved</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" value="{{ ($environmentalStats->electricity_saved) ?? 0 }}" readonly>
+                    <label for="organization_code" >Total Electricity Saved</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
                     {{ Form::select('no_of_employees', (['' => 'Select No of Employees'] + $noOfEmployees), $organization->no_of_employees, ['id' => 'no_of_employees']) }}
                     <label for="no_of_employees">Number of employees</label>
                     @if ($errors->has('no_of_employees'))

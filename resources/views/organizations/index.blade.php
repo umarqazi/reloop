@@ -61,7 +61,7 @@
                             <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Organization Code</th>
+                                <th>Code</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
@@ -91,6 +91,7 @@
                                 <td>{{ $organization->users->first()->addresses->first()->district->name }}</td>
                                 <td>{{ $organization->created_at->format('Y-m-d') }}</td>
                                 <td>
+                                    <a href="{{ route('organization.show', $organization->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-map-marker"></i></a>
                                     <a href="{{ route('organization.edit', $organization->id) }}" class="btn waves-effect waves-light blue accent-2"><i class="fa fa-edit"></i></a>
                                     {{ Form::open(['url' => route('organization.destroy', $organization->id), 'method' => 'DELETE', 'class' => 'form-inline']) }}
                                     <button type="submit" class="btn btn-danger red delete"><i class="fa fa-trash "></i></button>

@@ -14,6 +14,7 @@ use App\Services\IUserStatus;
 use App\Services\IUserType;
 use App\Services\SectorService;
 use App\Services\StripeService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -237,6 +238,9 @@ class OrganizationService extends BaseService
                 'phone_number' => $request['phone_number'],
                 'status'       => $request['status'],
             );
+            if($request['status'] == 1){
+                $userData = $userData + ['verified_at' => Carbon::now()];
+            }
             $user = $this->userService->update($user_id, $userData);
             if ($user) {
                 $old_ids = array();

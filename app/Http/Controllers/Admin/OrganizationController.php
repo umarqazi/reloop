@@ -8,10 +8,16 @@ use App\Http\Requests\Organization\UpdateRequest;
 use App\Repositories\Admin\CityRepo;
 use App\Repositories\Admin\DistrictRepo;
 use App\Repositories\Admin\SectorRepo;
+use App\Services\Admin\CollectionRequestService;
 use App\Services\Admin\OrganizationService;
+use App\Services\Admin\RequestCollectionService;
+use App\Services\EnvironmentalStatService;
 use App\Services\ICategoryType;
 use App\Services\IUserStatus;
+use App\Services\OrderService;
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -90,7 +96,9 @@ class OrganizationController extends Controller
      */
     public function show($id)
     {
-        //
+        $organization = $this->organizationService->findById($id);
+        $organization = $organization->users->first();
+        return view('organizations.view',compact('organization'));
     }
 
     /**
@@ -107,9 +115,18 @@ class OrganizationController extends Controller
         $noOfBranches   = $units = Config::get('global.Branches');
         $noOfEmployees  = $units = Config::get('global.Employees');
         $organization = $this->organizationService->findById($id);
+
+        $totalTrips = App::make(CollectionRequestService::class)->calculateTripsWeights($organization->users->first()->id);
+        $rewardPoints = $totalTrips->sum('reward_points');
+        $totalWeight = App::make(RequestCollectionService::class)->calculateWeight($organization->users->first()->id);
+        $totalOrders = App::make(OrderService::class)->totalOrders($organization->users->first()->id);
+        $totalBills = App::make(TransactionService::class)->userBillings($organization->users->first()->id);
+        $totalBills = $totalBills->sum('total');
+        $environmentalStats = App::make(EnvironmentalStatService::class)->userStats($organization->users->first()->id);
         if ($organization) {
             return view('organizations.edit', compact(
-                'organization','sectors','cities','districts', 'noOfBranches', 'noOfEmployees'
+                'organization','sectors','cities','districts', 'noOfBranches', 'noOfEmployees', 'totalTrips',
+                'rewardPoints', 'totalWeight', 'totalOrders', 'totalBills', 'environmentalStats'
             ));
         } else {
             return view('organizations.edit')->with('error', 'No Information Founded !');
