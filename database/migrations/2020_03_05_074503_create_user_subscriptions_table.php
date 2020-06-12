@@ -27,6 +27,7 @@ class CreateUserSubscriptionsTable extends Migration
             $table->string('subscription_number');
             $table->tinyInteger('subscription_type')->nullable();
             $table->tinyInteger('status')->nullable();
+            $table->string('coupon')->nullable();
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->integer('trips');

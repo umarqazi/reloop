@@ -72,6 +72,7 @@ class UserSubscriptionService extends BaseService
         $subscriptionType = $data['product_details']->category_type;
         $status = IUserSubscriptionStatus::ACTIVE;
         $model = $this->model;
+        $coupon = App::make(CouponService::class)->findById($data['request_data']->coupon_id);
         if($data['product_details']->category_id == ISubscriptionType::MONTHLY){
 
             $startTime = date("Y-m-d h:i:s",$data['stripe_response']['current_period_start']);
@@ -94,6 +95,7 @@ class UserSubscriptionService extends BaseService
         $model->stripe_subscription_id = $stripeSubId;
         $model->subscription_number = $data['order_number'];
         $model->subscription_type = $subscriptionType;
+        $model->coupon = $coupon->code ?? null;
         $model->status = $status;
         $model->start_date = $startTime;
         $model->end_date = $endTime;
