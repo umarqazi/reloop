@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Forms\User\ChangePasswordForm;
 use App\Forms\User\LoginForm;
+use App\Forms\User\LogoutForm;
 use App\Forms\User\PasswordForgotForm;
 use App\Forms\User\PasswordResetForm;
 use App\Helpers\ResponseHelper;
@@ -57,11 +58,16 @@ class LoginController extends Controller
     /**
      * Method: logout
      *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(Request $request)
     {
-        $authUser = $this->userService->logout(auth()->id());
+        $logoutForm = new LogoutForm();
+        $logoutForm->loadFromArray($request->all());
+        $authUser = $this->userService->logout($logoutForm, auth()->id());
+
         return ResponseHelper::jsonResponse(
             $authUser['message'],
             $authUser['code'],

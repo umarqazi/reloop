@@ -57,12 +57,15 @@ class OneSignalNotificationService
         $authUser = $this->userService->findById($userId);
         if($authUser && $authUser->player_id){
 
-            $playerId = $authUser->player_id;
-            $authUser->setPlayerId([$playerId]);
-            $authUser->setLoginSuccessMsg($message);
-            $authUser->setOrderNumber($orderNumber);
+            foreach ($authUser->player_id as $currentPlayerId) {
 
-            $authUser->notify($this->oneSignalNotification);
+                $playerId = $currentPlayerId;
+                $authUser->setPlayerId([$playerId]);
+                $authUser->setLoginSuccessMsg($message);
+                $authUser->setOrderNumber($orderNumber);
+
+                $authUser->notify($this->oneSignalNotification);
+            }
         }
     }
 }

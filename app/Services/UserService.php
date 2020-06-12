@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Forms\IForm;
 use App\Forms\User\CreateForm;
 use App\Forms\User\LoginForm;
+use App\Forms\User\LogoutForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Order;
@@ -382,15 +383,32 @@ class UserService extends BaseService
     /**
      * Method: logout
      *
+     * @param IForm $logoutForm
      * @param $userId
      *
      * @return array
      */
-    public function logout($userId)
+    public function logout(IForm $logoutForm, $userId)
     {
+        /* @var LogoutForm $logoutForm */
+        if($logoutForm->fails())
+        {
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $logoutForm->errors()
+            );
+        }
+
         $authUser = $this->findById($userId);
         if($authUser){
-            $authUser->player_id = null;
+
+            $authUser->player_id = $this->playerIdHandler(
+                $authUser->player_id,
+                $logoutForm->player_id,
+                false
+            );
             $authUser->update();
             return ResponseHelper::responseData(
                 Config::get('constants.USER_LOGOUT_SUCCESSFULLY'),

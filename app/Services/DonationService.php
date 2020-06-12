@@ -72,7 +72,11 @@ class DonationService extends BaseService
      */
     public function findByUserId($userId)
     {
-        return $this->model->where('user_id', $userId)->with('donationProduct')->get();
+        return $this->model->where('user_id', $userId)->with([
+            'donationProduct' => function ($query){
+                return $query->with('category');
+            }
+        ])->get();
     }
 
     /**
