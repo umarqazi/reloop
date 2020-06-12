@@ -96,6 +96,7 @@ class UserSubscriptionService extends BaseService
         $model->subscription_number = $data['order_number'];
         $model->subscription_type = $subscriptionType;
         $model->coupon = $coupon->code ?? null;
+        $model->total = $data['request_data']->total;
         $model->status = $status;
         $model->start_date = $startTime;
         $model->end_date = $endTime;

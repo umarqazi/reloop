@@ -813,7 +813,7 @@ class UserService extends BaseService
                         'created_at'          => $userSubscriptions->created_at->toDateTimeString(),
                         'name'                => $userSubscriptions->subscription->name,
                         'trips'               => $userSubscriptions->subscription->request_allowed,
-                        'total'               => $userSubscriptions->subscription->price,
+                        'total'               => $userSubscriptions->total,
                     ];
                 }
             } elseif ($userBilling->transactionable_type == Order::class){
