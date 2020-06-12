@@ -13,6 +13,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Admin\ChartController;
 use App\Services\Admin\EnvironmentalStatsDescriptionService;
 use App\Services\DashboardService;
+use App\Services\DonationService;
 use App\Services\EnvironmentalStatService;
 use App\Services\IUserType;
 use App\Services\OrganizationService;
@@ -319,6 +320,23 @@ class UserController extends Controller
             $organization['code'],
             $organization['status'],
             $organization['data']
+        );
+    }
+
+    /**
+     * Method: rewardsHistory
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rewardsHistory()
+    {
+        $rewardsHistory = App::make(DonationService::class)->rewardsHistory(auth()->id());
+
+        return ResponseHelper::jsonResponse(
+            $rewardsHistory['message'],
+            $rewardsHistory['code'],
+            $rewardsHistory['status'],
+            $rewardsHistory['data']
         );
     }
 }

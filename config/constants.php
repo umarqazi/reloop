@@ -134,6 +134,7 @@ return[
     'INVALID_DONATION_PRODUCT'              => 'Invalid donation product id!',
     'INVALID_DONATION_POINTS'               => 'You don\'t have enough points!',
     'INVALID_DONATION_SUCCESS'              => 'Your donation has successfully received!',
+    'DONATION_HISTORY'                      => 'Your donation history shown as:',
 
     'CITY_CREATION_SUCCESS'                 => 'City created successfully',
     'CITY_CREATION_ERROR'                   => 'Error Occurred while creating City',

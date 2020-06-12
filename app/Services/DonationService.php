@@ -64,6 +64,18 @@ class DonationService extends BaseService
     }
 
     /**
+     * Method: findByUserId
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function findByUserId($userId)
+    {
+        return $this->model->where('user_id', $userId)->with('donationProduct')->get();
+    }
+
+    /**
      * @inheritDoc
      */
     public function remove($id)
@@ -137,6 +149,25 @@ class DonationService extends BaseService
                     Config::get('constants.INVALID_DONATION_PRODUCT')
                 ]
             ]
+        );
+    }
+
+    /**
+     * Method: rewardsHistory
+     *
+     * @param $userId
+     *
+     * @return array
+     */
+    public function rewardsHistory($userId)
+    {
+        $rewardsHistory = $this->findByUserId($userId);
+
+        return ResponseHelper::responseData(
+            Config::get('constants.DONATION_HISTORY'),
+            IResponseHelperInterface::SUCCESS_RESPONSE,
+            true,
+            $rewardsHistory
         );
     }
 }
