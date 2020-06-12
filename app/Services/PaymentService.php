@@ -118,6 +118,7 @@ class PaymentService extends BaseService
                 $data = [
                     'stripe_response' => $makePayment,
                     'product_details' => $planDetails,
+                    'request_data' => $buyPlanForm,
                     'user_id' => auth()->id(),
                     'order_number' => $this->order_number
                 ];

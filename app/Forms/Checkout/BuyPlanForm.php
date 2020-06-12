@@ -23,6 +23,7 @@ class BuyPlanForm extends BaseForm
     public $subscription_id;
     public $subscription_type;
     public $total;
+    public $coupon_id;
 
     /**
      * @inheritDoc
@@ -37,7 +38,8 @@ class BuyPlanForm extends BaseForm
             'plan_id'                 => $this->plan_id,
             'subscription_id'         => $this->subscription_id,
             'subscription_type'       => $this->subscription_type,
-            'total'                   => $this->total
+            'total'                   => $this->total,
+            'coupon_id'               => $this->coupon_id,
         ];
     }
 
