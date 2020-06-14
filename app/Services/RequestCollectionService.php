@@ -183,13 +183,13 @@ class RequestCollectionService extends BaseService
         } elseif (!empty($users['organizationId'])) {
             // Organization filter options
             if ($filterOption === IChartFilterOption::ALL) { // For organization+household
-                $organization = App::make(OrganizationService::class)->findById($users['organizationId']);
-                $organizationUserIds = $organization->users()->pluck('id')->toArray();
+                $user = App::make(UserService::class)->findById($users['organizationId']);
+                $organizationUserIds = $user->organization()->users()->pluck('id')->toArray();
 
                 $result->whereIn('requests.user_id', $organizationUserIds);
             } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
-                $organization = App::make(OrganizationService::class)->findById($users['organizationId']);
-                $organizationUserIds = $organization->users()
+                $user = App::make(UserService::class)->findById($users['organizationId']);
+                $organizationUserIds = $user->organization()->users()
                     ->where('user_type', '<>', IUserType::ORGANIZATION)
                     ->pluck('id')->toArray();
 
@@ -246,13 +246,13 @@ class RequestCollectionService extends BaseService
                 } elseif (!empty($users['organizationId'])) {
                     // Organization filter options
                     if ($filterOption === IChartFilterOption::ALL) { // For organization+household
-                        $organization = App::make(OrganizationService::class)->findById($users['organizationId']);
-                        $organizationUserIds = $organization->users()->pluck('id')->toArray();
+                        $user = App::make(UserService::class)->findById($users['organizationId']);
+                        $organizationUserIds = $user->organization()->users()->pluck('id')->toArray();
 
                         $query->whereIn('requests.user_id', $organizationUserIds);
                     } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
-                        $organization = App::make(OrganizationService::class)->findById($users['organizationId']);
-                        $organizationUserIds = $organization->users()
+                        $user = App::make(UserService::class)->findById($users['organizationId']);
+                        $organizationUserIds = $user->organization()->users()
                             ->where('user_type', '<>', IUserType::ORGANIZATION)
                             ->pluck('id')->toArray();
 
