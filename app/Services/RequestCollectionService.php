@@ -184,12 +184,13 @@ class RequestCollectionService extends BaseService
             // Organization filter options
             if ($filterOption === IChartFilterOption::ALL) { // For organization+household
                 $user = App::make(UserService::class)->findById($users['organizationId']);
-                $organizationUserIds = $user->organization()->users()->pluck('id')->toArray();
+
+                $organizationUserIds = $user->organization->users()->pluck('id')->toArray();
 
                 $result->whereIn('requests.user_id', $organizationUserIds);
             } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
                 $user = App::make(UserService::class)->findById($users['organizationId']);
-                $organizationUserIds = $user->organization()->users()
+                $organizationUserIds = $user->organization->users()
                     ->where('user_type', '<>', IUserType::ORGANIZATION)
                     ->pluck('id')->toArray();
 
@@ -247,12 +248,12 @@ class RequestCollectionService extends BaseService
                     // Organization filter options
                     if ($filterOption === IChartFilterOption::ALL) { // For organization+household
                         $user = App::make(UserService::class)->findById($users['organizationId']);
-                        $organizationUserIds = $user->organization()->users()->pluck('id')->toArray();
+                        $organizationUserIds = $user->organization->users()->pluck('id')->toArray();
 
                         $query->whereIn('requests.user_id', $organizationUserIds);
                     } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
                         $user = App::make(UserService::class)->findById($users['organizationId']);
-                        $organizationUserIds = $user->organization()->users()
+                        $organizationUserIds = $user->organization->users()
                             ->where('user_type', '<>', IUserType::ORGANIZATION)
                             ->pluck('id')->toArray();
 
