@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Address;
 use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
@@ -160,12 +161,16 @@ class RequestCollectionService extends BaseService
      *
      * @param $from
      * @param $till
-     * @param  string  $groupBy
+     * @param string $groupBy
+     * @param array $users
      *
+     * @param int $filterOption
      * @return mixed
      */
-    public function getWeightSum($from, $till, $groupBy = '', $users = [])
-    {
+    public function getWeightSum(
+        $from, $till, $groupBy = '', $users = [],
+        int $filterOption = null, int $addressId = null
+    ) {
         $result = $this->model->select([
             'requests.collection_date',
             DB::raw('SUM(request_collections.weight) as total_weight')
@@ -176,7 +181,33 @@ class RequestCollectionService extends BaseService
         if (!empty($users['userId'])) {
             $result->where('requests.user_id', $users['userId']);
         } elseif (!empty($users['organizationId'])) {
-            $result->where('requests.user_id', $users['organizationId']);
+            // Organization filter options
+            if ($filterOption === IChartFilterOption::ALL) { // For organization+household
+                $organization = App::make(OrganizationService::class)->findById($users['organizationId']);
+                $organizationUserIds = $organization->users()->pluck('id')->toArray();
+
+                $result->whereIn('requests.user_id', $organizationUserIds);
+            } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
+                $organization = App::make(OrganizationService::class)->findById($users['organizationId']);
+                $organizationUserIds = $organization->users()
+                    ->where('user_type', '<>', IUserType::ORGANIZATION)
+                    ->pluck('id')->toArray();
+
+                $result->whereIn('requests.user_id', $organizationUserIds);
+            } elseif ($filterOption === IChartFilterOption::ADDRESS) { // For Household
+                /* @var Address $address */
+                $address = App::make(AddressService::class)->findById($addressId);
+
+                if (!$address) {
+                    abort('404', 'Address not found');
+                }
+
+                $result->where('requests.user_id', $users['organizationId'])
+                    ->where('city_id', $address->city_id)
+                    ->where('district_id', $address->district_id);
+            } else { // For organization only
+                $result->where('requests.user_id', $users['organizationId']);
+            }
         }
 
         if (!empty($users['driverId'])) {
@@ -200,17 +231,47 @@ class RequestCollectionService extends BaseService
      *
      * @return mixed
      */
-    public function getWeightSumByCat($from, $till, $users = [])
-    {
+    public function getWeightSumByCat(
+        $from, $till, $users = [],
+        int $filterOption = null, int $addressId = null
+    ) {
         return $this->model->whereHas(
             'request',
-            static function ($query) use ($from, $till, $users) {
+            static function ($query) use ($from, $till, $users, $addressId, $filterOption) {
                 $query->whereBetween('collection_date', [$from, $till])
                     ->where('confirm', true);
 
                 if (!empty($users['userId'])) {
                     $query->where('requests.user_id', $users['userId']);
                 } elseif (!empty($users['organizationId'])) {
+                    // Organization filter options
+                    if ($filterOption === IChartFilterOption::ALL) { // For organization+household
+                        $organization = App::make(OrganizationService::class)->findById($users['organizationId']);
+                        $organizationUserIds = $organization->users()->pluck('id')->toArray();
+
+                        $query->whereIn('requests.user_id', $organizationUserIds);
+                    } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
+                        $organization = App::make(OrganizationService::class)->findById($users['organizationId']);
+                        $organizationUserIds = $organization->users()
+                            ->where('user_type', '<>', IUserType::ORGANIZATION)
+                            ->pluck('id')->toArray();
+
+                        $query->whereIn('requests.user_id', $organizationUserIds);
+                    } elseif ($filterOption === IChartFilterOption::ADDRESS) { // For Household
+                        /* @var Address $address */
+                        $address = App::make(AddressService::class)->findById($addressId);
+
+                        if (!$address) {
+                            abort('404', 'Address not found');
+                        }
+
+                        $query->where('requests.user_id', $users['organizationId'])
+                            ->where('city_id', $address->city_id)
+                            ->where('district_id', $address->district_id);
+                    } else { // For organization only
+                        $query->where('requests.user_id', $users['organizationId']);
+                    }
+
                     $query->where('requests.user_id', $users['organizationId']);
                 }
 

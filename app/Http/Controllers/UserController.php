@@ -70,12 +70,13 @@ class UserController extends Controller
     public function barChart(Request $request)
     {
         if(auth()->user()->user_type == IUserType::DRIVER){
-
             $userId['users']['driverId'] = auth()->id();
+        } elseif (auth()->user()->user_type == IUserType::ORGANIZATION) {
+            $userId['users']['organizationId'] = auth()->user()->organization->id;
         } else {
-
             $userId['users']['userId'] = auth()->id();
         }
+
         $request->merge($userId);
         $userReports = App::make(ChartController::class)->barChart($request);
         $environmentalStats = App::make(EnvironmentalStatService::class)->userEnvironmentalStats(auth()->id());
