@@ -72,7 +72,7 @@ class UserController extends Controller
         if(auth()->user()->user_type == IUserType::DRIVER){
             $userId['users']['driverId'] = auth()->id();
         } elseif (auth()->user()->user_type == IUserType::ORGANIZATION) {
-            $userId['users']['organizationId'] = auth()->user()->organization->id;
+            $userId['users']['organizationId'] = auth()->id();
         } else {
             $userId['users']['userId'] = auth()->id();
         }
