@@ -33,16 +33,4 @@ class RequestCollectionService extends BaseService
         $this->requestCollectionRepo    = new $requestCollectionRepo;
     }
 
-    /**
-     * Method: calculateWeight
-     *
-     * @param $userId
-     *
-     * @return mixed
-     */
-    public function calculateWeight($userId)
-    {
-        return $this->requestCollectionRepo->calculateWeight($userId);
-    }
-
 }

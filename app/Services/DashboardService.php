@@ -6,7 +6,7 @@ use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Services\Admin\EnvironmentalStatsDescriptionService;
-use App\Services\Admin\RequestCollectionService;
+use App\Services\RequestCollectionService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;

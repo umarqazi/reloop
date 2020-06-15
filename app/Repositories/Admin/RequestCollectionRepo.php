@@ -24,16 +24,4 @@ class RequestCollectionRepo extends BaseRepo
         $this->getModel(RequestCollection::class);
     }
 
-    /**
-     * Method: calculateWeight
-     *
-     * @param $userId
-     *
-     * @return mixed
-     */
-    public function calculateWeight($userId)
-    {
-        return $this->all()->where('user_id', $userId)->sum('weight');
-    }
-
 }
