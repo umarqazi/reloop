@@ -10,7 +10,7 @@ use App\Repositories\Admin\DistrictRepo;
 use App\Repositories\Admin\SectorRepo;
 use App\Services\Admin\CollectionRequestService;
 use App\Services\Admin\OrganizationService;
-use App\Services\Admin\RequestCollectionService;
+use App\Services\RequestCollectionService;
 use App\Services\EnvironmentalStatService;
 use App\Services\ICategoryType;
 use App\Services\IUserStatus;
