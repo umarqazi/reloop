@@ -62,7 +62,11 @@ class ChartService
                     $users = $request->get('users') ?? [];
                 }
 
-                return $this->{$request->get('filter')}($date, $users);
+                return $this->{$request->get('filter')}(
+                    $date, $users,
+                    $request->get('filter_option'),
+                    $request->get('address_id')
+                );
             }
 
             return [];
@@ -106,13 +110,15 @@ class ChartService
      * Method: daily
      * Returns the daily stats data of week.
      *
-     * @param  Carbon  $date
-     * @param  array  $users
+     * @param Carbon $date
+     * @param array $users
+     * @param int $filterOption
+     * @param int|null $addressId
      *
      * @return array
      * @throws Exception
      */
-    public function daily(Carbon $date, array $users): array
+    public function daily(Carbon $date, array $users, int $filterOption = null, int $addressId = null): array
     {
         $startDate = ResponseHelper::carbon($date)->startOfWeek(Carbon::SUNDAY);
         $endDate = ResponseHelper::carbon($date)->endOfWeek(Carbon::SATURDAY);
@@ -125,8 +131,16 @@ class ChartService
         $data['header']['text'] = $startDate->format('M d').' - '.$endDate->format('M d') .', '. $date->format('Y');
 
         // Get weights sum against given dates.
-        $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate, '', $users);
-        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate, $users);
+        $weightByWeek = $this->requestCollectionService->getWeightSum(
+            $startDate, $endDate,
+            '', $users,
+            $filterOption, $addressId
+        );
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat(
+            $startDate, $endDate,
+            $users, $filterOption,
+            $addressId
+        );
 
         // Set counter.
         $counter = 0;
@@ -166,11 +180,13 @@ class ChartService
      *
      * @param  Carbon  $date
      * @param  array  $users
+     * @param int $filterOption
+     * @param int|null $addressId
      *
      * @return array
      * @throws Exception
      */
-    public function weekly(Carbon $date, array $users): array
+    public function weekly(Carbon $date, array $users, int $filterOption = null, int $addressId = null): array
     {
         $startDate = ResponseHelper::carbon($date)->firstOfQuarter();
         $endDate = ResponseHelper::carbon($date)->lastOfQuarter();
@@ -201,9 +217,17 @@ class ChartService
         // Set nav button and heading.
         $data['header']['text'] = "Week $stWk - Week $endWk, Q$date->quarter, " . $date->format('Y');
 
-        // Get weight sum against given dates.
-        $weightByWeek = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'week', $users);
-        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate, $users);
+        // Get weights sum against given dates.
+        $weightByWeek = $this->requestCollectionService->getWeightSum(
+            $startDate, $endDate,
+            'week', $users,
+            $filterOption, $addressId
+        );
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat(
+            $startDate, $endDate,
+            $users, $filterOption,
+            $addressId
+        );
 
         // Set counter.
         $counter = 0;
@@ -244,11 +268,13 @@ class ChartService
      *
      * @param  Carbon  $date
      * @param  array  $users
+     * @param int $filterOption
+     * @param int|null $addressId
      *
      * @return array
      * @throws Exception
      */
-    public function monthly(Carbon $date, array $users): array
+    public function monthly(Carbon $date, array $users, int $filterOption = null, int $addressId = null): array
     {
         $startDate = ResponseHelper::carbon($date)->firstOfYear();
         $endDate = ResponseHelper::carbon($date)->lastOfYear();
@@ -260,9 +286,17 @@ class ChartService
         // Set nav button and heading.
         $data['header']['text'] = $startDate->format('M Y') . " - " . $endDate->format('M Y');
 
-        // Get weight sum against given dates.
-        $weightByMonth = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'month', $users);
-        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate, $users);
+        // Get weights sum against given dates.
+        $weightByMonth = $this->requestCollectionService->getWeightSum(
+            $startDate, $endDate,
+            'month', $users,
+            $filterOption, $addressId
+        );
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat(
+            $startDate, $endDate,
+            $users, $filterOption,
+            $addressId
+        );
 
         // Set counter.
         $counter = 0;
@@ -303,11 +337,13 @@ class ChartService
      *
      * @param  Carbon  $date
      * @param  array  $users
+     * @param int $filterOption
+     * @param int|null $addressId
      *
      * @return array
      * @throws Exception
      */
-    public function yearly(Carbon $date, array $users): array
+    public function yearly(Carbon $date, array $users, int $filterOption = null, int $addressId = null): array
     {
         $startDate = ResponseHelper::carbon($date)->subYears(4)->startOfYear();
         $endDate = ResponseHelper::carbon($date)->endOfYear();
@@ -319,9 +355,17 @@ class ChartService
         // Set nav button and heading.
         $data['header']['text'] = 'Year ' . $startDate->format('Y') . '-' . $endDate->format('Y');
 
-        // Get weight sum against given dates.
-        $weightByYear = $this->requestCollectionService->getWeightSum($startDate, $endDate, 'year', $users);
-        $weightByCat = $this->requestCollectionService->getWeightSumByCat($startDate, $endDate, $users);
+        // Get weights sum against given dates.
+        $weightByWeek = $this->requestCollectionService->getWeightSum(
+            $startDate, $endDate,
+            'year', $users,
+            $filterOption, $addressId
+        );
+        $weightByCat = $this->requestCollectionService->getWeightSumByCat(
+            $startDate, $endDate,
+            $users, $filterOption,
+            $addressId
+        );
 
         // Set counter.
         $counter = 0;
