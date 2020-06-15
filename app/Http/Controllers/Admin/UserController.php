@@ -11,7 +11,7 @@ use App\Services\Admin\CollectionRequestService;
 use App\Services\Admin\DistrictService;
 use App\Services\EnvironmentalStatService;
 use App\Services\OrderService;
-use App\Services\Admin\RequestCollectionService;
+use App\Services\RequestCollectionService;
 use App\Services\Admin\UserDonationService;
 use App\Services\Admin\UserSubscriptionService;
 use App\Services\IUserSubscriptionStatus;

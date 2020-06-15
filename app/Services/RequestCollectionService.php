@@ -288,4 +288,19 @@ class RequestCollectionService extends BaseService
             ->groupBy('category_name')
             ->get();
     }
+
+    /**
+     * Method: calculateWeight
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function calculateWeight($userId)
+    {
+        return $this->model->whereHas(
+            'request', function ($query){
+            return $query->where('confirm', true);
+        })->where('user_id', $userId)->sum('weight');
+    }
 }

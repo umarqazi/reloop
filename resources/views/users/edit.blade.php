@@ -114,6 +114,7 @@
                             <label for="status" >Status</label>
                         </div>
                     </div>
+                    @if($type == 1 || $type == 2)
                     <div class="col s12">
                         <div class="input-field col s6">
                             <input  id="total_trips" type="text" name="total_trips" value="{{ count($totalTrips) }}" readonly>
@@ -154,6 +155,7 @@
                             <label for="organization_code" >Organization Code</label>
                         </div>
                     </div>
+                    @endif
                     <div class="col s12">
                         <div class="input-field col s6">
                             <input  id="organization_name" type="text" name="organization_name" value="{{ ($environmentalStats->trees_saved) ?? 0 }}" readonly>
