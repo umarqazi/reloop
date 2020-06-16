@@ -356,7 +356,7 @@ class ChartService
         $data['header']['text'] = 'Year ' . $startDate->format('Y') . '-' . $endDate->format('Y');
 
         // Get weights sum against given dates.
-        $weightByWeek = $this->requestCollectionService->getWeightSum(
+        $weightByYear = $this->requestCollectionService->getWeightSum(
             $startDate, $endDate,
             'year', $users,
             $filterOption, $addressId
