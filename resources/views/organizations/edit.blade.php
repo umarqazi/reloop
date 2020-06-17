@@ -98,7 +98,7 @@
                     <label for="email">Total Recycled (Kg)</label>
                 </div>
                 <div class="input-field col s6">
-                    <input type="text" value="0"  readonly>
+                    <input type="text" value="{{ ($totalHouseholdsWeight) ?? 0 }}"  readonly>
                     <label for="date_activated">Total Household Recycled (kg)</label>
                 </div>
             </div>
@@ -108,8 +108,8 @@
                     <label for="email">Total Trips</label>
                 </div>
                 <div class="input-field col s6">
-                    <input type="text" value="0"  readonly>
-                    <label for="date_activated">Household Trips</label>
+                    <input type="text" value="{{ count($totalHouseholdsTrips) }}"  readonly>
+                    <label for="date_activated">Total Household Trips</label>
                 </div>
             </div>
             <div class="col s12">
@@ -160,6 +160,36 @@
                 <div class="input-field col s6">
                     <input type="text" value="{{ ($environmentalStats->electricity_saved) ?? 0 }}" readonly>
                     <label for="organization_code" >Total Electricity Saved</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input  type="text" value="{{ ($orgUsersEnvironmentalStats->trees_saved) ?? 0 }}" readonly>
+                    <label for="organization_name" >Total Household Trees Saved</label>
+                </div>
+                <div class="input-field col s6">
+                    <input  type="text" value="{{ ($orgUsersEnvironmentalStats->co2_emission_reduced) ?? 0 }}" readonly>
+                    <label for="organization_code" >Total Household CO<sub>2</sub> Reduced</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input  type="text" value="{{ ($orgUsersEnvironmentalStats->oil_saved) ?? 0 }}" readonly>
+                    <label for="organization_name" >Total Household Oil Saved</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" value="{{ ($orgUsersEnvironmentalStats->water_saved) ?? 0 }}" readonly>
+                    <label for="organization_code" >Total Household Water Saved</label>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input  type="text" value="{{ ($orgUsersEnvironmentalStats->landfill_space_saved) ?? 0 }}" readonly>
+                    <label for="organization_name" >Total Household Landfill Space Saved</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" value="{{ ($orgUsersEnvironmentalStats->electricity_saved) ?? 0 }}" readonly>
+                    <label for="organization_code" >Total Household Electricity Saved</label>
                 </div>
             </div>
             <div class="col s12">

@@ -4,6 +4,7 @@
 namespace App\Services;
 use App\EnvironmentalStat;
 use App\Forms\IForm;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -161,5 +162,26 @@ class EnvironmentalStatService extends BaseService
     public function userStats($userId)
     {
         return $this->model->where('user_id', $userId)->first();
+    }
+
+    /**
+     * Method: orgUsersEnvironmentalStats
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function orgUsersEnvironmentalStats($userId)
+    {
+        $user = App::make(UserService::class)->findById($userId);
+        $organizationUserIds = $user->organization->users()->where('user_type', 1)->pluck('id')->toArray();
+        return $this->model->select([
+            DB::raw("SUM(co2_emission_reduced) as total_co2_emission_reduced"),
+            DB::raw("SUM(trees_saved) as total_trees_saved"),
+            DB::raw("SUM(oil_saved) as total_oil_saved"),
+            DB::raw("SUM(electricity_saved) as total_electricity_saved"),
+            DB::raw("SUM(water_saved) as total_water_saved"),
+            DB::raw("SUM(landfill_space_saved) as total_landfill_space_saved"),
+        ])->whereIn('user_id', $organizationUserIds)->first();
     }
 }
