@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\ChartService;
 use App\Services\DashboardService;
+use App\Services\RequestCollectionService;
 use Illuminate\Support\Facades\App;
 use App\Services\Admin\CollectionRequestService;
 use App\Services\Admin\MaterialCategoryService;
@@ -52,6 +53,7 @@ class HomeController extends Controller
     {
         $organizations      = count($this->organizationService->all()) ;
         $users              = count($this->userService->getSelected(IUserType::HOUSE_HOLD)) ;
+        $activeUsers        = App::make(\App\Services\UserService::class)->getActiveUsers();
         $allUsers           = $this->userService->getSelected(IUserType::HOUSE_HOLD)->pluck('email', 'id')->toArray();
         $allOrganizations   = $this->userService->getSelected(IUserType::ORGANIZATION)->pluck('email', 'id')->toArray();
         $allDrivers         = $this->userService->getSelected(IUserType::DRIVER)->pluck('email', 'id')->toArray();
@@ -61,9 +63,10 @@ class HomeController extends Controller
         $collectionRequest  = count($this->collectionRequestService->all()) ;
         $orders             = count($this->orderService->all()) ;
         $dashboard          = App::make(DashboardService::class)->dashboard();
+        $totalRecycledKg    = App::make(RequestCollectionService::class)->calculateWeight();
         return view('index',compact(
             'organizations','users','materialCategories','products','collectionRequest','orders','dashboard',
-            'allSupervisors', 'allDrivers', 'allOrganizations', 'allUsers'
+            'allSupervisors', 'allDrivers', 'allOrganizations', 'allUsers', 'totalRecycledKg', 'activeUsers'
         ));
     }
 }
