@@ -115,18 +115,24 @@ class OrganizationController extends Controller
         $noOfBranches   = $units = Config::get('global.Branches');
         $noOfEmployees  = $units = Config::get('global.Employees');
         $organization = $this->organizationService->findById($id);
+        $orgUserId = $organization->users->where('user_type', 2)->first()->id;
 
-        $totalTrips = App::make(CollectionRequestService::class)->calculateTripsWeights($organization->users->first()->id);
+        $totalTrips = App::make(CollectionRequestService::class)->calculateTripsWeights($orgUserId);
         $rewardPoints = $totalTrips->sum('reward_points');
-        $totalWeight = App::make(RequestCollectionService::class)->calculateWeight($organization->users->first()->id);
-        $totalOrders = App::make(OrderService::class)->totalOrders($organization->users->first()->id);
-        $totalBills = App::make(TransactionService::class)->userBillings($organization->users->first()->id);
+        $totalHouseholdsTrips = App::make(CollectionRequestService::class)->calculateHouseholdsTripsWeights($orgUserId);
+        $totalHouseholdsRewardPoints = $totalHouseholdsTrips->sum('reward_points');
+        $totalWeight = App::make(RequestCollectionService::class)->calculateWeight($orgUserId);
+        $totalHouseholdsWeight = App::make(RequestCollectionService::class)->calculateHouseholdsWeight($orgUserId);
+        $totalOrders = App::make(OrderService::class)->totalOrders($orgUserId);
+        $totalBills = App::make(TransactionService::class)->userBillings($orgUserId);
         $totalBills = $totalBills->sum('total');
-        $environmentalStats = App::make(EnvironmentalStatService::class)->userStats($organization->users->first()->id);
+        $environmentalStats = App::make(EnvironmentalStatService::class)->userStats($orgUserId);
+        $orgUsersEnvironmentalStats = App::make(EnvironmentalStatService::class)->orgUsersEnvironmentalStats($orgUserId);
         if ($organization) {
             return view('organizations.edit', compact(
                 'organization','sectors','cities','districts', 'noOfBranches', 'noOfEmployees', 'totalTrips',
-                'rewardPoints', 'totalWeight', 'totalOrders', 'totalBills', 'environmentalStats'
+                'rewardPoints', 'totalWeight', 'totalOrders', 'totalBills', 'environmentalStats', 'totalHouseholdsWeight',
+                'totalHouseholdsTrips', 'totalHouseholdsRewardPoints', 'orgUsersEnvironmentalStats'
             ));
         } else {
             return view('organizations.edit')->with('error', 'No Information Founded !');
@@ -182,24 +188,56 @@ class OrganizationController extends Controller
                 if(!$organizations->isEmpty()) {
 
                     foreach ($organizations as $organization) {
+
+                        $orgUser = $organization->users->where('user_type', 2)->first();
+                        $totalTrips = App::make(CollectionRequestService::class)->calculateTripsWeights($orgUser->id);
+                        $rewardPoints = $totalTrips->sum('reward_points');
+                        $totalHouseholdsTrips = App::make(CollectionRequestService::class)->calculateHouseholdsTripsWeights($orgUser->id);
+                        $totalHouseholdsRewardPoints = $totalHouseholdsTrips->sum('reward_points');
+                        $totalWeight = App::make(RequestCollectionService::class)->calculateWeight($orgUser->id);
+                        $totalHouseholdsWeight = App::make(RequestCollectionService::class)->calculateHouseholdsWeight($orgUser->id);
+                        $totalOrders = App::make(OrderService::class)->totalOrders($orgUser->id);
+                        $totalBills = App::make(TransactionService::class)->userBillings($orgUser->id);
+                        $totalBills = $totalBills->sum('total');
+                        $environmentalStats = App::make(EnvironmentalStatService::class)->userStats($orgUser->id);
+                        $orgUsersEnvironmentalStats = App::make(EnvironmentalStatService::class)->orgUsersEnvironmentalStats($orgUser->id);
+
                         $print[] = array('Id' => $organization->id,
                             'name' => $organization->name,
-                            'email' => $organization->users->first()->email,
-                            'phone number' => $organization->users->first()->phone_number,
+                            'email' => $orgUser->email,
+                            'phone number' => $orgUser->phone_number,
                             'Number of branches' => $organization->no_of_branches,
                             'Number of employees' => $organization->no_of_employees,
-                            'Status' => $organization->users->first()->status == IUserStatus::ACTIVE ? 'Active' : 'Inactive',
+                            'Status' => $orgUser->status == IUserStatus::ACTIVE ? 'Active' : 'Inactive',
                             'Sector' => $organization->sector->name,
-                            'Type' => $organization->users->first()->addresses->first()->type,
-                            'No of Bedrooms' => $organization->users->first()->addresses->first()->no_of_bedrooms,
-                            'No of Occupants' => $organization->users->first()->addresses->first()->no_of_occupants,
-                            'City' => $organization->users->first()->addresses->first()->city->name,
-                            'District' => $organization->users->first()->addresses->first()->district->name,
-                            'Street' => $organization->users->first()->addresses->first()->street,
-                            'Floor' => $organization->users->first()->addresses->first()->floor,
-                            'Unit Number' => $organization->users->first()->addresses->first()->unit_number,
-                            'Location' => $organization->users->first()->addresses->first()->location,
-
+                            'Type' => $orgUser->addresses->first()->type,
+                            'No of Bedrooms' => $orgUser->addresses->first()->no_of_bedrooms,
+                            'No of Occupants' => $orgUser->addresses->first()->no_of_occupants,
+                            'City' => $orgUser->addresses->first()->city->name,
+                            'District' => $orgUser->addresses->first()->district->name,
+                            'Street' => $orgUser->addresses->first()->street,
+                            'Floor' => $orgUser->addresses->first()->floor,
+                            'Unit Number' => $orgUser->addresses->first()->unit_number,
+                            'Location' => $orgUser->addresses->first()->location,
+                            'Total Trips' => count($totalTrips),
+                            'Total Household Trips' => count($totalHouseholdsTrips),
+                            'Total Points' => $rewardPoints,
+                            'Total Recycled (Kg)' => ($totalWeight) ?? 0,
+                            'Total Household Recycled (kg)' => ($totalHouseholdsWeight) ?? 0,
+                            'Total Product Orders' => count($totalOrders) ?? 0,
+                            'Total Bills' => $totalBills,
+                            'Total Trees Saved' => ($environmentalStats->trees_saved) ?? 0,
+                            'Total CO2 Emission Reduced' => ($environmentalStats->co2_emission_reduced) ?? 0,
+                            'Total Oil Saved' => ($environmentalStats->oil_saved) ?? 0,
+                            'Total Water Saved' => ($environmentalStats->water_saved) ?? 0,
+                            'Total Landfill Space Saved' => ($environmentalStats->landfill_space_saved) ?? 0,
+                            'Total Electricity Saved' => ($environmentalStats->electricity_saved) ?? 0,
+                            'Total Household Trees Saved' => ($orgUsersEnvironmentalStats->trees_saved) ?? 0,
+                            'Total Household Co2 Emission Reduced' => ($orgUsersEnvironmentalStats->co2_emission_reduced) ?? 0,
+                            'Total Household Oil Saved' => ($orgUsersEnvironmentalStats->oil_saved) ?? 0,
+                            'Total Household Water Saved' => ($orgUsersEnvironmentalStats->water_saved) ?? 0,
+                            'Total Household Landfill Space Saved' => ($orgUsersEnvironmentalStats->landfill_space_saved) ?? 0,
+                            'Total Household Electricity Saved' => ($orgUsersEnvironmentalStats->electricity_saved) ?? 0,
                         );
                     }
                     $sheet->fromArray($print);

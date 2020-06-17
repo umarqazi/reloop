@@ -10,7 +10,9 @@ use App\Repositories\Admin\UserRepo;
 use App\Request;
 use App\Services\ISettingKeys;
 use App\Services\IUserType;
+use App\Services\UserService;
 use App\Setting;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Constraint\Count;
 
@@ -82,6 +84,21 @@ class CollectionRequestRepo extends BaseRepo
     public function calculateTripsWeights($userId)
     {
         return $this->all()->where('user_id', $userId)->where( 'confirm', 1)->load('requestCollection');
+    }
+
+    /**
+     * Method: calculateHouseholdsTripsWeights
+     *
+     * @param $orgUserId
+     *
+     * @return mixed
+     */
+    public function calculateHouseholdsTripsWeights($orgUserId)
+    {
+        $user = App::make(UserService::class)->findById($orgUserId);
+        $organizationUserIds = $user->organization->users()->where('user_type', 1)->pluck('id')->toArray();
+        return $this->all()->whereIn('user_id', $organizationUserIds)
+            ->where( 'confirm', 1)->load('requestCollection');
     }
 
 }

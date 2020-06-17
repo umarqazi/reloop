@@ -303,4 +303,21 @@ class RequestCollectionService extends BaseService
             return $query->where('confirm', true);
         })->where('user_id', $userId)->sum('weight');
     }
+
+    /**
+     * Method: calculateHouseholdsWeight
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function calculateHouseholdsWeight($userId)
+    {
+        $user = App::make(UserService::class)->findById($userId);
+        $organizationUserIds = $user->organization->users()->where('user_type', 1)->pluck('id')->toArray();
+        return $this->model->whereHas(
+            'request', function ($query){
+            return $query->where('confirm', true);
+        })->whereIn('user_id', $organizationUserIds)->sum('weight');
+    }
 }
