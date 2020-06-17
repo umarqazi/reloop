@@ -292,16 +292,23 @@ class RequestCollectionService extends BaseService
     /**
      * Method: calculateWeight
      *
-     * @param $userId
+     * @param null $userId
      *
      * @return mixed
      */
-    public function calculateWeight($userId)
+    public function calculateWeight($userId = null)
     {
+        if($userId){
+
+            return $this->model->whereHas(
+                'request', function ($query){
+                return $query->where('confirm', true);
+            })->where('user_id', $userId)->sum('weight');
+        }
         return $this->model->whereHas(
             'request', function ($query){
             return $query->where('confirm', true);
-        })->where('user_id', $userId)->sum('weight');
+        })->sum('weight');
     }
 
     /**

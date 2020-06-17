@@ -96,6 +96,21 @@ class UserService extends BaseService
     }
 
     /**
+     * Method: getActiveUsers
+     *
+     * @return mixed
+     */
+    public function getActiveUsers()
+    {
+        return $this->model->where('status', true)
+            ->where(function ($query){
+                $query->where('user_type', IUserType::HOUSE_HOLD)
+                    ->orWhere('user_type', IUserType::ORGANIZATION);
+            })
+            ->get();
+    }
+
+    /**
      * Method: updateTrips
      *
      * @param $data
