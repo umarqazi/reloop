@@ -23,30 +23,29 @@
         </div>
     </div>
 
-    @if ($message = Session::get('success'))
-        <div id="card-alert" class="card green">
-            <div class="card-content white-text">
-                <p>{{ $message }}</p>
-            </div>
-            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-    @endif
-
-    @if ($message = Session::get('error'))
-        <div id="card-alert" class="card red">
-            <div class="card-content white-text">
-                <p>{{ $message }}</p>
-            </div>
-            <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-    @endif
-
     <div class="container">
         <div class="section">
+            @if ($message = Session::get('success'))
+                <div id="card-alert" class="card green">
+                    <div class="card-content white-text">
+                        <p>{{ $message }}</p>
+                    </div>
+                    <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            @endif
+
+            @if ($message = Session::get('error'))
+                <div id="card-alert" class="card red">
+                    <div class="card-content white-text">
+                        <p>{{ $message }}</p>
+                    </div>
+                    <button type="button" class="close white-text" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            @endif
             <br>
             {{ Form::open(['url' => route('districts.store'),
                            'class' => 'row']) }}
