@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Forms\Collection\CancelOrderForm;
 use App\Forms\Collection\CollectionRequestForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
@@ -89,6 +90,27 @@ class RequestController extends Controller
             IResponseHelperInterface::FAIL_RESPONSE,
             false,
             null
+        );
+    }
+
+    /**
+     * Method: cancelRequest
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cancelRequest(Request $request)
+    {
+        $cancelRequestForm = new CancelOrderForm();
+        $cancelRequestForm->loadFromArray($request->all());
+        $cancelRequest = $this->requestService->cancelRequest($cancelRequestForm);
+
+        return ResponseHelper::jsonResponse(
+            $cancelRequest['message'],
+            $cancelRequest['code'],
+            $cancelRequest['status'],
+            $cancelRequest['data']
         );
     }
 }

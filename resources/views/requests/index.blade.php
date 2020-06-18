@@ -73,10 +73,13 @@
                                         $request->organization_name  }}
                                 </td>
                                 <td>{{ $request->phone_number }}</td>
-                                <td>@if($request->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) New @endif
+                                <td>
+                                    @if($request->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) New @endif
                                     @if($request->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Assigned @endif
                                     @if($request->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Dispatched @endif
-                                    @if($request->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Completed @endif</td>
+                                    @if($request->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Completed @endif
+                                    @if($request->status == \App\Services\IOrderStaus::ORDER_CANCELLED) Cancelled @endif
+                                </td>
                                 <td>{{ $request->city->name }}</td>
                                 <td>{{ $request->district->name }}</td>
                                 <td>{{ $request->collection_date }}</td>
