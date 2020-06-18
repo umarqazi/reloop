@@ -48,7 +48,6 @@ return[
     'USER_PLANS'                            => 'User plans shown as:',
     'USER_SUBSCRIPTIONS_SUCCESS'            => 'User subscriptions shown as:',
     'USER_SUBSCRIPTIONS_FAIL'               => 'You didn\'t buy any subscription!',
-    'COLLECTION_SUCCESSFUL'                 => 'Collection request successful!',
     'USER_TRIPS_FAIL'                       => 'You don\'t have any trip!',
 
     'UN_AUTHORIZE_ERROR'                    => 'You are not authorized',
@@ -153,6 +152,8 @@ return[
 
     'CONTACT_US_ERROR'                      => 'Error Occurred while Sending Message',
 
+    'COLLECTION_SUCCESSFUL'                 => 'Collection request successful!',
+    'CANCEL_REQUEST'                        => 'Your request has been cancelled successfully!',
     'COLLECTION_REQUEST_ASSIGNED'           => 'Collection Request assigned successfully!',
     'COLLECTION_REQUEST_ASSIGNMENT_FAIL'    => 'Something went wrong in assigning Collection Request!',
 

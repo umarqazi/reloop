@@ -8,6 +8,7 @@ use App\Order;
 use App\Repositories\Admin\BaseRepo;
 use App\Repositories\Admin\UserRepo;
 use App\Request;
+use App\Services\IOrderStaus;
 use App\Services\ISettingKeys;
 use App\Services\IUserType;
 use App\Services\UserService;
@@ -62,7 +63,8 @@ class CollectionRequestRepo extends BaseRepo
      * @return bool
      */
     public function checkDriver($id,$date){
-        $checkRequests = $this->all()->where('driver_id',$id)->where('collection_date',$date);
+        $checkRequests = $this->all()->where('driver_id',$id)->where('collection_date',$date)
+            ->where('status', '!=', IOrderStaus::ORDER_CANCELLED);
         $checkOrders = $this->order->all()->where('driver_id',$id)->where('delivery_date',$date) ;
         $max = $this->setting->where('key',ISettingKeys::DRIVER_KEY)->first()->value;
         $count = Count($checkRequests) + Count($checkOrders);

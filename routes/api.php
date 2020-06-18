@@ -52,6 +52,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('organization-verification', 'UserController@organizationVerification');
     Route::post('order-acceptance-days', 'Api\OrderController@orderAcceptanceDays');
     Route::get('rewards-history', 'UserController@rewardsHistory');
+    Route::post('cancel-order', 'Api\RequestController@cancelRequest');
 
     //Driver routes
     Route::post('assigned-trips', 'Api\DriverController@driverAssignedTrips');

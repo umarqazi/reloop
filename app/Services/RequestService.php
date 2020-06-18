@@ -322,4 +322,54 @@ class RequestService extends BaseService
             null
         );
     }
+
+    /**
+     * Method: cancelRequest
+     *
+     * @param IForm $cancelRequestForm
+     *
+     * @return array
+     */
+    public function cancelRequest(IForm $cancelRequestForm)
+    {
+        if($cancelRequestForm->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $cancelRequestForm->errors()
+            );
+        }
+
+        $findRequest = $this->findById($cancelRequestForm->order_id);
+        if($findRequest){
+
+            $findRequest->status = IOrderStaus::ORDER_CANCELLED;
+            $findRequest->update();
+
+            $addTrip = true;
+            $currentDate = date('Y-m-d');
+            $addOneDay = date('Y-m-d', strtotime($currentDate . ' +1 day'));
+            if($addOneDay == $findRequest->collection_date){
+
+                $currentTime = date('H:i:s');
+                if($currentTime >= '21:00:00') {
+                    $addTrip = false;
+                }
+            }
+            if($addTrip){
+                $authUser = App::make(UserService::class)->findById($findRequest->user_id);
+                $authUser->trips = $authUser->trips + 1;
+                $authUser->update();
+            }
+
+            return ResponseHelper::responseData(
+                Config::get('constants.CANCEL_REQUEST'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                null
+            );
+        }
+    }
 }

@@ -52,10 +52,15 @@
                                 <li><strong>Number :</strong><span>{{$request->request_number}}</span></li>
                                 <li><strong>Created at :</strong><span>{{$request->created_at}}</span></li>
                                 <li><strong>Schedule Date :</strong><span>{{$request->collection_date}}</span></li>
-                                <li><strong>Status :</strong><span>@if($request->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Request Confirmed @endif
+                                <li><strong>Status :</strong>
+                                    <span>
+                                        @if($request->status == \App\Services\IOrderStaus::ORDER_CONFIRMED) Request Confirmed @endif
                                         @if($request->status == \App\Services\IOrderStaus::DRIVER_ASSIGNED) Driver Assigned @endif
                                         @if($request->status == \App\Services\IOrderStaus::DRIVER_DISPATCHED) Driver Dispatched @endif
-                                        @if($request->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Request Completed @endif</span></li>
+                                        @if($request->status == \App\Services\IOrderStaus::ORDER_COMPLETED) Request Completed @endif
+                                        @if($request->status == \App\Services\IOrderStaus::ORDER_CANCELLED) Request Cancelled @endif
+                                    </span>
+                                </li>
                                 <li><strong>Weight Record Comment :</strong><span> {{ $request->additional_comments }} </span></li>
                                 @php $count = 0; @endphp
                                 @foreach($feedback as $feedBackQuestion)
