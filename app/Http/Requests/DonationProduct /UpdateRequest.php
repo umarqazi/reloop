@@ -27,7 +27,6 @@ class UpdateRequest extends FormRequest
             'name'              => 'required',
             'redeem_points'     => 'required',
             'description'       => 'required',
-            'category_id'       => 'required',
             'status'            => 'required',
         ];
     }

@@ -125,12 +125,25 @@ class DonationProductController extends Controller
     {
         $product = $this->donationProductService->destroy($id);
         if($product){
-            return redirect()->route('donation-products.index')->with('success',Config::get('constants.DONATION_PRODUCT_DELETE_SUCCESS'));
+            return redirect()->route('donation-categories.index')->with('success',Config::get('constants.DONATION_PRODUCT_DELETE_SUCCESS'));
         }
         else {
-            return redirect()->route('donation-products.index')->with('error',Config::get('constants.DONATION_PRODUCT_UPDATE_ERROR'));
+            return redirect()->route('donation-categories.index')->with('error',Config::get('constants.DONATION_PRODUCT_UPDATE_ERROR'));
         }
 
+    }
+
+    /**
+     * Method: donationProductCreate
+     *
+     * @param $categoryId
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function donationProductCreate($categoryId)
+    {
+        $category = $this->donationProductCategoryService->findById($categoryId);
+        return view('donationProducts.create', compact('category'));
     }
 
     /**

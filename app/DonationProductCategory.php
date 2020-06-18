@@ -20,7 +20,7 @@ class DonationProductCategory extends Model
      */
     public function donationProducts()
     {
-        return $this->hasMany(DonationProduct::class);
+        return $this->hasMany(DonationProduct::class, 'category_id', 'id');
     }
 
     /**

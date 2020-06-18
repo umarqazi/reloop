@@ -98,5 +98,7 @@
         </div>
     </div>
 
+    @include('donationProducts.index')
+
 @endsection
 
