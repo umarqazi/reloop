@@ -850,6 +850,39 @@ class UserService extends BaseService
     }
 
     /**
+     * Method: billings
+     *
+     * @return mixed
+     */
+    public function billings()
+    {
+        $billings = App::make(TransactionService::class)->getAll();
+        return $billings;
+    }
+
+    /**
+     * Method: billingDetails
+     *
+     * @param $id
+     *
+     * @return UserSubscription|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public function billingDetails($id)
+    {
+        $billing = App::make(TransactionService::class)->findById($id);
+        if($billing){
+            if ($billing->transactionable_type == UserSubscription::class) {
+                $subscriptions = $this->userSubscriptionService->userSubscriptionsBilling($billing->transactionable_id);
+                return $subscriptions;
+            } elseif ($billing->transactionable_type == Order::class){
+
+                $orders = App::make(OrderService::class)->userOrdersList($billing->transactionable_id);
+                return $orders;
+            }
+        }
+    }
+
+    /**
      * Method: driverAssignedTrips
      *
      * @param $assignedOrderForm

@@ -184,6 +184,30 @@ class UserController extends Controller
     }
 
     /**
+     * Method: billings
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function billings()
+    {
+        $billings = App::make(\App\Services\UserService::class)->billings();
+        return view('billings.index',compact('billings'));
+    }
+
+    /**
+     * Method: billingDetails
+     *
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function billingDetails($id)
+    {
+        $billingDetails = App::make(\App\Services\UserService::class)->billingDetails($id);
+        return view('billings.view',compact('billingDetails'));
+    }
+
+    /**
      * export list
      */
     public function export(){

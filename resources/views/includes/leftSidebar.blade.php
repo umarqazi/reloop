@@ -90,10 +90,16 @@
                                         <span class="nav-text">Rewards History</span>
                                     </a>
                                 </li>
-                                <li class="bold">
+                                <li>
                                     <a href="{{ route('all-users') }}">
                                         <i class="material-icons"><img src="/assets/images/icons/reward point.svg" alt="re loop logo"></i>
                                         <span class="nav-text">Points Adjustment</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('billing-listing') }}">
+                                        <i class="material-icons"><img src="/assets/images/icons/reward point.svg" alt="re loop logo"></i>
+                                        <span class="nav-text">Billing</span>
                                     </a>
                                 </li>
                             </ul>
@@ -128,12 +134,6 @@
                                     <a href="{{ route('donation-categories.index') }}">
                                         <i class="material-icons"><img src="/assets/images/icons/donation.svg" alt="re loop logo"></i>
                                         <span class="nav-text">Rewards</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('donation-products.index') }}">
-                                        <i class="material-icons"><img src="/assets/images/icons/donation.svg" alt="re loop logo"></i>
-                                        <span class="nav-text">Donation Products</span>
                                     </a>
                                 </li>
                             </ul>

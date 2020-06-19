@@ -40,7 +40,17 @@ class TransactionService extends BaseService
      */
     public function findById($id)
     {
-        // TODO: Implement findById() method.
+        return $this->model->find($id);
+    }
+
+    /**
+     * Method: getAll
+     *
+     * @return Transaction[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getAll()
+    {
+        return $this->model->all();
     }
 
     /**

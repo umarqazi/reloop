@@ -131,7 +131,7 @@ class OrderService extends BaseService
             'orderItems' => function ($query){
                 return $query->with([
                     'product' => function($subQuery){
-                        return $subQuery->select('id', 'name');
+                        return $subQuery->select('id', 'name', 'price');
                     }
                 ]);
             }, 'city', 'district'
