@@ -21,9 +21,9 @@
             <div id="table-datatables">
                 <div class="row">
                         <div class="col s12">
-                            <p class="col s12">
+                            {{--<p class="col s12">
                                 <a class="btn btn-primary" href="{{ route('requests.export') }}">Export</a>
-                            </p>
+                            </p>--}}
                         <table id="data-table-simple" class="responsive-table display" cellspacing="0">
                             <thead>
                             <tr>
