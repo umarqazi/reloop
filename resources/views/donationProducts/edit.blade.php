@@ -13,7 +13,7 @@
                     <ol class="breadcrumbs">
                         <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
-                        <li><a href="{{route('donation-products.index')}}">Donation Products</a>
+                        <li><a href="{{route('donation-categories.edit', $product->category->id)}}">{{ $product->category->name }}</a>
                         </li>
                         <li class="active">Update</li>
                     </ol>
@@ -79,7 +79,7 @@
                 </div>
             </div>
             <div class="col s12">
-                <div class="input-field col s6">
+                {{--<div class="input-field col s6">
                     <select name="category_id" id="category_id" required>
                         <option value="" disabled selected>Choose Product Category</option>
                         <option value="1" {{ $product->category_id==1 ? 'selected': '' }}>Plant a Tree</option>
@@ -91,7 +91,7 @@
                         <strong class="red-text">{{ $errors->first('category_id') }}</strong>
                     </span>
                     @endif
-                </div>
+                </div>--}}
                 <div class="input-field col s6">
                     <select name="status" id="status" required>
                         <option value="" disabled selected>Choose Product Status</option>

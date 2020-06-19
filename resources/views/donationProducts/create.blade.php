@@ -12,7 +12,9 @@
                     <ol class="breadcrumbs">
                         <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
-                        <li><a href="{{route('donation-products.index')}}">Donation Products</a>
+                        <li><a href="{{route('donation-categories.index')}}">Donation Categories</a>
+                        </li>
+                        <li><a href="{{route('donation-categories.edit', $category->id)}}">{{ $category->name }}</a>
                         </li>
                         <li class="active">Create</li>
                     </ol>
@@ -45,8 +47,8 @@
                 </div>
             @endif
             <br>
-            {{ Form::open(['url' => route('donation-products.store'),
-                           'class' => 'row']) }}
+            {{ Form::open(['url' => route('donation-products.store'), 'class' => 'row']) }}
+                {{ Form::hidden('category_id', $category->id) }}
 
             <div class="col s12">
                 <div class="input-field col s6">
@@ -80,7 +82,7 @@
                 </div>
             </div>
             <div class="col s12">
-                <div class="input-field col s6">
+                {{--<div class="input-field col s6">
                     {{ Form::select('category_id', (['' => 'Choose Donation Product Category'] + $categories), null, ['id' => 'category_id']) }}
                     <label>Donation Product Category</label>
                     @if ($errors->has('category_id'))
@@ -88,7 +90,7 @@
                         <strong class="red-text">{{ $errors->first('category_id') }}</strong>
                     </span>
                     @endif
-                </div>
+                </div>--}}
                 <div class="input-field col s6">
                     <select name="status" id="status" required>
                         <option value="" disabled selected>Choose Donation Product Status</option>

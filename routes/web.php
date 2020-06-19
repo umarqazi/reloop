@@ -47,6 +47,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('donation-categories', 'Admin\DonationCategoryController');
     Route::resource('donation-products', 'Admin\DonationProductController');
 
+    Route::get('billing-listing', 'Admin\UserController@billings')->name('billing-listing');
+    Route::get('billing-listing/{billing_id}', 'Admin\UserController@billingDetails')->name('billingListingShow');
+    Route::get('donation-product-create/{donation_category_id}', 'Admin\DonationProductController@donationProductCreate')->name('donationProductCreate');
     Route::get('get-cities', 'Admin\CityController@getCities')->name('getCities');
     Route::get('get-related-districts/{city_id}', 'Admin\CityController@getDistricts')->name('getRelatedDistricts');
     Route::get('district-create/{city_id}', 'Admin\DistrictController@districtCreate')->name('districtCreate');
