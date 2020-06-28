@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class RequestCollection
@@ -34,7 +35,7 @@ class RequestCollection extends Model
 
     /**
      * Method: request
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function request()
     {
@@ -44,5 +45,15 @@ class RequestCollection extends Model
     public function materialCategory()
     {
         return $this->belongsTo(MaterialCategory::class, 'material_category_id');
+    }
+
+    /**
+     * Function user
+     *
+     * @return BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

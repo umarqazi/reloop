@@ -95,7 +95,7 @@
     </div>
     <div class="row m-0 cards-row">
         <div class="input-field col s3">
-            {{ Form::select('user_id[]', (['' => 'Select User'] + $allUsers), null, ['id' => 'user_id','required' => 'required']) }}
+            {{ Form::select('user_id[]', (['' => 'Select User', 'all' => 'All Users'] + $allUsers), null, ['id' => 'user_id','required' => 'required', 'class' => 'users-dropdown']) }}
             <label>Household Users</label>
             @if ($errors->has('user_id'))
                 <span class="help-block">
@@ -104,7 +104,7 @@
             @endif
         </div>
         <div class="input-field col s3">
-            {{ Form::select('organization_id[]', (['' => 'Select Organization'] + $allOrganizations), null, ['id' => 'organization_id','required' => 'required']) }}
+            {{ Form::select('organization_id[]', (['' => 'Select Organizations', 'all' => 'All Organization'] + $allOrganizations), null, ['id' => 'organization_id','required' => 'required', 'class' => 'users-dropdown']) }}
             <label>Organizations</label>
             @if ($errors->has('organization_id'))
                 <span class="help-block">
@@ -113,7 +113,7 @@
             @endif
         </div>
         <div class="input-field col s3">
-            {{ Form::select('driver_id[]', (['' => 'Select Driver'] + $allDrivers), null, ['id' => 'driver_id','required' => 'required']) }}
+            {{ Form::select('driver_id[]', (['' => 'Select Driver', 'all' => 'All Drivers'] + $allDrivers), null, ['id' => 'driver_id','required' => 'required', 'class' => 'users-dropdown']) }}
             <label>Drivers</label>
             @if ($errors->has('driver_id'))
                 <span class="help-block">
@@ -122,7 +122,7 @@
             @endif
         </div>
         <div class="input-field col s3">
-            {{ Form::select('supervisor_id[]', (['' => 'Select Supervisor'] + $allSupervisors), null, ['id' => 'supervisor_id','required' => 'required']) }}
+            {{ Form::select('supervisor_id[]', (['' => 'Select Supervisor', 'all' => 'All Supervisors'] + $allSupervisors), null, ['id' => 'supervisor_id','required' => 'required', 'class' => 'users-dropdown']) }}
             <label>Supervisors</label>
             @if ($errors->has('supervisor_id'))
                 <span class="help-block">

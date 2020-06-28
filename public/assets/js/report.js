@@ -352,3 +352,10 @@ $(document).on("change", "#user_id", function () {
     $("#organization_id").attr("disabled", !!$("#user_id").val())
         .material_select();
 });
+
+/**
+ * Refresh charts on change of any user type dropdown
+ */
+$(document).on("change", ".users-dropdown", function () {
+    drawCharts();
+});
