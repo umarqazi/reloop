@@ -104,7 +104,7 @@
             @endif
         </div>
         <div class="input-field col s3">
-            {{ Form::select('organization_id[]', (['' => 'Select Organizations', 'all' => 'All Organization'] + $allOrganizations), null, ['id' => 'organization_id','required' => 'required', 'class' => 'users-dropdown']) }}
+            {{ Form::select('organization_id[]', (['' => 'Select Organization', 'all' => 'All Organizations'] + $allOrganizations), null, ['id' => 'organization_id','required' => 'required', 'class' => 'users-dropdown']) }}
             <label>Organizations</label>
             @if ($errors->has('organization_id'))
                 <span class="help-block">
