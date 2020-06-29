@@ -103,3 +103,10 @@ Route::get('export-chart-data', 'Admin\ChartController@export');
 Route::get('/test', static function () {
    dd(now()->format('Y-m-d'), now()->addDays(- 0)->format('Y-m-d'));
 });
+Route::get('payment', 'Api\PaymentController@buyPlan');
+Route::get('handle-payment/success', function (){
+    dd('done');
+});
+Route::get('handle-payment/declined', function (){
+    dd('done');
+});
