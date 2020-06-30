@@ -62,6 +62,32 @@ class CollectionRequestService extends BaseService
     }
 
     /**
+     * Method: getOrdersForSupervisor
+     *
+     * @param $addresses
+     *
+     * @return mixed
+     */
+    public function getOrdersForSupervisor($addresses)
+    {
+        $orders = $this->collectionRequestRepo->getOrdersForSupervisor($addresses);
+        return $orders;
+    }
+
+    /**
+     * Method: totalAwardedPoints
+     *
+     * @param null $addresses
+     *
+     * @return mixed
+     */
+    public function totalAwardedPoints($addresses = null)
+    {
+        $totalAwardedPoints = $this->collectionRequestRepo->totalAwardedPoints($addresses);
+        return $totalAwardedPoints;
+    }
+
+    /**
      * @param $request
      * @param $id
      * @return mixed

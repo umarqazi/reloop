@@ -6,6 +6,7 @@ use App\Donation;
 use App\Forms\IForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
@@ -173,5 +174,18 @@ class DonationService extends BaseService
             true,
             $rewardsHistory
         );
+    }
+
+    /**
+     * Method: redeemedReloopDonations
+     *
+     * @param null $addresses
+     *
+     * @return mixed
+     */
+    public function redeemedReloopDonations($addresses = null)
+    {
+        $redeemedReloopDonations = $this->model->sum('redeemed_points');
+        return $redeemedReloopDonations;
     }
 }

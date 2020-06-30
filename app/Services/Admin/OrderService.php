@@ -52,6 +52,32 @@ class OrderService extends BaseService
     }
 
     /**
+     * Method: getOrdersForSupervisor
+     *
+     * @param $addresses
+     *
+     * @return mixed
+     */
+    public function getOrdersForSupervisor($addresses)
+    {
+        $orders = $this->orderRepo->getOrdersForSupervisor($addresses);
+        return $orders;
+    }
+
+    /**
+     * Method: redeemedReloopPoints
+     *
+     * @param null $addresses
+     *
+     * @return mixed
+     */
+    public function redeemedReloopPoints($addresses = null)
+    {
+        $redeemedReloopPoints = $this->orderRepo->redeemedReloopPoints($addresses);
+        return $redeemedReloopPoints;
+    }
+
+    /**
      * @param $request
      * @param $id
      * @return mixed

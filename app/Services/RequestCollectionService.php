@@ -179,44 +179,80 @@ class RequestCollectionService extends BaseService
             ->whereBetween('requests.collection_date', [$from, $till]);
 
         if (!empty($users['userId'])) {
-            $result->where('requests.user_id', $users['userId']);
+            if ($users['userId'] === 'all') {
+                $result->whereHas(
+                    'user',
+                    static function($user) {
+                        $user->where('user_type', IUserType::HOUSE_HOLD);
+                    }
+                );
+            } else {
+                $result->where('requests.user_id', $users['userId']);
+            }
         } elseif (!empty($users['organizationId'])) {
-            // Organization filter options
-            if ($filterOption === IChartFilterOption::ALL) { // For organization+household
-                $user = App::make(UserService::class)->findById($users['organizationId']);
+            if ($users['organizationId'] === 'all') {
+                $result->whereHas(
+                    'user',
+                    static function($user) {
+                        $user->where('user_type', IUserType::ORGANIZATION);
+                    }
+                );
+            } else {
+                // Organization filter options
+                if ($filterOption === IChartFilterOption::ALL) { // For organization+household
+                    $user = App::make(UserService::class)->findById($users['organizationId']);
 
-                $organizationUserIds = $user->organization->users()->pluck('id')->toArray();
+                    $organizationUserIds = $user->organization->users()->pluck('id')->toArray();
 
-                $result->whereIn('requests.user_id', $organizationUserIds);
-            } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
-                $user = App::make(UserService::class)->findById($users['organizationId']);
-                $organizationUserIds = $user->organization->users()
-                    ->where('user_type', '<>', IUserType::ORGANIZATION)
-                    ->pluck('id')->toArray();
+                    $result->whereIn('requests.user_id', $organizationUserIds);
+                } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
+                    $user = App::make(UserService::class)->findById($users['organizationId']);
+                    $organizationUserIds = $user->organization->users()
+                        ->where('user_type', '<>', IUserType::ORGANIZATION)
+                        ->pluck('id')->toArray();
 
-                $result->whereIn('requests.user_id', $organizationUserIds);
-            } elseif ($filterOption === IChartFilterOption::ADDRESS) { // For Household
-                /* @var Address $address */
-                $address = App::make(AddressService::class)->findById($addressId);
+                    $result->whereIn('requests.user_id', $organizationUserIds);
+                } elseif ($filterOption === IChartFilterOption::ADDRESS) { // For Household
+                    /* @var Address $address */
+                    $address = App::make(AddressService::class)->findById($addressId);
 
-                if (!$address) {
-                    abort('404', 'Address not found');
+                    if (!$address) {
+                        abort('404', 'Address not found');
+                    }
+
+                    $result->where('requests.user_id', $users['organizationId'])
+                        ->where('city_id', $address->city_id)
+                        ->where('district_id', $address->district_id);
+                } else { // For organization only
+                    $result->where('requests.user_id', $users['organizationId']);
                 }
-
-                $result->where('requests.user_id', $users['organizationId'])
-                    ->where('city_id', $address->city_id)
-                    ->where('district_id', $address->district_id);
-            } else { // For organization only
-                $result->where('requests.user_id', $users['organizationId']);
             }
         }
 
         if (!empty($users['driverId'])) {
-            $result->where('requests.driver_id', $users['driverId']);
+            if ($users['driverId'] === 'all') {
+                $result->whereHas(
+                    'user',
+                    static function($user) {
+                        $user->where('user_type', IUserType::DRIVER);
+                    }
+                );
+            } else {
+                $result->where('requests.driver_id', $users['driverId']);
+            }
         }
 
         if (!empty($users['supervisorId'])) {
-            $result->where('requests.supervisor_id', $users['supervisorId']);
+            if ($users['supervisorId'] === 'all') {
+                $result->whereHas(
+                    'user',
+                    static function($user) {
+                        $user->where('user_type', IUserType::SUPERVISOR);
+                    }
+                );
+            } else {
+                $result->where('requests.supervisor_id', $users['supervisorId']);
+            }
         }
 
         return $result->groupBy(DB::raw("$groupBy(requests.collection_date)"))
@@ -243,45 +279,79 @@ class RequestCollectionService extends BaseService
                     ->where('confirm', true);
 
                 if (!empty($users['userId'])) {
-                    $query->where('requests.user_id', $users['userId']);
-                } elseif (!empty($users['organizationId'])) {
-                    // Organization filter options
-                    if ($filterOption === IChartFilterOption::ALL) { // For organization+household
-                        $user = App::make(UserService::class)->findById($users['organizationId']);
-                        $organizationUserIds = $user->organization->users()->pluck('id')->toArray();
-
-                        $query->whereIn('requests.user_id', $organizationUserIds);
-                    } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
-                        $user = App::make(UserService::class)->findById($users['organizationId']);
-                        $organizationUserIds = $user->organization->users()
-                            ->where('user_type', '<>', IUserType::ORGANIZATION)
-                            ->pluck('id')->toArray();
-
-                        $query->whereIn('requests.user_id', $organizationUserIds);
-                    } elseif ($filterOption === IChartFilterOption::ADDRESS) { // For Household
-                        /* @var Address $address */
-                        $address = App::make(AddressService::class)->findById($addressId);
-
-                        if (!$address) {
-                            abort('404', 'Address not found');
-                        }
-
-                        $query->where('requests.user_id', $users['organizationId'])
-                            ->where('city_id', $address->city_id)
-                            ->where('district_id', $address->district_id);
-                    } else { // For organization only
-                        $query->where('requests.user_id', $users['organizationId']);
+                    if ($users['userId'] === 'all') {
+                        $query->whereHas(
+                            'user',
+                            static function($user) {
+                                $user->where('user_type', IUserType::HOUSE_HOLD);
+                            }
+                        );
+                    } else {
+                        $query->where('requests.user_id', $users['userId']);
                     }
+                } elseif (!empty($users['organizationId'])) {
+                    if ($users['organizationId'] === 'all') {
+                        $query->whereHas(
+                            'user',
+                            static function($user) {
+                                $user->where('user_type', IUserType::ORGANIZATION);
+                            }
+                        );
+                    } else {
+                        // Organization filter options
+                        if ($filterOption === IChartFilterOption::ALL) { // For organization+household
+                            $user = App::make(UserService::class)->findById($users['organizationId']);
+                            $organizationUserIds = $user->organization->users()->pluck('id')->toArray();
 
-                    $query->where('requests.user_id', $users['organizationId']);
+                            $query->whereIn('requests.user_id', $organizationUserIds);
+                        } elseif ($filterOption === IChartFilterOption::HOUSEHOLD) { // For Household
+                            $user = App::make(UserService::class)->findById($users['organizationId']);
+                            $organizationUserIds = $user->organization->users()
+                                ->where('user_type', '<>', IUserType::ORGANIZATION)
+                                ->pluck('id')->toArray();
+
+                            $query->whereIn('requests.user_id', $organizationUserIds);
+                        } elseif ($filterOption === IChartFilterOption::ADDRESS) { // For Household
+                            /* @var Address $address */
+                            $address = App::make(AddressService::class)->findById($addressId);
+
+                            if (!$address) {
+                                abort('404', 'Address not found');
+                            }
+
+                            $query->where('requests.user_id', $users['organizationId'])
+                                ->where('city_id', $address->city_id)
+                                ->where('district_id', $address->district_id);
+                        } else { // For organization only
+                            $query->where('requests.user_id', $users['organizationId']);
+                        }
+                    }
                 }
 
                 if (!empty($users['driverId'])) {
-                    $query->where('requests.driver_id', $users['driverId']);
+                    if ($users['driverId'] === 'all') {
+                        $query->whereHas(
+                            'user',
+                            static function($user) {
+                                $user->where('user_type', IUserType::DRIVER);
+                            }
+                        );
+                    } else {
+                        $query->where('requests.driver_id', $users['driverId']);
+                    }
                 }
 
                 if (!empty($users['supervisorId'])) {
-                    $query->where('requests.supervisor_id', $users['supervisorId']);
+                    if ($users['supervisorId'] === 'all') {
+                        $query->whereHas(
+                            'user',
+                            static function($user) {
+                                $user->where('user_type', IUserType::SUPERVISOR);
+                            }
+                        );
+                    } else {
+                        $query->where('requests.supervisor_id', $users['supervisorId']);
+                    }
                 }
             }
         )->select(['category_name', DB::raw("SUM(weight) as total_weight")])
@@ -309,6 +379,30 @@ class RequestCollectionService extends BaseService
             'request', function ($query){
             return $query->where('confirm', true);
         })->sum('weight');
+    }
+
+    /**
+     * Method: calculateSupervisorWeight
+     *
+     * @param $cityId
+     * @param $districtId
+     *
+     * @return mixed
+     */
+    public function calculateSupervisorWeight($addresses)
+    {
+        foreach ($addresses as $address){
+
+            $cityId = $address->city_id;
+            $districtId = $address->district_id;
+            $requestWeight[] = $this->model->whereHas(
+                'request', function ($query) use ($cityId, $districtId) {
+                return $query->where('confirm', true)
+                    ->where('city_id', $cityId)
+                    ->where('district_id', $districtId);
+            })->sum('weight');
+        }
+        return $requestWeight;
     }
 
     /**
