@@ -382,6 +382,30 @@ class RequestCollectionService extends BaseService
     }
 
     /**
+     * Method: calculateSupervisorWeight
+     *
+     * @param $cityId
+     * @param $districtId
+     *
+     * @return mixed
+     */
+    public function calculateSupervisorWeight($addresses)
+    {
+        foreach ($addresses as $address){
+
+            $cityId = $address->city_id;
+            $districtId = $address->district_id;
+            $requestWeight[] = $this->model->whereHas(
+                'request', function ($query) use ($cityId, $districtId) {
+                return $query->where('confirm', true)
+                    ->where('city_id', $cityId)
+                    ->where('district_id', $districtId);
+            })->sum('weight');
+        }
+        return $requestWeight;
+    }
+
+    /**
      * Method: calculateHouseholdsWeight
      *
      * @param $userId
