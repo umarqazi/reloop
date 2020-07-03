@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('environmental-stats', 'Admin\EnvironmentalStatsController');
     Route::resource('donation-categories', 'Admin\DonationCategoryController');
     Route::resource('donation-products', 'Admin\DonationProductController');
+    Route::resource('main-category', 'Admin\MainCategoryController');
 
     Route::get('billing-listing', 'Admin\UserController@billings')->name('billing-listing');
     Route::get('billing-listing/{billing_id}', 'Admin\UserController@billingDetails')->name('billingListingShow');
@@ -82,6 +83,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/all-settings/export', 'Admin\SettingController@export')->name('settings.export');
     Route::get('/contactUs/export', 'Admin\ContactUsController@export')->name('contact-us.export');
     Route::get('/city/export', 'Admin\CityController@export')->name('cities.export');
+    Route::get('/main-categories/export', 'Admin\MainCategoryController@export')->name('main-categories.export');
 
 
     //supervisor routes
