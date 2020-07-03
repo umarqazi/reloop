@@ -113,6 +113,12 @@
                         <div class="collapsible-body">
                             <ul>
                                 <li>
+                                    <a href="{{ route('main-category.index') }}">
+                                        <i class="material-icons">keyboard_arrow_right</i>
+                                        <span class="nav-text">Main Categories</span>
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="{{ route('material-category.index') }}">
                                         <i class="material-icons">keyboard_arrow_right</i>
                                         <span class="nav-text">Recycling Categories</span>
