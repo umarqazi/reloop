@@ -371,5 +371,11 @@ class RequestService extends BaseService
                 null
             );
         }
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_ORDER_ID'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
     }
 }

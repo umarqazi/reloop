@@ -19,18 +19,21 @@ class CancelOrderForm extends BaseForm
 {
 
     public $order_id;
+    public $order_type;
 
     public function toArray()
     {
         return [
-            'order_id' => $this->order_id
+            'order_id'    => $this->order_id,
+            'order_type'  => $this->order_type,
         ];
     }
 
     public function rules()
     {
         return [
-            'order_id' => 'required'
+            'order_id'    => 'required',
+            'order_type'  => 'required',
         ];
     }
 }
