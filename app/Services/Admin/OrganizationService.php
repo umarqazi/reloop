@@ -152,6 +152,7 @@ class OrganizationService extends BaseService
                         'no_of_employees' => $org['number_of_employees'],
                         'no_of_branches' => $org['number_of_branches'],
                         'sector_id' => $sector ? $sector->id : null,
+                        'org_external_id' => 'ORG'.rand(000000,999999)
                     );
                     $organization = $this->create($organizationData);
 

@@ -153,7 +153,7 @@ return[
     'CONTACT_US_ERROR'                      => 'Error Occurred while Sending Message',
 
     'COLLECTION_SUCCESSFUL'                 => 'Collection request successful!',
-    'CANCEL_REQUEST'                        => 'Your request has been cancelled successfully!',
+    'CANCEL_REQUEST'                        => 'Your order has been cancelled successfully!',
     'COLLECTION_REQUEST_ASSIGNED'           => 'Collection Request assigned successfully!',
     'COLLECTION_REQUEST_ASSIGNMENT_FAIL'    => 'Something went wrong in assigning Collection Request!',
 
