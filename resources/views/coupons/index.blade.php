@@ -57,7 +57,10 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Code</th>
-                                <th>Type</th>
+                                <th>Max Usage Per User</th>
+                                <th>Apply on User Type</th>
+                                <th>Apply on Category Type</th>
+                                <th>Coupon Type</th>
                                 <th>Amount</th>
                                 <th>Actions</th>
                             </tr>
@@ -67,6 +70,9 @@
                             <tr>
                                 <td>{{ $coupon->id }}</td>
                                 <td>{{ $coupon->code }}</td>
+                                <td>{{ $coupon->max_usage_per_user }}</td>
+                                <td>{{ $coupon->coupon_user_type == \App\Services\IUserType::HOUSE_HOLD ? 'Household' : 'Organization' }}</td>
+                                <td>{{ $coupon->coupon_category_type == \App\Services\ICategoryType::SUBSCRIPTION ? 'Service' : 'Product' }}</td>
                                 <td>{{ $coupon->type == \App\Services\ICouponType::FIXED ? 'Fixed' : 'Percentage' }}</td>
                                 <td>{{ $coupon->amount }}</td>
                                 <td>

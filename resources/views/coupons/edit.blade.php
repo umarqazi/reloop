@@ -75,8 +75,8 @@
                     </span>
                     @endif
                 </div>
-                <div class="input-field col s4 list_of_users_wrapper @if($coupon->apply_for_user == 1) show-wrapper @endif">
-                    {{ Form::select('list_user_id', (['' => 'Choose User']), null, ['id' => 'list_user_id']) }}
+                <div class="input-field col s4 list_of_users_wrapper {{ ($coupon->apply_for_user == \App\Services\IApplyForUser::APPLY_ON_USER_TYPE) ? 'hide-wrapper' : '' }}">
+                    {{ Form::select('list_user_id', ($users), $specificUser->id ?? null, ['id' => 'list_user_id']) }}
                     <label>Users</label>
                 </div>
             </div>
@@ -107,8 +107,8 @@
                     </span>
                     @endif
                 </div>
-                <div class="input-field col s4 list_of_category_wrapper">
-                    {{ Form::select('list_category_id', (['' => 'Choose Category']), null, ['id' => 'list_category_id']) }}
+                <div class="input-field col s4 list_of_category_wrapper {{ ($coupon->apply_for_category == \App\Services\IApplyForCategory::APPLY_ON_CATEGORY_TYPE ) ? 'hide-wrapper' : '' }}">
+                    {{ Form::select('list_category_id', ($categories), $specificCategory->id ?? null, ['id' => 'list_category_id']) }}
                     <label>Categories</label>
                 </div>
             </div>

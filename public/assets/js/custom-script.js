@@ -91,7 +91,7 @@ $(document).ready(function () {
     });
 
 
-    $('.show-wrapper').show();
+    $('.hide-wrapper').hide();
     //
     $(document).on('change', 'select[name="apply_for_user"]', function() {
         let coupon_for = $(this).val();
