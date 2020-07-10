@@ -7,11 +7,11 @@
                 <div class="container">
                     <div class="row">
                         <div class="col s10 m6 l6">
-                            <h5 class="breadcrumbs-title">Settings</h5>
+                            <h5 class="breadcrumbs-title">Conversation Factors</h5>
                             <ol class="breadcrumbs">
                                 <li><a href="{{route('home')}}">Dashboard</a>
                                 </li>
-                                <li class="active">Settings</li>
+                                <li class="active">Conversation Factors</li>
                             </ol>
                         </div>
                     </div>

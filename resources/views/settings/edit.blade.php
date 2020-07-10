@@ -9,11 +9,11 @@
         <div class="container">
             <div class="row">
                 <div class="col s10 m6 l6">
-                    <h5 class="breadcrumbs-title">Update Settings</h5>
+                    <h5 class="breadcrumbs-title">Update Conversation Factor</h5>
                     <ol class="breadcrumbs">
                         <li><a href="{{route('home')}}">Dashboard</a>
                         </li>
-                        <li><a href="{{route('settings.index')}}">Settings</a>
+                        <li><a href="{{route('settings.index')}}">Conversation Factors</a>
                         </li>
                         <li class="active">Update</li>
                     </ol>

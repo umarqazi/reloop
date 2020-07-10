@@ -180,16 +180,16 @@ class CouponService extends BaseService
      * @return mixed
      */
     private function validateCategory($findCoupon, $couponForm){
+        $categoryId = null;
         foreach ($couponForm->category as $category){
 
             if($findCoupon->apply_for_category == IApplyForCategory::APPLY_ON_CATEGORY_TYPE){
                 if($category['type'] == $findCoupon->coupon_category_type){
-                    $categoryId['type'][] = $category['type'];
-                    continue;
+                    $categoryId['type'][] = $findCoupon->coupon_category_type;
                 }
             } elseif($findCoupon->apply_for_category == IApplyForCategory::APPLY_ON_SPECIFIC_CATEGORY){
                 if($category['id'] == $findCoupon->list_category_id){
-                    $categoryId['id'][] = $category['id'];
+                    $categoryId['id'][] = $findCoupon->list_category_id;
                 }
             }
         }
