@@ -33,27 +33,13 @@ class CouponController extends Controller
     {
         $couponForm = new CouponForm();
         $couponForm->loadFromArray($request->all());
-        $couponVerification = App::make(CouponService::class)->couponVerification($couponForm->coupon);
-        if (!empty($couponVerification))
-        {
-            return ResponseHelper::jsonResponse(
-                Config::get('constants.COUPON_VERIFICATION'),
-                IResponseHelperInterface::SUCCESS_RESPONSE,
-                true,
-                $couponVerification
-            );
-        }
-        $errorMessage = [
-            "invalid_coupon" => [
-                Config::get('constants.COUPON_FAIL')
-            ]
-        ];
+        $couponVerification = App::make(CouponService::class)->couponVerification($couponForm);
 
         return ResponseHelper::jsonResponse(
-            Config::get('constants.COUPON_FAIL'),
-            IResponseHelperInterface::FAIL_RESPONSE,
-            false,
-            $errorMessage
+            $couponVerification['message'],
+            $couponVerification['code'],
+            $couponVerification['status'],
+            $couponVerification['data']
         );
     }
 }
