@@ -91,6 +91,82 @@ $(document).ready(function () {
     });
 
 
+    $('.show-wrapper').show();
+    //
+    $(document).on('change', 'select[name="apply_for_user"]', function() {
+        let coupon_for = $(this).val();
+        if (coupon_for == 1){
+
+            $(".list_of_users_wrapper").hide();
+        } else {
+            $(".list_of_users_wrapper").show();
+        }
+    });
+
+    $(document).on('change', 'select[name="apply_for_category"]', function() {
+        let coupon_for_category = $(this).val();
+        if (coupon_for_category == 1){
+
+            $(".list_of_category_wrapper").hide();
+        } else {
+            $(".list_of_category_wrapper").show();
+        }
+    });
+
+    // Get users based upon user_type
+    $(document).on('change', 'select[name="coupon_user_type"]', function() {
+        let coupon_user_type = $(this).val();
+        let select = $(this).closest('.coupon-wrapper').find('select[name="list_user_id"]');
+        select.empty();
+        if (coupon_user_type != '') {
+
+            //ajax call to append related districts
+            $.ajax({
+                type: "get",
+                url: "/get-users/" + coupon_user_type,
+                success: function (res) {
+                    if (res) {
+                        select.append('<option value="" disabled selected >Choose User</option>');
+                        $.each(res, function (key, value) {
+                            select.append('<option value="' + key + '">' + value + '</option>');
+                        });
+                        select.material_select();
+                    }
+                }
+            });
+        } else {
+            select.append('<option value="" disabled selected >Choose User</option>');
+            select.material_select();
+        }
+    });
+
+    // Get main categories based upon category type
+    $(document).on('change', 'select[name="coupon_category_type"]', function() {
+        let coupon_category_type = $(this).val();
+        let select = $(this).closest('.coupon-category-wrapper').find('select[name="list_category_id"]');
+        select.empty();
+        if (coupon_category_type != '') {
+
+            //ajax call to append related districts
+            $.ajax({
+                type: "get",
+                url: "/get-categories/" + coupon_category_type,
+                success: function (res) {
+                    if (res) {
+                        select.append('<option value="" disabled selected >Choose Category</option>');
+                        $.each(res, function (key, value) {
+                            select.append('<option value="' + key + '">' + value + '</option>');
+                        });
+                        select.material_select();
+                    }
+                }
+            });
+        } else {
+            select.append('<option value="" disabled selected >Choose Category</option>');
+            select.material_select();
+        }
+    });
+
 
 
     $('#driver_id_div').append('<select name="driver_id"  id="driver_id"  required>\n' +

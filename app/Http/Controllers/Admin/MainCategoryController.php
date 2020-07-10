@@ -145,6 +145,18 @@ class MainCategoryController extends Controller
     }
 
     /**
+     * Method: getCategories
+     *
+     * @param $categoryType
+     *
+     * @return mixed
+     */
+    public function getCategories($categoryType)
+    {
+        return $this->categoryService->getCategory($categoryType)->pluck('name', 'id')->toArray();
+    }
+
+    /**
      * export list
      */
     public function export(){

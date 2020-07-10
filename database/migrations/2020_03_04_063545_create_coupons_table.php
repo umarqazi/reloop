@@ -15,9 +15,16 @@ class CreateCouponsTable extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code');
+            $table->string('code')->unique();
             $table->string('type');
             $table->integer('amount');
+            $table->integer('max_usage_per_user');
+            $table->enum('apply_for_user', ['1', '2'])->default('1');
+            $table->enum('coupon_user_type', ['1', '2'])->default('1');
+            $table->integer('list_user_id')->nullable();
+            $table->enum('apply_for_category', ['1', '2'])->default('1');
+            $table->enum('coupon_category_type', ['1', '2'])->default('1');
+            $table->integer('list_category_id')->nullable();
             $table->timestamps();
         });
     }

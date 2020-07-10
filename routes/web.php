@@ -61,6 +61,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/user-donations', 'Admin\UserController@userDonation')->name('user-donation');
     Route::put('/assign-request/{id}', 'Admin\CollectionRequestController@assignOrder')->name('assign.request');
     Route::put('/confirm-request/{id}', 'Admin\CollectionRequestController@confirmRequest')->name('confirm.request');
+    Route::get('get-users/{user_type}', 'Admin\UserController@getUsers')->name('get-users');
+    Route::get('get-categories/{category_type}', 'Admin\MainCategoryController@getCategories')->name('get-categories');
 
     //export list routes
     Route::get('/users/export', 'Admin\UserController@export')->name('user.export');
