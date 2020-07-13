@@ -1,7 +1,13 @@
 <header id="header" class="page-topbar mian-header-content">
     <!-- start header nav-->
     <div class="navbar-fixed">
-        <nav class="navbar-color primary-bg-color">
+        <nav class="navbar-color primary-bg-color custom-nav-header">
+            <div class="navbar-btn"></div>
+            <div class="custom-brand-sidebar">
+                <a href="{{route('home')}}">
+                    <img src="/assets/images/logo/reloop.png" alt="re loop logo">
+                </a>
+            </div>
             <div class="nav-wrapper">
                 <ul class="right hide-on-med-and-down">
                     <li>
@@ -13,7 +19,7 @@
                         <a href="javascript:void(0);" class="waves-effect waves-block waves-light profile-button" data-activates="profile-dropdown">
                   <span class="avatar-status avatar-online">
                     <img src="/assets/images/avatar/avatar-7.png" alt="avatar">
-                    <i></i>
+                    <i class="green-dot"></i>
                   </span>
                         </a>
                     </li>
