@@ -52,7 +52,7 @@
                         <a class="btn btn-primary" href="{{ route('material-categories.export') }}">Export</a>
                     </p>
                     <div class="col s12">
-                        <table id="data-table-simple" class="responsive-table display" cellspacing="0">
+                        <table id="data-table-simple" class="display" cellspacing="0">
                             <thead>
                             <tr>
                                 <th> ID</th>

@@ -5,8 +5,14 @@
 $(document).ready(function () {
 
     /**
-     * author: Bilal Saqib
+     * author: Faisal Raza
      */
+
+    // Toggle navbar events
+    $('.navbar-btn').on('click', function(){
+        $('body').toggleClass('custom-sidebar');
+        $('.navbar-btn').toggleClass('rotate-btn');
+    });
 
     //alert for inactive
     $("select[name='status']").on('change', function() {

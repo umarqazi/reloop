@@ -1,14 +1,4 @@
 <aside id="left-sidebar-nav" class="nav-expanded nav-lock nav-collapsible left-sidebar-content">
-    <div class="brand-sidebar">
-        <h1 class="logo-wrapper">
-            <a href="{{route('home')}}" class="brand-logo darken-1">
-                <img src="/assets/images/logo/reloop.png" alt="re loop logo">
-            </a>
-            <a href="#" class="navbar-toggler">
-                <i class="material-icons">radio_button_checked</i>
-            </a>
-        </h1>
-    </div>
     @if(Auth::user()->hasRole('admin'))
         <ul id="slide-out" class="side-nav fixed leftside-navigation">
             <li class="no-padding">
