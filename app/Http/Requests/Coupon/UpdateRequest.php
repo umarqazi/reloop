@@ -32,6 +32,7 @@ class UpdateRequest extends FormRequest
             'apply_for_category'   => 'required',
             'coupon_category_type'   => 'required',
             'max_usage_per_user'   => 'required',
+            'max_usage_limit'   => 'required',
         ];
     }
 }
