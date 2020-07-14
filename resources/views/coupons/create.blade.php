@@ -63,7 +63,7 @@
                     @endif
                 </div>
                 <div class="input-field col s4">
-                    {{ Form::select('coupon_user_type', (['' => 'Choose User Type', '1' => 'Household', '2' => 'Organization']), null, ['id' => 'coupon_user_type','required' => 'required']) }}
+                    {{ Form::select('coupon_user_type', (['' => 'Choose User Type', '1' => 'Household', '2' => 'Organization', '3' => 'All']), null, ['id' => 'coupon_user_type','required' => 'required']) }}
                     <label>User Type</label>
                     @if ($errors->has('coupon_user_type'))
                         <span class="help-block">
@@ -91,7 +91,7 @@
                     @endif
                 </div>
                 <div class="input-field col s4">
-                    {{ Form::select('coupon_category_type', (['' => 'Choose Category Type', '1' => 'Service', '2' => 'Product']), null, ['id' => 'coupon_category_type','required' => 'required']) }}
+                    {{ Form::select('coupon_category_type', (['' => 'Choose Category Type', '1' => 'Service', '2' => 'Product', '3' => 'All']), null, ['id' => 'coupon_category_type','required' => 'required']) }}
                     <label>Category Type</label>
                     @if ($errors->has('coupon_category_type'))
                         <span class="help-block">
@@ -145,6 +145,17 @@
                         <span class="help-block">
                         <strong class="red-text">{{ $errors->first('amount') }}</strong>
                     </span>
+                    @endif
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="input-field col s6">
+                    <input id="max_usage_limit" type="number" max="99999" min="1" name="max_usage_limit" required>
+                    <label>Max Usage Limit</label>
+                    @if ($errors->has('max_usage_limit'))
+                        <span class="help-block">
+                            <strong class="red-text">{{ $errors->first('max_usage_limit') }}</strong>
+                        </span>
                     @endif
                 </div>
             </div>

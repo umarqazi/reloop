@@ -67,12 +67,27 @@
                             </thead>
                             <tbody>
                             @foreach($coupons as $coupon)
+                                @if($coupon->coupon_user_type == \App\Services\IUserType::HOUSE_HOLD)
+                                    @php($coupon_user_type = 'Household')
+                                @elseif($coupon->coupon_user_type == \App\Services\IUserType::ORGANIZATION)
+                                    @php($coupon_user_type = 'Organization')
+                                @else
+                                    @php($coupon_user_type = 'All')
+                                @endif
+
+                                @if($coupon->coupon_category_type == \App\Services\ICategoryType::SUBSCRIPTION)
+                                    @php($coupon_category_type = 'Service')
+                                @elseif($coupon->coupon_category_type == \App\Services\ICategoryType::PRODUCT)
+                                    @php($coupon_category_type = 'Product')
+                                @else
+                                    @php($coupon_category_type = 'All')
+                                @endif
                             <tr>
                                 <td>{{ $coupon->id }}</td>
                                 <td>{{ $coupon->code }}</td>
                                 <td>{{ $coupon->max_usage_per_user }}</td>
-                                <td>{{ $coupon->coupon_user_type == \App\Services\IUserType::HOUSE_HOLD ? 'Household' : 'Organization' }}</td>
-                                <td>{{ $coupon->coupon_category_type == \App\Services\ICategoryType::SUBSCRIPTION ? 'Service' : 'Product' }}</td>
+                                <td>{{ $coupon_user_type }}</td>
+                                <td>{{ $coupon_category_type }}</td>
                                 <td>{{ $coupon->type == \App\Services\ICouponType::FIXED ? 'Fixed' : 'Percentage' }}</td>
                                 <td>{{ $coupon->amount }}</td>
                                 <td>

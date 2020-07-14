@@ -56,9 +56,12 @@ class CouponUsageService extends BaseService
      *
      * @return mixed
      */
-    public function checkCouponUsage($couponId, $userId)
+    public function checkCouponUsage($couponId, $userId = null)
     {
-        return $this->model->where(['coupon_id' => $couponId, 'user_id' => $userId])->first();
+        if($userId){
+            return $this->model->where(['coupon_id' => $couponId, 'user_id' => $userId])->first();
+        }
+        return $this->model->where(['coupon_id' => $couponId])->get();
     }
 
     /**
