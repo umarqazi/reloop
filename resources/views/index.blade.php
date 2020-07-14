@@ -151,9 +151,15 @@
         <div class="col-md-4 col-sm-6 col-12">
             <div class="inner-wrapper">
                 @if($authUser->hasRole('admin'))
-                    <h5>{{ ($dashboard->total_co2_emission_reduced) ?? 0 }} Kg</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="co2-update">{{ ($dashboard->total_co2_emission_reduced) ?? 0 }}</h5>
+                        <p>Kg</p>
+                    </div>
                 @else
-                    <h5>{{ ($dashboard->co2_emission_reduced) ?? 0 }} Kg</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="co2-update">{{ ($dashboard->co2_emission_reduced) ?? 0 }}</h5>
+                        <p>Kg</p>
+                    </div>
                 @endif
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>
@@ -164,9 +170,15 @@
         <div class="col-md-4 col-sm-6 col-12">
             <div class="inner-wrapper">
                 @if($authUser->hasRole('admin'))
-                    <h5>{{ ($dashboard->total_trees_saved) ?? 0 }} trees</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="trees-update">{{ ($dashboard->total_trees_saved) ?? 0 }}</h5>
+                        <p>trees</p>
+                    </div>
                 @else
-                    <h5>{{ ($dashboard->trees_saved) ?? 0 }} trees</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="trees-update">{{ ($dashboard->trees_saved) ?? 0 }}</h5>
+                        <p>trees</p>
+                    </div>
                 @endif
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>
@@ -177,9 +189,15 @@
         <div class="col-md-4 col-sm-6 col-12">
             <div class="inner-wrapper">
                 @if($authUser->hasRole('admin'))
-                    <h5>{{ ($dashboard->total_oil_saved) ?? 0 }} ltrs</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="oil-update">{{ ($dashboard->total_oil_saved) ?? 0 }}</h5>
+                        <p>ltrs</p>
+                    </div>
                 @else
-                    <h5>{{ ($dashboard->oil_saved) ?? 0 }} ltrs</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="oil-update">{{ ($dashboard->oil_saved) ?? 0 }}</h5>
+                        <p>ltrs</p>
+                    </div>
                 @endif
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>
@@ -190,9 +208,15 @@
         <div class="col-md-4 col-sm-6 col-12">
             <div class="inner-wrapper">
                 @if($authUser->hasRole('admin'))
-                    <h5>{{ ($dashboard->total_electricity_saved) ?? 0 }} Kwh</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="electricity-update">{{ ($dashboard->total_electricity_saved) ?? 0 }}</h5>
+                        <p>Kwh</p>
+                    </div>
                 @else
-                    <h5>{{ ($dashboard->electricity_saved) ?? 0 }} Kwh</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="electricity-update">{{ ($dashboard->electricity_saved) ?? 0 }}</h5>
+                        <p>Kwh</p>
+                    </div>
                 @endif
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>
@@ -203,9 +227,15 @@
         <div class="col-md-4 col-sm-6 col-12">
             <div class="inner-wrapper">
                 @if($authUser->hasRole('admin'))
-                    <h5>{{ ($dashboard->total_water_saved) ?? 0 }} ltrs</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="water-update">{{ ($dashboard->total_water_saved) ?? 0 }}</h5>
+                        <p>ltrs</p>
+                    </div>
                 @else
-                    <h5>{{ ($dashboard->water_saved) ?? 0 }} ltrs</h5>
+                    <div class="unit-wrapper">
+                        <h5 class="water-update">{{ ($dashboard->water_saved) ?? 0 }}</h5>
+                        <p>ltrs</p>
+                    </div>
                 @endif
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>
@@ -216,9 +246,15 @@
         <div class="col-md-4 col-sm-6 col-12">
             <div class="inner-wrapper">
                 @if($authUser->hasRole('admin'))
-                    <h5>{{ ($dashboard->total_landfill_space_saved) ?? 0 }} ft<sup>3</sup></h5>
+                    <div class="unit-wrapper">
+                        <h5 class="land-update">{{ ($dashboard->total_landfill_space_saved) ?? 0 }}</h5>
+                        <p>ft<sup>3</sup></p>
+                    </div>
                 @else
-                    <h5>{{ ($dashboard->landfill_space_saved) ?? 0 }} ft<sup>3</sup></h5>
+                    <div class="unit-wrapper">
+                        <h5 class="land-update">{{ ($dashboard->landfill_space_saved) ?? 0 }}</h5>
+                        <p>ft<sup>3</sup></p>
+                    </div>
                 @endif
                 <div class="icon-wrapper">
                     <span><i class="fas fa-shopping-cart"></i></span>

@@ -295,9 +295,22 @@ const drawCharts = function (date = null) {
             drawBarChart(currentFilter, res.bar);
 
             drawPieChart(res.pie);
+
+            if (res.stats != null){
+                updateUserStats(res.stats);
+            }
         });
     }, 100);
 };
+
+const updateUserStats = function(statpoints = null){
+    $('.co2-update').text((statpoints.co2_emission_reduced != null) ? statpoints.co2_emission_reduced : 0);
+    $('.trees-update').text((statpoints.trees_saved != null) ? statpoints.trees_saved : 0);
+    $('.oil-update').text((statpoints.oil_saved != null) ? statpoints.oil_saved : 0);
+    $('.electricity-update').text((statpoints.electricity_saved != null) ? statpoints.electricity_saved : 0);
+    $('.water-update').text((statpoints.water_saved != null) ? statpoints.water_saved : 0);
+    $('.land-update').text((statpoints.landfill_space_saved != null) ? statpoints.landfill_space_saved : 0);
+}
 
 /**
  * Navigation Handler
@@ -351,9 +364,33 @@ $(document).on('click', '#export-chart-btn', function () {
 $(document).on("change", "#user_id", function () {
     $("#organization_id").attr("disabled", !!$("#user_id").val())
         .material_select();
+    $("#driver_id").attr("disabled", !!$("#user_id").val())
+        .material_select();
+    $("#supervisor_id").attr("disabled", !!$("#user_id").val())
+        .material_select();
 });
 $(document).on("change", "#organization_id", function () {
     $("#user_id").attr("disabled", !!$("#organization_id").val())
+        .material_select();
+    $("#driver_id").attr("disabled", !!$("#organization_id").val())
+        .material_select();
+    $("#supervisor_id").attr("disabled", !!$("#organization_id").val())
+        .material_select();
+});
+$(document).on("change", "#driver_id", function () {
+    $("#user_id").attr("disabled", !!$("#driver_id").val())
+        .material_select();
+    $("#organization_id").attr("disabled", !!$("#driver_id").val())
+        .material_select();
+    $("#supervisor_id").attr("disabled", !!$("#driver_id").val())
+        .material_select();
+});
+$(document).on("change", "#supervisor_id", function () {
+    $("#user_id").attr("disabled", !!$("#supervisor_id").val())
+        .material_select();
+    $("#driver_id").attr("disabled", !!$("#supervisor_id").val())
+        .material_select();
+    $("#organization_id").attr("disabled", !!$("#supervisor_id").val())
         .material_select();
 });
 

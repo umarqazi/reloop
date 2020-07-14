@@ -77,6 +77,18 @@ class UserService extends BaseService
     }
 
     /**
+     * Method: findByType
+     *
+     * @param $type
+     *
+     * @return mixed
+     */
+    public function findByType($type)
+    {
+        return $this->model->where(['user_type' => $type, 'status' => true])->get();
+    }
+
+    /**
      * @inheritDoc
      */
     public function remove($id)

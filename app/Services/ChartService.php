@@ -155,7 +155,7 @@ class ChartService
             ];
 
             // Filter weight record of iterated date.
-            $weight = $weightByWeek->filter(static function ($weight, $date) use ($startDate) {
+            $weight = $weightByWeek['weight']->filter(static function ($weight, $date) use ($startDate) {
                 return $startDate->isSameDay(ResponseHelper::carbon($date));
             });
 
@@ -170,6 +170,7 @@ class ChartService
         // Pie Chart data
         $data['pie']['labels'] = $weightByCat->pluck('category_name')->toArray();
         $data['pie']['data'] = $weightByCat->pluck('total_weight')->toArray();
+        $data['stats'] = $weightByWeek['stats'];
 
         return $data;
     }
@@ -243,7 +244,7 @@ class ChartService
             ];
 
             // Filter weight record of iterated date.
-            $weight = $weightByWeek->filter(static function ($weight, $date) use ($startDate) {
+            $weight = $weightByWeek['weight']->filter(static function ($weight, $date) use ($startDate) {
                 return $startDate->format('W') === ResponseHelper::carbon($date)->format('W');
             });
 
@@ -258,6 +259,7 @@ class ChartService
         // Pie Chart data
         $data['pie']['labels'] = $weightByCat->pluck('category_name')->toArray();
         $data['pie']['data'] = $weightByCat->pluck('total_weight')->toArray();
+        $data['stats'] = $weightByWeek['stats'];
 
         return $data;
     }
@@ -312,7 +314,7 @@ class ChartService
             ];
 
             // Filter weight record of iterated date.
-            $weight = $weightByMonth->filter(static function ($weight, $date) use ($startDate) {
+            $weight = $weightByMonth['weight']->filter(static function ($weight, $date) use ($startDate) {
                 return $startDate->isSameMonth(ResponseHelper::carbon($date));
             });
 
@@ -327,6 +329,7 @@ class ChartService
         // Pie Chart data
         $data['pie']['labels'] = $weightByCat->pluck('category_name')->toArray();
         $data['pie']['data'] = $weightByCat->pluck('total_weight')->toArray();
+        $data['stats'] = $weightByMonth['stats'];
 
         return $data;
     }
@@ -381,7 +384,7 @@ class ChartService
             ];
 
             // Filter weight record of iterated date.
-            $weight = $weightByYear->filter(static function ($weight, $date) use ($startDate) {
+            $weight = $weightByYear['weight']->filter(static function ($weight, $date) use ($startDate) {
                 return $startDate->isSameYear(ResponseHelper::carbon($date));
             });
 
@@ -396,6 +399,7 @@ class ChartService
         // Pie Chart data
         $data['pie']['labels'] = $weightByCat->pluck('category_name')->toArray();
         $data['pie']['data'] = $weightByCat->pluck('total_weight')->toArray();
+        $data['stats'] = $weightByYear['stats'];
 
         return $data;
     }
