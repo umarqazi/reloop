@@ -52,4 +52,18 @@ class UserRepo extends BaseRepo
 
        return $drivers;
     }
+
+    /**
+     * Method: getUserDefaultCityDistrict
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function getUserDefaultCityDistrict($userId)
+    {
+        return $this->getModel->with(['addresses' => function ($query) use ($userId) {
+            $query->where('user_id', $userId)->where('default', true);
+        }])->where('id', $userId)->first();
+    }
 }

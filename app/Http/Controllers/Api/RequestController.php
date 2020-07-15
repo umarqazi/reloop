@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Forms\Collection\CancelOrderForm;
 use App\Forms\Collection\CollectionRequestForm;
+use App\Forms\Collection\DriverAvailabilityForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
+use App\Services\Admin\CollectionRequestService;
 use App\Services\IOrderType;
 use App\Services\MaterialCategoryService;
 use App\Services\OrderService;
@@ -43,6 +45,12 @@ class RequestController extends Controller
      * @var OrderService
      */
     private $orderService;
+    /**
+     * Property: collectionRequestService
+     *
+     * @var CollectionRequestService
+     */
+    private $collectionRequestService;
 
     /**
      * RequestController constructor.
@@ -50,10 +58,12 @@ class RequestController extends Controller
      */
     public function __construct(MaterialCategoryService $materialCategoryService,
                                 OrderService $orderService,
+                                CollectionRequestService $collectionRequestService,
                                 RequestService $requestService)
     {
         $this->materialCategoryService = $materialCategoryService;
         $this->requestService = $requestService;
+        $this->collectionRequestService = $collectionRequestService;
         $this->orderService = $orderService;
     }
 
@@ -126,6 +136,30 @@ class RequestController extends Controller
             $cancelRequest['code'],
             $cancelRequest['status'],
             $cancelRequest['data']
+        );
+    }
+
+    /**
+     * Method: driversAvailability
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function driversAvailability(Request $request)
+    {
+        $driverAvailabilityForm = new DriverAvailabilityForm();
+        $driverAvailabilityForm->loadFromArray($request->all());
+
+        $availableDrivers = $this->collectionRequestService->driversAvailability(
+            $driverAvailabilityForm->collection_date, auth()->id()
+        );
+
+        return ResponseHelper::jsonResponse(
+            $availableDrivers['message'],
+            $availableDrivers['code'],
+            $availableDrivers['status'],
+            $availableDrivers['data']
         );
     }
 }
