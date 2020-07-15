@@ -150,7 +150,14 @@ class RequestController extends Controller
     {
         $driverAvailabilityForm = new DriverAvailabilityForm();
         $driverAvailabilityForm->loadFromArray($request->all());
-
+        if($driverAvailabilityForm->fails()){
+            return ResponseHelper::jsonResponse(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $driverAvailabilityForm->errors()
+            );
+        }
         $availableDrivers = $this->collectionRequestService->driversAvailability(
             $driverAvailabilityForm->collection_date, auth()->id()
         );

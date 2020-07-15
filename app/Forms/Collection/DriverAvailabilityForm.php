@@ -19,20 +19,18 @@ class DriverAvailabilityForm extends BaseForm
 {
 
     public $collection_date;
-    public $city_id;
-    public $district_id;
 
     public function toArray()
     {
         return [
-            'collection_date' => $this->collection_date,
-            'city_id' => $this->city_id,
-            'district_id' => $this->district_id,
+            'collection_date' => $this->collection_date
         ];
     }
 
     public function rules()
     {
-        // TODO: Implement rules() method.
+        return [
+            'collection_date' => 'required'
+        ];
     }
 }
