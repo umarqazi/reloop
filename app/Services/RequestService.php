@@ -9,6 +9,7 @@ use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
 use App\Jobs\SaveCollectionRequestDetailsJob;
 use App\Request;
+use App\Services\Admin\CollectionRequestService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
@@ -42,16 +43,25 @@ class RequestService extends BaseService
      * @var UserSubscriptionService
      */
     private $userSubscriptionService;
+    /**
+     * Property: collectionRequestService
+     *
+     * @var CollectionRequestService
+     */
+    private $collectionRequestService;
 
     /**
      * RequestService constructor.
      * @param Request $model
      */
-    public function __construct(Request $model, UserSubscriptionService $userSubscriptionService)
+    public function __construct(Request $model,
+                                CollectionRequestService $collectionRequestService,
+                                UserSubscriptionService $userSubscriptionService)
     {
         parent::__construct();
         $this->model = $model;
         $this->userSubscriptionService = $userSubscriptionService;
+        $this->collectionRequestService = $collectionRequestService;
     }
 
     /**
@@ -108,39 +118,56 @@ class RequestService extends BaseService
             ];
             $checkUserTrips = App::make(UserSubscriptionService::class)->checkUserTrips($saveData);
             if ($checkUserTrips) {
-                $extraCharge = false;
-                if (!empty($collectionRequestForm->card_number)) {
-
-                    $stripeService = new StripeService();
-                    $makePayment = $stripeService->buyPlan($collectionRequestForm);
-                    if (array_key_exists('stripe_error', $makePayment)) {
-
-                        return ResponseHelper::responseData(
-                            Config::get('constants.ORDER_FAIL'),
-                            IResponseHelperInterface::FAIL_RESPONSE,
-                            false,
-                            $makePayment
-                        );
-                    }
-                    $extraCharge = true;
-                }
-
-                if ($extraCharge) {
-
-                    $saveData['extra_charge'] = $collectionRequestForm->total;
-                }
-                SaveCollectionRequestDetailsJob::dispatch($saveData);
-
-                return ResponseHelper::responseData(
-                    Config::get('constants.COLLECTION_SUCCESSFUL'),
-                    IResponseHelperInterface::SUCCESS_RESPONSE,
-                    true,
-                    [
-                        'collection_request' => [
-                            $request_number
-                        ],
-                    ]
+                $availableDrivers = $this->collectionRequestService->driversAvailability(
+                    $collectionRequestForm->collection_date, auth()->id(),
+                    $collectionRequestForm->city_id, $collectionRequestForm->district_id
                 );
+                if ($availableDrivers['status'] == true) {
+                    $extraCharge = false;
+                    if (!empty($collectionRequestForm->card_number)) {
+
+                        $stripeService = new StripeService();
+                        $makePayment = $stripeService->buyPlan($collectionRequestForm);
+                        if (array_key_exists('stripe_error', $makePayment)) {
+
+                            return ResponseHelper::responseData(
+                                Config::get('constants.ORDER_FAIL'),
+                                IResponseHelperInterface::FAIL_RESPONSE,
+                                false,
+                                $makePayment
+                            );
+                        }
+                        $extraCharge = true;
+                    }
+
+                    if ($extraCharge) {
+
+                        $saveData['extra_charge'] = $collectionRequestForm->total;
+                    }
+                    SaveCollectionRequestDetailsJob::dispatch($saveData);
+
+                    return ResponseHelper::responseData(
+                        Config::get('constants.COLLECTION_SUCCESSFUL'),
+                        IResponseHelperInterface::SUCCESS_RESPONSE,
+                        true,
+                        [
+                            'collection_request' => [
+                                $request_number
+                            ],
+                        ]
+                    );
+                } else {
+                    return ResponseHelper::responseData(
+                        $availableDrivers['message'],
+                        $availableDrivers['code'],
+                        $availableDrivers['status'],
+                        [
+                            "DriverNotAvailable" => [
+                                $availableDrivers['message']
+                            ]
+                        ]
+                    );
+                }
             }
             return ResponseHelper::responseData(
                 Config::get('constants.USER_TRIPS_FAIL'),
