@@ -206,7 +206,7 @@ class CouponService extends BaseService
     private function validateCategory($findCoupon, $couponForm){
         $categoryId = null;
         if($findCoupon->coupon_category_type == 3){
-            $categoryId['type'] = 3;
+            $categoryId['type'][] = '3';
         } else {
             foreach ($couponForm->category as $category) {
 
