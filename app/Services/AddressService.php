@@ -89,10 +89,10 @@ class AddressService extends BaseService
             $findAddress = $this->findById($address->id);
             if($findAddress){
 
-                if($address->default){
+                /*if($address->default){
 
                     $this->changeDefaultAddress(auth()->id());
-                }
+                }*/
                 $findAddress->id = $address->id;
                 $findAddress->user_id = auth()->id();
                 $findAddress->city_id = $address->city_id;
