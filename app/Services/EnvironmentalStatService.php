@@ -129,6 +129,24 @@ class EnvironmentalStatService extends BaseService
     }
 
     /**
+     * Method: allUsersTotalStats
+     *
+     * @return mixed
+     */
+    public function allUsersTotalStats()
+    {
+        $allUsersTotalStats = $this->model->select([
+            DB::raw("SUM(co2_emission_reduced) as co2_emission_reduced"),
+            DB::raw("SUM(trees_saved) as trees_saved"),
+            DB::raw("SUM(oil_saved) as oil_saved"),
+            DB::raw("SUM(electricity_saved) as electricity_saved"),
+            DB::raw("SUM(water_saved) as water_saved"),
+            DB::raw("SUM(landfill_space_saved) as landfill_space_saved"),
+        ])->first();
+        return $allUsersTotalStats;
+    }
+
+    /**
      * Method: userEnvironmentalStats
      *
      * @param $userId
@@ -162,6 +180,31 @@ class EnvironmentalStatService extends BaseService
     public function userStats($userId)
     {
         return $this->model->where('user_id', $userId)->first();
+    }
+
+    /**
+     * Method: findByUserType
+     *
+     * @param $type
+     *
+     * @return mixed
+     */
+    public function findByUserType($type)
+    {
+        $users = App::make(UserService::class)->findByType($type)->pluck('id')->toArray();
+        $totalStats = $this->model->select([
+            DB::raw("SUM(co2_emission_reduced) as co2_emission_reduced"),
+            DB::raw("SUM(trees_saved) as trees_saved"),
+            DB::raw("SUM(oil_saved) as oil_saved"),
+            DB::raw("SUM(electricity_saved) as electricity_saved"),
+            DB::raw("SUM(water_saved) as water_saved"),
+            DB::raw("SUM(landfill_space_saved) as landfill_space_saved"),
+        ]);
+        if($type){
+            return $totalStats->whereIn('user_id', $users)->first();
+        }else{
+            return $totalStats->first();
+        }
     }
 
     /**

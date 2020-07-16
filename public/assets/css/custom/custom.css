@@ -464,6 +464,12 @@ nav .nav-wrapper i{
     transition: all .3s ease;
 }
 
+.unit-wrapper{
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+}
+
 /*Media Queries*/
 @media all and (max-width: 1279px){
     .dataTables_wrapper{

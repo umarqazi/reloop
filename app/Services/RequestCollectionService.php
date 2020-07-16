@@ -38,12 +38,21 @@ class RequestCollectionService extends BaseService
      * @var RequestService
      */
     private $requestService;
+    /**
+     * Property: environmentalStatService
+     *
+     * @var EnvironmentalStatService
+     */
+    private $environmentalStatService;
 
-    public function __construct(RequestCollection $model, RequestService $requestService)
-    {
+    public function __construct(RequestCollection $model,
+                                RequestService $requestService,
+                                EnvironmentalStatService $environmentalStatService
+    ){
         parent::__construct();
         $this->model = $model;
         $this->requestService = $requestService;
+        $this->environmentalStatService = $environmentalStatService;
     }
 
     /**
@@ -177,6 +186,7 @@ class RequestCollectionService extends BaseService
         ])->join('requests', 'requests.id', 'request_collections.request_id')
             ->where('requests.confirm', true)
             ->whereBetween('requests.collection_date', [$from, $till]);
+        $stats = $this->environmentalStatService->allUsersTotalStats();
 
         if (!empty($users['userId'])) {
             if ($users['userId'] === 'all') {
@@ -186,8 +196,10 @@ class RequestCollectionService extends BaseService
                         $user->where('user_type', IUserType::HOUSE_HOLD);
                     }
                 );
+                $stats = $this->environmentalStatService->findByUserType(IUserType::HOUSE_HOLD);
             } else {
                 $result->where('requests.user_id', $users['userId']);
+                $stats = $this->environmentalStatService->userEnvironmentalStats($users['userId']);
             }
         } elseif (!empty($users['organizationId'])) {
             if ($users['organizationId'] === 'all') {
@@ -197,6 +209,7 @@ class RequestCollectionService extends BaseService
                         $user->where('user_type', IUserType::ORGANIZATION);
                     }
                 );
+                $stats = $this->environmentalStatService->findByUserType(IUserType::ORGANIZATION);
             } else {
                 // Organization filter options
                 if ($filterOption === IChartFilterOption::ALL) { // For organization+household
@@ -225,6 +238,7 @@ class RequestCollectionService extends BaseService
                         ->where('district_id', $address->district_id);
                 } else { // For organization only
                     $result->where('requests.user_id', $users['organizationId']);
+                    $stats = $this->environmentalStatService->userEnvironmentalStats($users['organizationId']);
                 }
             }
         }
@@ -237,8 +251,10 @@ class RequestCollectionService extends BaseService
                         $user->where('user_type', IUserType::DRIVER);
                     }
                 );
+                $stats = $this->environmentalStatService->findByUserType(IUserType::DRIVER);
             } else {
                 $result->where('requests.driver_id', $users['driverId']);
+                $stats = $this->environmentalStatService->userEnvironmentalStats($users['driverId']);
             }
         }
 
@@ -250,13 +266,18 @@ class RequestCollectionService extends BaseService
                         $user->where('user_type', IUserType::SUPERVISOR);
                     }
                 );
+                $stats = $this->environmentalStatService->findByUserType(IUserType::SUPERVISOR);
             } else {
                 $result->where('requests.supervisor_id', $users['supervisorId']);
+                $stats = $this->environmentalStatService->userEnvironmentalStats($users['supervisorId']);
             }
         }
 
-        return $result->groupBy(DB::raw("$groupBy(requests.collection_date)"))
-            ->get()->pluck('total_weight', 'collection_date');
+        return [
+            'weight' => $result->groupBy(DB::raw("$groupBy(requests.collection_date)"))
+            ->get()->pluck('total_weight', 'collection_date'),
+            'stats' => $stats
+        ];
     }
 
     /**
