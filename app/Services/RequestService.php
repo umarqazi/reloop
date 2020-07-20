@@ -387,8 +387,13 @@ class RequestService extends BaseService
             }
             if($addTrip){
                 $authUser = App::make(UserService::class)->findById($findRequest->user_id);
-                $authUser->trips = $authUser->trips + 1;
-                $authUser->update();
+                $returnUserTrip = App::make(UserSubscriptionService::class)->returnUserTrip($findRequest);
+                if($authUser && $returnUserTrip){
+                    $authUser->trips = $authUser->trips + 1;
+                    $authUser->update();
+                    $returnUserTrip->trips = $returnUserTrip->trips + 1;
+                    $returnUserTrip->update();
+                }
             }
 
             return ResponseHelper::responseData(

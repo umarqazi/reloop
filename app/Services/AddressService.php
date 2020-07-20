@@ -127,10 +127,10 @@ class AddressService extends BaseService
             }
         } else{
 
-            if($address->default){
+            /*if($address->default){
 
                 $this->changeDefaultAddress(auth()->id());
-            }
+            }*/
             $newAddress = [
                 'user_id'         => auth()->id(),
                 'city_id'         => $address->city_id,
