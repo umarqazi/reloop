@@ -185,4 +185,22 @@ class UserSubscriptionService extends BaseService
             'status' => IUserSubscriptionStatus::ACTIVE
         ])->first();
     }
+
+    /**
+     * Method: returnUserTrip
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function returnUserTrip($data)
+    {
+        return $this->model->where([
+            'user_id' => $data->user_id,
+            'subscription_type' => $data->collection_type,
+            'status' => IUserSubscriptionStatus::ACTIVE
+            ])->orWhere(function($query) {
+                $query->where('status', IUserSubscriptionStatus::COMPLETED);
+            })->first();
+    }
 }
