@@ -101,21 +101,37 @@ $(document).ready(function () {
     //
     $(document).on('change', 'select[name="apply_for_user"]', function() {
         let coupon_for = $(this).val();
+        let addSelectOption = $(this).closest('.coupon-wrapper').find('select[name="coupon_user_type"]');
         if (coupon_for == 1){
 
             $(".list_of_users_wrapper").hide();
+            addSelectOption.append('<option value="3">All</option>');
+            addSelectOption.material_select();
         } else {
             $(".list_of_users_wrapper").show();
+            addSelectOption.empty();
+            addSelectOption.append('<option value="">Choose User Type</option>');
+            addSelectOption.append('<option value="1">Household</option>');
+            addSelectOption.append('<option value="2">Organization</option>');
+            addSelectOption.material_select();
         }
     });
 
     $(document).on('change', 'select[name="apply_for_category"]', function() {
         let coupon_for_category = $(this).val();
+        let addSelectOption = $(this).closest('.coupon-category-wrapper').find('select[name="coupon_category_type"]');
         if (coupon_for_category == 1){
 
             $(".list_of_category_wrapper").hide();
+            addSelectOption.append('<option value="3">All</option>');
+            addSelectOption.material_select();
         } else {
             $(".list_of_category_wrapper").show();
+            addSelectOption.empty();
+            addSelectOption.append('<option value="">Choose Category Type</option>');
+            addSelectOption.append('<option value="1">Service</option>');
+            addSelectOption.append('<option value="2">Product</option>');
+            addSelectOption.material_select();
         }
     });
 
