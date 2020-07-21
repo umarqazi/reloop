@@ -67,7 +67,9 @@
                         <option value="" disabled selected>Choose Coupon For</option>
                         <option value='1' {{ $coupon->coupon_user_type == '1' ? 'selected': '' }}>Household</option>
                         <option value='2' {{ $coupon->coupon_user_type == '2' ? 'selected': '' }}>Organization</option>
-                        <option value='2' {{ $coupon->coupon_user_type == '3' ? 'selected': '' }}>All</option>
+                        @if($coupon->apply_for_user == 1)
+                            <option value='3' {{ $coupon->coupon_user_type == '3' ? 'selected': '' }}>All</option>
+                        @endif
                     </select>
                     <label>User Type</label>
                     @if ($errors->has('coupon_user_type'))
@@ -100,7 +102,9 @@
                         <option value="" disabled selected>Choose Coupon For Category</option>
                         <option value='1' {{ $coupon->coupon_category_type == '1' ? 'selected': '' }}>Service</option>
                         <option value='2' {{ $coupon->coupon_category_type == '2' ? 'selected': '' }}>Product</option>
-                        <option value='2' {{ $coupon->coupon_category_type == '3' ? 'selected': '' }}>All</option>
+                        @if($coupon->apply_for_category == 1)
+                            <option value='3' {{ $coupon->coupon_category_type == '3' ? 'selected': '' }}>All</option>
+                        @endif
                     </select>
                     <label>Category Type</label>
                     @if ($errors->has('coupon_category_type'))

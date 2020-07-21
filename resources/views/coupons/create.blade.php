@@ -63,7 +63,7 @@
                     @endif
                 </div>
                 <div class="input-field col s4">
-                    {{ Form::select('coupon_user_type', (['' => 'Choose User Type', '1' => 'Household', '2' => 'Organization', '3' => 'All']), null, ['id' => 'coupon_user_type','required' => 'required']) }}
+                    {{ Form::select('coupon_user_type', (['' => 'Choose User Type', '1' => 'Household', '2' => 'Organization']), null, ['id' => 'coupon_user_type','required' => 'required']) }}
                     <label>User Type</label>
                     @if ($errors->has('coupon_user_type'))
                         <span class="help-block">
@@ -91,7 +91,7 @@
                     @endif
                 </div>
                 <div class="input-field col s4">
-                    {{ Form::select('coupon_category_type', (['' => 'Choose Category Type', '1' => 'Service', '2' => 'Product', '3' => 'All']), null, ['id' => 'coupon_category_type','required' => 'required']) }}
+                    {{ Form::select('coupon_category_type', (['' => 'Choose Category Type', '1' => 'Service', '2' => 'Product']), null, ['id' => 'coupon_category_type','required' => 'required']) }}
                     <label>Category Type</label>
                     @if ($errors->has('coupon_category_type'))
                         <span class="help-block">
