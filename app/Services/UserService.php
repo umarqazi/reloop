@@ -373,7 +373,10 @@ class UserService extends BaseService
             $authUser = $this->findByEmail($loginForm->email);
             if($authUser && $authUser->login_type != ILoginType::APP_LOGIN){
 
-                $authUser->player_id = $loginForm->player_id;
+                $authUser->player_id = $this->playerIdHandler(
+                    $authUser->player_id,
+                    $loginForm->player_id
+                );
                 $authUser->update();
 
                 $authUser = $authUser->load('addresses', 'organization', 'roles');
@@ -1007,7 +1010,7 @@ class UserService extends BaseService
                 return $playerIds;
             }
         } else {
-            if ($position) {
+            if ($position || $position == 0) {
                 unset($playerIds[$position]);
             }
         }
