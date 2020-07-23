@@ -67,12 +67,21 @@
                     </div>
                 </div>
                 <div class="col s12">
-                    <div class="input-field col s6">
+                    <div class="input-field col s6 main_category_type">
                         <select class="validate" id="type" name="type">
+                            <option value="">Choose Type</option>
                             <option value="1">Subscription</option>
                             <option value="2">Product</option>
                         </select>
                         <label for="type" data-error="wrong" data-success="right">Type</label>
+                    </div>
+                    <div class="input-field col s6 main_category_service_type">
+                        <select class="validate" id="service_type" name="service_type">
+                            <option value="">Choose Subscription Type</option>
+                            <option value="1">Monthly</option>
+                            <option value="2">One Time</option>
+                        </select>
+                        <label for="service_type" data-error="wrong" data-success="right">Subscription Type</label>
                     </div>
                 </div>
                 <div class="col s12">

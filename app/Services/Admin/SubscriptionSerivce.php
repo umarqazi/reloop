@@ -7,6 +7,7 @@ namespace App\Services\Admin;
 use App\Repositories\Admin\SubscriptionRepo;
 use App\Services\Admin\BaseService;
 use App\Services\ICategoryType;
+use App\Services\ISubscriptionSubType;
 use App\Services\ISubscriptionType;
 use App\Services\ITrips;
 use Illuminate\Support\Facades\File;
@@ -35,6 +36,9 @@ class SubscriptionSerivce extends BaseService
         $data = $request->except('_token');
         if(!$request->has('request_allowed')){
             $data["request_allowed"] = ITrips::ONE_TRIP;
+            $data["category_type"] = ISubscriptionSubType::SINGLE_COLLECTION;
+        } else {
+            $data["category_type"] = ISubscriptionSubType::NORMAL;
         }
 
         //check that avatar exists or not
@@ -45,7 +49,7 @@ class SubscriptionSerivce extends BaseService
 
         if($subscription) {
 
-            if ($data['category_id'] == ISubscriptionType::MONTHLY) {
+            if ($subscription->category->service_type == ISubscriptionType::MONTHLY) {
                 //add subscription to stripe
                 $stripeData = [
                     'name' => $request['name'],
@@ -78,10 +82,12 @@ class SubscriptionSerivce extends BaseService
     {
         $data = $request->except('_token', '_method', 'email');
         if($request->has('request_allowed')){
-            $data["category_type"] = null;
+            $data['category_type'] = ISubscriptionSubType::NORMAL;
         }
         else{
-            $data["request_allowed"] = ITrips::ONE_TRIP;
+            $data['request_allowed'] = ITrips::ONE_TRIP;
+            $data['category_type'] = ISubscriptionSubType::SINGLE_COLLECTION;
+            $data['stripe_product_id'] = null;
         }
 
         //check that avatar exists or not

@@ -35,6 +35,7 @@ class CreateRequest extends FormRequest
         return [
             'name'                 => 'required',
             'type'                 => 'required',
+            'service_type'         => 'required_if:type,1',
             'status'               => 'required',
         ];
     }

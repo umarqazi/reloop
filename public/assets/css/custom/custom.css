@@ -376,6 +376,12 @@ a.btn.waves-effect.waves-light.blue.accent-2{
     min-width: 17px;
     margin-bottom: 3px;
 }
+.main_category_service_type{
+    display: none;
+}
+.show_service_type{
+    display: initial !important;
+}
 /*Custom Navbar*/
 .navbar-btn {
     background-image: url("../../../assets/images/icons/back.png");

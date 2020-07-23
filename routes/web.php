@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('donation-products', 'Admin\DonationProductController');
     Route::resource('main-category', 'Admin\MainCategoryController');
 
+    Route::get('subscription/category-details/{category_id}', 'Admin\MainCategoryController@categoryDetails')->name('categoryDetails');
     Route::get('billing-listing', 'Admin\UserController@billings')->name('billing-listing');
     Route::get('billing-listing/{billing_id}', 'Admin\UserController@billingDetails')->name('billingListingShow');
     Route::get('donation-product-create/{donation_category_id}', 'Admin\DonationProductController@donationProductCreate')->name('donationProductCreate');

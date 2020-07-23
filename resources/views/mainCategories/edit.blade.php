@@ -68,12 +68,20 @@
                         </div>
                     </div>
                     <div class="col s12">
-                        <div class="input-field col s6">
+                        <div class="input-field col s6 main_category_type">
                             <select class="validate" id="type" name="type">
                                 <option value="1" @if($mainCategory->type == 1) selected @endif>Subscription</option>
                                 <option value="2" @if($mainCategory->type == 2) selected @endif>Product</option>
                             </select>
                             <label for="type" data-error="wrong" data-success="right">Type</label>
+                        </div>
+                        <div class="input-field col s6 main_category_service_type @if($mainCategory->type == 1) show_service_type @endif">
+                            <select class="validate" id="service_type" name="service_type">
+                                <option value="">Choose Subscription Type</option>
+                                <option value="1"  @if($mainCategory->service_type == 1) selected @endif>Monthly</option>
+                                <option value="2"  @if($mainCategory->service_type == 2) selected @endif>One Time</option>
+                            </select>
+                            <label for="service_type" data-error="wrong" data-success="right">Subscription Type</label>
                         </div>
                     </div>
                     <div class="col s12">

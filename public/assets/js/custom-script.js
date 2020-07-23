@@ -296,28 +296,46 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('change', '.main_category_type select[name="type"]', function() {
+        let main_category_type = $(this).val();
+        if (main_category_type == 1){
+            $('.main_category_service_type').show();
+        } else {
+            $('.main_category_service_type').hide();
+        }
+    });
+
+    // Allowed requests dropdown for services
     $( "#subscription_category_id" ).change(function() {
         let subscription_category_value = $(this).val();
-        if(subscription_category_value == 2){
-            $('#subscription_request_allowed').remove();
-            $('label[for=subscription_request_allowed]').remove();
-            $('.subscription_request_allowed_input_field').append('' +
-                '                    <select name="category_type"  id="subscription_category_type" required>\n' +
-                '                        <option value="" disabled selected>Choose Subscription Category Type</option>\n' +
-                /*'                        <option value="1">Same Day</option>\n' +
-                '                        <option value="2">Next Day</option>\n' +*/
-                '                        <option value="3">Single Collection</option>\n' +
-                '                    </select>' +
-                '                    <label for="subscription_category_type">Subscription Category Type</label>');
-            $('#subscription_category_type').material_select();
-        }
-        else{
-            $('.subscription_request_allowed_input_field').html('');
-            $('.subscription_request_allowed_input_field').append('' +
-                '                    <input id="subscription_request_allowed" min="1" type="number" name="request_allowed" required>\n' +
-                '                    <label for="subscription_request_allowed">Request(s) Allowed</label>\n' +
-                '                    ');
-        }
+
+        $.ajax({
+            type: "get",
+            url: "/subscription/category-details/" + subscription_category_value,
+            success: function (res) {
+                if(res){
+                    if (res.service_type == 2){
+                        $('#subscription_request_allowed').remove();
+                        $('label[for=subscription_request_allowed]').remove();
+                        $('.subscription_request_allowed_input_field').append('' +
+                            '                    <select name="category_type"  id="subscription_category_type" required>\n' +
+                            '                        <option value="" disabled selected>Choose Subscription Category Type</option>\n' +
+                            /*'                        <option value="1">Same Day</option>\n' +
+                            '                        <option value="2">Next Day</option>\n' +*/
+                            '                        <option value="3">Single Collection</option>\n' +
+                            '                    </select>' +
+                            '                    <label for="subscription_category_type">Subscription Category Type</label>');
+                        $('#subscription_category_type').material_select();
+                    } else {
+                        $('.subscription_request_allowed_input_field').html('');
+                        $('.subscription_request_allowed_input_field').append('' +
+                            '                    <input id="subscription_request_allowed" min="1" type="number" name="request_allowed" required>\n' +
+                            '                    <label for="subscription_request_allowed">Request(s) Allowed</label>\n' +
+                            '                    ');
+                    }
+                }
+            }
+        });
     });
 
     // Hide floor for villa and show for apartment

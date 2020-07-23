@@ -759,7 +759,7 @@ class UserService extends BaseService
                 ];
             }
         }
-        $oneTimeServices = App::make(ProductService::class)->getProductsByCategoryId(ISubscriptionType::ONETIME);
+        /*$oneTimeServices = App::make(ProductService::class)->getProductsByCategoryId(ISubscriptionType::ONETIME);
         if(!$oneTimeServices->isEmpty()) {
 
             foreach ($oneTimeServices as $oneTimeService) {
@@ -771,10 +771,10 @@ class UserService extends BaseService
                     'category_type' => $oneTimeService->category_type,
                 ];
             }
-        }
+        }*/
         $data = [
             'UserPlans' => $userPlansData,
-            'OneTimeServices' => $oneTimeServicesData,
+            'OneTimeServices' => [],
         ];
         return ResponseHelper::responseData(
             Config::get('constants.USER_PLANS'),

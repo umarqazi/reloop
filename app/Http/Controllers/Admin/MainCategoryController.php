@@ -157,6 +157,19 @@ class MainCategoryController extends Controller
     }
 
     /**
+     * Method: categoryDetails
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function categoryDetails($id)
+    {
+        $category = $this->categoryService->findById($id);
+        return $category;
+    }
+
+    /**
      * export list
      */
     public function export(){
