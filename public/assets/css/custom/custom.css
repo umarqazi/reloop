@@ -380,7 +380,7 @@ a.btn.waves-effect.waves-light.blue.accent-2{
     display: none;
 }
 .show_service_type{
-    display: initial !important;
+    display: initial;
 }
 /*Custom Navbar*/
 .navbar-btn {
