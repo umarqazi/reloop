@@ -117,7 +117,7 @@ class MainCategoryController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         if(!empty($request)){
-            $mainCategory = $this->categoryService->update($id, $request->all());
+            $mainCategory = $this->categoryService->upgrade($id, $request);
             if($mainCategory){
                 return redirect()->back()->with('success','Main Category Updated Successfully');
             } else {
