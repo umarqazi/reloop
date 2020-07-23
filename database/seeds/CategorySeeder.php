@@ -13,14 +13,16 @@ class CategorySeeder extends Seeder
     public function run()
     {
         Category::create([
-            'name'      => 'Renewable Subscriptions',
-            'status'    => 1,
-            'type'      => 1
+            'name'             => 'Renewable Subscriptions',
+            'status'           => 1,
+            'type'             => 1,
+            'service_type'     => 1
         ]);
         Category::create([
-            'name'      => 'One Time Services',
-            'status'    => 1,
-            'type'      => 1
+            'name'             => 'One Time Services',
+            'status'           => 1,
+            'type'             => 1,
+            'service_type'     => 2
         ]);
         Category::create([
             'name'      => 'Recycling Boxes',
