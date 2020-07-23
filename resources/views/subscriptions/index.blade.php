@@ -69,7 +69,7 @@
                             @foreach($subscriptions as $subscription)
                             <tr>
                                 <td>{{ $subscription->id }}</td>
-                                <td>{{ $subscription->category_id == 1 ? 'Renewable Subscriptions':'One Time Services' }}</td>
+                                <td>{{ $subscription->category->name }}</td>
                                 <td>{{ $subscription->name }}</td>
                                 <td>{{ $subscription->price }}</td>
                                 <td>{{ $subscription->description }}</td>
