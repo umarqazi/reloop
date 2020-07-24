@@ -71,8 +71,10 @@
                                 <th>City</th>
                                 <th>District</th>
                                 <th>Created at</th>
+                                @if($type == 1)
                                 <th>Organization</th>
                                 <th>Org Code</th>
+                                @endif
                                 @if($route != '')
                                     <th>Action</th>
                                 @endif
@@ -90,8 +92,10 @@
                                             <td>{{ ($user->addresses->first()) ? $user->addresses->first()->city->name : 'Not found' }}</td>
                                             <td>{{ ($user->addresses->first()) ? $user->addresses->first()->district->name : 'Not found' }}</td>
                                             <td>{{ $user->created_at->format('Y-m-d') }}</td>
+                                            @if($type == 1)
                                             <td>{{ ($user->organization) ? $user->organization->name : '-' }}</td>
                                             <td>{{ ($user->organization) ? $user->organization->org_external_id : '-' }}</td>
+                                            @endif
                                         @if($route != '')
                                                 <td>
                                                     @if($type !=\App\Services\IUserType::SUPERVISOR)

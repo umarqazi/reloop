@@ -256,8 +256,8 @@
                                 <input type="hidden" name="address-id" value="{{ $user->addresses[0]->id }}">
                                 <select name="type"  id="type1" class="user-property-type" required>
                                     <option value="" disabled selected>Choose Type</option>
-                                    <option value="villa" {{ $user->addresses->first()->type=='villa' ? 'selected': '' }}>Villa</option>
-                                    <option value="apartment" {{ $user->addresses->first()->type=='apartment' ? 'selected': '' }}>Apartment</option>
+                                    <option value="villa" {{ strtolower($user->addresses->first()->type) == 'villa' ? 'selected': '' }}>Villa</option>
+                                    <option value="apartment" {{ strtolower($user->addresses->first()->type)=='apartment' ? 'selected': '' }}>Apartment</option>
                                 </select>
                                 <label>Property Type</label>
                             </div>

@@ -243,9 +243,9 @@
                             <input type="hidden" name="address-id[]" value="{{ $address->id }}">
                             <select name="type[]"  id="type1" >
                                 <option value="" disabled selected>Choose Type</option>
-                                <option value="office" {{ $address->type=='office' ? 'selected': '' }}>Office</option>
-                                <option value="warehouse" {{ $address->type=='warehouse' ? 'selected': '' }}>Warehouse</option>
-                                <option value="shop" {{ $address->type=='shop' ? 'selected': '' }}>Shop</option>
+                                <option value="office" {{ strtolower($address->type) == 'office' ? 'selected': '' }}>Office</option>
+                                <option value="warehouse" {{ strtolower($address->type) == 'warehouse' ? 'selected': '' }}>Warehouse</option>
+                                <option value="shop" {{ strtolower($address->type) == 'shop' ? 'selected': '' }}>Shop</option>
                             </select>
                             <label>Property Type</label>
                         </div>
