@@ -46,7 +46,7 @@
                 </div>
             @endif
             <br>
-            {{ Form::open(['url' => route('organization.update',$organization->id),'method' => 'PUT', 'class' => 'row']) }}
+            {{ Form::open(['url' => route('organization.update',$organization->id),'method' => 'PUT', 'id' => 'org_edit_form', 'class' => 'row']) }}
             <div class="col s12">
                 <div class="input-field col s6">
                     <input id="name" type="text" name="name" value="{{$organization->name}}" required>

@@ -64,6 +64,13 @@ $(document).ready(function () {
         if (e.keyCode == 8 && $('#phone_number').is(":focus") && $('#phone_number').val().length < 7) {
             e.preventDefault();
         }
+        // To restrict keys
+        var key = e.which || e.charCode || e.keyCode || 0;
+        return (key == 8 ||
+            key == 9 ||
+            key == 46 ||
+            (key >= 48 && key <= 57) ||
+            (key >= 96 && key <= 105));
     });
 
     $(document).on('change', 'select[name="city_id[]"], select[name="city_id"]', function() {
@@ -404,11 +411,14 @@ $(document).ready(function () {
 
     });
 
-    $("#user-form").validate({
+    $('#user-form, #user_edit_form, #org_edit_form, #appended-filed-wrap').validate({
         rules: {
             password: {
                 minlength: 8,
             },
+            phone_number: {
+                minlength: 15
+            }
         },
 
         errorElement : 'div',

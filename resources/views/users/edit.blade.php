@@ -58,7 +58,7 @@
                     $type = $user->user_type;
                     $route = ($type == 1) ? 'user' : (($type == 3) ? 'driver' : (($type == 4) ? 'supervisor' : ''));
                 @endphp
-                {{ Form::open(['url' => route($route.'.update', $user->id), 'method' => 'PUT', 'class' => 'row','enctype' => 'multipart/form-data']) }}
+                {{ Form::open(['url' => route($route.'.update', $user->id), 'method' => 'PUT', 'class' => 'row', 'id' => 'user_edit_form', 'enctype' => 'multipart/form-data']) }}
                 {{ Form::hidden('user_type', $type) }}
                     <div class="col s12">
                         <div class="input-field col s6">
