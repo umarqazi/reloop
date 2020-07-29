@@ -683,7 +683,11 @@ class UserService extends BaseService
             $this->organizationService->update($authUser->organization_id, $updateUserProfileForm);
         }
 
-        $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
+        $userProfile = $this->model->with([
+            'addresses' => function ($query) {
+                return $query->with('city', 'district');
+            },
+            'organization'])->where('id', auth()->id())->first();
 
         return ResponseHelper::responseData(
             Config::get('constants.PROFILE_UPDATE_SUCCESS'),
