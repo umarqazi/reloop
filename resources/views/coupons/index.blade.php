@@ -52,21 +52,42 @@
                         <a class="btn btn-primary" href="{{ route('coupons.export') }}">Export</a>
                     </div>
                         <div class="col s12">
-                        <table id="data-table-simple" class="responsive-table display" cellspacing="0">
+                        <table id="data-table-simple" class="display" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Code</th>
-                                <th>Type</th>
+                                <th>Max Usage Per User</th>
+                                <th>Apply on User Type</th>
+                                <th>Apply on Category Type</th>
+                                <th>Coupon Type</th>
                                 <th>Amount</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($coupons as $coupon)
+                                @if($coupon->coupon_user_type == \App\Services\IUserType::HOUSE_HOLD)
+                                    @php($coupon_user_type = 'Household')
+                                @elseif($coupon->coupon_user_type == \App\Services\IUserType::ORGANIZATION)
+                                    @php($coupon_user_type = 'Organization')
+                                @else
+                                    @php($coupon_user_type = 'All')
+                                @endif
+
+                                @if($coupon->coupon_category_type == \App\Services\ICategoryType::SUBSCRIPTION)
+                                    @php($coupon_category_type = 'Service')
+                                @elseif($coupon->coupon_category_type == \App\Services\ICategoryType::PRODUCT)
+                                    @php($coupon_category_type = 'Product')
+                                @else
+                                    @php($coupon_category_type = 'All')
+                                @endif
                             <tr>
                                 <td>{{ $coupon->id }}</td>
                                 <td>{{ $coupon->code }}</td>
+                                <td>{{ $coupon->max_usage_per_user }}</td>
+                                <td>{{ $coupon_user_type }}</td>
+                                <td>{{ $coupon_category_type }}</td>
                                 <td>{{ $coupon->type == \App\Services\ICouponType::FIXED ? 'Fixed' : 'Percentage' }}</td>
                                 <td>{{ $coupon->amount }}</td>
                                 <td>

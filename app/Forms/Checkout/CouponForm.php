@@ -16,6 +16,7 @@ use App\Forms\BaseForm;
 class CouponForm extends BaseForm
 {
     public $coupon;
+    public $category;
 
     /**
      * @inheritDoc
@@ -23,7 +24,8 @@ class CouponForm extends BaseForm
     public function toArray()
     {
         return [
-            'coupon' => $this->coupon
+            'coupon' => $this->coupon,
+            'category' => $this->category
         ];
     }
 
@@ -32,6 +34,9 @@ class CouponForm extends BaseForm
      */
     public function rules()
     {
-        // TODO: Implement rules() method.
+        return [
+            'coupon' => 'required',
+            'category' => 'required',
+        ];
     }
 }

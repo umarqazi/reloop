@@ -27,6 +27,12 @@ class UpdateRequest extends FormRequest
             'code'     => 'required',
             'type'     => 'required',
             'amount'   => 'required',
+            'apply_for_user'   => 'required',
+            'coupon_user_type'   => 'required',
+            'apply_for_category'   => 'required',
+            'coupon_category_type'   => 'required',
+            'max_usage_per_user'   => 'required',
+            'max_usage_limit'   => 'required',
         ];
     }
 }

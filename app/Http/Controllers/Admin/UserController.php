@@ -184,6 +184,18 @@ class UserController extends Controller
     }
 
     /**
+     * Method: getUsers
+     *
+     * @param $type
+     *
+     * @return mixed
+     */
+    public function getUsers($type)
+    {
+        return $this->userService->getSelected($type)->pluck('email', 'id')->toArray();
+    }
+
+    /**
      * Method: billings
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View

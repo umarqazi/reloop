@@ -103,4 +103,17 @@ class DashboardService extends BaseService
             $userDashboard
         );
     }
+
+    /**
+     * Method: supervisorStats
+     *
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function supervisorStats($userId)
+    {
+        $environmentalStats = App::make(EnvironmentalStatService::class)->userStats($userId);
+        return $environmentalStats;
+    }
 }

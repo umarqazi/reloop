@@ -46,7 +46,7 @@
                 </div>
             @endif
             <br>
-            {{ Form::open(['url' => route('organization.update',$organization->id),'method' => 'PUT', 'class' => 'row']) }}
+            {{ Form::open(['url' => route('organization.update',$organization->id),'method' => 'PUT', 'id' => 'org_edit_form', 'class' => 'row']) }}
             <div class="col s12">
                 <div class="input-field col s6">
                     <input id="name" type="text" name="name" value="{{$organization->name}}" required>
@@ -243,9 +243,9 @@
                             <input type="hidden" name="address-id[]" value="{{ $address->id }}">
                             <select name="type[]"  id="type1" >
                                 <option value="" disabled selected>Choose Type</option>
-                                <option value="office" {{ $address->type=='office' ? 'selected': '' }}>Office</option>
-                                <option value="warehouse" {{ $address->type=='warehouse' ? 'selected': '' }}>Warehouse</option>
-                                <option value="shop" {{ $address->type=='shop' ? 'selected': '' }}>Shop</option>
+                                <option value="office" {{ strtolower($address->type) == 'office' ? 'selected': '' }}>Office</option>
+                                <option value="warehouse" {{ strtolower($address->type) == 'warehouse' ? 'selected': '' }}>Warehouse</option>
+                                <option value="shop" {{ strtolower($address->type) == 'shop' ? 'selected': '' }}>Shop</option>
                             </select>
                             <label>Property Type</label>
                         </div>

@@ -73,7 +73,7 @@ class UserSubscriptionService extends BaseService
         $status = IUserSubscriptionStatus::ACTIVE;
         $model = $this->model;
         $coupon = App::make(CouponService::class)->findById($data['request_data']->coupon_id);
-        if($data['product_details']->category_id == ISubscriptionType::MONTHLY){
+        if($data['product_details']->category->service_type == ISubscriptionType::MONTHLY){
 
             $startTime = date("Y-m-d h:i:s",$data['stripe_response']['current_period_start']);
             $endTime = date("Y-m-d h:i:s",$data['stripe_response']['current_period_end']);
@@ -184,5 +184,23 @@ class UserSubscriptionService extends BaseService
             'subscription_type' => $data['collection_form_data']->collection_type,
             'status' => IUserSubscriptionStatus::ACTIVE
         ])->first();
+    }
+
+    /**
+     * Method: returnUserTrip
+     *
+     * @param $data
+     *
+     * @return mixed
+     */
+    public function returnUserTrip($data)
+    {
+        return $this->model->where([
+            'user_id' => $data->user_id,
+            'subscription_type' => $data->collection_type,
+            'status' => IUserSubscriptionStatus::ACTIVE
+            ])->orWhere(function($query) {
+                $query->where('status', IUserSubscriptionStatus::COMPLETED);
+            })->first();
     }
 }

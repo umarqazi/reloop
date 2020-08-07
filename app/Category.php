@@ -10,7 +10,7 @@ class Category extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'description', 'status', 'type'];
+    protected $fillable = ['name', 'description', 'status', 'type', 'service_type'];
     /**
      * @return HasMany
      */

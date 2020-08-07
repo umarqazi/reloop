@@ -39,6 +39,46 @@ class OrderRepo extends BaseRepo
     }
 
     /**
+     * Method: getOrdersForSupervisor
+     *
+     * @param $addresses
+     *
+     * @return int
+     */
+    public function getOrdersForSupervisor($addresses)
+    {
+        foreach ($addresses as $address){
+            $orders[] = $this->all()->where('city_id',$address->city_id)->where('district_id',$address->district_id);
+        }
+        $totalOrders = 0;
+        foreach ($orders as $order) {
+            $totalOrders += count($order);
+        }
+        return $totalOrders;
+    }
+
+    /**
+     * Method: redeemedReloopPoints
+     *
+     * @param null $addresses
+     *
+     * @return int|mixed
+     */
+    public function redeemedReloopPoints($addresses = null)
+    {
+        if($addresses) {
+            $redeemedReloopPoints = 0;
+            foreach ($addresses as $address) {
+                $redeemedReloopPoints += $this->all()->where('city_id', $address->city_id)
+                    ->where('district_id', $address->district_id)->sum('redeem_points');
+            }
+        } else{
+            $redeemedReloopPoints = $this->all()->sum('redeem_points');
+        }
+        return $redeemedReloopPoints;
+    }
+
+    /**
      * @param $drivers
      * @param $date
      * @return mixed

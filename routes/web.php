@@ -46,7 +46,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('environmental-stats', 'Admin\EnvironmentalStatsController');
     Route::resource('donation-categories', 'Admin\DonationCategoryController');
     Route::resource('donation-products', 'Admin\DonationProductController');
+    Route::resource('main-category', 'Admin\MainCategoryController');
 
+    Route::get('subscription/category-details/{category_id}', 'Admin\MainCategoryController@categoryDetails')->name('categoryDetails');
     Route::get('billing-listing', 'Admin\UserController@billings')->name('billing-listing');
     Route::get('billing-listing/{billing_id}', 'Admin\UserController@billingDetails')->name('billingListingShow');
     Route::get('donation-product-create/{donation_category_id}', 'Admin\DonationProductController@donationProductCreate')->name('donationProductCreate');
@@ -60,6 +62,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/user-donations', 'Admin\UserController@userDonation')->name('user-donation');
     Route::put('/assign-request/{id}', 'Admin\CollectionRequestController@assignOrder')->name('assign.request');
     Route::put('/confirm-request/{id}', 'Admin\CollectionRequestController@confirmRequest')->name('confirm.request');
+    Route::get('get-users/{user_type}', 'Admin\UserController@getUsers')->name('get-users');
+    Route::get('get-categories/{category_type}', 'Admin\MainCategoryController@getCategories')->name('get-categories');
 
     //export list routes
     Route::get('/users/export', 'Admin\UserController@export')->name('user.export');
@@ -82,6 +86,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/all-settings/export', 'Admin\SettingController@export')->name('settings.export');
     Route::get('/contactUs/export', 'Admin\ContactUsController@export')->name('contact-us.export');
     Route::get('/city/export', 'Admin\CityController@export')->name('cities.export');
+    Route::get('/main-categories/export', 'Admin\MainCategoryController@export')->name('main-categories.export');
 
 
     //supervisor routes

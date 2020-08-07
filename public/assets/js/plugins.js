@@ -20,7 +20,7 @@
     var openIndex;
 
     // Collapsible navigation menu
-    $('.nav-collapsible .navbar-toggler').click(function() {
+    /*$('.nav-collapsible .navbar-toggler').click(function() {
       //set Index velue
       getCollapseIndex();
       // Toggle navigation expan and collapse on radio click
@@ -74,7 +74,7 @@
           $('.collapsible').collapsible('close', (openIndex));
         }, 100);
       }
-    });
+    });*/
 
     function getCollapseIndex() {
       $("#slide-out > li > ul > li > a.collapsible-header").each(function(index) {

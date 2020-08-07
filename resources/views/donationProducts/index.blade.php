@@ -24,7 +24,7 @@
                        href={{ route('donationProductCreate', $category->id) }}>Create</a>
                 </div>
                 <div class="col s12">
-                    <table id="data-table-simple" class="responsive-table display" cellspacing="0">
+                    <table id="data-table-simple" class="display" cellspacing="0">
                         <thead>
                         <tr>
                             <th>Id</th>

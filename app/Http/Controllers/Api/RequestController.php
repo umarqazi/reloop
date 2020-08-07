@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Forms\Collection\CancelOrderForm;
 use App\Forms\Collection\CollectionRequestForm;
+use App\Forms\Collection\DriverAvailabilityForm;
 use App\Helpers\IResponseHelperInterface;
 use App\Helpers\ResponseHelper;
+use App\Services\Admin\CollectionRequestService;
+use App\Services\IOrderType;
 use App\Services\MaterialCategoryService;
+use App\Services\OrderService;
 use App\Services\RequestService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -35,15 +39,32 @@ class RequestController extends Controller
      * @var RequestService
      */
     private $requestService;
+    /**
+     * Property: orderService
+     *
+     * @var OrderService
+     */
+    private $orderService;
+    /**
+     * Property: collectionRequestService
+     *
+     * @var CollectionRequestService
+     */
+    private $collectionRequestService;
 
     /**
      * RequestController constructor.
      * @param MaterialCategoryService $materialCategoryService
      */
-    public function __construct(MaterialCategoryService $materialCategoryService, RequestService $requestService)
+    public function __construct(MaterialCategoryService $materialCategoryService,
+                                OrderService $orderService,
+                                CollectionRequestService $collectionRequestService,
+                                RequestService $requestService)
     {
         $this->materialCategoryService = $materialCategoryService;
         $this->requestService = $requestService;
+        $this->collectionRequestService = $collectionRequestService;
+        $this->orderService = $orderService;
     }
 
     /**
@@ -104,13 +125,48 @@ class RequestController extends Controller
     {
         $cancelRequestForm = new CancelOrderForm();
         $cancelRequestForm->loadFromArray($request->all());
-        $cancelRequest = $this->requestService->cancelRequest($cancelRequestForm);
+        if($cancelRequestForm->order_type == IOrderType::COLLECTION_REQUEST){
+            $cancelRequest = $this->requestService->cancelRequest($cancelRequestForm);
+        }elseif($cancelRequestForm->order_type == IOrderType::DELIEVERY_ORDER){
+            $cancelRequest = $this->orderService->cancelRequest($cancelRequestForm);
+        }
 
         return ResponseHelper::jsonResponse(
             $cancelRequest['message'],
             $cancelRequest['code'],
             $cancelRequest['status'],
             $cancelRequest['data']
+        );
+    }
+
+    /**
+     * Method: driversAvailability
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function driversAvailability(Request $request)
+    {
+        $driverAvailabilityForm = new DriverAvailabilityForm();
+        $driverAvailabilityForm->loadFromArray($request->all());
+        if($driverAvailabilityForm->fails()){
+            return ResponseHelper::jsonResponse(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $driverAvailabilityForm->errors()
+            );
+        }
+        $availableDrivers = $this->collectionRequestService->driversAvailability(
+            $driverAvailabilityForm->collection_date, auth()->id()
+        );
+
+        return ResponseHelper::jsonResponse(
+            $availableDrivers['message'],
+            $availableDrivers['code'],
+            $availableDrivers['status'],
+            $availableDrivers['data']
         );
     }
 }

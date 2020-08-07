@@ -5,8 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Coupon\CreateRequest;
 use App\Http\Requests\Coupon\UpdateRequest;
+use App\Services\Admin\CategoryService;
 use App\Services\Admin\CouponService;
+use App\Services\IApplyForCategory;
+use App\Services\IApplyForUser;
 use App\Services\ICouponType;
+use App\Services\Admin\UserService;
+use Illuminate\Support\Facades\App;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CouponController extends Controller
@@ -75,16 +80,31 @@ class CouponController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Method: edit
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {
         $coupon = $this->couponService->findById($id);
         if ($coupon) {
-            return view('coupons.edit', compact('coupon'));
+
+            if($coupon->apply_for_user == IApplyForUser::APPLY_ON_SPECIFIC_USER){
+                if($coupon->list_user_id){
+                    $specificUser = App::make(UserService::class)->findById($coupon->list_user_id);
+                }
+            }
+            $users = App::make(UserService::class)->getSelected($coupon->coupon_user_type)->pluck('email', 'id')->toArray();
+
+            if($coupon->apply_for_category == IApplyForCategory::APPLY_ON_SPECIFIC_CATEGORY){
+                if($coupon->list_category_id){
+                    $specificCategory = App::make(CategoryService::class)->findById($coupon->list_category_id);
+                }
+            }
+            $categories = App::make(CategoryService::class)->getCategory($coupon->coupon_category_type)->pluck('name', 'id')->toArray();
+            return view('coupons.edit', compact('coupon', 'users', 'specificUser', 'categories', 'specificCategory'));
         } else {
             return view('coupons.edit')->with('error', 'No Information Founded !');
         }

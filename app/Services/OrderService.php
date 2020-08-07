@@ -235,4 +235,49 @@ class OrderService extends BaseService
     {
         return $this->model->where('user_id', $userId)->get();
     }
+
+    public function cancelRequest(IForm $cancelRequestForm)
+    {
+        if($cancelRequestForm->fails()){
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $cancelRequestForm->errors()
+            );
+        }
+
+        $findOrder = $this->findById($cancelRequestForm->order_id);
+        if($findOrder){
+
+            $findOrder->status = IOrderStaus::ORDER_CANCELLED;
+            $findOrder->update();
+
+            $addTrip = true;
+            $currentDate = date('Y-m-d');
+            $addOneDay = date('Y-m-d', strtotime($currentDate . ' +1 day'));
+            if($addOneDay == $findOrder->delivery_date){
+                $currentTime = date('H:i:s');
+                if($currentTime >= '21:00:00') {
+                    $addTrip = false;
+                }
+            }
+            if($addTrip){
+
+            }
+            return ResponseHelper::responseData(
+                Config::get('constants.CANCEL_REQUEST'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                null
+            );
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.INVALID_ORDER_ID'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            null
+        );
+    }
 }

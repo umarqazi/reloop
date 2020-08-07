@@ -41,6 +41,46 @@ class CollectionRequestRepo extends BaseRepo
     }
 
     /**
+     * Method: getOrdersForSupervisor
+     *
+     * @param $addresses
+     *
+     * @return int
+     */
+    public function getOrdersForSupervisor($addresses)
+    {
+        foreach ($addresses as $address){
+            $orders[] = $this->all()->where('city_id',$address->city_id)->where('district_id',$address->district_id);
+        }
+        $totalOrders = 0;
+        foreach ($orders as $order) {
+            $totalOrders += count($order);
+        }
+        return $totalOrders;
+    }
+
+    /**
+     * Method: totalAwardedPoints
+     *
+     * @param null $addresses
+     *
+     * @return int|mixed
+     */
+    public function totalAwardedPoints($addresses = null)
+    {
+        if($addresses) {
+            $totalAwardedPoints = 0;
+            foreach ($addresses as $address) {
+                $totalAwardedPoints += $this->all()->where('city_id', $address->city_id)
+                    ->where('district_id', $address->district_id)->sum('reward_points');
+            }
+        } else{
+            $totalAwardedPoints = $this->all()->sum('reward_points');
+        }
+        return $totalAwardedPoints;
+    }
+
+    /**
      * @param $drivers
      * @param $date
      * @return mixed

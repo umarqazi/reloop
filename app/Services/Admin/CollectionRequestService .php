@@ -4,6 +4,8 @@
 namespace App\Services\Admin;
 
 
+use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
 use App\Helpers\SettingsHelper;
 use App\Repositories\Admin\CityRepo;
 use App\Repositories\Admin\CollectionRequestRepo;
@@ -62,6 +64,32 @@ class CollectionRequestService extends BaseService
     }
 
     /**
+     * Method: getOrdersForSupervisor
+     *
+     * @param $addresses
+     *
+     * @return mixed
+     */
+    public function getOrdersForSupervisor($addresses)
+    {
+        $orders = $this->collectionRequestRepo->getOrdersForSupervisor($addresses);
+        return $orders;
+    }
+
+    /**
+     * Method: totalAwardedPoints
+     *
+     * @param null $addresses
+     *
+     * @return mixed
+     */
+    public function totalAwardedPoints($addresses = null)
+    {
+        $totalAwardedPoints = $this->collectionRequestRepo->totalAwardedPoints($addresses);
+        return $totalAwardedPoints;
+    }
+
+    /**
      * @param $request
      * @param $id
      * @return mixed
@@ -109,6 +137,45 @@ class CollectionRequestService extends BaseService
         $availableDrivers = $this->collectionRequestRepo->availableDrivers($drivers,$date);
 
         return $availableDrivers;
+    }
+
+    /**
+     * Method: driversAvailability
+     *
+     * @param $date
+     * @param $authUser
+     * @param null $city_id
+     * @param null $district_id
+     *
+     * @return array
+     */
+    public function driversAvailability($date, $authUser, $city_id = null, $district_id = null)
+    {
+        if(!empty($city_id) && !empty($district_id)){
+            $drivers = $this->userRepo->getDrivers(IUserType::DRIVER,$city_id,$district_id);
+            $availableDrivers = $this->collectionRequestRepo->availableDrivers($drivers,$date);
+        } else {
+            $authUser = $this->userRepo->getUserDefaultCityDistrict($authUser);
+            $city_id = $authUser->addresses->first()->city_id;
+            $district_id = $authUser->addresses->first()->district_id;
+            $drivers = $this->userRepo->getDrivers(IUserType::DRIVER, $city_id, $district_id);
+            $availableDrivers = $this->collectionRequestRepo->availableDrivers($drivers, $date);
+        }
+        if ($availableDrivers->isEmpty()) {
+            return ResponseHelper::responseData(
+                Config::get('constants.DRIVER_NOT_AVAILABLE'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                null
+            );
+        } else {
+            return ResponseHelper::responseData(
+                Config::get('constants.DRIVER_AVAILABLE'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                null
+            );
+        }
     }
 
     public function confirmRequest($id)

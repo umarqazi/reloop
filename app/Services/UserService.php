@@ -77,6 +77,18 @@ class UserService extends BaseService
     }
 
     /**
+     * Method: findByType
+     *
+     * @param $type
+     *
+     * @return mixed
+     */
+    public function findByType($type)
+    {
+        return $this->model->where(['user_type' => $type, 'status' => true])->get();
+    }
+
+    /**
      * @inheritDoc
      */
     public function remove($id)
@@ -361,7 +373,10 @@ class UserService extends BaseService
             $authUser = $this->findByEmail($loginForm->email);
             if($authUser && $authUser->login_type != ILoginType::APP_LOGIN){
 
-                $authUser->player_id = $loginForm->player_id;
+                $authUser->player_id = $this->playerIdHandler(
+                    $authUser->player_id,
+                    $loginForm->player_id
+                );
                 $authUser->update();
 
                 $authUser = $authUser->load('addresses', 'organization', 'roles');
@@ -668,7 +683,11 @@ class UserService extends BaseService
             $this->organizationService->update($authUser->organization_id, $updateUserProfileForm);
         }
 
-        $userProfile = $this->model->where('id', auth()->id())->with('addresses', 'organization')->first();
+        $userProfile = $this->model->with([
+            'addresses' => function ($query) {
+                return $query->with('city', 'district');
+            },
+            'organization'])->where('id', auth()->id())->first();
 
         return ResponseHelper::responseData(
             Config::get('constants.PROFILE_UPDATE_SUCCESS'),
@@ -747,7 +766,7 @@ class UserService extends BaseService
                 ];
             }
         }
-        $oneTimeServices = App::make(ProductService::class)->getProductsByCategoryId(ISubscriptionType::ONETIME);
+        /*$oneTimeServices = App::make(ProductService::class)->getProductsByCategoryId(ISubscriptionType::ONETIME);
         if(!$oneTimeServices->isEmpty()) {
 
             foreach ($oneTimeServices as $oneTimeService) {
@@ -759,10 +778,10 @@ class UserService extends BaseService
                     'category_type' => $oneTimeService->category_type,
                 ];
             }
-        }
+        }*/
         $data = [
             'UserPlans' => $userPlansData,
-            'OneTimeServices' => $oneTimeServicesData,
+            'OneTimeServices' => [],
         ];
         return ResponseHelper::responseData(
             Config::get('constants.USER_PLANS'),
@@ -995,7 +1014,7 @@ class UserService extends BaseService
                 return $playerIds;
             }
         } else {
-            if ($position) {
+            if ($position || $position == 0) {
                 unset($playerIds[$position]);
             }
         }

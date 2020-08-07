@@ -5,8 +5,14 @@
 $(document).ready(function () {
 
     /**
-     * author: Bilal Saqib
+     * author: Faisal Raza
      */
+
+    // Toggle navbar events
+    $('.navbar-btn').on('click', function(){
+        $('body').toggleClass('custom-sidebar');
+        $('.navbar-btn').toggleClass('rotate-btn');
+    });
 
     //alert for inactive
     $("select[name='status']").on('change', function() {
@@ -58,6 +64,13 @@ $(document).ready(function () {
         if (e.keyCode == 8 && $('#phone_number').is(":focus") && $('#phone_number').val().length < 7) {
             e.preventDefault();
         }
+        // To restrict keys
+        var key = e.which || e.charCode || e.keyCode || 0;
+        return (key == 8 ||
+            key == 9 ||
+            key == 46 ||
+            (key >= 48 && key <= 57) ||
+            (key >= 96 && key <= 105));
     });
 
     $(document).on('change', 'select[name="city_id[]"], select[name="city_id"]', function() {
@@ -90,6 +103,98 @@ $(document).ready(function () {
        }
     });
 
+
+    $('.hide-wrapper').hide();
+    //
+    $(document).on('change', 'select[name="apply_for_user"]', function() {
+        let coupon_for = $(this).val();
+        let addSelectOption = $(this).closest('.coupon-wrapper').find('select[name="coupon_user_type"]');
+        if (coupon_for == 1){
+
+            $(".list_of_users_wrapper").hide();
+            addSelectOption.append('<option value="3">All</option>');
+            addSelectOption.material_select();
+        } else {
+            $(".list_of_users_wrapper").show();
+            addSelectOption.empty();
+            addSelectOption.append('<option value="">Choose User Type</option>');
+            addSelectOption.append('<option value="1">Household</option>');
+            addSelectOption.append('<option value="2">Organization</option>');
+            addSelectOption.material_select();
+        }
+    });
+
+    $(document).on('change', 'select[name="apply_for_category"]', function() {
+        let coupon_for_category = $(this).val();
+        let addSelectOption = $(this).closest('.coupon-category-wrapper').find('select[name="coupon_category_type"]');
+        if (coupon_for_category == 1){
+
+            $(".list_of_category_wrapper").hide();
+            addSelectOption.append('<option value="3">All</option>');
+            addSelectOption.material_select();
+        } else {
+            $(".list_of_category_wrapper").show();
+            addSelectOption.empty();
+            addSelectOption.append('<option value="">Choose Category Type</option>');
+            addSelectOption.append('<option value="1">Service</option>');
+            addSelectOption.append('<option value="2">Product</option>');
+            addSelectOption.material_select();
+        }
+    });
+
+    // Get users based upon user_type
+    $(document).on('change', 'select[name="coupon_user_type"]', function() {
+        let coupon_user_type = $(this).val();
+        let select = $(this).closest('.coupon-wrapper').find('select[name="list_user_id"]');
+        select.empty();
+        if (coupon_user_type != '') {
+
+            //ajax call to append related districts
+            $.ajax({
+                type: "get",
+                url: "/get-users/" + coupon_user_type,
+                success: function (res) {
+                    if (res) {
+                        select.append('<option value="" disabled selected >Choose User</option>');
+                        $.each(res, function (key, value) {
+                            select.append('<option value="' + key + '">' + value + '</option>');
+                        });
+                        select.material_select();
+                    }
+                }
+            });
+        } else {
+            select.append('<option value="" disabled selected >Choose User</option>');
+            select.material_select();
+        }
+    });
+
+    // Get main categories based upon category type
+    $(document).on('change', 'select[name="coupon_category_type"]', function() {
+        let coupon_category_type = $(this).val();
+        let select = $(this).closest('.coupon-category-wrapper').find('select[name="list_category_id"]');
+        select.empty();
+        if (coupon_category_type != '') {
+
+            //ajax call to append related districts
+            $.ajax({
+                type: "get",
+                url: "/get-categories/" + coupon_category_type,
+                success: function (res) {
+                    if (res) {
+                        select.append('<option value="" disabled selected >Choose Category</option>');
+                        $.each(res, function (key, value) {
+                            select.append('<option value="' + key + '">' + value + '</option>');
+                        });
+                        select.material_select();
+                    }
+                }
+            });
+        } else {
+            select.append('<option value="" disabled selected >Choose Category</option>');
+            select.material_select();
+        }
+    });
 
 
 
@@ -198,28 +303,46 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('change', '.main_category_type select[name="type"]', function() {
+        let main_category_type = $(this).val();
+        if (main_category_type == 1){
+            $('.main_category_service_type').show();
+        } else {
+            $('.main_category_service_type').hide();
+        }
+    });
+
+    // Allowed requests dropdown for services
     $( "#subscription_category_id" ).change(function() {
         let subscription_category_value = $(this).val();
-        if(subscription_category_value == 2){
-            $('#subscription_request_allowed').remove();
-            $('label[for=subscription_request_allowed]').remove();
-            $('.subscription_request_allowed_input_field').append('' +
-                '                    <select name="category_type"  id="subscription_category_type" required>\n' +
-                '                        <option value="" disabled selected>Choose Subscription Category Type</option>\n' +
-                /*'                        <option value="1">Same Day</option>\n' +
-                '                        <option value="2">Next Day</option>\n' +*/
-                '                        <option value="3">Single Collection</option>\n' +
-                '                    </select>' +
-                '                    <label for="subscription_category_type">Subscription Category Type</label>');
-            $('#subscription_category_type').material_select();
-        }
-        else{
-            $('.subscription_request_allowed_input_field').html('');
-            $('.subscription_request_allowed_input_field').append('' +
-                '                    <input id="subscription_request_allowed" min="1" type="number" name="request_allowed" required>\n' +
-                '                    <label for="subscription_request_allowed">Request(s) Allowed</label>\n' +
-                '                    ');
-        }
+
+        $.ajax({
+            type: "get",
+            url: "/subscription/category-details/" + subscription_category_value,
+            success: function (res) {
+                if(res){
+                    if (res.service_type == 2){
+                        $('#subscription_request_allowed').remove();
+                        $('label[for=subscription_request_allowed]').remove();
+                        $('.subscription_request_allowed_input_field').append('' +
+                            '                    <select name="category_type"  id="subscription_category_type" required>\n' +
+                            '                        <option value="" disabled selected>Choose Subscription Category Type</option>\n' +
+                            /*'                        <option value="1">Same Day</option>\n' +
+                            '                        <option value="2">Next Day</option>\n' +*/
+                            '                        <option value="3">Single Collection</option>\n' +
+                            '                    </select>' +
+                            '                    <label for="subscription_category_type">Subscription Category Type</label>');
+                        $('#subscription_category_type').material_select();
+                    } else {
+                        $('.subscription_request_allowed_input_field').html('');
+                        $('.subscription_request_allowed_input_field').append('' +
+                            '                    <input id="subscription_request_allowed" min="1" type="number" name="request_allowed" required>\n' +
+                            '                    <label for="subscription_request_allowed">Request(s) Allowed</label>\n' +
+                            '                    ');
+                    }
+                }
+            }
+        });
     });
 
     // Hide floor for villa and show for apartment
@@ -288,11 +411,14 @@ $(document).ready(function () {
 
     });
 
-    $("#user-form").validate({
+    $('#user-form, #user_edit_form, #org_edit_form, #appended-filed-wrap').validate({
         rules: {
             password: {
                 minlength: 8,
             },
+            phone_number: {
+                minlength: 15
+            }
         },
 
         errorElement : 'div',

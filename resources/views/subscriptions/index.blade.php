@@ -52,7 +52,7 @@
                         <a class="btn btn-primary" href="{{ route('subscriptions.export') }}">Export</a>
                     </div>
                         <div class="col s12">
-                        <table id="data-table-simple" class="responsive-table display" cellspacing="0">
+                        <table id="data-table-simple" class="display" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>Id</th>
@@ -69,7 +69,7 @@
                             @foreach($subscriptions as $subscription)
                             <tr>
                                 <td>{{ $subscription->id }}</td>
-                                <td>{{ $subscription->category_id == 1 ? 'Renewable Subscriptions':'One Time Services' }}</td>
+                                <td>{{ $subscription->category->name }}</td>
                                 <td>{{ $subscription->name }}</td>
                                 <td>{{ $subscription->price }}</td>
                                 <td>{{ $subscription->description }}</td>

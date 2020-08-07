@@ -4,6 +4,10 @@
 namespace App\Services;
 use App\Coupon;
 use App\Forms\IForm;
+use App\Helpers\IResponseHelperInterface;
+use App\Helpers\ResponseHelper;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -56,14 +60,167 @@ class CouponService extends BaseService
     }
 
     /**
-     * Method: couponVerification
+     * Method: findByCouponCode
      *
      * @param $coupon
      *
      * @return mixed
      */
-    public function couponVerification($coupon)
+    public function findByCouponCode($coupon)
     {
         return $this->model->where('code', $coupon)->first();
+    }
+
+    /**
+     * Method: couponVerification
+     *
+     * @param IForm $couponForm
+     *
+     * @return array
+     */
+    public function couponVerification(IForm $couponForm)
+    {
+        if ($couponForm->fails()) {
+
+            return ResponseHelper::responseData(
+                Config::get('constants.INVALID_OPERATION'),
+                IResponseHelperInterface::FAIL_RESPONSE,
+                false,
+                $couponForm->errors()
+            );
+        }
+        $findCoupon = $this->findByCouponCode($couponForm->coupon);
+        if($findCoupon){
+
+            $authUser = App::make(UserService::class)->findById(auth()->id());
+            $couponUsage = App::make(CouponUsageService::class)->checkCouponUsage($findCoupon->id, $authUser->id);
+            $couponMaxUsageLimit = App::make(CouponUsageService::class)->checkCouponUsage($findCoupon->id);
+            if ($couponMaxUsageLimit->sum('no_of_usage') < $findCoupon->max_usage_limit) {
+                if (empty($couponUsage) || $couponUsage->no_of_usage < $findCoupon->max_usage_per_user) {
+
+                    if ($findCoupon->apply_for_user == IApplyForUser::APPLY_ON_SPECIFIC_USER) {
+
+                        if ($findCoupon->list_user_id == $authUser->id) {
+
+                            return ResponseHelper::responseData(
+                                Config::get('constants.COUPON_VERIFICATION'),
+                                IResponseHelperInterface::SUCCESS_RESPONSE,
+                                true,
+                                [
+                                    "couponDetails" => $findCoupon,
+                                    "validForCategory" => $this->validateCategory($findCoupon, $couponForm),
+                                ]
+                            );
+                        } else {
+                            return ResponseHelper::responseData(
+                                Config::get('constants.COUPON_FAIL'),
+                                IResponseHelperInterface::FAIL_RESPONSE,
+                                false,
+                                [
+                                    "invalid_coupon" => [
+                                        Config::get('constants.COUPON_FAIL')
+                                    ]
+                                ]
+                            );
+                        }
+                    } elseif ($findCoupon->apply_for_user == IApplyForUser::APPLY_ON_USER_TYPE) {
+
+                        if ($findCoupon->coupon_user_type == 3) {
+                            return ResponseHelper::responseData(
+                                Config::get('constants.COUPON_VERIFICATION'),
+                                IResponseHelperInterface::SUCCESS_RESPONSE,
+                                true,
+                                [
+                                    "couponDetails" => $findCoupon,
+                                    "validForCategory" => $this->validateCategory($findCoupon, $couponForm),
+                                ]
+                            );
+                        }elseif ($findCoupon->coupon_user_type == $authUser->user_type) {
+                            return ResponseHelper::responseData(
+                                Config::get('constants.COUPON_VERIFICATION'),
+                                IResponseHelperInterface::SUCCESS_RESPONSE,
+                                true,
+                                [
+                                    "couponDetails" => $findCoupon,
+                                    "validForCategory" => $this->validateCategory($findCoupon, $couponForm),
+                                ]
+                            );
+                        } else {
+                            return ResponseHelper::responseData(
+                                Config::get('constants.COUPON_FAIL'),
+                                IResponseHelperInterface::FAIL_RESPONSE,
+                                false,
+                                [
+                                    "invalid_coupon" => [
+                                        Config::get('constants.COUPON_FAIL')
+                                    ]
+                                ]
+                            );
+                        }
+                    }
+                } else {
+                    return ResponseHelper::responseData(
+                        Config::get('constants.COUPON_FAIL'),
+                        IResponseHelperInterface::FAIL_RESPONSE,
+                        false,
+                        [
+                            "invalid_coupon" => [
+                                Config::get('constants.COUPON_FAIL')
+                            ]
+                        ]
+                    );
+                }
+            } else {
+                return ResponseHelper::responseData(
+                    Config::get('constants.COUPON_FAIL'),
+                    IResponseHelperInterface::FAIL_RESPONSE,
+                    false,
+                    [
+                        "invalid_coupon" => [
+                            Config::get('constants.COUPON_FAIL')
+                        ]
+                    ]
+                );
+            }
+        }
+        return ResponseHelper::responseData(
+            Config::get('constants.COUPON_FAIL'),
+            IResponseHelperInterface::FAIL_RESPONSE,
+            false,
+            [
+                "invalid_coupon" => [
+                    Config::get('constants.COUPON_FAIL')
+                ]
+            ]
+        );
+    }
+
+    /**
+     * Method: validateCategory
+     *
+     * @param $findCoupon
+     * @param $couponForm
+     *
+     * @return mixed
+     */
+    private function validateCategory($findCoupon, $couponForm){
+        $categoryId = null;
+        if($findCoupon->coupon_category_type == 3){
+            $categoryId['type'][] = '3';
+        } else {
+            foreach ($couponForm->category as $category) {
+
+                if ($findCoupon->apply_for_category == IApplyForCategory::APPLY_ON_CATEGORY_TYPE) {
+                    if ($category['type'] == $findCoupon->coupon_category_type) {
+                        $categoryId['type'][] = $findCoupon->coupon_category_type;
+                    }
+                } elseif ($findCoupon->apply_for_category == IApplyForCategory::APPLY_ON_SPECIFIC_CATEGORY) {
+                    if ($category['id'] == $findCoupon->list_category_id) {
+                        $categoryId['id'][] = $findCoupon->list_category_id;
+                    }
+                }
+            }
+        }
+        return $categoryId;
     }
 }
