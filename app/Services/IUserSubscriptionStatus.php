@@ -12,4 +12,5 @@ interface IUserSubscriptionStatus
     const PENDING   = 2;
     const COMPLETED = 3;
     const EXPIRED   = 4;
+    const CANCELLED = 5;
 }

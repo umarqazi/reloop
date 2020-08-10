@@ -11,7 +11,7 @@ class Subscription extends Model
      * @var array
      */
     protected $fillable = [
-        'category_id', 'stripe_product_id', 'name', 'price', 'description', 'request_allowed', 'status', 'category_type',
+        'category_id', 'name', 'price', 'description', 'request_allowed', 'status', 'category_type',
         'avatar', 'product_for'
     ];
 

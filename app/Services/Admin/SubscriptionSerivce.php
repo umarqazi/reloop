@@ -49,7 +49,7 @@ class SubscriptionSerivce extends BaseService
 
         if($subscription) {
 
-            if ($subscription->category->service_type == ISubscriptionType::MONTHLY) {
+            /*if ($subscription->category->service_type == ISubscriptionType::MONTHLY) {
                 //add subscription to stripe
                 $stripeData = [
                     'name' => $request['name'],
@@ -62,7 +62,7 @@ class SubscriptionSerivce extends BaseService
                 $stripe['stripe_product_id'] = $stripeProduct['id'];
 
                 return parent::update($subscription->id, $stripe);
-            }
+            }*/
 
             return true;
         }
@@ -87,7 +87,7 @@ class SubscriptionSerivce extends BaseService
         else{
             $data['request_allowed'] = ITrips::ONE_TRIP;
             $data['category_type'] = ISubscriptionSubType::SINGLE_COLLECTION;
-            $data['stripe_product_id'] = null;
+            //$data['stripe_product_id'] = null;
         }
 
         //check that avatar exists or not

@@ -17,6 +17,7 @@ class CreateSubscriptionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
+            //$table->string('stripe_product_id')->nullable();
             $table->string('name');
             $table->integer('price');
             $table->text('description')->nullable();

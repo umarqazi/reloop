@@ -10,7 +10,6 @@ use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
-use TelrGateway\TelrManager;
 
 /**
  * Class PaymentController
@@ -48,32 +47,6 @@ class PaymentController extends Controller
      */
     public function buyPlan(Request $request)
     {
-        $telrManager = new TelrManager();
-        $billingParams = [
-            'first_name' => 'Faisal',
-            'sur_name' => 'Raza',
-            'address_1' => 'Dubai',
-            'address_2' => 'Dubai',
-            'city' => 'Dubai',
-            'region' => 'Dubai',
-            'zip' => '11231',
-            'country' => 'United Arab Emirates',
-            'email' => 'example@company.com',
-            'return_auth' => '/success',
-            'repeat_period' => 'M',
-            'repeat_interval' => 1,
-            'ivp_method' => 'check',
-        ];
-
-        $abc = $telrManager->pay('', 10, 'abcxyz', $billingParams)->redirect();
-        dd($abc);
-        return ResponseHelper::jsonResponse(
-            'abc',
-            true,
-            true,
-            $abc
-        );
-
         $buyPlanForm = new BuyPlanForm();
         $buyPlanForm->loadFromArray($request->all());
 

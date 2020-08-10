@@ -68,11 +68,11 @@ class OrganizationService extends BaseService
         $organization = parent::create($organizationData);
         if ($organization) {
             $dataObject = (object) $request;
-            $stripeCustomerId = App::make(StripeService::class)->createCustomer($dataObject);
+            //$stripeCustomerId = App::make(StripeService::class)->createCustomer($dataObject);
             $userData = array(
                 'organization_id' => $organization->id,
                 'email'           => $request['email'],
-                'stripe_customer_id' => $stripeCustomerId,
+                //'stripe_customer_id' => $stripeCustomerId,
                 'phone_number'    => $request['phone_number'],
                 'password'        => Hash::make($request['password']),
                 'status'          => IUserStatus::ACTIVE,

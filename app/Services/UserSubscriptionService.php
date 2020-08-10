@@ -75,15 +75,16 @@ class UserSubscriptionService extends BaseService
         $coupon = App::make(CouponService::class)->findById($data['request_data']->coupon_id);
         if($data['product_details']->category->service_type == ISubscriptionType::MONTHLY){
 
-            $startTime = date("Y-m-d h:i:s",$data['stripe_response']['current_period_start']);
-            $endTime = date("Y-m-d h:i:s",$data['stripe_response']['current_period_end']);
-            $stripeSubId = $data['stripe_response']['id'];
+            $startTime = date("Y-m-d h:i:s");
+            $endTime = date("Y-m-d h:i:s", strtotime("+30 days"));
+            //$stripeSubId = $data['stripe_response']['id'];
             $subscriptionType = ISubscriptionSubType::NORMAL;
 
             $userSubscriptionStatus = $model->where([
                 'user_id' => $data['user_id'],
-                'status' => IUserSubscriptionStatus::ACTIVE
-            ])->whereNotNull('stripe_subscription_id')->first();
+                'status' => IUserSubscriptionStatus::ACTIVE,
+                'subscription_type' => ISubscriptionSubType::NORMAL,
+            ])->whereNotNull('end_date')->first();
             if(!empty($userSubscriptionStatus)){
 
                 $status = IUserSubscriptionStatus::PENDING;
@@ -92,7 +93,7 @@ class UserSubscriptionService extends BaseService
 
         $model->user_id = $data['user_id'];
         $model->subscription_id = $data['product_details']->id;
-        $model->stripe_subscription_id = $stripeSubId;
+        //$model->stripe_subscription_id = $stripeSubId;
         $model->subscription_number = $data['order_number'];
         $model->subscription_type = $subscriptionType;
         $model->coupon = $coupon->code ?? null;
@@ -202,5 +203,44 @@ class UserSubscriptionService extends BaseService
             ])->orWhere(function($query) {
                 $query->where('status', IUserSubscriptionStatus::COMPLETED);
             })->first();
+    }
+
+    /**
+     * Method: renewUserSubscription
+     *
+     * @param $userSubscriptionId
+     * @param $order_number
+     *
+     * @return UserSubscription
+     */
+    public function renewUserSubscription($userSubscriptionId, $order_number)
+    {
+        $findUserSubscription = $this->findById($userSubscriptionId);
+        if($findUserSubscription){
+            if($findUserSubscription->trips > 0){
+                $findUserSubscription->status = IUserSubscriptionStatus::EXPIRED;
+                $findUserSubscription->update();
+            }
+            $subscription = $findUserSubscription->subscription;
+
+            $model = $this->model;
+            $startTime = date("Y-m-d h:i:s");
+            $endTime = date("Y-m-d h:i:s", strtotime("+30 days"));
+            $model->user_id = $findUserSubscription->user_id;
+            $model->subscription_id = $findUserSubscription->subscription_id;
+            $model->subscription_number = $order_number;
+            $model->subscription_type = ISubscriptionSubType::NORMAL;
+            $model->total = $subscription->price;
+            $model->status = IUserSubscriptionStatus::ACTIVE;
+            $model->start_date = $startTime;
+            $model->end_date = $endTime;
+            $model->trips = $subscription->request_allowed;
+            $model->save();
+
+            $data['product_details'] = $subscription;
+            $data['user_id'] = $findUserSubscription->user_id;
+            App::make(UserService::class)->updateTrips($data);
+            return $model;
+        }
     }
 }

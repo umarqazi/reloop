@@ -16,14 +16,14 @@ use App\Forms\BaseForm;
 class BuyPlanForm extends BaseForm
 {
     public $card_number;
-    public $exp_month;
-    public $cvv;
-    public $exp_year;
-    public $plan_id;
     public $subscription_id;
     public $subscription_type;
     public $total;
     public $coupon_id;
+    public $card_security_code;
+    public $expiry_date;
+    public $token_name;
+    public $user_id;
 
     /**
      * @inheritDoc
@@ -32,14 +32,14 @@ class BuyPlanForm extends BaseForm
     {
         return [
             'card_number'             => $this->card_number,
-            'exp_month'               => $this->exp_month,
-            'cvv'                     => $this->cvv,
-            'exp_year'                => $this->exp_year,
-            'plan_id'                 => $this->plan_id,
             'subscription_id'         => $this->subscription_id,
             'subscription_type'       => $this->subscription_type,
             'total'                   => $this->total,
             'coupon_id'               => $this->coupon_id,
+            'card_security_code'      => $this->card_security_code,
+            'token_name'              => $this->token_name,
+            'user_id'                 => $this->user_id,
+            'expiry_date'             => $this->expiry_date,
         ];
     }
 
@@ -50,12 +50,12 @@ class BuyPlanForm extends BaseForm
     {
         return [
             'card_number'             => 'required',
-            'exp_month'               => 'required',
-            'cvv'                     => 'required',
-            'exp_year'                => 'required',
+            'expiry_date'             => 'required',
+            'card_security_code'      => 'required',
             'subscription_id'         => 'required',
             'subscription_type'       => 'required',
-            'total'                   => 'required'
+            'total'                   => 'required',
+            'user_id'                 => 'required',
         ];
     }
 }

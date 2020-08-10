@@ -34,6 +34,10 @@ class BuyProductForm extends BaseForm
     public $district_id;
     public $products;
     public $organization_name;
+    public $card_security_code;
+    public $token_name;
+    public $user_id;
+    public $expiry_date;
 
     /**
      * @inheritDoc
@@ -60,6 +64,10 @@ class BuyProductForm extends BaseForm
             'city_id'             => $this->city_id,
             'district_id'         => $this->district_id,
             'products'            => $this->products,
+            'card_security_code'  => $this->card_security_code,
+            'token_name'          => $this->token_name,
+            'user_id'             => $this->user_id,
+            'expiry_date'         => $this->expiry_date,
         ];
     }
 
@@ -69,20 +77,20 @@ class BuyProductForm extends BaseForm
     public function rules()
     {
         return [
-            'card_number'     => 'required',
-            'exp_month'       => 'required',
-            'cvv'             => 'required',
-            'exp_year'        => 'required',
-            'subtotal'        => 'required',
-            'total'           => 'required',
-            'email'           => 'required',
-            'phone_number'    => 'required',
-            'location'        => 'required',
-            'latitude'        => 'required',
-            'longitude'       => 'required',
-            'city_id'         => 'required',
-            'district_id'     => 'required',
-            'products'        => 'required'
+            'card_number'          => 'required',
+            'expiry_date'          => 'required',
+            'card_security_code'   => 'required',
+            'user_id'              => 'required',
+            'subtotal'             => 'required',
+            'total'                => 'required',
+            'email'                => 'required',
+            'phone_number'         => 'required',
+            'location'             => 'required',
+            'latitude'             => 'required',
+            'longitude'            => 'required',
+            'city_id'              => 'required',
+            'district_id'          => 'required',
+            'products'             => 'required'
         ];
     }
 }

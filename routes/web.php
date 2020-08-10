@@ -108,10 +108,10 @@ Route::get('export-chart-data', 'Admin\ChartController@export');
 Route::get('/test', static function () {
    dd(now()->format('Y-m-d'), now()->addDays(- 0)->format('Y-m-d'));
 });
-Route::get('payment', 'Api\PaymentController@buyPlan');
-Route::get('handle-payment/success', function (){
-    dd('done');
-});
-Route::get('handle-payment/declined', function (){
-    dd('done');
-});
+
+Route::get('confirm-page', 'PayfortController@merchantConfirmationPage')->name('confirm-page');
+Route::get('payment-page', 'PayfortController@paymentPage')->name('payment-page');
+Route::post('create-token', 'PayfortController@createToken')->name('create-token');
+Route::get('return-create-token', 'PayfortController@returnCreateToken')->name('return-create-token');
+Route::get('response-payfort', 'PayfortController@responsePayfort')->name('response-payfort');
+Route::post('recurring', 'PayfortController@recurring')->name('recurring');

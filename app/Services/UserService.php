@@ -201,7 +201,7 @@ class UserService extends BaseService
         $model->save();
         $model->assignRole('user');
 
-        $this->addressService->storeAddress(
+        $saveAddress = $this->addressService->storeAddress(
             [
                 'user_id'     => $model->id,
                 'city_id'     => $form->city_id,
@@ -213,12 +213,12 @@ class UserService extends BaseService
             ]
         );
 
-        $stripeCustomerId = $this->stripeService->createCustomer($form);
+        //$stripeCustomerId = $this->stripeService->createCustomer($form);
 
-        if($stripeCustomerId){
+        if($saveAddress){
 
-            $model->stripe_customer_id = $stripeCustomerId;
-            $model->save();
+            /*$model->stripe_customer_id = $stripeCustomerId;
+            $model->save();*/
             $model->load(['organization',
                 'addresses' => function ($query){
                     return $query->with('city', 'district');
@@ -388,13 +388,13 @@ class UserService extends BaseService
                 );
             } else {
 
-                $stripeCustomerId = $this->stripeService->createCustomer($loginForm);
-                if($stripeCustomerId) {
+                //$stripeCustomerId = $this->stripeService->createCustomer($loginForm);
+                if(true) {
 
                     $model = $this->model;
                     $loginForm->loadToModel($model);
                     $model->assignRole('user');
-                    $model->stripe_customer_id = $stripeCustomerId;
+                    //$model->stripe_customer_id = $stripeCustomerId;
                     $model->login_type = intval($loginForm->login_type);
                     $model->save();
                     $model->load('organization', 'addresses');

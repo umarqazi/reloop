@@ -104,7 +104,14 @@ class PaymentService extends BaseService
         $planDetails = $this->productService->findSubscriptionById($buyPlanForm->subscription_id);
         if(!empty($planDetails)){
 
-            $makePayment = $this->stripeService->buyPlan($buyPlanForm);
+            return ResponseHelper::responseData(
+                Config::get('constants.ORDER_SUCCESSFUL'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                null
+            );
+
+            /*$makePayment = $this->stripeService->buyPlan($buyPlanForm);
             if(array_key_exists('stripe_error', $makePayment)){
 
                 return ResponseHelper::responseData(
@@ -134,7 +141,7 @@ class PaymentService extends BaseService
                         ],
                     ]
                 );
-            }
+            }*/
         }
         return ResponseHelper::responseData(
             Config::get('constants.INVALID_OPERATION'),
@@ -168,7 +175,14 @@ class PaymentService extends BaseService
         $productDetails = $this->productService->findProductById($buyProductForm->products);
         if(!$productDetails->isEmpty()){
 
-            $makePayment = $this->stripeService->buyProduct($buyProductForm);
+            return ResponseHelper::responseData(
+                Config::get('constants.ORDER_SUCCESSFUL'),
+                IResponseHelperInterface::SUCCESS_RESPONSE,
+                true,
+                null
+            );
+
+            /*$makePayment = $this->stripeService->buyProduct($buyProductForm);
             if(array_key_exists('stripe_error', $makePayment)){
 
                 $responseData = [
@@ -202,7 +216,7 @@ class PaymentService extends BaseService
                     ],
                 ];
                 return $responseData;
-            }
+            }*/
         }
     }
 

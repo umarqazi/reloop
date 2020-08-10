@@ -352,7 +352,7 @@ button i.material-icons {
     background: #eeeeee;
     padding: 40px 30px;
     position: absolute;
-    top: 40%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%);
     -webkit-box-shadow: 0px 3px 22px -1px rgba(117,109,117,1);
