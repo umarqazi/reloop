@@ -22,7 +22,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'first_name', 'last_name', 'email', 'password','organization_id','phone_number','birth_date', 'hh_organization_name',
-        'avatar','user_type','trips','reward_points','status','verified_at', 'signup_token', 'api_token','stripe_customer_id',
+        'avatar','user_type','trips','reward_points','status','verified_at', 'signup_token', 'api_token',
         'login_type', 'reports', 'password_reset_token', 'player_id', 'gender'
     ];
 
@@ -72,6 +72,11 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function userCards()
+    {
+        return $this->hasMany(UserCard::class);
     }
 
      /** Method: userSubscription

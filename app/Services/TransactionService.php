@@ -113,4 +113,21 @@ class TransactionService extends BaseService
     {
         return $this->model->where('user_id', $userId)->get();
     }
+
+    /**
+     * Method: renewPlanTransaction
+     *
+     * @param $transactionable
+     *
+     * @return void
+     */
+    public function renewPlanTransaction($transactionable)
+    {
+        $model = $this->model;
+        $model->user_id = $transactionable->user_id;
+        $model->transactionable_id = $transactionable->id;
+        $model->transactionable_type = $transactionable->getMorphClass();
+        $model->total = $transactionable->total;
+        $model->save();
+    }
 }

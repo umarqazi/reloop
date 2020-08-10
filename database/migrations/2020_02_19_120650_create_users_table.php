@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->foreign('organization_id')->references('id')->on('organizations')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->string('stripe_customer_id')->nullable();
+            //$table->string('stripe_customer_id')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->unique();
