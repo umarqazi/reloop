@@ -235,11 +235,14 @@ class PayfortController extends Controller
                 'token_name' => $fortParams['token_name'],
                 'card_security_code' => $buyProductDetails['card_security_code'],
             ];
-            $userCards = App::make(UserCardService::class)->findByUserId($buyProductDetails['user_id']);
-            if(empty($userCards)){
-                $data['default'] = 1;
-            } else {
-                $data['default'] = 0;
+            if(array_key_exists('subscription_type', $buyProductDetails)
+                && $buyProductDetails['subscription_type'] == 1) {
+                $userCards = App::make(UserCardService::class)->findByUserId($buyProductDetails['user_id']);
+                if ($userCards) {
+                    $userCards->default = false;
+                    $userCards->update();
+                }
+                $data['default'] = true;
             }
 
             $saveCardDetails = App::make(UserCardService::class)->saveCardDetails($data);
