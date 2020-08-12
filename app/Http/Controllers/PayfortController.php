@@ -530,10 +530,11 @@ class PayfortController extends Controller
         }
         $array_result = $this->callApi($postData, $gatewayUrl);
         if ($array_result['response_message'] == 'Success'){
-            $this->order_number = 'RE' . strtotime(now());
-            $renewSubscription = App::make(UserSubscriptionService::class)->renewUserSubscription($userSubscriptionId, $this->order_number);
-            $transaction = App::make(TransactionService::class)->renewPlanTransaction($renewSubscription);
+            $renewStatus = true;
+        } else {
+            $renewStatus = false;
         }
+        App::make(UserSubscriptionService::class)->renewUserSubscription($userSubscriptionId, $renewStatus);
     }
 
 }

@@ -209,38 +209,38 @@ class UserSubscriptionService extends BaseService
      * Method: renewUserSubscription
      *
      * @param $userSubscriptionId
-     * @param $order_number
+     * @param $renewStatus
      *
-     * @return UserSubscription
+     * @return void
      */
-    public function renewUserSubscription($userSubscriptionId, $order_number)
+    public function renewUserSubscription($userSubscriptionId, $renewStatus)
     {
         $findUserSubscription = $this->findById($userSubscriptionId);
         if($findUserSubscription){
-            if($findUserSubscription->trips > 0){
-                $findUserSubscription->status = IUserSubscriptionStatus::EXPIRED;
-                $findUserSubscription->update();
-            }
             $subscription = $findUserSubscription->subscription;
+            $previousTrips = $findUserSubscription->trips;
+            if($renewStatus) {
+                $add = true;
+                $startTime = date("Y-m-d h:i:s");
+                $endTime = date("Y-m-d h:i:s", strtotime("+30 days"));
+                $findUserSubscription->trips = $subscription->request_allowed;
+                $findUserSubscription->status = IUserSubscriptionStatus::ACTIVE;
+                $findUserSubscription->start_date = $startTime;
+                $findUserSubscription->end_date = $endTime;
+                $findUserSubscription->update();
+                $data['product_details'] = $subscription;
+                $data['user_id'] = $findUserSubscription->user_id;
+                App::make(UserService::class)->updateUserTrips($data, $add, $previousTrips);
+            } else{
 
-            $model = $this->model;
-            $startTime = date("Y-m-d h:i:s");
-            $endTime = date("Y-m-d h:i:s", strtotime("+30 days"));
-            $model->user_id = $findUserSubscription->user_id;
-            $model->subscription_id = $findUserSubscription->subscription_id;
-            $model->subscription_number = $order_number;
-            $model->subscription_type = ISubscriptionSubType::NORMAL;
-            $model->total = $subscription->price;
-            $model->status = IUserSubscriptionStatus::ACTIVE;
-            $model->start_date = $startTime;
-            $model->end_date = $endTime;
-            $model->trips = $subscription->request_allowed;
-            $model->save();
-
-            $data['product_details'] = $subscription;
-            $data['user_id'] = $findUserSubscription->user_id;
-            App::make(UserService::class)->updateTrips($data);
-            return $model;
+                $add = false;
+                $findUserSubscription->status = IUserSubscriptionStatus::EXPIRED;
+                $findUserSubscription->trips = 0;
+                $findUserSubscription->update();
+                $data['product_details'] = $subscription;
+                $data['user_id'] = $findUserSubscription->user_id;
+                App::make(UserService::class)->updateUserTrips($data, $add, $previousTrips);
+            }
         }
     }
 }
