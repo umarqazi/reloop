@@ -35,7 +35,7 @@ class SubscriptionRenew extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Renew users subscriptions';
 
     /**
      * Create a new command instance.
@@ -57,8 +57,9 @@ class SubscriptionRenew extends Command
         $userSubscriptions = UserSubscription::where('subscription_type', ISubscriptionSubType::NORMAL)->get();
         foreach ($userSubscriptions as $userSubscription){
 
-            if(strtotime($userSubscription->end_date) > strtotime(date('Y-m-d, h:i:s'))
-            && $userSubscription->status != IUserSubscriptionStatus::CANCELLED){
+            if(strtotime($userSubscription->end_date) < strtotime(date('Y-m-d, h:i:s'))
+            && $userSubscription->status != IUserSubscriptionStatus::CANCELLED
+            && $userSubscription->status != IUserSubscriptionStatus::COMPLETED){
 
                 $authUser = App::make(UserService::class)->findById($userSubscription->user_id);
                 $userCard = App::make(UserCardService::class)->findByUserId($userSubscription->user_id);

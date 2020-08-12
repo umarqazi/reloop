@@ -137,6 +137,30 @@ class UserService extends BaseService
     }
 
     /**
+     * Method: updateUserTrips
+     *
+     * @param $data
+     * @param $tripsStatus
+     * @param $previousTrips
+     *
+     * @return void
+     */
+    public function updateUserTrips($data, $tripsStatus, $previousTrips)
+    {
+        $model = $this->model->where('id', $data['user_id'])->first();
+        if ($model->trips >= $previousTrips) {
+            if ($tripsStatus) {
+                $removePreviousTrips = $model->trips - $previousTrips;
+                $model->trips = $removePreviousTrips + $data['product_details']->request_allowed;
+                $model->save();
+            } else {
+                $model->trips = $model->trips - $previousTrips;
+                $model->save();
+            }
+        }
+    }
+
+    /**
      * Method: updateTripsAfterRequest
      *
      * @param $data
