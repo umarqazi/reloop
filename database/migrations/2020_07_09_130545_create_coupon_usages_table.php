@@ -16,10 +16,12 @@ class CreateCouponUsagesTable extends Migration
         Schema::create('coupon_usages', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('coupon_id');
-            $table->foreign('coupon_id')->references('id')->on('coupons');
+            $table->foreign('coupon_id')->references('id')->on('coupons')->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->onUpdate('cascade')
+                ->on('users')->onDelete('cascade');
             $table->integer('no_of_usage');
             $table->timestamps();
         });
