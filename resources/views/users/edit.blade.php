@@ -188,10 +188,12 @@
                     </div>
                     <div class="col s12">
                         <div class="input-field col s12">
-                            <input  id="organization_name" type="text" name="organization_name"
-                                    value="{{ $user->addresses->first()->unit_number .', '. $user->addresses->first()->building_name .', '.
-                                            $user->addresses->first()->street .', '. $user->addresses->first()->district->name .', '. $user->addresses->first()->city->name }}" readonly>
-                            <label for="organization_name" >Address</label>
+                            @if($user->addresses->first())
+                                <input  id="organization_name" type="text" name="organization_name"
+                                        value="{{ $user->addresses->first()->unit_number .', '. $user->addresses->first()->building_name .', '.
+                                                $user->addresses->first()->street .', '. $user->addresses->first()->district->name .', '. $user->addresses->first()->city->name }}" readonly>
+                                <label for="organization_name" >Address</label>
+                            @endif
                         </div>
                     </div>
                     <div class="col s12">
