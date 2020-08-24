@@ -338,23 +338,21 @@ button i.material-icons {
     height: 100%;
 }
 .thanku-wrapper{
-    height: calc(100% - 88px);
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    padding: 0 20px;
 }
 .thanku-wrapper-inner{
-    max-width: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 300px;
+    min-width: 400px;
     margin: 0 auto;
     width: 100%;
-    background: #eeeeee;
+    background: #fff;
     padding: 40px 30px;
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%);
     -webkit-box-shadow: 0px 3px 22px -1px rgba(117,109,117,1);
     -moz-box-shadow: 0px 3px 22px -1px rgba(117,109,117,1);
     box-shadow: 0px 3px 6px -1px rgb(161, 157, 161);
@@ -363,10 +361,39 @@ button i.material-icons {
 }
 .thanku-wrapper-inner img{
     max-width: 100px;
+    margin-bottom: 20px;
 }
 .thanku-wrapper-inner p{
     margin: 0;
-    padding: 10px 0;
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #168dcc;
+    font-weight: 500;
+}
+.payment-confirm-page{
+    background: #0d0d0d url("../../images/dotted-bg.png");
+}
+.confirm-btn{
+    background: #168dcc;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 30px;
+    min-width: 130px;
+    border: 0;
+    outline: 0;
+    font-weight: 500;
+}
+.main-loader-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.main-loader, .main-loader-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 .chart-wrapper h3{
     text-align: center;
@@ -517,7 +544,15 @@ nav .nav-wrapper i{
 }
 @media all and (max-width: 576px ){
     .thanku-wrapper-inner {
-        padding: 30px 20px;
+        padding: 30px 10px;
+        min-width: 300px;
+        min-height: 250px;
+    }
+    .thanku-wrapper-inner p{
+        font-size: 17px;
+    }
+    .thanku-wrapper-inner img {
+        max-width: 80px;
     }
 }
 

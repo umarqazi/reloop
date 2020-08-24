@@ -155,7 +155,7 @@ class PayfortController extends Controller
         foreach ($postData as $k => $v) {
             $form .= '<input type="hidden" name="' . $k . '" value="' . $v . '">';
         }
-        $form .= '<input type="submit" id="submit" value="Submit">';
+        $form .= '<input type="submit" class="confirm-btn" id="submit" value="Confirm">';
         return $form;
     }
 
@@ -255,6 +255,7 @@ class PayfortController extends Controller
             unset($params['signature']);
 
             $host2HostParams = $this->merchantPageNotifyFort($fortParams);
+            return view('response-payfort-page', compact('host2HostParams'));
         }
     }
 

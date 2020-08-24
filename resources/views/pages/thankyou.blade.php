@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="main-wrapper">
-        <div class="top-bar">
+        {{--<div class="top-bar">
             <img src="/assets/images/icons/reloop.png">
-        </div>
+        </div>--}}
         <div class="container">
             <div class="thanku-wrapper">
                 <div class="thanku-wrapper-inner">
