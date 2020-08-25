@@ -248,9 +248,6 @@ class UserService extends BaseService
                     return $query->with('city', 'district');
                 }
             ]);
-
-            DB::commit();
-
             if ( $form->user_type == IUserType::HOUSE_HOLD ){
 
                 $signUpSuccess = Config::get('constants.USER_CREATION_SUCCESS');
@@ -260,9 +257,8 @@ class UserService extends BaseService
                 $signUpSuccess = Config::get('constants.ORGANIZATION_CREATION_SUCCESS');
                 $this->emailNotificationService->organizationSignUpEmail($model);
             }
-
+            DB::commit();
         } else {
-
             DB::rollback();
         }
         return ResponseHelper::responseData(
