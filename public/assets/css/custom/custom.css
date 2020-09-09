@@ -371,7 +371,8 @@ button i.material-icons {
     font-weight: 500;
 }
 .payment-confirm-page{
-    background: #0d0d0d url("../../images/dotted-bg.png");
+    /*background: #263238 url("../../images/dotted-bg.png");*/
+    background: #263238;
 }
 .confirm-btn{
     background: #168dcc;
