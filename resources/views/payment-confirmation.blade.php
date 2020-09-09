@@ -3,7 +3,7 @@
     <div class="main-wrapper">
         <div class="thanku-wrapper">
             <div class="thanku-wrapper-inner">
-                <img src="/assets/images/logo/logo.png">
+                <img src="{{ asset('/assets/images/logo/logo.png') }}">
                 <p>Are you sure you want to continue?</p>
                 @if(!$tokenName)
                     {!! $form !!}
@@ -16,8 +16,8 @@
                 @endif
             </div>
             <div class="main-loader">
-                <img src="/assets/images/animation_200_ke9clp83.gif" class="loader-gif" style="display: none">
-                <p style="color: #fff; display: none" class="loader-gif-text">Please wait, This may take some time. </p>
+                <img src="{{ asset('/assets/images/animation_200_ke9clp83.gif') }}" class="loader-gif" style="display: none">
+{{--                <p style="color: #fff; display: none" class="loader-gif-text">Please wait, This may take some time. </p>--}}
             </div>
         </div>
     </div>
