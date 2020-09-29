@@ -96,7 +96,11 @@
                                             {{ 'Expired' }}
                                         @endif
                                     </td>
-                                    <td>{{ $userSubscription->user->addresses->first()->city->name . ' - ' . $userSubscription->user->addresses->first()->district->name }}</td>
+                                    @if(!$userSubscription->user->addresses->isEmpty())
+                                        <td>{{ $userSubscription->user->addresses->first()->city->name . ' - ' . $userSubscription->user->addresses->first()->district->name }}</td>
+                                    @else
+                                        <td>-</td>
+                                    @endif
                                 </tr>
                             @endforeach
 
