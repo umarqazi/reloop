@@ -258,7 +258,7 @@ class OrderService extends BaseService
             $currentDate = date('Y-m-d');
             $addOneDay = date('Y-m-d', strtotime($currentDate . ' +1 day'));
             if($addOneDay == $findOrder->delivery_date){
-                $currentTime = date('H:i:s');
+                $currentTime = date('H:i:s', strtotime('+3 hours'));
                 if($currentTime >= '21:00:00') {
                     $addTrip = false;
                 }
