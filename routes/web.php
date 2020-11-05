@@ -112,6 +112,7 @@ Route::get('/test', static function () {
 Route::get('confirm-page', 'PayfortController@merchantConfirmationPage')->name('confirm-page');
 Route::get('payment-page', 'PayfortController@paymentPage')->name('payment-page');
 Route::post('create-token', 'PayfortController@createToken')->name('create-token');
-Route::get('return-create-token', 'PayfortController@returnCreateToken')->name('return-create-token');
-Route::get('response-payfort', 'PayfortController@responsePayfort')->name('response-payfort');
+Route::post('token-response', 'PayfortController@tokenResponse')->name('token-response');
+Route::post('payment-response', 'PayfortController@paymentResponse')->name('payment-response');
+Route::post('feedback-transaction', 'PayfortController@paymentResponse')->name('feedback-transaction');
 Route::post('recurring', 'PayfortController@recurring')->name('recurring');

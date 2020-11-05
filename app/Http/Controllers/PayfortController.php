@@ -28,7 +28,7 @@ class PayfortController extends Controller
     public $gatewayHost        = 'https://checkout.payfort.com/';
     public $gatewaySandboxHost = 'https://sbcheckout.payfort.com/';
     public $language           = 'en';
-    public $command            = 'AUTHORIZATION';
+    public $command            = 'PURCHASE';
     private $sandboxMode;
     private $merchantIdentifier;
     private $accessCode;
@@ -115,7 +115,7 @@ class PayfortController extends Controller
         } else {
 
             $merchantReference = $this->generateMerchantReference();
-            $returnUrl = route('return-create-token');
+            $returnUrl = route('token-response');
             if ($this->sandboxMode) {
                 $gatewayUrl = $this->gatewaySandboxHost . 'FortAPI/paymentPage';
             } else {
@@ -215,21 +215,25 @@ class PayfortController extends Controller
     }
 
     /**
-     * Method: returnCreateToken
+     * Method: tokenResponse
      *
-     * @return void
+     * @return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function returnCreateToken()
+    public function tokenResponse()
     {
-        if($_GET['response_message'] == 'Success'){
+        $fortParams = $_POST;
+        $responseParamSignature = $fortParams['signature'];
+        unset($fortParams['signature']);
+        $responseNewSignature = $this->calculateSignature($fortParams, 'response');
+        if($fortParams['response_message'] == 'Success'
+            && $fortParams['response_code'] == '18000'
+            && $responseNewSignature == $responseParamSignature){
 
             $buyProductDetails = session('buyProductDetails');
-            $fortParams = array_merge($_GET, $_POST);
-
             $data = [
                 'user_id' => $buyProductDetails['user_id'],
                 'card_number' => $fortParams['card_number'],
-                'signature' => $fortParams['signature'],
+                'signature' => $responseParamSignature,
                 'expiry_date' => $fortParams['expiry_date'],
                 'merchant_reference' => $fortParams['merchant_reference'],
                 'token_name' => $fortParams['token_name'],
@@ -250,12 +254,11 @@ class PayfortController extends Controller
 
             $fortParams['buyProductDetails'] = $buyProductDetails;
             $fortParams['userDetails'] = $userDetails;
-            $params = $fortParams;
-            $responseSignature = $fortParams['signature'];
-            unset($params['signature']);
 
             $host2HostParams = $this->merchantPageNotifyFort($fortParams);
             return view('response-payfort-page', compact('host2HostParams'));
+        } else {
+            return $_POST;
         }
     }
 
@@ -279,7 +282,7 @@ class PayfortController extends Controller
             'customer_email'      => $fortParams['userDetails']->email,
             'customer_name'       => $fortParams['userDetails']->first_name. ' ' .$fortParams['userDetails']->last_name,
             'language'            => $this->language,
-            'return_url'          => route('response-payfort'),
+            'return_url'          => route('payment-response'),
             'merchant_extra'      => 'RE' . strtotime(now()),
             'token_name'          => $fortParams['token_name'],
         );
@@ -300,8 +303,8 @@ class PayfortController extends Controller
             $gatewayUrl = 'https://paymentservices.payfort.com/FortAPI/paymentApi';
         }
         $array_result = $this->callApi($postData, $gatewayUrl);
-        if ($array_result['response_code'] == '20064' && isset($array_result['3ds_url'])) {
-            echo "<html><body onLoad=\"javascript: window.top.location.href='" . $array_result['3ds_url'] . "'\"></body></html>";
+        if ($array_result['response_code'] == '20064' && isset($array_result['_3ds_url'])) {
+            echo "<html><body onLoad=\"javascript: window.top.location.href='" . $array_result['_3ds_url'] . "'\"></body></html>";
         }
 
         return  $array_result;
@@ -347,7 +350,9 @@ class PayfortController extends Controller
         //parse_str($response, $response_data);
         curl_close($ch);
 
-        $array_result = json_decode($response, true);
+        $xml = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
+        $json = json_encode($xml);
+        $array_result = json_decode($json,TRUE);
 
         if (!$response || empty($array_result)) {
             return false;
@@ -356,17 +361,20 @@ class PayfortController extends Controller
     }
 
     /**
-     * Method: responsePayfort
+     * Method: paymentResponse
      *
-     * @return mixed
+     * @return array
      */
-    public function responsePayfort()
+    public function paymentResponse()
     {
-        $responsePayfort = $_GET;
+        $responsePayfort = $_POST;
+        $responseParamSignature = $responsePayfort['signature'];
+        unset($responsePayfort['signature']);
+        $responseNewSignature = $this->calculateSignature($responsePayfort, 'response');
         $buyProductDetails = session('buyProductDetails');
         $requestData = (object) $buyProductDetails;
 
-        if ($_GET['response_message'] == 'Success'){
+        if ($_POST['response_message'] == 'Success' && $responseParamSignature == $responseNewSignature){
 
             $this->order_number = 'RE' . strtotime(now());
             if(array_key_exists('subscription_id', $buyProductDetails)){
@@ -393,7 +401,9 @@ class PayfortController extends Controller
                 SaveOrderDetailsJob::dispatch($data);
             }
             session()->flush();
-            return $responsePayfort['merchant_extra'];
+            return $responsePayfort;
+        }else{
+            return $_POST;
         }
     }
 
@@ -512,7 +522,7 @@ class PayfortController extends Controller
         $postData      = array(
             'merchant_reference'  => $this->generateMerchantReference(),
             'access_code'         => $this->accessCode,
-            'command'             => 'PURCHASE',
+            'command'             => $this->command,
             'merchant_identifier' => $this->merchantIdentifier,
             'amount'              => $this->convertFortAmount($amount, $this->currency),
             'currency'            => strtoupper($this->currency),
