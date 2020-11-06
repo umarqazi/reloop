@@ -6,6 +6,7 @@ use App\Forms\Checkout\BuyPlanForm;
 use App\Forms\Checkout\BuyProductForm;
 use App\Jobs\SaveOrderDetailsJob;
 use App\Jobs\SaveSubscriptionDetailsJob;
+use App\Services\PaymentService;
 use App\Services\ProductService;
 use App\Services\TransactionService;
 use App\Services\UserCardService;
@@ -399,6 +400,53 @@ class PayfortController extends Controller
                     'order_number' => $responsePayfort['merchant_extra']
                 ];
                 SaveOrderDetailsJob::dispatch($data);
+            }
+            session()->flush();
+            return $responsePayfort;
+        }else{
+            return $_POST;
+        }
+    }
+
+    /**
+     * Method: directFeedbackResponse
+     *
+     * @return array
+     */
+    public function directFeedbackResponse()
+    {
+        $responsePayfort = $_POST;
+        $responseParamSignature = $responsePayfort['signature'];
+        unset($responsePayfort['signature']);
+        $responseNewSignature = $this->calculateSignature($responsePayfort, 'response');
+        $buyProductDetails = session('buyProductDetails');
+        $requestData = (object) $buyProductDetails;
+
+        if ($_POST['response_message'] == 'Success' && $responseParamSignature == $responseNewSignature){
+
+            $this->order_number = 'RE' . strtotime(now());
+            if(array_key_exists('subscription_id', $buyProductDetails)){
+                $planDetails = $this->productService->findSubscriptionById($requestData->subscription_id);
+                $data = [
+                    'stripe_response' => $responsePayfort,
+                    'product_details' => $planDetails,
+                    'request_data' => $requestData,
+                    'user_id' => $requestData->user_id,
+                    'order_number' => $responsePayfort['merchant_extra']
+                ];
+                App::make(PaymentService::class)->afterCheckout($data);
+            } else {
+
+                $productDetails = $this->productService->findProductById($requestData->products);
+
+                $data = [
+                    'stripe_response' => $responsePayfort,
+                    'product_details' => $productDetails,
+                    'request_data' => $requestData,
+                    'user_id' => $requestData->user_id,
+                    'order_number' => $responsePayfort['merchant_extra']
+                ];
+                App::make(PaymentService::class)->afterBuyProduct($data);
             }
             session()->flush();
             return $responsePayfort;
