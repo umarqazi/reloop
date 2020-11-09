@@ -234,8 +234,8 @@ class PaymentService extends BaseService
         $userSubscription = App::make(UserSubscriptionService::class)->create($data);
         $transaction = App::make(TransactionService::class)->buyPlanTransaction($data, $userSubscription);
         $authUser = App::make(UserService::class)->updateTrips($data);
-        if (!empty($data['request_data']->coupon_id)) {
-            $couponUsage = App::make(CouponUsageService::class)->couponUsage($data['request_data']->coupon_id, $data['user_id']);
+        if (!empty($data['payfort_response']['coupon_id'])) {
+            $couponUsage = App::make(CouponUsageService::class)->couponUsage($data['payfort_response']['coupon_id'], $data['user_id']);
         }
     }
 

@@ -72,12 +72,14 @@ class UserSubscriptionService extends BaseService
         $subscriptionType = $data['product_details']->category_type;
         $status = IUserSubscriptionStatus::ACTIVE;
         $model = $this->model;
-        $coupon = App::make(CouponService::class)->findById($data['request_data']->coupon_id);
+        if (array_key_exists('merchant_extra4', $data['payfort_response'])) {
+            $coupon = App::make(CouponService::class)->findById($data['payfort_response']['merchant_extra4']);
+        }
         if($data['product_details']->category->service_type == ISubscriptionType::MONTHLY){
 
             $startTime = date("Y-m-d h:i:s");
             $endTime = date("Y-m-d h:i:s", strtotime("+30 days"));
-            //$stripeSubId = $data['stripe_response']['id'];
+            //$stripeSubId = $data['payfort_response']['id'];
             $subscriptionType = ISubscriptionSubType::NORMAL;
 
             $userSubscriptionStatus = $model->where([
@@ -97,7 +99,7 @@ class UserSubscriptionService extends BaseService
         $model->subscription_number = $data['order_number'];
         $model->subscription_type = $subscriptionType;
         $model->coupon = $coupon->code ?? null;
-        $model->total = $data['request_data']->total;
+        $model->total = $data['payfort_response']['amount']/100;
         $model->status = $status;
         $model->start_date = $startTime;
         $model->end_date = $endTime;

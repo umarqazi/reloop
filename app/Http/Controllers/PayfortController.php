@@ -286,7 +286,29 @@ class PayfortController extends Controller
             'return_url'          => route('payment-response'),
             'merchant_extra'      => 'RE' . strtotime(now()),
             'token_name'          => $fortParams['token_name'],
+            'merchant_extra1'     => $fortParams['buyProductDetails']['user_id'],
         );
+        if ($fortParams['buyProductDetails']['coupon_id'] != null){
+            $postData['merchant_extra4'] = $fortParams['buyProductDetails']['coupon_id'];
+        }
+        if(array_key_exists('subscription_id', $fortParams['buyProductDetails']) &&
+            array_key_exists('subscription_type', $fortParams['buyProductDetails'])){
+            $productDetails = $fortParams['buyProductDetails']['subscription_id'];
+            $productType = $fortParams['buyProductDetails']['subscription_type'];
+
+            $postData['merchant_extra2'] = $productDetails;
+            $postData['merchant_extra3'] = $productType;
+
+        } else {
+
+            $productDetails = $fortParams['buyProductDetails']['products'];
+            $tmpArr = array();
+            foreach ($productDetails as $sub) {
+                $tmpArr[] = implode(',', $sub);
+            }
+            $result = implode(',', $tmpArr);
+            $postData['merchant_extra2'] = $result;
+        }
         if(!array_key_exists('card_number', $fortParams)
             && !array_key_exists('expiry_date', $fortParams)){
 
@@ -296,6 +318,7 @@ class PayfortController extends Controller
         //calculate request signature
         $signature             = $this->calculateSignature($postData, 'request');
         $postData['signature'] = $signature;
+        //dd($postData);
 
         if ($this->sandboxMode) {
             $gatewayUrl = 'https://sbpaymentservices.payfort.com/FortAPI/paymentApi';
@@ -372,34 +395,40 @@ class PayfortController extends Controller
         $responseParamSignature = $responsePayfort['signature'];
         unset($responsePayfort['signature']);
         $responseNewSignature = $this->calculateSignature($responsePayfort, 'response');
-        $buyProductDetails = session('buyProductDetails');
-        $requestData = (object) $buyProductDetails;
+        //$buyProductDetails = session('buyProductDetails');
+        //$requestData = (object) $buyProductDetails;
 
-        if ($_POST['response_message'] == 'Success' && $responseParamSignature == $responseNewSignature){
+        if ($responsePayfort['response_message'] == 'Success' && $responseParamSignature == $responseNewSignature){
 
             $this->order_number = 'RE' . strtotime(now());
-            if(array_key_exists('subscription_id', $buyProductDetails)){
-                $planDetails = $this->productService->findSubscriptionById($requestData->subscription_id);
+            if(array_key_exists('merchant_extra3', $responsePayfort)){
+                $planDetails = $this->productService->findSubscriptionById($responsePayfort['merchant_extra2']);
                 $data = [
-                    'stripe_response' => $responsePayfort,
+                    'payfort_response' => $responsePayfort,
                     'product_details' => $planDetails,
-                    'request_data' => $requestData,
-                    'user_id' => $requestData->user_id,
+                    //'request_data' => $requestData,
+                    'user_id' => $responsePayfort['merchant_extra1'],
                     'order_number' => $responsePayfort['merchant_extra']
                 ];
-                SaveSubscriptionDetailsJob::dispatch($data);
+                //SaveSubscriptionDetailsJob::dispatch($data);
+                App::make(PaymentService::class)->afterCheckout($data);
             } else {
 
-                $productDetails = $this->productService->findProductById($requestData->products);
+                $products = $responsePayfort['merchant_extra2'];
+                $explodeProducts = explode(",",$products);
+                $productsQty = array_chunk($explodeProducts, 2);
+
+                $productDetails = $this->productService->findProductById($productsQty);
 
                 $data = [
-                    'stripe_response' => $responsePayfort,
+                    'payfort_response' => $responsePayfort,
                     'product_details' => $productDetails,
-                    'request_data' => $requestData,
-                    'user_id' => $requestData->user_id,
+                    //'request_data' => $requestData,
+                    'user_id' => $responsePayfort['merchant_extra1'],
                     'order_number' => $responsePayfort['merchant_extra']
                 ];
-                SaveOrderDetailsJob::dispatch($data);
+                //SaveOrderDetailsJob::dispatch($data);
+                App::make(PaymentService::class)->afterBuyProduct($data);
             }
             session()->flush();
             return $responsePayfort;
@@ -419,31 +448,30 @@ class PayfortController extends Controller
         $responseParamSignature = $responsePayfort['signature'];
         unset($responsePayfort['signature']);
         $responseNewSignature = $this->calculateSignature($responsePayfort, 'response');
-        $buyProductDetails = session('buyProductDetails');
-        $requestData = (object) $buyProductDetails;
 
         if ($_POST['response_message'] == 'Success' && $responseParamSignature == $responseNewSignature){
 
             $this->order_number = 'RE' . strtotime(now());
-            if(array_key_exists('subscription_id', $buyProductDetails)){
-                $planDetails = $this->productService->findSubscriptionById($requestData->subscription_id);
+            if(array_key_exists('merchant_extra3', $responsePayfort)){
+                $planDetails = $this->productService->findSubscriptionById($responsePayfort['merchant_extra2']);
                 $data = [
-                    'stripe_response' => $responsePayfort,
+                    'payfort_response' => $responsePayfort,
                     'product_details' => $planDetails,
-                    'request_data' => $requestData,
-                    'user_id' => $requestData->user_id,
+                    'user_id' => $responsePayfort['merchant_extra1'],
                     'order_number' => $responsePayfort['merchant_extra']
                 ];
                 App::make(PaymentService::class)->afterCheckout($data);
             } else {
 
-                $productDetails = $this->productService->findProductById($requestData->products);
+                $products = $responsePayfort['merchant_extra2'];
+                $explodeProducts = explode(",",$products);
+                $productsQty = array_chunk($explodeProducts, 2);
+                $productDetails = $this->productService->findProductById($productsQty);
 
                 $data = [
-                    'stripe_response' => $responsePayfort,
+                    'payfort_response' => $responsePayfort,
                     'product_details' => $productDetails,
-                    'request_data' => $requestData,
-                    'user_id' => $requestData->user_id,
+                    'user_id' => $responsePayfort['merchant_extra1'],
                     'order_number' => $responsePayfort['merchant_extra']
                 ];
                 App::make(PaymentService::class)->afterBuyProduct($data);
