@@ -68,10 +68,10 @@ class TransactionService extends BaseService
         $model->transactionable_id = $transactionable->id;
         $model->transactionable_type = $transactionable->getMorphClass();
 
-        if (array_key_exists('plan', $data['stripe_response'])) {
-            $processedData = $data['stripe_response']['plan'];
+        if (array_key_exists('plan', $data['payfort_response'])) {
+            $processedData = $data['payfort_response']['plan'];
         } else {
-            $processedData = $data['stripe_response'];
+            $processedData = $data['payfort_response'];
         }
         $model->total = $processedData['amount']/100;
         $model->save();
@@ -83,7 +83,7 @@ class TransactionService extends BaseService
         $model->user_id = $data['user_id'];
         $model->transactionable_id = $transactionable->id;
         $model->transactionable_type = $transactionable->getMorphClass();
-        $model->total = $data['stripe_response']['amount']/100;
+        $model->total = $data['payfort_response']['amount']/100;
         $model->save();
     }
 
