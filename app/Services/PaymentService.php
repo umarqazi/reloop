@@ -234,8 +234,9 @@ class PaymentService extends BaseService
         $userSubscription = App::make(UserSubscriptionService::class)->create($data);
         $transaction = App::make(TransactionService::class)->buyPlanTransaction($data, $userSubscription);
         $authUser = App::make(UserService::class)->updateTrips($data);
-        if (!empty($data['payfort_response']['coupon_id'])) {
-            $couponUsage = App::make(CouponUsageService::class)->couponUsage($data['payfort_response']['coupon_id'], $data['user_id']);
+        if (array_key_exists('merchant_extra4', $data['payfort_response']) &&
+            !empty($data['payfort_response']['merchant_extra4'])) {
+            $couponUsage = App::make(CouponUsageService::class)->couponUsage($data['payfort_response']['merchant_extra4'], $data['user_id']);
         }
     }
 
@@ -248,15 +249,17 @@ class PaymentService extends BaseService
      */
     public function afterBuyProduct($data)
     {
-        if(!empty($data['request_data']->points_discount)){
+        if(array_key_exists('merchant_extra3', $data['payfort_response']) &&
+            !empty($data['payfort_response']['merchant_extra3'])){
 
             $userService = App::make(UserService::class)->updateRewardPoints($data);
         }
         $orderService = App::make(OrderService::class)->create($data);
         $transaction = App::make(TransactionService::class)->buyProductTransaction($data, $orderService);
         $orderItemService = App::make(OrderItemService::class)->insert($data, $orderService);
-        if (!empty($data['request_data']->coupon_id)) {
-            $couponUsage = App::make(CouponUsageService::class)->couponUsage($data['request_data']->coupon_id, $data['user_id']);
+        if (array_key_exists('merchant_extra4', $data['payfort_response']) &&
+            !empty($data['payfort_response']['merchant_extra4'])) {
+            $couponUsage = App::make(CouponUsageService::class)->couponUsage($data['payfort_response']['merchant_extra4'], $data['user_id']);
         }
     }
 }

@@ -316,14 +316,31 @@ class PayfortService
             $postData['merchant_extra3'] = $productType;
 
         } else {
+            if ($fortParams['buyProductDetails']['points_discount'] != null){
+                $postData['merchant_extra3'] = $fortParams['buyProductDetails']['points_discount'];
+            }
+            $addressArr = [
+                'subtotal' => $fortParams['buyProductDetails']['subtotal'],
+                'location' => $fortParams['buyProductDetails']['location'],
+                'latitude' => $fortParams['buyProductDetails']['latitude'],
+                'longitude' => $fortParams['buyProductDetails']['longitude'],
+                'city_id' => $fortParams['buyProductDetails']['city_id'],
+                'district_id' => $fortParams['buyProductDetails']['district_id'],
+            ];
+            if ($fortParams['buyProductDetails']['organization_name'] != null){
+                $addressArr = $addressArr + ['organization_name' => $fortParams['buyProductDetails']['organization_name']];
+            }
+            $combineAddressFields = implode('/', $addressArr);
 
             $productDetails = $fortParams['buyProductDetails']['products'];
             $tmpArr = array();
             foreach ($productDetails as $sub) {
                 $tmpArr[] = implode(',', $sub);
             }
-            $result = implode(',', $tmpArr);
+            $result = implode(';', $tmpArr);
             $postData['merchant_extra2'] = $result;
+            $postData['phone_number'] = $fortParams['buyProductDetails']['phone_number'];
+            $postData['order_description'] = $combineAddressFields;
         }
         if(!array_key_exists('card_number', $fortParams)
             && !array_key_exists('expiry_date', $fortParams)){
@@ -388,26 +405,32 @@ class PayfortService
 
             if ($responsePayfort['response_code'] == 14000 &&
                 $responseParamSignature == $responseNewSignature) {
-
-                //$this->order_number = 'RE' . strtotime(now());
                 $data = [
                     'payfort_response' => $responsePayfort,
                     'user_id' => $responsePayfort['merchant_extra1'],
                     'order_number' => $responsePayfort['merchant_extra']
                 ];
-                if (array_key_exists('merchant_extra3', $responsePayfort)) {
+                if (array_key_exists('order_description', $responsePayfort)){
+                    $products = $responsePayfort['merchant_extra2'];
+                    $explodeProducts = explode(";", $products);
+                    $finalProducts = [];
+                    foreach ($explodeProducts as $key => $explodeProduct){
+                        $exploded = explode(',', $explodeProduct);
+                        $finalProducts[$key]['id'] = $exploded[0];
+                        $finalProducts[$key]['qty'] = $exploded[1];
+                    }
+                    $productDetails = $this->productService->findProductById($finalProducts);
+                    $addressDetails = explode('/', $responsePayfort['order_description']);
+                    $data['product_details_qty'] = $finalProducts;
+                    $data['product_details'] = $productDetails;
+                    $data['address_details'] = $addressDetails;
+                    //SaveOrderDetailsJob::dispatch($data);
+                    $this->paymentService->afterBuyProduct($data);
+                } else {
                     $planDetails = $this->productService->findSubscriptionById($responsePayfort['merchant_extra2']);
                     $data['product_details'] = $planDetails;
                     //SaveSubscriptionDetailsJob::dispatch($data);
                     $this->paymentService->afterCheckout($data);
-                } else {
-                    $products = $responsePayfort['merchant_extra2'];
-                    $explodeProducts = explode(",", $products);
-                    $productsQty = array_chunk($explodeProducts, 2);
-                    $productDetails = $this->productService->findProductById($productsQty);
-                    $data['product_details'] = $productDetails;
-                    //SaveOrderDetailsJob::dispatch($data);
-                    $this->paymentService->afterBuyProduct($data);
                 }
                 session()->flush();
                 return $responsePayfort;
