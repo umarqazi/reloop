@@ -327,10 +327,10 @@ class PayfortService
                 'city_id' => $fortParams['buyProductDetails']['city_id'],
                 'district_id' => $fortParams['buyProductDetails']['district_id'],
             ];
-            if ($fortParams['buyProductDetails']['organization_name'] != null){
+            /*if ($fortParams['buyProductDetails']['organization_name'] != null){
                 $addressArr = $addressArr + ['organization_name' => $fortParams['buyProductDetails']['organization_name']];
-            }
-            $combineAddressFields = implode('/', $addressArr);
+            }*/
+            $combineAddressFields = implode('_', $addressArr);
 
             $productDetails = $fortParams['buyProductDetails']['products'];
             $tmpArr = array();
@@ -420,7 +420,7 @@ class PayfortService
                         $finalProducts[$key]['qty'] = $exploded[1];
                     }
                     $productDetails = $this->productService->findProductById($finalProducts);
-                    $addressDetails = explode('/', $responsePayfort['order_description']);
+                    $addressDetails = explode('_', $responsePayfort['order_description']);
                     $data['product_details_qty'] = $finalProducts;
                     $data['product_details'] = $productDetails;
                     $data['address_details'] = $addressDetails;
