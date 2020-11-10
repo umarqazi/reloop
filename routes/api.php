@@ -66,4 +66,4 @@ Route::middleware('auth:api')->group(function () {
     // Chart Api's
     Route::post('get-barChart-data', 'UserController@barChart');
 });
-Route::post('feedback-transaction', 'PayfortController@paymentResponse')->name('feedback-transaction');
+Route::post('feedback-transaction', 'PayfortController@feedbackResponse')->name('feedback-transaction');

@@ -114,5 +114,5 @@ Route::get('payment-page', 'PayfortController@paymentPage')->name('payment-page'
 Route::post('create-token', 'PayfortController@createToken')->name('create-token');
 Route::post('token-response', 'PayfortController@tokenResponse')->name('token-response');
 Route::post('payment-response', 'PayfortController@paymentResponse')->name('payment-response');
-Route::post('feedback-transaction', 'PayfortController@paymentResponse')->name('feedback-transaction');
+Route::post('feedback-transaction', 'PayfortController@feedbackResponse')->name('feedback-transaction');
 Route::post('recurring', 'PayfortController@recurring')->name('recurring');
