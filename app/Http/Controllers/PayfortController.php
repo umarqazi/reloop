@@ -88,6 +88,18 @@ class PayfortController extends Controller
     }
 
     /**
+     * Method: feedbackResponse
+     *
+     * @param Request $request
+     *
+     * @return void
+     */
+    public function feedbackResponse(Request $request)
+    {
+        $this->payfortService->feedbackResponse($request->all());
+    }
+
+    /**
      * Method: recurring
      *
      * @param $amount

@@ -356,39 +356,64 @@ class PayfortService
      */
     public function paymentResponse()
     {
-        $responsePayfort = $_POST;
-        $responseParamSignature = $responsePayfort['signature'];
-        unset($responsePayfort['signature']);
-        $responseNewSignature = $this->calculateSignature($responsePayfort, 'response');
+        return $this->handlePayfortResponse($_POST);
+    }
 
-        if ($responsePayfort['response_code'] == 14000 &&
-            $responseParamSignature == $responseNewSignature){
+    /**
+     * Method: feedbackResponse
+     *
+     * @param $data
+     *
+     * @return void
+     */
+    public function feedbackResponse($data)
+    {
+        $this->handlePayfortResponse($data);
+    }
 
-            $this->order_number = 'RE' . strtotime(now());
-            $data = [
-                'payfort_response' => $responsePayfort,
-                'user_id' => $responsePayfort['merchant_extra1'],
-                'order_number' => $responsePayfort['merchant_extra']
-            ];
-            if(array_key_exists('merchant_extra3', $responsePayfort))
-            {
-                $planDetails = $this->productService->findSubscriptionById($responsePayfort['merchant_extra2']);
-                $data['product_details'] = $planDetails;
-                //SaveSubscriptionDetailsJob::dispatch($data);
-                $this->paymentService->afterCheckout($data);
+    /**
+     * Method: handlePayfortResponse
+     *
+     * @param $data
+     *
+     * @return array
+     */
+    private function handlePayfortResponse($data)
+    {
+        if (array_key_exists('signature', $data)) {
+            $responsePayfort = $data;
+            $responseParamSignature = $responsePayfort['signature'];
+            unset($responsePayfort['signature']);
+            $responseNewSignature = $this->calculateSignature($responsePayfort, 'response');
+
+            if ($responsePayfort['response_code'] == 14000 &&
+                $responseParamSignature == $responseNewSignature) {
+
+                //$this->order_number = 'RE' . strtotime(now());
+                $data = [
+                    'payfort_response' => $responsePayfort,
+                    'user_id' => $responsePayfort['merchant_extra1'],
+                    'order_number' => $responsePayfort['merchant_extra']
+                ];
+                if (array_key_exists('merchant_extra3', $responsePayfort)) {
+                    $planDetails = $this->productService->findSubscriptionById($responsePayfort['merchant_extra2']);
+                    $data['product_details'] = $planDetails;
+                    //SaveSubscriptionDetailsJob::dispatch($data);
+                    $this->paymentService->afterCheckout($data);
+                } else {
+                    $products = $responsePayfort['merchant_extra2'];
+                    $explodeProducts = explode(",", $products);
+                    $productsQty = array_chunk($explodeProducts, 2);
+                    $productDetails = $this->productService->findProductById($productsQty);
+                    $data['product_details'] = $productDetails;
+                    //SaveOrderDetailsJob::dispatch($data);
+                    $this->paymentService->afterBuyProduct($data);
+                }
+                session()->flush();
+                return $responsePayfort;
             } else {
-                $products = $responsePayfort['merchant_extra2'];
-                $explodeProducts = explode(",",$products);
-                $productsQty = array_chunk($explodeProducts, 2);
-                $productDetails = $this->productService->findProductById($productsQty);
-                $data['product_details'] = $productDetails;
-                //SaveOrderDetailsJob::dispatch($data);
-                $this->paymentService->afterBuyProduct($data);
+                return $_POST;
             }
-            session()->flush();
-            return $responsePayfort;
-        }else{
-            return $_POST;
         }
     }
 
