@@ -63,26 +63,28 @@ class OrderService extends BaseService
 
     public function create($data)
     {
-        $city = App::make(CityService::class)->findById($data['request_data']->city_id);
-        $district = App::make(DistrictService::class)->findById($data['request_data']->district_id);
-        $coupon = App::make(CouponService::class)->findById($data['request_data']->coupon_id);
+        $city = App::make(CityService::class)->findById($data['address_details'][4]);
+        $district = App::make(DistrictService::class)->findById($data['address_details'][5]);
+        if (array_key_exists('merchant_extra4', $data['payfort_response'])){
+            $coupon = App::make(CouponService::class)->findById($data['payfort_response']['merchant_extra4']);
+        }
 
         $model = $this->model;
         $model = $model->create([
             'user_id'             => $data['user_id'],
             'order_number'        => $data['order_number'],
-            'subtotal'            => $data['request_data']->subtotal,
-            'redeem_points'       => $data['request_data']->points_discount ?? null,
+            'subtotal'            => $data['address_details'][0],
+            'redeem_points'       => $data['payfort_response']['merchant_extra3'] ?? null,
             'coupon_discount'     => $coupon->code ?? null,
-            'total'               => $data['request_data']->total,
-            'first_name'          => $data['request_data']->first_name ?? null,
-            'last_name'           => $data['request_data']->last_name ?? null,
-            'organization_name'   => $data['request_data']->organization_name ?? null,
-            'email'               => $data['request_data']->email,
-            'phone_number'        => $data['request_data']->phone_number,
-            'location'            => $data['request_data']->location,
-            'latitude'            => $data['request_data']->latitude,
-            'longitude'           => $data['request_data']->longitude,
+            'total'               => $data['payfort_response']['amount']/100,
+            'first_name'          => $data['payfort_response']['customer_name'] ?? null,
+            'last_name'           => $data['payfort_response']['customer_name'] ?? null,
+            'organization_name'   => $data['address_details'][6] ?? null,
+            'email'               => $data['payfort_response']['customer_email'],
+            'phone_number'        => $data['payfort_response']['phone_number'],
+            'location'            => $data['address_details'][1],
+            'latitude'            => $data['address_details'][2],
+            'longitude'           => $data['address_details'][3],
             'city_id'             => $city->id,
             'district_id'         => $district->id
         ]);
