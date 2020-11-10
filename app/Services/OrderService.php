@@ -79,7 +79,7 @@ class OrderService extends BaseService
             'total'               => $data['payfort_response']['amount']/100,
             'first_name'          => $data['payfort_response']['customer_name'] ?? null,
             'last_name'           => $data['payfort_response']['customer_name'] ?? null,
-            'organization_name'   => $data['address_details'][6] ?? null,
+            //'organization_name'   => $data['address_details'][6] ?? null,
             'email'               => $data['payfort_response']['customer_email'],
             'phone_number'        => $data['payfort_response']['phone_number'],
             'location'            => $data['address_details'][1],
