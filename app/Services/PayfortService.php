@@ -361,6 +361,8 @@ class PayfortService
         $array_result = $this->callApi($postData, $gatewayUrl);
         if ($array_result['response_code'] == 20064 && isset($array_result['_3ds_url'])) {
             echo "<html><body onLoad=\"javascript: window.top.location.href='" . $array_result['_3ds_url'] . "'\"></body></html>";
+        } else {
+            print_r(json_encode($array_result));
         }
 
         return  $array_result;

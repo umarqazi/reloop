@@ -258,7 +258,7 @@ class PaymentService extends BaseService
         $transaction = App::make(TransactionService::class)->buyProductTransaction($data, $orderService);
         $orderItemService = App::make(OrderItemService::class)->insert($data, $orderService);
         if (array_key_exists('merchant_extra4', $data['payfort_response']) &&
-            !empty($data['payfort_response']['merchant_extra4'])) {
+            $data['payfort_response']['merchant_extra4'] != 'null') {
             $couponUsage = App::make(CouponUsageService::class)->couponUsage($data['payfort_response']['merchant_extra4'], $data['user_id']);
         }
     }
